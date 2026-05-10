@@ -1,6 +1,7 @@
 -- ============================================================
 -- SciCollab Database Schema
 -- Run this in your Supabase project: SQL Editor → New query
+-- Safe to re-run — drops existing policies before recreating
 -- ============================================================
 
 -- Profiles table (extends auth.users)
@@ -54,6 +55,15 @@ create table if not exists public.experiments (
 alter table public.profiles enable row level security;
 alter table public.experiments enable row level security;
 
+-- Drop existing policies before recreating (safe to re-run)
+drop policy if exists "Users can view own profile" on public.profiles;
+drop policy if exists "Users can insert own profile" on public.profiles;
+drop policy if exists "Users can update own profile" on public.profiles;
+drop policy if exists "Public experiments viewable by all" on public.experiments;
+drop policy if exists "Users can insert own experiments" on public.experiments;
+drop policy if exists "Users can update own experiments" on public.experiments;
+drop policy if exists "Users can delete own experiments" on public.experiments;
+
 -- Profile policies
 create policy "Users can view own profile"
   on public.profiles for select using (auth.uid() = id);
@@ -89,6 +99,9 @@ begin
   return new;
 end;
 $$ language plpgsql;
+
+drop trigger if exists set_profiles_updated_at on public.profiles;
+drop trigger if exists set_experiments_updated_at on public.experiments;
 
 create trigger set_profiles_updated_at
   before update on public.profiles
