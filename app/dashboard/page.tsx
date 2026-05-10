@@ -1,6 +1,19 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import SignOutButton from "@/components/SignOutButton";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Fetch profile if it exists
+  const { data: profile } = user
+    ? await supabase.from("profiles").select("full_name, institution").eq("id", user.id).single()
+    : { data: null };
+
+  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Researcher";
+  const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Top nav */}
@@ -17,8 +30,9 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <SignOutButton />
             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-sm">
-              A
+              {initials}
             </div>
           </div>
         </div>
@@ -30,7 +44,7 @@ export default function DashboardPage() {
           <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-3 py-1 text-xs font-medium mb-4">
             🎉 Welcome to SciCollab
           </div>
-          <h1 className="text-2xl font-bold mb-2">Your workspace is ready!</h1>
+          <h1 className="text-2xl font-bold mb-2">Welcome, {displayName.split(" ")[0]}!</h1>
           <p className="text-blue-100 mb-6 text-sm max-w-lg">
             You&apos;re set up and ready to go. Upload your first experiment, search the knowledge graph, or ask the community a question.
           </p>

@@ -6,7 +6,7 @@ import { OnboardingData } from "@/app/onboarding/page";
 type Props = {
   data: OnboardingData;
   updateData: (fields: Partial<OnboardingData>) => void;
-  onNext: () => void;
+  onComplete: () => Promise<void>;
   onBack: () => void;
 };
 
@@ -47,15 +47,20 @@ const NOTIFICATION_ITEMS: NotificationItem[] = [
   },
 ];
 
-export default function StepNotifications({ data, updateData, onNext, onBack }: Props) {
+export default function StepNotifications({ data, updateData, onComplete, onBack }: Props) {
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleFinish() {
+  async function handleFinish() {
     setSubmitting(true);
-    // Simulate async account creation
-    setTimeout(() => {
-      onNext();
-    }, 1500);
+    setError("");
+    try {
+      await onComplete();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setError(message);
+      setSubmitting(false);
+    }
   }
 
   const enabledCount = NOTIFICATION_ITEMS.filter((item) => data[item.key]).length;
@@ -132,6 +137,12 @@ export default function StepNotifications({ data, updateData, onNext, onBack }: 
           <li>✓ {enabledCount} notification type{enabledCount !== 1 ? "s" : ""} enabled · {data.digestFrequency === "realtime" ? "Real-time" : data.digestFrequency === "daily" ? "Daily digest" : "Weekly digest"}</li>
         </ul>
       </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      )}
 
       {/* Navigation */}
       <div className="flex gap-3 pt-2">

@@ -3,29 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import StepAccountCreation from "@/components/onboarding/StepAccountCreation";
 import StepLabWorkspace from "@/components/onboarding/StepLabWorkspace";
 import StepExpertiseTags from "@/components/onboarding/StepExpertiseTags";
 import StepNotifications from "@/components/onboarding/StepNotifications";
 
 export type OnboardingData = {
-  // Step A
   fullName: string;
   email: string;
   password: string;
   institution: string;
   orcidId: string;
-  // Step B
   labMode: "create" | "join" | "";
   labName: string;
   labJoinCode: string;
   inviteEmails: string[];
   role: string;
-  // Step C
   researchDomain: string;
   subfields: string[];
   techniques: string[];
-  // Step D
   notifyNewMatch: boolean;
   notifyAnswerRequest: boolean;
   notifyFork: boolean;
@@ -65,6 +62,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
+  const [submitError, setSubmitError] = useState("");
 
   function updateData(fields: Partial<OnboardingData>) {
     setData((prev) => ({ ...prev, ...fields }));
@@ -74,10 +72,8 @@ export default function OnboardingPage() {
     if (currentStep < STEPS.length - 1) {
       setCurrentStep((s) => s + 1);
       window.scrollTo(0, 0);
-    } else {
-      // Final step — go to dashboard
-      router.push("/dashboard");
     }
+    // Final step is handled by handleComplete
   }
 
   function back() {
@@ -87,9 +83,60 @@ export default function OnboardingPage() {
     }
   }
 
+  async function handleComplete() {
+    setSubmitError("");
+    const supabase = createClient();
+
+    // 1. Create the auth user
+    const { data: authData, error: signUpError } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: { full_name: data.fullName },
+      },
+    });
+
+    if (signUpError) {
+      setSubmitError(signUpError.message);
+      throw signUpError;
+    }
+
+    const userId = authData.user?.id;
+    if (!userId) {
+      setSubmitError("Account creation failed. Please try again.");
+      throw new Error("No user ID returned");
+    }
+
+    // 2. Save profile to database
+    const { error: profileError } = await supabase.from("profiles").insert({
+      id: userId,
+      full_name: data.fullName,
+      institution: data.institution,
+      orcid_id: data.orcidId || null,
+      role: data.role,
+      research_domain: data.researchDomain,
+      subfields: data.subfields,
+      techniques: data.techniques,
+      lab_mode: data.labMode,
+      lab_name: data.labName || null,
+      notify_new_match: data.notifyNewMatch,
+      notify_answer_request: data.notifyAnswerRequest,
+      notify_fork: data.notifyFork,
+      notify_endorsement: data.notifyEndorsement,
+      digest_frequency: data.digestFrequency,
+    });
+
+    if (profileError) {
+      // Profile save failed but auth succeeded — user can still access dashboard
+      console.error("Profile save error:", profileError.message);
+    }
+
+    router.push("/dashboard");
+    router.refresh();
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Top bar */}
       <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold text-blue-600">SciCollab</Link>
         <span className="text-sm text-slate-500">
@@ -104,7 +151,6 @@ export default function OnboardingPage() {
           <div className="flex items-center gap-0">
             {STEPS.map((step, idx) => (
               <div key={step.id} className="flex items-center flex-1">
-                {/* Step circle */}
                 <div className="flex flex-col items-center flex-shrink-0">
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
@@ -115,11 +161,7 @@ export default function OnboardingPage() {
                         : "bg-white text-slate-400 border-2 border-slate-200"
                     }`}
                   >
-                    {idx < currentStep ? (
-                      <CheckIcon />
-                    ) : (
-                      step.id
-                    )}
+                    {idx < currentStep ? <CheckIcon /> : step.id}
                   </div>
                   <div className="mt-1.5 text-center">
                     <div className={`text-xs font-medium ${idx <= currentStep ? "text-blue-600" : "text-slate-400"}`}>
@@ -127,9 +169,9 @@ export default function OnboardingPage() {
                     </div>
                   </div>
                 </div>
-                {/* Connector line */}
                 {idx < STEPS.length - 1 && (
-                  <div className="flex-1 h-0.5 mx-2 mt-[-16px] step-connector"
+                  <div
+                    className="flex-1 h-0.5 mx-2 mt-[-16px] step-connector"
                     style={{ backgroundColor: idx < currentStep ? "#2563eb" : "#e2e8f0" }}
                   />
                 )}
@@ -140,7 +182,6 @@ export default function OnboardingPage() {
 
         {/* Step card */}
         <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          {/* Step header */}
           <div className="px-8 py-6 border-b border-slate-100 bg-slate-50">
             <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">
               Step {currentStep + 1} of {STEPS.length}
@@ -153,20 +194,16 @@ export default function OnboardingPage() {
             )}
           </div>
 
-          {/* Step content */}
           <div className="px-8 py-8">
-            {currentStep === 0 && (
-              <StepAccountCreation data={data} updateData={updateData} onNext={next} />
+            {submitError && (
+              <div className="mb-4 bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">
+                {submitError}
+              </div>
             )}
-            {currentStep === 1 && (
-              <StepLabWorkspace data={data} updateData={updateData} onNext={next} onBack={back} />
-            )}
-            {currentStep === 2 && (
-              <StepExpertiseTags data={data} updateData={updateData} onNext={next} onBack={back} />
-            )}
-            {currentStep === 3 && (
-              <StepNotifications data={data} updateData={updateData} onNext={next} onBack={back} />
-            )}
+            {currentStep === 0 && <StepAccountCreation data={data} updateData={updateData} onNext={next} />}
+            {currentStep === 1 && <StepLabWorkspace data={data} updateData={updateData} onNext={next} onBack={back} />}
+            {currentStep === 2 && <StepExpertiseTags data={data} updateData={updateData} onNext={next} onBack={back} />}
+            {currentStep === 3 && <StepNotifications data={data} updateData={updateData} onComplete={handleComplete} onBack={back} />}
           </div>
         </div>
 
