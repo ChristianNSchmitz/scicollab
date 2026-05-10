@@ -35,9 +35,9 @@ export default function DashboardPage() {
             You&apos;re set up and ready to go. Upload your first experiment, search the knowledge graph, or ask the community a question.
           </p>
           <div className="flex flex-wrap gap-3">
-            <button className="bg-white text-blue-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-colors">
+            <Link href="/experiments/new" className="bg-white text-blue-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-colors">
               Upload First Experiment
-            </button>
+            </Link>
             <button className="border border-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition-colors">
               Explore the Knowledge Graph
             </button>
@@ -47,14 +47,15 @@ export default function DashboardPage() {
         {/* Quick actions */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
-            { icon: "🧪", title: "New Experiment", desc: "Upload a method card", color: "blue", coming: false },
-            { icon: "🔍", title: "Search", desc: "AI-grounded discovery", color: "purple", coming: true },
-            { icon: "💬", title: "Ask Peers", desc: "Post a Q&A question", color: "emerald", coming: true },
-            { icon: "🔁", title: "Fork Protocol", desc: "Adapt existing methods", color: "amber", coming: true },
+            { icon: "🧪", title: "New Experiment", desc: "Upload a method card", color: "blue", coming: false, href: "/experiments/new" },
+            { icon: "🔍", title: "Search", desc: "AI-grounded discovery", color: "purple", coming: true, href: "#" },
+            { icon: "💬", title: "Ask Peers", desc: "Post a Q&A question", color: "emerald", coming: true, href: "#" },
+            { icon: "🔁", title: "Fork Protocol", desc: "Adapt existing methods", color: "amber", coming: true, href: "#" },
           ].map((action) => (
-            <div
+            <Link
               key={action.title}
-              className={`bg-white border border-slate-200 rounded-xl p-4 cursor-pointer hover:shadow-sm transition-all relative ${action.coming ? "opacity-70" : ""}`}
+              href={action.href}
+              className={`bg-white border border-slate-200 rounded-xl p-4 cursor-pointer hover:shadow-sm transition-all relative block ${action.coming ? "opacity-70 pointer-events-none" : "hover:border-blue-200"}`}
             >
               <div className="text-2xl mb-2">{action.icon}</div>
               <div className="font-semibold text-slate-900 text-sm">{action.title}</div>
@@ -64,7 +65,7 @@ export default function DashboardPage() {
                   Coming soon
                 </span>
               )}
-            </div>
+            </Link>
           ))}
         </div>
 

@@ -29,7 +29,10 @@
       "Bash(gh auth *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(gh repo *)",
+      "Bash(mkdir -p /Users/janmejaysingh/scicollab/app/experiments/new /Users/janmejaysingh/scicollab/app/experiments/\\\\[id\\\\] /Users/janmejaysingh/scicollab/components/experiments)",
+      "Bash(git push *)"
     ]
   }
 }
