@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { saveExperiment, getMockProfile } from "@/lib/mock-db";
 import StepInitiate from "@/components/experiments/StepInitiate";
 import StepMethodCard from "@/components/experiments/StepMethodCard";
 import StepOutcome from "@/components/experiments/StepOutcome";
@@ -100,43 +100,28 @@ export default function NewExperimentPage() {
 
   async function handlePublish() {
     setPublishError("");
-    const supabase = createClient();
+    const profile = getMockProfile();
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      setPublishError("You must be signed in to publish.");
-      return;
-    }
-
-    const { data: experiment, error } = await supabase
-      .from("experiments")
-      .insert({
-        user_id: user.id,
-        title: data.title,
-        protocol_version: data.protocolVersion,
-        hypothesis: data.hypothesis || null,
-        methods: data.methods || null,
-        conditions: data.conditions || null,
-        reagents: data.reagents,
-        technique_tags: data.techniqueTags,
-        organism_tags: data.organismTags,
-        outcome: data.outcome || null,
-        outcome_summary: data.outcomeSummary || null,
-        failure_context: data.failureContext || null,
-        root_cause: data.rootCause || null,
-        attached_files: data.attachedFiles,
-        code_notebook_url: data.codeNotebookUrl || null,
-        visibility: data.visibility,
-        embargo_until: data.embargoUntil || null,
-        co_authors: data.coAuthors,
-      })
-      .select("id")
-      .single();
-
-    if (error) {
-      setPublishError(error.message);
-      return;
-    }
+    const experiment = saveExperiment({
+      user_id:          profile.id,
+      parent_id:        null,
+      title:            data.title,
+      protocol_version: data.protocolVersion,
+      hypothesis:       data.hypothesis || null,
+      methods:          data.methods || null,
+      conditions:       data.conditions || null,
+      reagents:         data.reagents,
+      technique_tags:   data.techniqueTags,
+      organism_tags:    data.organismTags,
+      outcome:          (data.outcome || null) as "success" | "partial" | "failed" | null,
+      outcome_summary:  data.outcomeSummary || null,
+      failure_context:  data.failureContext || null,
+      root_cause:       data.rootCause || null,
+      attached_files:   data.attachedFiles,
+      code_notebook_url: data.codeNotebookUrl || null,
+      visibility:       data.visibility,
+      co_authors:       data.coAuthors,
+    });
 
     router.push(`/experiments/${experiment.id}`);
   }
