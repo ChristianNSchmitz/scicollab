@@ -1,7 +1,79 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import QASection from "./components/QASection";
+import ForkButton from "./components/ForkButton";
 
-export default async function ExperimentPage({ params }: { params: Promise<{ id: string }> }) {
+type Reagent = { name: string; concentration: string; supplier: string };
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 30) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+export default async function ExperimentPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ forked?: string }>;
+}) {
   const { id } = await params;
+  const { forked } = await searchParams;
+  const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const { data: exp } = await supabase
+    .from("experiments")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (!exp) notFound();
+
+  const [{ data: authorProfile }, { data: parentExp }, { data: rawQuestions }, { data: forks }] =
+    await Promise.all([
+      supabase.from("profiles").select("full_name, institution, orcid_id").eq("id", exp.user_id).single(),
+      exp.parent_id
+        ? supabase.from("experiments").select("id, title").eq("id", exp.parent_id).single()
+        : Promise.resolve({ data: null }),
+      supabase
+        .from("questions")
+        .select("id, body, created_at, user_id, profiles(full_name, institution), answers(id, body, created_at, is_endorsed, user_id, endorsed_by, profiles(full_name, institution))")
+        .eq("experiment_id", id)
+        .order("created_at", { ascending: true }),
+      supabase
+        .from("experiments")
+        .select("id, title, created_at")
+        .eq("parent_id", id)
+        .order("created_at", { ascending: false })
+        .limit(5),
+    ]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const questions = (rawQuestions ?? []).map((q: any) => ({
+    ...q,
+    answers: Array.isArray(q.answers) ? q.answers : [],
+  }));
+
+  const isOwner = user?.id === exp.user_id;
+
+  const outcomeConfig = {
+    success: { border: "border-emerald-200", bg: "bg-emerald-50", badge: "border-emerald-300 bg-emerald-50 text-emerald-700", label: "✅ Success" },
+    partial: { border: "border-amber-200", bg: "bg-amber-50", badge: "border-amber-300 bg-amber-50 text-amber-700", label: "⚠️ Partial" },
+    failed: { border: "border-red-200", bg: "bg-red-50", badge: "border-red-300 bg-red-50 text-red-700", label: "❌ Failed — documented" },
+  };
+  const oc = exp.outcome ? outcomeConfig[exp.outcome as keyof typeof outcomeConfig] : outcomeConfig.success;
+
+  const reagents: Reagent[] = Array.isArray(exp.reagents) ? exp.reagents as Reagent[] : [];
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Nav */}
@@ -10,18 +82,13 @@ export default async function ExperimentPage({ params }: { params: Promise<{ id:
           <div className="flex items-center gap-3">
             <Link href="/dashboard" className="text-xl font-bold text-blue-600">SciCollab</Link>
             <span className="text-slate-300">/</span>
-            <span className="text-sm text-slate-500">Experiments</span>
+            <Link href="/dashboard" className="text-sm text-slate-500 hover:text-slate-700">Experiments</Link>
             <span className="text-slate-300">/</span>
-            <span className="text-sm font-mono text-slate-600">#{id.replace("exp-", "")}</span>
+            <span className="text-sm font-mono text-slate-600">{id.slice(0, 8)}</span>
           </div>
           <div className="flex items-center gap-2">
+            <ForkButton experiment={exp} currentUserId={user?.id ?? null} />
             <button className="text-xs border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-50 transition-colors font-medium">
-              🔁 Fork Protocol
-            </button>
-            <button className="text-xs border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-50 transition-colors font-medium">
-              💬 Ask a Question
-            </button>
-            <button className="text-xs bg-blue-600 text-white rounded-lg px-3 py-1.5 hover:bg-blue-700 transition-colors font-medium">
               ↗ Cite
             </button>
           </div>
@@ -29,177 +96,211 @@ export default async function ExperimentPage({ params }: { params: Promise<{ id:
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 py-10">
-        {/* Success banner */}
-        <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-4 flex items-start gap-3 mb-8">
-          <span className="text-2xl">🎉</span>
-          <div>
-            <p className="font-semibold text-emerald-800">Your method card is live in the knowledge graph!</p>
-            <p className="text-sm text-emerald-700 mt-0.5">Peers with matching expertise tags have been notified. Co-authors credited. Card is now searchable and citable.</p>
+        {/* Banners */}
+        {forked === "true" && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-4 flex items-start gap-3 mb-6">
+            <span className="text-2xl">🔁</span>
+            <div>
+              <p className="font-semibold text-blue-800">Protocol forked — this is your copy</p>
+              <p className="text-sm text-blue-700 mt-0.5">
+                Adapt the parameters, run the experiment, and record your outcome.
+                {parentExp && (
+                  <> Original: <Link href={`/experiments/${parentExp.id}`} className="underline hover:text-blue-900">{parentExp.title}</Link></>
+                )}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
+
+        {!forked && !exp.parent_id && isOwner && (
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-4 flex items-start gap-3 mb-8">
+            <span className="text-2xl">🎉</span>
+            <div>
+              <p className="font-semibold text-emerald-800">Your method card is live in the knowledge graph!</p>
+              <p className="text-sm text-emerald-700 mt-0.5">Peers with matching expertise tags have been notified. Card is now searchable and citable.</p>
+            </div>
+          </div>
+        )}
+
+        {exp.parent_id && !forked && (
+          <div className="bg-blue-50 border border-blue-100 rounded-xl px-5 py-3 flex items-center gap-2 mb-6 text-sm text-blue-700">
+            <span>🔁</span>
+            <span>Fork of{" "}
+              {parentExp
+                ? <Link href={`/experiments/${parentExp.id}`} className="underline hover:text-blue-900">{parentExp.title}</Link>
+                : "a protocol"}
+            </span>
+          </div>
+        )}
 
         {/* Method Card */}
-        <div className="bg-white border border-red-200 rounded-2xl overflow-hidden shadow-sm mb-6">
-          {/* Header */}
-          <div className="bg-red-50 border-b border-red-200 px-6 py-5">
+        <div className={`bg-white border ${oc.border} rounded-2xl overflow-hidden shadow-sm mb-6`}>
+          <div className={`${oc.bg} border-b ${oc.border} px-6 py-5`}>
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full border border-red-300 bg-red-50 text-red-700">❌ Failed — documented</span>
-                  <span className="text-xs font-mono text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 bg-white">v1.0</span>
-                  <span className="text-xs text-slate-400">Exp #2042</span>
-                  <span className="text-xs text-slate-400">· Just now</span>
+                  {exp.outcome && (
+                    <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${oc.badge}`}>{oc.label}</span>
+                  )}
+                  <span className="text-xs font-mono text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 bg-white">{exp.protocol_version}</span>
+                  <span className="text-xs text-slate-400">{timeAgo(exp.created_at)}</span>
+                  {isOwner && (
+                    <span className="text-xs bg-slate-100 text-slate-500 rounded-full px-2 py-0.5">Your card</span>
+                  )}
                 </div>
-                <h1 className="text-xl font-bold text-slate-900 leading-snug">
-                  Western Blot Optimisation — HEK293 Low Signal, pH 8.3 Buffer
-                </h1>
+                <h1 className="text-xl font-bold text-slate-900 leading-snug">{exp.title}</h1>
                 <div className="flex items-center gap-3 mt-2 flex-wrap">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-xs">J</div>
-                    <span className="text-sm text-slate-600">Dr. Janmejay Singh · ESSEC Business School</span>
+                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-xs">
+                      {(authorProfile?.full_name ?? "?")[0]?.toUpperCase()}
+                    </div>
+                    <span className="text-sm text-slate-600">
+                      {authorProfile?.full_name ?? "Researcher"}
+                      {authorProfile?.institution ? ` · ${authorProfile.institution}` : ""}
+                    </span>
                   </div>
-                  <span className="text-xs text-slate-300">|</span>
-                  <span className="text-xs text-slate-500 flex items-center gap-1">🆔 ORCID verified</span>
+                  {authorProfile?.orcid_id && (
+                    <>
+                      <span className="text-xs text-slate-300">|</span>
+                      <span className="text-xs text-slate-500">🆔 ORCID verified</span>
+                    </>
+                  )}
                 </div>
               </div>
-              <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                  <span>0 forks</span>
-                  <span>·</span>
-                  <span>0 citations</span>
-                </div>
+              <div className="flex flex-col items-end gap-1 flex-shrink-0 text-xs text-slate-400">
+                <span>{(forks ?? []).length} fork{forks?.length !== 1 ? "s" : ""}</span>
+                <span>{questions.length} question{questions.length !== 1 ? "s" : ""}</span>
               </div>
             </div>
           </div>
 
-          {/* Body */}
           <div className="px-6 py-6 space-y-6">
-            <CardSection title="Hypothesis">
-              <p className="text-sm text-slate-700">
-                Increasing transfer buffer pH from 8.3 to 8.6 should improve signal detection for high-molecular-weight proteins in HEK293 cell lysate western blot.
-              </p>
-            </CardSection>
+            {exp.hypothesis && (
+              <CardSection title="Hypothesis">
+                <p className="text-sm text-slate-700">{exp.hypothesis}</p>
+              </CardSection>
+            )}
 
-            <CardSection title="Protocol / Methods">
-              <div className="text-sm text-slate-700 space-y-1">
-                <p>1. Prepared HEK293 cell lysate at 2mg/mL total protein (BCA assay).</p>
-                <p>2. Ran 10% SDS-PAGE at 120V for 90 min. Transferred to PVDF membrane using wet transfer at 100V for 60 min.</p>
-                <p>3. Transfer buffer: 25mM Tris, 192mM glycine, 20% methanol, pH 8.3.</p>
-                <p>4. Blocked with 5% non-fat milk in TBST for 1h at RT.</p>
-                <p>5. Primary antibody overnight at 4°C. Secondary HRP-conjugated, 1h RT.</p>
-                <p>6. ECL detection — signal in low-MW range but absent above 100kDa.</p>
-              </div>
-            </CardSection>
+            {exp.methods && (
+              <CardSection title="Protocol / Methods">
+                <div className="text-sm text-slate-700 whitespace-pre-line">{exp.methods}</div>
+              </CardSection>
+            )}
 
-            <CardSection title="Key Conditions">
-              <div className="font-mono text-xs bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 grid grid-cols-2 gap-x-6 gap-y-1">
-                {[
-                  ["pH", "8.3"],
-                  ["Transfer buffer", "25mM Tris / 192mM glycine / 20% MeOH"],
-                  ["Temperature", "4°C (overnight Ab incubation)"],
-                  ["Cell line", "HEK293"],
-                  ["Total protein", "2mg/mL"],
-                  ["Transfer time", "60 min at 100V"],
-                ].map(([k, v]) => (
-                  <div key={k} className="flex gap-2">
-                    <span className="text-slate-400 flex-shrink-0">{k}:</span>
-                    <span className="text-slate-700 font-medium">{v}</span>
+            {exp.conditions && (
+              <CardSection title="Key Conditions">
+                <p className="font-mono text-xs bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 text-slate-700">{exp.conditions}</p>
+              </CardSection>
+            )}
+
+            {reagents.length > 0 && (
+              <CardSection title="Reagents">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-200">
+                        <th className="text-left py-2 pr-4 font-semibold text-slate-600">Reagent</th>
+                        <th className="text-left py-2 pr-4 font-semibold text-slate-600">Concentration</th>
+                        <th className="text-left py-2 font-semibold text-slate-600">Supplier</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {reagents.map((r, i) => (
+                        <tr key={i}>
+                          <td className="py-2 pr-4 font-medium text-slate-800">{r.name}</td>
+                          <td className="py-2 pr-4 text-slate-600">{r.concentration || "—"}</td>
+                          <td className="py-2 text-slate-500">{r.supplier || "—"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardSection>
+            )}
+
+            {exp.outcome_summary && (
+              <CardSection title="Results Summary">
+                <div className={`${oc.bg} border ${oc.border} rounded-xl px-4 py-3`}>
+                  <p className="text-sm text-slate-700">{exp.outcome_summary}</p>
+                </div>
+              </CardSection>
+            )}
+
+            {exp.failure_context && (
+              <CardSection title="Failure Context & Troubleshooting">
+                <p className="text-sm text-slate-700 mb-3">{exp.failure_context}</p>
+                {exp.root_cause && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-500">Suspected root cause:</span>
+                    <span className="text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">{exp.root_cause}</span>
                   </div>
+                )}
+              </CardSection>
+            )}
+
+            {(exp.technique_tags?.length > 0 || exp.organism_tags?.length > 0) && (
+              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
+                {(exp.technique_tags ?? []).map((t: string) => (
+                  <span key={t} className="text-xs bg-blue-50 text-blue-700 rounded-full px-2.5 py-1 border border-blue-100">{t}</span>
+                ))}
+                {(exp.organism_tags ?? []).map((t: string) => (
+                  <span key={t} className="text-xs bg-emerald-50 text-emerald-700 rounded-full px-2.5 py-1 border border-emerald-100">{t}</span>
                 ))}
               </div>
-            </CardSection>
+            )}
 
-            <CardSection title="Reagents">
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs">
-                  <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="text-left py-2 pr-4 font-semibold text-slate-600">Reagent</th>
-                      <th className="text-left py-2 pr-4 font-semibold text-slate-600">Concentration</th>
-                      <th className="text-left py-2 font-semibold text-slate-600">Supplier</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {[
-                      ["Anti-GAPDH antibody", "1:1000", "Cell Signaling #2118"],
-                      ["HRP secondary Ab", "1:5000", "Abcam ab205718"],
-                      ["Non-fat milk", "5% in TBST", "—"],
-                      ["PVDF membrane", "0.45μm", "Millipore IPVH00010"],
-                    ].map(([name, conc, supplier]) => (
-                      <tr key={name}>
-                        <td className="py-2 pr-4 font-medium text-slate-800">{name}</td>
-                        <td className="py-2 pr-4 text-slate-600">{conc}</td>
-                        <td className="py-2 text-slate-500">{supplier}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardSection>
-
-            <CardSection title="Results Summary">
-              <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3">
-                <p className="text-sm text-slate-700">
-                  Signal detected only below 75kDa. Proteins above 100kDa consistently absent from membrane. Replicated across 3 attempts with same outcome. Signal intensity in low-MW range was adequate (2× background), suggesting transfer buffer issue specific to high-MW proteins.
-                </p>
-              </div>
-            </CardSection>
-
-            <CardSection title="Failure Context & Troubleshooting">
-              <p className="text-sm text-slate-700 mb-3">
-                Tried increasing transfer time to 90 min — no improvement. Switched from wet to semi-dry transfer at 25V for 30 min — actually worse. Checked gel integrity post-transfer (Coomassie stain) — high-MW bands visible in gel, confirming transfer failure, not loading issue. Buffer pH confirmed with calibrated meter immediately before use.
-              </p>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500">Suspected root cause:</span>
-                <span className="text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">Buffer concentration error</span>
-              </div>
-            </CardSection>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
-              {["Western Blot"].map((t) => (
-                <span key={t} className="text-xs bg-blue-50 text-blue-700 rounded-full px-2.5 py-1 border border-blue-100">{t}</span>
-              ))}
-              {["Human (HEK293)"].map((t) => (
-                <span key={t} className="text-xs bg-emerald-50 text-emerald-700 rounded-full px-2.5 py-1 border border-emerald-100">{t}</span>
-              ))}
-            </div>
-
-            {/* Files */}
-            <div className="flex items-center gap-4 pt-2 border-t border-slate-100 text-xs text-slate-500">
-              <span>📎 blot_scan_attempt3.tiff · 4.2MB</span>
-              <span>📊 raw_signal_data.csv · 128KB</span>
-              <span>📓 analysis_notebook.ipynb · 1.1MB</span>
-            </div>
-
-            {/* Visibility */}
-            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-              <span className="text-xs text-slate-400">🌐 Public · SciCollab Knowledge Graph</span>
-              <span className="text-xs text-slate-400">DOI pending · Version 1.0</span>
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 flex-wrap gap-2">
+              <span className="text-xs text-slate-400">
+                {exp.visibility === "public" ? "🌐 Public" : exp.visibility === "network" ? "🤝 Collaborator network" : "🔒 Lab only"}
+              </span>
+              <span className="text-xs text-slate-400">{exp.protocol_version}</span>
             </div>
           </div>
         </div>
 
-        {/* Q&A section stub */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-6">
-          <h2 className="font-semibold text-slate-900 mb-1 flex items-center gap-2">
-            <span>💬</span> Peer Q&A
-          </h2>
-          <p className="text-sm text-slate-500 mb-4">Questions anchored to this experiment · Answered by matched experts</p>
-          <div className="border border-dashed border-slate-200 rounded-xl p-6 text-center">
-            <p className="text-sm text-slate-500 mb-3">No questions yet — be the first to ask or answer</p>
-            <button className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-              Ask a question about this experiment
-            </button>
+        {/* Fork version tree */}
+        {(forks ?? []).length > 0 && (
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-6">
+            <h2 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+              <span>🌿</span> Protocol Version Tree
+              <span className="text-xs font-normal text-slate-400 ml-1">— forks by the community</span>
+            </h2>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-sm text-slate-600 pl-2 border-l-2 border-slate-200">
+                <span className="text-xs font-mono text-slate-400">{exp.protocol_version}</span>
+                <span className="font-medium">{exp.title}</span>
+                <span className="text-xs text-slate-400">(this card)</span>
+              </div>
+              {(forks ?? []).map((f: { id: string; title: string; created_at: string }) => (
+                <Link
+                  key={f.id}
+                  href={`/experiments/${f.id}`}
+                  className="flex items-center gap-2 text-sm text-slate-600 pl-8 border-l-2 border-blue-100 ml-2 hover:text-blue-700 transition-colors"
+                >
+                  <span className="text-blue-400">↳</span>
+                  <span>{f.title}</span>
+                  <span className="text-xs text-slate-400">{timeAgo(f.created_at)}</span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Next action prompts */}
+        {/* Q&A */}
+        <QASection
+          experimentId={id}
+          experimentOwnerId={exp.user_id}
+          currentUserId={user?.id ?? null}
+          currentUserProfileId={user?.id ?? null}
+          initialQuestions={questions}
+        />
+
+        {/* Next actions */}
         <div className="grid sm:grid-cols-3 gap-4">
           {[
-            { icon: "🔁", title: "Fork this protocol", desc: "Adapt it for your lab conditions", href: "#" },
-            { icon: "🔍", title: "Find similar experiments", desc: "AI-matched method cards", href: "#" },
+            { icon: "🔍", title: "Find similar experiments", desc: "AI-matched method cards", href: `/search?q=${encodeURIComponent(exp.title)}` },
             { icon: "⬆️", title: "Upload next experiment", desc: "Keep the knowledge loop going", href: "/experiments/new" },
+            { icon: "📊", title: "Back to dashboard", desc: "View your research feed", href: "/dashboard" },
           ].map((card) => (
             <Link key={card.title} href={card.href} className="bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-200 hover:shadow-sm transition-all">
               <div className="text-2xl mb-2">{card.icon}</div>

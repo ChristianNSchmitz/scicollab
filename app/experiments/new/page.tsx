@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import StepInitiate from "@/components/experiments/StepInitiate";
 import StepMethodCard from "@/components/experiments/StepMethodCard";
 import StepOutcome from "@/components/experiments/StepOutcome";
@@ -23,10 +24,8 @@ export type AttachedFile = {
 };
 
 export type ExperimentData = {
-  // Step 1
   importMethod: "fresh" | "csv" | "notebook" | "";
   title: string;
-  // Step 2
   protocolVersion: string;
   hypothesis: string;
   methods: string;
@@ -34,15 +33,12 @@ export type ExperimentData = {
   reagents: Reagent[];
   techniqueTags: string[];
   organismTags: string[];
-  // Step 3
   outcome: "success" | "partial" | "failed" | "";
   outcomeSummary: string;
   failureContext: string;
   rootCause: string;
-  // Step 4
   attachedFiles: AttachedFile[];
   codeNotebookUrl: string;
-  // Step 5
   visibility: "lab" | "network" | "public";
   embargoUntil: string;
   coAuthors: string[];
@@ -82,6 +78,7 @@ export default function NewExperimentPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<ExperimentData>(INITIAL_DATA);
+  const [publishError, setPublishError] = useState("");
 
   function updateData(fields: Partial<ExperimentData>) {
     setData((prev) => ({ ...prev, ...fields }));
@@ -91,9 +88,6 @@ export default function NewExperimentPage() {
     if (currentStep < STEPS.length - 1) {
       setCurrentStep((s) => s + 1);
       window.scrollTo(0, 0);
-    } else {
-      // Publish — go to method card view
-      router.push("/experiments/exp-2042");
     }
   }
 
@@ -104,9 +98,51 @@ export default function NewExperimentPage() {
     }
   }
 
+  async function handlePublish() {
+    setPublishError("");
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setPublishError("You must be signed in to publish.");
+      return;
+    }
+
+    const { data: experiment, error } = await supabase
+      .from("experiments")
+      .insert({
+        user_id: user.id,
+        title: data.title,
+        protocol_version: data.protocolVersion,
+        hypothesis: data.hypothesis || null,
+        methods: data.methods || null,
+        conditions: data.conditions || null,
+        reagents: data.reagents,
+        technique_tags: data.techniqueTags,
+        organism_tags: data.organismTags,
+        outcome: data.outcome || null,
+        outcome_summary: data.outcomeSummary || null,
+        failure_context: data.failureContext || null,
+        root_cause: data.rootCause || null,
+        attached_files: data.attachedFiles,
+        code_notebook_url: data.codeNotebookUrl || null,
+        visibility: data.visibility,
+        embargo_until: data.embargoUntil || null,
+        co_authors: data.coAuthors,
+      })
+      .select("id")
+      .single();
+
+    if (error) {
+      setPublishError(error.message);
+      return;
+    }
+
+    router.push(`/experiments/${experiment.id}`);
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Nav */}
       <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-4">
@@ -175,9 +211,7 @@ export default function NewExperimentPage() {
                 {currentStep === 5 && "Review & publish"}
               </h1>
             </div>
-            {data.outcome && (
-              <OutcomeBadge outcome={data.outcome} />
-            )}
+            {data.outcome && <OutcomeBadge outcome={data.outcome} />}
           </div>
 
           <div className="px-8 py-8">
@@ -186,7 +220,14 @@ export default function NewExperimentPage() {
             {currentStep === 2 && <StepOutcome data={data} updateData={updateData} onNext={next} onBack={back} />}
             {currentStep === 3 && <StepAttachFiles data={data} updateData={updateData} onNext={next} onBack={back} />}
             {currentStep === 4 && <StepVisibility data={data} updateData={updateData} onNext={next} onBack={back} />}
-            {currentStep === 5 && <StepPublish data={data} onNext={next} onBack={back} />}
+            {currentStep === 5 && (
+              <StepPublish
+                data={data}
+                onPublish={handlePublish}
+                onBack={back}
+                publishError={publishError}
+              />
+            )}
           </div>
         </div>
 

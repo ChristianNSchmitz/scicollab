@@ -5,16 +5,21 @@ import { ExperimentData } from "@/app/experiments/new/page";
 
 type Props = {
   data: ExperimentData;
-  onNext: () => void;
+  onPublish: () => Promise<void>;
   onBack: () => void;
+  publishError?: string;
 };
 
-export default function StepPublish({ data, onNext, onBack }: Props) {
+export default function StepPublish({ data, onPublish, onBack, publishError }: Props) {
   const [publishing, setPublishing] = useState(false);
 
-  function handlePublish() {
+  async function handlePublish() {
     setPublishing(true);
-    setTimeout(() => onNext(), 2000);
+    try {
+      await onPublish();
+    } finally {
+      setPublishing(false);
+    }
   }
 
   const outcomeStyles: Record<string, { border: string; bg: string; text: string; label: string }> = {
@@ -38,7 +43,6 @@ export default function StepPublish({ data, onNext, onBack }: Props) {
 
       {/* Method card preview */}
       <div className={`border-2 ${style.border} rounded-2xl overflow-hidden`}>
-        {/* Card header */}
         <div className={`${style.bg} px-6 py-4 border-b ${style.border}`}>
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
@@ -47,19 +51,14 @@ export default function StepPublish({ data, onNext, onBack }: Props) {
                   {style.label}
                 </span>
                 <span className="text-xs text-slate-400 font-mono">{data.protocolVersion}</span>
-                <span className="text-xs text-slate-400">Exp #2042</span>
               </div>
               <h2 className="text-base font-bold text-slate-900 leading-snug">
                 {data.title || "Untitled experiment"}
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Dr. Janmejay Singh · ESSEC Business School · Just now
-              </p>
             </div>
           </div>
         </div>
 
-        {/* Card body */}
         <div className="px-6 py-5 space-y-4 bg-white">
           {data.hypothesis && (
             <Section title="Hypothesis">
@@ -109,7 +108,6 @@ export default function StepPublish({ data, onNext, onBack }: Props) {
             </Section>
           )}
 
-          {/* Tags */}
           {(data.techniqueTags.length > 0 || data.organismTags.length > 0) && (
             <div className="flex flex-wrap gap-1.5 pt-1 border-t border-slate-100">
               {data.techniqueTags.map((t) => (
@@ -121,7 +119,6 @@ export default function StepPublish({ data, onNext, onBack }: Props) {
             </div>
           )}
 
-          {/* Files & visibility */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3 text-xs text-slate-500">
               {data.attachedFiles.length > 0 && (
@@ -135,7 +132,12 @@ export default function StepPublish({ data, onNext, onBack }: Props) {
         </div>
       </div>
 
-      {/* Publish CTA */}
+      {publishError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
+          {publishError}
+        </div>
+      )}
+
       <div className="flex gap-3 pt-2">
         <button type="button" onClick={onBack} disabled={publishing} className="flex-1 border border-slate-200 text-slate-700 py-3 rounded-xl font-semibold hover:bg-slate-50 transition-colors disabled:opacity-50">
           ← Back
