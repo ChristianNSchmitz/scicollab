@@ -46,16 +46,22 @@ export default function NotificationsPage() {
   const [filter, setFilter]   = useState<Filter>("All");
   const unread = notifs.filter((n) => !n.is_read).length;
 
-  useEffect(() => { setNotifs(getNotificationsWithReadState()); }, []);
+  useEffect(() => {
+    setNotifs(getNotificationsWithReadState());
+    // Tell NavBar to refresh the unread badge as soon as this page opens
+    window.dispatchEvent(new Event("sci-notif-read"));
+  }, []);
 
   function handleMarkRead(id: string) {
     markNotificationRead(id);
     setNotifs(getNotificationsWithReadState());
+    window.dispatchEvent(new Event("sci-notif-read"));
   }
 
   function handleMarkAll() {
     markAllNotificationsRead();
     setNotifs(getNotificationsWithReadState());
+    window.dispatchEvent(new Event("sci-notif-read"));
   }
 
   function notifHref(n: Notification): string {
