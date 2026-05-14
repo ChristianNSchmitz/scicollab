@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import NavBar from "@/components/NavBar";
 import { searchExperiments, getProfile, type Experiment } from "@/lib/mock-db";
 
 type Result = Experiment & { matchPct: number };
@@ -60,12 +61,7 @@ function SearchInner() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <Link href="/dashboard" className="text-xl font-bold text-blue-600">SciCollab</Link>
-          <Link href="/dashboard" className="text-sm text-slate-500 hover:text-slate-700">← Dashboard</Link>
-        </div>
-      </nav>
+      <NavBar />
 
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="text-center mb-10">

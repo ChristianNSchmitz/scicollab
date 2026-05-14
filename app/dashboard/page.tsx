@@ -2,194 +2,204 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getMockProfile, getMyExperiments, type Experiment } from "@/lib/mock-db";
+import NavBar from "@/components/NavBar";
+import {
+  getMockProfile, getMyExperiments, getAllExperiments, getUnreadCount,
+  getNotificationsWithReadState, getUserPublications, MOCK_USER_ID,
+  type Experiment, type Notification,
+} from "@/lib/mock-db";
 
-function outcomeStyle(o: string | null) {
-  if (o === "success") return "bg-emerald-50 text-emerald-700 border-emerald-200";
-  if (o === "partial")  return "bg-amber-50 text-amber-700 border-amber-200";
-  if (o === "failed")   return "bg-red-50 text-red-700 border-red-200";
-  return "bg-slate-50 text-slate-500 border-slate-200";
-}
-function outcomeLabel(o: string | null) {
-  if (o === "success") return "✅ Success";
-  if (o === "partial")  return "⚠️ Partial";
-  if (o === "failed")   return "❌ Failed";
-  return "Draft";
-}
 function timeAgo(d: string) {
   const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
   if (days === 0) return "today";
-  if (days === 1) return "yesterday";
   if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
+function outcomeIcon(o: Experiment["outcome"]) {
+  if (o === "success") return "✅";
+  if (o === "partial")  return "⚠️";
+  if (o === "failed")   return "❌";
+  return "⏳";
+}
+
+const NOTIF_ICON: Record<Notification["type"], string> = {
+  match: "🔬", answer_request: "❓", fork: "🔁", endorsement: "✅",
+  version_update: "🔄", follow: "👤", citation: "📝",
+  collaboration_invite: "🤝", publication_like: "❤️", new_answer: "💬",
+};
+
 export default function DashboardPage() {
-  const [profile, setProfile]       = useState({ full_name: "Researcher", institution: "" });
-  const [experiments, setExperiments] = useState<Experiment[]>([]);
+  const [profile, setProfile] = useState({ full_name: "", avatar_initials: "R", avatar_color: "bg-slate-600", h_index: 0, citation_count: 0, publication_count: 0, profile_completeness: 20, institution: "", research_domain: "" });
+  const [myExps, setMyExps]   = useState<Experiment[]>([]);
+  const [recentExps, setRecentExps] = useState<Experiment[]>([]);
+  const [notifs, setNotifs]   = useState<Notification[]>([]);
+  const [unread, setUnread]   = useState(0);
+  const [pubCount, setPubCount] = useState(0);
 
   useEffect(() => {
-    setProfile(getMockProfile());
-    setExperiments(getMyExperiments());
+    const p = getMockProfile();
+    setProfile({ full_name: p.full_name, avatar_initials: p.avatar_initials || p.full_name?.[0]?.toUpperCase() || "R", avatar_color: p.avatar_color || "bg-slate-600", h_index: p.h_index || 0, citation_count: p.citation_count || 0, publication_count: p.publication_count || 0, profile_completeness: p.profile_completeness || 20, institution: p.institution || "", research_domain: p.research_domain || "" });
+    setMyExps(getMyExperiments());
+    setRecentExps(getAllExperiments().filter((e) => e.user_id !== MOCK_USER_ID && e.visibility === "public").slice(0, 4));
+    const n = getNotificationsWithReadState();
+    setNotifs(n.slice(0, 5));
+    setUnread(n.filter((x) => !x.is_read).length);
+    setPubCount(getUserPublications(MOCK_USER_ID).length);
   }, []);
 
-  const firstName = profile.full_name.split(" ")[0] || "Researcher";
-  const initials  = profile.full_name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) || "R";
-  const hasExp    = experiments.length > 0;
-
-  const checklist = [
-    { done: true,   label: "Create your account & verify ORCID" },
-    { done: true,   label: "Set up your lab workspace" },
-    { done: true,   label: "Add expertise tags for peer-matching" },
-    { done: hasExp, label: "Upload your first experiment card" },
-    { done: false,  label: "Ask or answer a Q&A question" },
-    { done: false,  label: "Invite a colleague to your workspace" },
-  ];
+  const hasProfile = profile.full_name && profile.full_name !== "Researcher";
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-xl font-bold text-blue-600">SciCollab</Link>
-            <div className="hidden sm:flex items-center gap-1">
-              <Link href="/dashboard" className="text-sm text-slate-900 px-3 py-1.5 rounded-lg bg-slate-100 font-medium">Feed</Link>
-              <Link href="/search"    className="text-sm text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Search</Link>
+      <NavBar />
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Welcome banner */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 mb-8 text-white">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-white text-xl font-bold ${profile.avatar_color}`}>
+                {profile.avatar_initials}
+              </div>
+              <div>
+                <h1 className="text-xl font-bold">Welcome back, {profile.full_name || "Researcher"} 👋</h1>
+                <p className="text-blue-100 text-sm mt-0.5">
+                  {profile.institution || "Complete your profile to get started"}
+                  {profile.research_domain ? ` · ${profile.research_domain}` : ""}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <Link href="/experiments/new" className="bg-white text-blue-700 text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-50 transition-colors">+ Upload</Link>
+              <Link href="/feed" className="bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-400 border border-blue-400 transition-colors">Feed →</Link>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-sm">{initials}</div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Banner */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl p-8 mb-8">
-          <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-3 py-1 text-xs font-medium mb-4">🎉 Welcome to SciCollab</div>
-          <h1 className="text-2xl font-bold mb-2">Welcome, {firstName}!</h1>
-          <p className="text-blue-100 mb-6 text-sm max-w-lg">
-            {hasExp ? `You have ${experiments.length} experiment card${experiments.length !== 1 ? "s" : ""} in the knowledge graph.`
-                    : "Upload your first experiment, search the knowledge graph, or ask the community a question."}
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/experiments/new" className="bg-white text-blue-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-colors">Upload Experiment</Link>
-            <Link href="/search" className="border border-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition-colors">Search Knowledge Graph</Link>
-          </div>
         </div>
 
-        {/* Quick actions */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { icon: "🧪", title: "New Experiment", desc: "Upload a method card",    href: "/experiments/new" },
-            { icon: "🔍", title: "Search",          desc: "AI-grounded discovery",   href: "/search" },
-            { icon: "🔁", title: "Fork Protocol",   desc: "Adapt existing methods",  href: "/search" },
-            { icon: "💬", title: "Ask Peers",        desc: "Post a Q&A question",    href: "/search" },
-          ].map((a) => (
-            <Link key={a.title} href={a.href} className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-sm hover:border-blue-200 transition-all block">
-              <div className="text-2xl mb-2">{a.icon}</div>
-              <div className="font-semibold text-slate-900 text-sm">{a.title}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{a.desc}</div>
+            { icon: "🔬", label: "Experiments",  value: myExps.length,  href: "/dashboard" },
+            { icon: "📄", label: "Publications",  value: pubCount,        href: "/publications" },
+            { icon: "📈", label: "h-index",       value: profile.h_index, href: "/profile/me" },
+            { icon: "🔔", label: "Unread",        value: unread,          href: "/notifications" },
+          ].map((s) => (
+            <Link key={s.label} href={s.href} className="bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-200 hover:shadow-sm transition-all text-center">
+              <p className="text-2xl mb-1">{s.icon}</p>
+              <p className="text-2xl font-bold text-slate-900">{s.value}</p>
+              <p className="text-xs text-slate-500">{s.label}</p>
             </Link>
           ))}
         </div>
 
-        {/* My experiments */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-slate-900 flex items-center gap-2"><span>🧪</span> My Experiments</h2>
-            <Link href="/experiments/new" className="text-xs text-blue-600 hover:underline font-medium">+ New experiment</Link>
-          </div>
-
-          {!hasExp ? (
-            <div className="border border-dashed border-slate-200 rounded-xl p-8 text-center">
-              <div className="text-3xl mb-2">🧬</div>
-              <p className="text-sm text-slate-500 mb-3">No experiments yet — upload your first method card</p>
-              <Link href="/experiments/new" className="inline-block text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                Upload first experiment
-              </Link>
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="font-bold text-slate-900">My Experiments</h2>
+              <Link href="/experiments/new" className="text-sm text-blue-600 hover:underline">+ New</Link>
             </div>
-          ) : (
-            <div className="space-y-3">
-              {experiments.map((exp) => (
-                <Link key={exp.id} href={`/experiments/${exp.id}`}
-                  className="flex items-center gap-3 border border-slate-100 rounded-xl px-4 py-3 hover:border-blue-200 hover:bg-blue-50/30 transition-all group">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${outcomeStyle(exp.outcome)}`}>{outcomeLabel(exp.outcome)}</span>
-                      {exp.parent_id && <span className="text-xs text-slate-400">🔁 Fork</span>}
-                      <span className="text-xs text-slate-400 ml-auto">{timeAgo(exp.created_at)}</span>
-                    </div>
-                    <p className="text-sm font-medium text-slate-900 truncate group-hover:text-blue-700 transition-colors">{exp.title}</p>
-                    {exp.technique_tags?.length > 0 && (
-                      <div className="flex gap-1 mt-1 flex-wrap">
-                        {exp.technique_tags.slice(0, 3).map((t) => (
-                          <span key={t} className="text-xs text-blue-600 bg-blue-50 rounded-full px-2 py-0.5">{t}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <svg className="w-4 h-4 text-slate-300 group-hover:text-blue-400 flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+            {myExps.length === 0 ? (
+              <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-8 text-center">
+                <div className="text-4xl mb-3">🔬</div>
+                <p className="font-semibold text-slate-800 mb-4">No experiments yet</p>
+                <Link href="/experiments/new" className="inline-block bg-blue-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-blue-700">
+                  Upload first experiment →
                 </Link>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Feed (sample) */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
-          <h2 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-            <span>📡</span> Research Feed
-            <span className="text-xs font-normal text-slate-400 ml-1">— matching your expertise tags</span>
-          </h2>
-          <div className="space-y-4">
-            {[
-              { icon: "❓", author: "R. Mehta · Postdoc · MIT",  time: "2h ago",  content: "Same buffer but still losing signal above 100kDa — what am I missing?",                              linked: "Western Blot — Exp #2041", reactions: 12, answers: 3 },
-              { icon: "📢", author: "Nguyen Lab · UCLA",           time: "5h ago",  content: "Negative result: 5× scale-up of organoid protocol v2 failed reproducibly. Full failure log uploaded.", linked: "Organoid Scale-up — Exp #1849", reactions: 23, answers: 0 },
-              { icon: "🔗", author: "M. Osei · ETH Zurich",       time: "1d ago",  content: "Protocol updated: Seq library prep v3 validated across 4 tissue types. See Exp #3182.",              linked: "RNA-seq Library Prep v3", reactions: 8, answers: 0 },
-            ].map((item, i) => (
-              <div key={i} className="border border-slate-100 rounded-xl p-4 hover:border-slate-200 transition-colors">
-                <div className="flex items-start gap-3">
-                  <span className="text-lg">{item.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="text-xs font-medium text-slate-700">{item.author}</span>
-                      <span className="text-xs text-slate-400">{item.time}</span>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {myExps.map((exp) => (
+                  <Link key={exp.id} href={`/experiments/${exp.id}`}
+                    className="flex items-center gap-4 bg-white border border-slate-200 rounded-xl px-5 py-4 hover:border-blue-200 hover:shadow-sm transition-all">
+                    <span className="text-2xl">{outcomeIcon(exp.outcome)}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-slate-900 truncate">{exp.title}</p>
+                      <p className="text-xs text-slate-400">{exp.protocol_version} · {timeAgo(exp.created_at)}</p>
                     </div>
-                    <p className="text-sm text-slate-800 mb-2">{item.content}</p>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">📎 {item.linked}</span>
-                      <span className="text-xs text-slate-400">{item.reactions} reactions</span>
-                      {item.answers > 0 && <span className="text-xs text-emerald-600">{item.answers} answers</span>}
+                    <div className="flex gap-1">
+                      {exp.technique_tags.slice(0, 2).map((t) => <span key={t} className="text-xs bg-blue-50 text-blue-700 rounded-full px-2 py-0.5 border border-blue-100">{t}</span>)}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {recentExps.length > 0 && (
+              <>
+                <div className="flex items-center justify-between mt-2">
+                  <h2 className="font-bold text-slate-900">Recent from Community</h2>
+                  <Link href="/search" className="text-sm text-blue-600 hover:underline">Search all →</Link>
+                </div>
+                <div className="space-y-3">
+                  {recentExps.map((exp) => (
+                    <Link key={exp.id} href={`/experiments/${exp.id}`}
+                      className="flex items-center gap-4 bg-white border border-slate-200 rounded-xl px-5 py-4 hover:border-blue-200 hover:shadow-sm transition-all">
+                      <span className="text-2xl">{outcomeIcon(exp.outcome)}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-slate-900 truncate">{exp.title}</p>
+                        <p className="text-xs text-slate-400">{timeAgo(exp.created_at)}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        {exp.technique_tags.slice(0, 1).map((t) => <span key={t} className="text-xs bg-slate-50 text-slate-600 rounded-full px-2 py-0.5 border border-slate-200">{t}</span>)}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            {!hasProfile && (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <h3 className="font-semibold text-amber-800 text-sm mb-1">Complete your profile</h3>
+                <div className="h-1.5 bg-amber-200 rounded-full mb-2 mt-2">
+                  <div className="h-full bg-amber-500 rounded-full" style={{ width: `${profile.profile_completeness}%` }} />
+                </div>
+                <p className="text-xs text-amber-700 mb-3">{profile.profile_completeness}% complete</p>
+                <Link href="/onboarding" className="block w-full bg-amber-500 text-white text-sm font-semibold py-2 rounded-xl hover:bg-amber-600 text-center">
+                  Complete profile →
+                </Link>
+              </div>
+            )}
+
+            <div className="bg-white border border-slate-200 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-slate-900 text-sm">Notifications</h3>
+                {unread > 0 && <span className="bg-red-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5">{unread}</span>}
+              </div>
+              <div className="space-y-2">
+                {notifs.slice(0, 4).map((n) => (
+                  <div key={n.id} className={`flex items-start gap-2 p-2 rounded-lg ${!n.is_read ? "bg-blue-50" : ""}`}>
+                    <span className="text-base flex-shrink-0">{NOTIF_ICON[n.type] ?? "🔔"}</span>
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-slate-800 leading-snug">{n.title}</p>
+                      <p className="text-xs text-slate-500 line-clamp-1">{n.body}</p>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="mt-4 text-center">
-            <Link href="/search" className="text-sm text-blue-600 hover:underline">Search the full knowledge graph →</Link>
-          </div>
-        </div>
+              <Link href="/notifications" className="block text-center text-xs text-blue-600 hover:underline mt-3 font-medium">View all →</Link>
+            </div>
 
-        {/* Checklist */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h2 className="font-semibold text-slate-900 mb-4">🚀 Get the most out of SciCollab</h2>
-          <div className="space-y-3">
-            {checklist.map((item, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${item.done ? "bg-emerald-500" : "border-2 border-slate-200"}`}>
-                  {item.done && (
-                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-                <span className={`text-sm ${item.done ? "text-slate-400 line-through" : "text-slate-700"}`}>{item.label}</span>
+            <div className="bg-white border border-slate-200 rounded-xl p-4">
+              <h3 className="font-semibold text-slate-900 text-sm mb-3">Quick access</h3>
+              <div className="space-y-1">
+                {[
+                  ["🏠", "Feed",          "/feed"],
+                  ["🔍", "Search",         "/search"],
+                  ["💬", "Q&A Forum",      "/questions"],
+                  ["📄", "Publications",   "/publications"],
+                  ["🌐", "Discover",       "/discover"],
+                  ["✉️", "Messages",       "/messages"],
+                  ["🏛️", "Lab Workspaces", "/labs"],
+                ].map(([icon, label, href]) => (
+                  <Link key={href} href={href} className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 hover:bg-slate-50 px-2 py-1.5 rounded-lg transition-colors">
+                    <span>{icon}</span> {label}
+                  </Link>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
