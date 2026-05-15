@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getConversations, getMessages, getProfile, sendMessage, MOCK_USER_ID, type Conversation, type Message } from "@/lib/mock-db";
+import { getConversations, getMessages, getProfile, sendMessage, startConversation, searchProfiles, MOCK_USER_ID, type Conversation, type Message, type Profile } from "@/lib/mock-db";
+import { useToast } from "@/lib/toast";
 
 function timeAgo(d: string) {
   const diff = Date.now() - new Date(d).getTime();
@@ -18,6 +19,7 @@ function timeAgo(d: string) {
 
 function MessagesInner() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const initialConvId = searchParams.get("conv");
 
   const [convos, setConvos]         = useState<Conversation[]>([]);
@@ -25,16 +27,55 @@ function MessagesInner() {
   const [messages, setMessages]     = useState<Message[]>([]);
   const [draft, setDraft]           = useState("");
   const [sending, setSending]       = useState(false);
+  const [readConvIds, setReadConvIds] = useState<Set<string>>(new Set());
+
+  // New conversation state
+  const [showNewConv, setShowNewConv]       = useState(false);
+  const [newConvSearch, setNewConvSearch]   = useState("");
+  const [newConvResults, setNewConvResults] = useState<Profile[]>([]);
+
+  const { toast } = useToast();
+
+  // Load read conversation IDs from localStorage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("scicollab_read_convs");
+      if (raw) setReadConvIds(new Set(JSON.parse(raw) as string[]));
+    } catch { /* ok */ }
+  }, []);
+
+  function markConvRead(convId: string) {
+    setReadConvIds((prev) => {
+      const next = new Set(prev);
+      next.add(convId);
+      try { localStorage.setItem("scicollab_read_convs", JSON.stringify(Array.from(next))); } catch { /* ok */ }
+      return next;
+    });
+  }
 
   useEffect(() => {
     const c = getConversations();
     setConvos(c);
-    if (!initialConvId && c.length > 0) setActiveConv(c[0].id);
+    if (!initialConvId && c.length > 0) {
+      const firstId = c[0].id;
+      setActiveConv(firstId);
+      markConvRead(firstId);
+    } else if (initialConvId) {
+      markConvRead(initialConvId);
+    }
   }, [initialConvId]);
 
   useEffect(() => {
     if (activeConv) setMessages(getMessages(activeConv));
   }, [activeConv]);
+
+  useEffect(() => {
+    if (newConvSearch.length >= 2) {
+      setNewConvResults(searchProfiles(newConvSearch).filter((p) => p.id !== MOCK_USER_ID));
+    } else {
+      setNewConvResults([]);
+    }
+  }, [newConvSearch]);
 
   function handleSend(e: React.FormEvent) {
     e.preventDefault();
@@ -44,6 +85,24 @@ function MessagesInner() {
     setMessages((prev) => [...prev, m]);
     setDraft("");
     setSending(false);
+  }
+
+  function handleSelectConv(convId: string) {
+    setActiveConv(convId);
+    markConvRead(convId);
+    router.replace("/messages?conv=" + convId, { scroll: false });
+  }
+
+  function handleStartConversation(userId: string) {
+    const conv = startConversation(userId);
+    const updated = getConversations();
+    setConvos(updated);
+    setActiveConv(conv.id);
+    router.replace("/messages?conv=" + conv.id, { scroll: false });
+    setShowNewConv(false);
+    setNewConvSearch("");
+    setNewConvResults([]);
+    toast("Conversation started");
   }
 
   const active = convos.find((c) => c.id === activeConv);
@@ -59,7 +118,45 @@ function MessagesInner() {
             {/* Conversation list */}
             <div className="w-72 border-r border-slate-200 flex flex-col flex-shrink-0">
               <div className="px-4 py-4 border-b border-slate-200">
-                <h2 className="font-bold text-slate-900">Messages</h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="font-bold text-slate-900">Messages</h2>
+                  <button
+                    onClick={() => { setShowNewConv((v) => !v); setNewConvSearch(""); setNewConvResults([]); }}
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-lg transition-colors"
+                  >
+                    + New
+                  </button>
+                </div>
+                {showNewConv && (
+                  <div className="mt-3">
+                    <input
+                      autoFocus
+                      value={newConvSearch}
+                      onChange={(e) => setNewConvSearch(e.target.value)}
+                      placeholder="Search researchers…"
+                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500"
+                    />
+                    {newConvResults.length > 0 && (
+                      <div className="mt-1 border border-slate-200 rounded-lg overflow-hidden">
+                        {newConvResults.slice(0, 5).map((p) => (
+                          <button
+                            key={p.id}
+                            onClick={() => handleStartConversation(p.id)}
+                            className="w-full text-left px-3 py-2 flex items-center gap-2 hover:bg-slate-50 transition-colors"
+                          >
+                            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${p.avatar_color || "bg-slate-600"}`}>
+                              {p.avatar_initials}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-slate-900 truncate">{p.full_name}</p>
+                              <p className="text-xs text-slate-400 truncate">{p.institution}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="flex-1 overflow-y-auto">
                 {convos.length === 0 ? (
@@ -72,20 +169,28 @@ function MessagesInner() {
                   const otherId   = conv.participant_ids.find((id) => id !== MOCK_USER_ID);
                   const otherP    = otherId ? getProfile(otherId) : null;
                   const isActive  = conv.id === activeConv;
+                  const isUnread  = !!conv.last_message_at && !readConvIds.has(conv.id);
                   return (
-                    <button key={conv.id} onClick={() => setActiveConv(conv.id)}
+                    <button key={conv.id} onClick={() => handleSelectConv(conv.id)}
                       className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors ${isActive ? "bg-blue-50" : "hover:bg-slate-50"}`}>
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 ${otherP?.avatar_color || "bg-slate-600"}`}>
-                        {otherP?.avatar_initials || "?"}
+                      <div className="relative flex-shrink-0">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold ${otherP?.avatar_color || "bg-slate-600"}`}>
+                          {otherP?.avatar_initials || "?"}
+                        </div>
+                        {isUnread && (
+                          <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-blue-500 rounded-full border-2 border-white" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-semibold truncate ${isActive ? "text-blue-700" : "text-slate-900"}`}>
+                        <p className={`text-sm truncate ${isActive ? "text-blue-700 font-semibold" : isUnread ? "text-slate-900 font-bold" : "text-slate-900 font-semibold"}`}>
                           {otherP?.full_name ?? "Unknown"}
                         </p>
-                        <p className="text-xs text-slate-400 truncate">{conv.last_message ?? "No messages yet"}</p>
+                        <p className={`text-xs truncate ${isUnread ? "text-slate-600 font-medium" : "text-slate-400"}`}>
+                          {conv.last_message ?? "No messages yet"}
+                        </p>
                       </div>
                       {conv.last_message_at && (
-                        <p className="text-xs text-slate-400 flex-shrink-0">{timeAgo(conv.last_message_at)}</p>
+                        <p className={`text-xs flex-shrink-0 ${isUnread ? "text-blue-500 font-medium" : "text-slate-400"}`}>{timeAgo(conv.last_message_at)}</p>
                       )}
                     </button>
                   );

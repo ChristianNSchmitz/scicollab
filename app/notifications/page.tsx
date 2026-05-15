@@ -41,13 +41,31 @@ function filterNotifs(notifs: Notification[], filter: Filter): Notification[] {
   return notifs;
 }
 
+// Map notification types to the preference key in scicollab_notif_prefs
+const NOTIF_TYPE_TO_PREF: Partial<Record<Notification["type"], string>> = {
+  match:                "new_matches",
+  version_update:       "new_matches",
+  fork:                 "forks",
+  answer_request:       "qa_answers",
+  new_answer:           "qa_answers",
+  endorsement:          "qa_answers",
+  follow:               "follows",
+  collaboration_invite: "collab_invites",
+  citation:             "collab_invites",
+  publication_like:     "follows",
+};
+
 export default function NotificationsPage() {
   const [notifs, setNotifs]   = useState<Notification[]>([]);
   const [filter, setFilter]   = useState<Filter>("All");
+  const [prefs, setPrefs]     = useState<Record<string, boolean>>({});
   const unread = notifs.filter((n) => !n.is_read).length;
 
   useEffect(() => {
     setNotifs(getNotificationsWithReadState());
+    // Load notification preferences
+    const raw = localStorage.getItem("scicollab_notif_prefs");
+    if (raw) { try { setPrefs(JSON.parse(raw)); } catch { /* ok */ } }
     // Tell NavBar to refresh the unread badge as soon as this page opens
     window.dispatchEvent(new Event("sci-notif-read"));
   }, []);
@@ -72,7 +90,14 @@ export default function NotificationsPage() {
     return "#";
   }
 
-  const visible = filterNotifs(notifs, filter);
+  // Apply user preferences: hide notif types the user has turned off
+  function isPrefEnabled(n: Notification): boolean {
+    const prefKey = NOTIF_TYPE_TO_PREF[n.type];
+    if (!prefKey) return true; // no pref mapped → always show
+    return prefs[prefKey] !== false; // default to true if not set
+  }
+
+  const visible = filterNotifs(notifs, filter).filter(isPrefEnabled);
 
   return (
     <div className="min-h-screen bg-slate-50">

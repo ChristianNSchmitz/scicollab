@@ -5,11 +5,15 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import { getPublication, getProfile, toggleLikePublication, getAllPublications, MOCK_USER_ID, type Publication } from "@/lib/mock-db";
+import CommentSection from "@/components/CommentSection";
+import ReportModal from "@/components/ReportModal";
+import { CrossRefCitationBadge } from "@/components/AcademicSync";
 
 export default function PublicationDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [pub, setPub]     = useState<Publication | null>(null);
   const [related, setRelated] = useState<Publication[]>([]);
+  const [showReport, setShowReport] = useState(false);
 
   useEffect(() => {
     const p = getPublication(id);
@@ -42,6 +46,7 @@ export default function PublicationDetailPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <NavBar />
+      {showReport && <ReportModal targetType="publication" targetId={pub.id} onClose={() => setShowReport(false)} />}
       <div className="max-w-4xl mx-auto px-4 py-10">
         <div className="grid md:grid-cols-3 gap-6">
           {/* Main */}
@@ -80,7 +85,16 @@ export default function PublicationDetailPage() {
               )}
 
               {/* Action bar */}
-              <div className="flex items-center gap-3 mt-5 pt-4 border-t border-slate-100">
+              <div className="flex flex-wrap items-center gap-2 mt-5 pt-4 border-t border-slate-100">
+                {/* Primary: Read Paper */}
+                {(pub.doi || pub.arxiv_id) && (
+                  <a
+                    href={pub.doi ? `https://doi.org/${pub.doi}` : `https://arxiv.org/abs/${pub.arxiv_id}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    📖 Read Paper →
+                  </a>
+                )}
                 <button onClick={handleLike}
                   className={`flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${hasLiked ? "bg-red-50 text-red-600 border border-red-200" : "border border-slate-200 text-slate-600 hover:bg-slate-50"}`}>
                   {hasLiked ? "❤️" : "🤍"} {pub.like_count}
@@ -92,6 +106,10 @@ export default function PublicationDetailPage() {
                 <button onClick={() => navigator.clipboard.writeText(`${pub.authors.join(", ")} (${pub.year}). ${pub.title}. ${pub.journal || "arXiv"}. ${pub.doi ? `https://doi.org/${pub.doi}` : ""}`)}
                   className="flex items-center gap-2 text-sm border border-slate-200 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
                   📝 Cite
+                </button>
+                <button onClick={() => setShowReport(true)}
+                  className="ml-auto text-xs text-slate-400 hover:text-slate-600 hover:underline">
+                  ⚑ Report
                 </button>
               </div>
             </div>
@@ -106,7 +124,10 @@ export default function PublicationDetailPage() {
 
             {/* Metrics */}
             <div className="bg-white border border-slate-200 rounded-2xl p-6">
-              <h2 className="font-semibold text-slate-900 mb-4">Impact Metrics</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-semibold text-slate-900">Impact Metrics</h2>
+                {pub.doi && <CrossRefCitationBadge doi={pub.doi} />}
+              </div>
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { label: "Citations", value: pub.citation_count, icon: "📈" },
@@ -172,6 +193,9 @@ export default function PublicationDetailPage() {
             </Link>
           </div>
         </div>
+
+        {/* Comments */}
+        <CommentSection targetType="publication" targetId={pub.id} />
       </div>
     </div>
   );

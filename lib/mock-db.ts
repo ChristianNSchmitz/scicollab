@@ -1,7 +1,8 @@
 // ============================================================
 // SciCollab Mock Database — localStorage-backed prototype
 // Covers: Experiments, Publications, Feed, Q&A, Notifications,
-//         Profiles, Follows, Messages, Labs, Citations
+//         Profiles, Follows, Messages, Labs, Citations,
+//         Comments, Privacy, Reports, Analytics
 // ============================================================
 
 // ─── Core types ──────────────────────────────────────────────
@@ -14,6 +15,8 @@ export type Profile = {
   full_name: string;
   institution: string;
   orcid_id: string | null;
+  google_scholar_id: string | null;
+  semantic_scholar_id: string | null;
   role: string;
   research_domain: string;
   techniques: string[];
@@ -32,6 +35,96 @@ export type Profile = {
   is_verified: boolean;
   profile_completeness: number;
   joined_at: string;
+};
+
+// ─── Feature types ───────────────────────────────────────────
+
+export type Project = {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string;
+  status: "active" | "completed" | "paused";
+  git_url: string | null;
+  publication_ids: string[];
+  collaborator_ids: string[];
+  tags: string[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type WikiPage = {
+  id: string;
+  project_id: string;
+  parent_id: string | null;
+  title: string;
+  content: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type IssueComment = {
+  id: string;
+  issue_id: string;
+  user_id: string;
+  body: string;
+  created_at: string;
+};
+
+export type Issue = {
+  id: string;
+  project_id: string;
+  user_id: string;
+  title: string;
+  body: string;
+  status: "open" | "closed" | "solved" | "in_process" | "waiting";
+  priority: "low" | "medium" | "high";
+  labels: string[];
+  comments: IssueComment[];
+  created_at: string;
+};
+
+export type Comment = {
+  id: string;
+  target_type: "experiment" | "publication" | "feedpost" | "project";
+  target_id: string;
+  user_id: string;
+  body: string;
+  parent_id: string | null;
+  created_at: string;
+};
+
+export type PrivacySettings = {
+  profile_visibility: "public" | "network" | "private";
+  email_visible: boolean;
+  show_experiments: boolean;
+  show_publications: boolean;
+  allow_messages: "all" | "following" | "none";
+  indexed_by_search: boolean;
+};
+
+export type Report = {
+  id: string;
+  reporter_id: string;
+  target_type: "experiment" | "publication" | "comment" | "profile" | "feedpost";
+  target_id: string;
+  reason: "spam" | "misinformation" | "harassment" | "duplicate" | "other";
+  details: string;
+  status: "pending" | "reviewed" | "dismissed";
+  created_at: string;
+};
+
+export type AnalyticsSeries = { date: string; value: number }[];
+export type AuthorAnalytics = {
+  profile_views: AnalyticsSeries;
+  experiment_views: AnalyticsSeries;
+  publication_views: AnalyticsSeries;
+  total_forks: number;
+  total_citations: number;
+  total_followers_gained: number;
+  top_experiments: Array<{ id: string; title: string; views: number; forks: number }>;
+  top_publications: Array<{ id: string; title: string; views: number; citations: number }>;
 };
 
 export type Experiment = {
@@ -205,7 +298,11 @@ function ls<T>(key: string, fallback: T): T {
 }
 function lsSet(key: string, value: unknown) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.warn("[SciCollab] localStorage write failed:", e);
+  }
 }
 function uid() { return `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`; }
 
@@ -220,6 +317,12 @@ const KEY_NOTIFICATIONS = "scicollab_notifications";
 const KEY_SQ            = "scicollab_sq";          // standalone questions
 const KEY_MESSAGES      = "scicollab_messages";
 const KEY_CONVOS        = "scicollab_convos";
+const KEY_COMMENTS      = "scicollab_comments";
+const KEY_PRIVACY       = "scicollab_privacy";
+const KEY_REPORTS       = "scicollab_reports";
+const KEY_PROJECTS      = "scicollab_projects";
+const KEY_WIKI          = "scicollab_wiki";
+const KEY_ISSUES        = "scicollab_issues";
 
 // ─── Seed data ────────────────────────────────────────────────
 
@@ -231,6 +334,8 @@ const SEED_PROFILES: Profile[] = [
     full_name: "Dr. L. Park",
     institution: "Johns Hopkins University",
     orcid_id: "0000-0002-1234-5678",
+    google_scholar_id: "Lz_Park_Scholar",
+    semantic_scholar_id: null,
     role: "PI",
     research_domain: "Biochemistry",
     techniques: ["Western Blot", "ELISA", "Immunoprecipitation"],
@@ -254,6 +359,8 @@ const SEED_PROFILES: Profile[] = [
     full_name: "R. Mehta",
     institution: "MIT",
     orcid_id: null,
+    google_scholar_id: null,
+    semantic_scholar_id: null,
     role: "Postdoc",
     research_domain: "Cell Biology",
     techniques: ["Western Blot", "Flow Cytometry", "Confocal Microscopy"],
@@ -277,6 +384,8 @@ const SEED_PROFILES: Profile[] = [
     full_name: "T. Sato",
     institution: "University of Tokyo",
     orcid_id: "0000-0003-9876-5432",
+    google_scholar_id: null,
+    semantic_scholar_id: null,
     role: "Postdoc",
     research_domain: "Proteomics",
     techniques: ["Western Blot", "Mass Spectrometry", "2D-PAGE"],
@@ -300,6 +409,8 @@ const SEED_PROFILES: Profile[] = [
     full_name: "A. Gomez",
     institution: "IRB Barcelona",
     orcid_id: null,
+    google_scholar_id: null,
+    semantic_scholar_id: null,
     role: "PhD Student",
     research_domain: "Genome Editing",
     techniques: ["CRISPR-Cas9", "NGS", "PCR"],
@@ -323,6 +434,8 @@ const SEED_PROFILES: Profile[] = [
     full_name: "Prof. P. Nguyen",
     institution: "UCLA",
     orcid_id: "0000-0001-5555-1234",
+    google_scholar_id: null,
+    semantic_scholar_id: null,
     role: "PI",
     research_domain: "Organoid Biology",
     techniques: ["Organoid Culture", "Confocal Microscopy", "Single-cell RNA-seq"],
@@ -346,6 +459,8 @@ const SEED_PROFILES: Profile[] = [
     full_name: "M. Osei",
     institution: "ETH Zurich",
     orcid_id: "0000-0004-7777-8888",
+    google_scholar_id: null,
+    semantic_scholar_id: null,
     role: "Postdoc",
     research_domain: "Genomics",
     techniques: ["RNA-seq", "ChIP-seq", "ATAC-seq"],
@@ -733,6 +848,192 @@ const SEED_STANDALONE_QUESTIONS: StandaloneQuestion[] = [
   },
 ];
 
+const SEED_PROJECTS: Project[] = [
+  {
+    id: "proj-1",
+    user_id: "user-park",
+    title: "Western Blot Optimisation Series",
+    description: "A systematic study of transfer buffer conditions, methanol percentages, and blocking agents for improved high-MW protein detection in HEK293 cells.",
+    status: "active",
+    git_url: "https://github.com/lpark-jhu/wb-optimisation",
+    publication_ids: ["pub-001", "pub-002"],
+    collaborator_ids: ["user-mehta"],
+    tags: ["Western Blot", "Proteomics", "Methods"],
+    created_at: new Date(Date.now() - 30 * 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 2 * 86400000).toISOString(),
+  },
+  {
+    id: "proj-2",
+    user_id: "user-osei",
+    title: "Open RNA-seq Pipeline v3",
+    description: "Reproducible, container-based RNA-seq pipeline validated across multiple tissue types. All code open-source on GitHub.",
+    status: "active",
+    git_url: "https://github.com/mosei-eth/rnaseq-pipeline",
+    publication_ids: ["pub-003", "pub-005"],
+    collaborator_ids: ["user-sato"],
+    tags: ["RNA-seq", "Bioinformatics", "Open Source"],
+    created_at: new Date(Date.now() - 60 * 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 5 * 86400000).toISOString(),
+  },
+];
+
+const SEED_WIKI: WikiPage[] = [
+  {
+    id: "wiki-1a",
+    project_id: "proj-1",
+    parent_id: null,
+    title: "Protocol Overview",
+    content: "This project systematically evaluates western blot transfer conditions. We vary pH (8.3–8.8), methanol (10–25%), and blocking agents (milk vs BSA) to find optimal conditions for high-MW proteins in HEK293 cells.\n\nKey findings so far: pH 8.6 + 15% MeOH yields best results for proteins >100 kDa.",
+    created_by: "user-park",
+    created_at: new Date(Date.now() - 28 * 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 3 * 86400000).toISOString(),
+  },
+  {
+    id: "wiki-1b",
+    project_id: "proj-1",
+    parent_id: "wiki-1a",
+    title: "Reagents & Equipment",
+    content: "Standard reagents used across all experiments:\n- PVDF membrane 0.45μm (Millipore)\n- Anti-GAPDH 1:1000 (Cell Signaling #2118)\n- HRP secondary 1:5000 (Abcam ab205718)\n- ECL substrate (Thermo)\n\nEquipment: Bio-Rad Trans-Blot Turbo, ChemiDoc MP.",
+    created_by: "user-park",
+    created_at: new Date(Date.now() - 25 * 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 25 * 86400000).toISOString(),
+  },
+  {
+    id: "wiki-2a",
+    project_id: "proj-2",
+    parent_id: null,
+    title: "Pipeline Architecture",
+    content: "The RNA-seq pipeline uses Snakemake for workflow management and Docker for reproducibility.\n\nSteps: FastQC → Trim Galore → STAR alignment → featureCounts → DESeq2.\n\nAll containers are hosted on Docker Hub (mosei/rnaseq-v3). The pipeline is validated on mouse and human tissues.",
+    created_by: "user-osei",
+    created_at: new Date(Date.now() - 55 * 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 10 * 86400000).toISOString(),
+  },
+  {
+    id: "wiki-2b",
+    project_id: "proj-2",
+    parent_id: "wiki-2a",
+    title: "Running Instructions",
+    content: "1. Clone repo: git clone https://github.com/mosei-eth/rnaseq-pipeline\n2. Edit config/samples.tsv with your sample sheet\n3. Run: snakemake --use-conda --cores 16\n\nMinimum requirements: 32GB RAM, 16 cores, 500GB storage for full run.\n\nFor test run use the provided test dataset in data/test_samples/.",
+    created_by: "user-osei",
+    created_at: new Date(Date.now() - 50 * 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 7 * 86400000).toISOString(),
+  },
+];
+
+const SEED_ISSUES: Issue[] = [
+  {
+    id: "issue-1a",
+    project_id: "proj-1",
+    user_id: "user-mehta",
+    title: "Signal loss above 200 kDa with standard blocking",
+    body: "Even with optimised pH and MeOH, we're still losing signal for very high-MW proteins (>200 kDa). Tested 5% milk and 3% BSA — similar results. Could be the PVDF pore size?",
+    status: "open",
+    priority: "high",
+    labels: ["bug", "high-MW"],
+    comments: [
+      {
+        id: "ic-1a-1",
+        issue_id: "issue-1a",
+        user_id: "user-park",
+        body: "Good catch. Let's try 0.2μm PVDF next — the 0.45μm may not retain very high-MW proteins efficiently during the wash steps.",
+        created_at: new Date(Date.now() - 2 * 86400000).toISOString(),
+      },
+      {
+        id: "ic-1a-2",
+        issue_id: "issue-1a",
+        user_id: "user-sato",
+        body: "We had the same issue — switching to nitrocellulose for proteins >150 kDa helped in our lab.",
+        created_at: new Date(Date.now() - 1 * 86400000).toISOString(),
+      },
+    ],
+    created_at: new Date(Date.now() - 4 * 86400000).toISOString(),
+  },
+  {
+    id: "issue-1b",
+    project_id: "proj-1",
+    user_id: "user-park",
+    title: "Add SDS-PAGE gel percentage comparison to protocol",
+    body: "We should systematically vary gel % (8%, 10%, 12%) for the same targets to document which gel concentration gives best separation.",
+    status: "open",
+    priority: "medium",
+    labels: ["enhancement", "documentation"],
+    comments: [
+      {
+        id: "ic-1b-1",
+        issue_id: "issue-1b",
+        user_id: "user-mehta",
+        body: "Agreed. I can run the 8% and 10% comparisons next week.",
+        created_at: new Date(Date.now() - 5 * 86400000).toISOString(),
+      },
+    ],
+    created_at: new Date(Date.now() - 7 * 86400000).toISOString(),
+  },
+  {
+    id: "issue-1c",
+    project_id: "proj-1",
+    user_id: "user-park",
+    title: "Update figure panels to include error bars",
+    body: "All quantitative figures need proper error bars (SEM, n=3). Currently some panels only show representative blots.",
+    status: "solved",
+    priority: "low",
+    labels: ["documentation"],
+    comments: [],
+    created_at: new Date(Date.now() - 15 * 86400000).toISOString(),
+  },
+  {
+    id: "issue-2a",
+    project_id: "proj-2",
+    user_id: "user-sato",
+    title: "STAR index out of date for GRCm39",
+    body: "The STAR genome index in the pipeline is built on GRCm38. GRCm39 has been out for over a year — we should update. This affects all mouse samples.",
+    status: "open",
+    priority: "high",
+    labels: ["bug", "reference-genome"],
+    comments: [
+      {
+        id: "ic-2a-1",
+        issue_id: "issue-2a",
+        user_id: "user-osei",
+        body: "On it — will rebuild the index and push updated config by end of week.",
+        created_at: new Date(Date.now() - 3 * 86400000).toISOString(),
+      },
+    ],
+    created_at: new Date(Date.now() - 6 * 86400000).toISOString(),
+  },
+  {
+    id: "issue-2b",
+    project_id: "proj-2",
+    user_id: "user-osei",
+    title: "Add support for HISAT2 as alternative aligner",
+    body: "Some users prefer HISAT2 over STAR for memory-limited environments. We should add it as an optional aligner in the config.",
+    status: "open",
+    priority: "medium",
+    labels: ["feature", "aligner"],
+    comments: [],
+    created_at: new Date(Date.now() - 20 * 86400000).toISOString(),
+  },
+  {
+    id: "issue-2c",
+    project_id: "proj-2",
+    user_id: "user-osei",
+    title: "Fix MultiQC report path in Snakemake rule",
+    body: "The MultiQC rule outputs to results/qc/multiqc but the summary rule expects it in results/multiqc — causing a missing file error on clean runs.",
+    status: "closed",
+    priority: "high",
+    labels: ["bug"],
+    comments: [
+      {
+        id: "ic-2c-1",
+        issue_id: "issue-2c",
+        user_id: "user-sato",
+        body: "Fixed in commit abc123. Paths now consistent.",
+        created_at: new Date(Date.now() - 8 * 86400000).toISOString(),
+      },
+    ],
+    created_at: new Date(Date.now() - 10 * 86400000).toISOString(),
+  },
+];
+
 const SEED_FOLLOWS: Follow[] = [
   { follower_id: MOCK_USER_ID, following_id: "user-park",   created_at: new Date(Date.now() - 50 * 86400000).toISOString() },
   { follower_id: MOCK_USER_ID, following_id: "user-nguyen", created_at: new Date(Date.now() - 30 * 86400000).toISOString() },
@@ -805,10 +1106,18 @@ const SEED_LABS: Lab[] = [
 
 export function getMockProfile(): Profile {
   const saved = ls<Profile | null>(KEY_PROFILE, null);
-  if (saved) return saved;
+  if (saved && typeof saved === "object") {
+    // Backfill fields added after initial release
+    const p = saved as Profile;
+    const backfill: Partial<Profile> = {};
+    if (!("google_scholar_id"   in p) || p.google_scholar_id   === undefined) backfill.google_scholar_id   = null;
+    if (!("semantic_scholar_id" in p) || p.semantic_scholar_id === undefined) backfill.semantic_scholar_id = null;
+    return Object.keys(backfill).length ? { ...p, ...backfill } : p;
+  }
   return {
     id: MOCK_USER_ID, full_name: "Researcher", institution: "",
-    orcid_id: null, role: "", research_domain: "", techniques: [],
+    orcid_id: null, google_scholar_id: null, semantic_scholar_id: null,
+    role: "", research_domain: "", techniques: [],
     bio: null, avatar_initials: "R", avatar_color: "bg-slate-600",
     h_index: 0, citation_count: 0, publication_count: 0,
     followers_count: 0, following_count: 0,
@@ -816,6 +1125,20 @@ export function getMockProfile(): Profile {
     is_verified: false, profile_completeness: 20,
     joined_at: new Date().toISOString(),
   };
+}
+
+export function calcProfileCompleteness(p: Profile): number {
+  const checks = [
+    !!p.full_name && p.full_name !== "Researcher",
+    !!p.institution,
+    !!p.bio,
+    !!p.orcid_id,
+    (p.techniques?.length ?? 0) > 0,
+    (p.skills?.length ?? 0) > 0,
+    !!p.research_domain,
+    !!(p.social_links?.twitter || p.social_links?.github || p.social_links?.website || p.social_links?.linkedin),
+  ];
+  return Math.round((checks.filter(Boolean).length / checks.length) * 100);
 }
 
 export function saveMockProfile(p: Partial<Profile>) {
@@ -914,7 +1237,8 @@ export function searchExperiments(query: string): Array<Experiment & { matchPct:
 
 export function getQuestions(experimentId: string): Question[] {
   const local = ls<Question[]>(KEY_QUESTIONS, []).filter((q) => q.experiment_id === experimentId);
-  const seed  = SEED_QUESTIONS.filter((q) => q.experiment_id === experimentId);
+  const localIds = new Set(local.map((q) => q.id));
+  const seed  = SEED_QUESTIONS.filter((q) => q.experiment_id === experimentId && !localIds.has(q.id));
   return [...local, ...seed];
 }
 
@@ -987,13 +1311,35 @@ export function searchPublications(query: string): Publication[] {
 
 export function getFeed(): FeedPost[] {
   const local = ls<FeedPost[]>(KEY_FEED, []);
-  return [...local, ...SEED_FEED].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  const localIds = new Set(local.map((p) => p.id));
+  const seeds = SEED_FEED.filter((p) => !localIds.has(p.id));
+  return [...local, ...seeds].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
 export function saveFeedPost(data: Omit<FeedPost, "id" | "created_at" | "like_count" | "comment_count" | "repost_count" | "liked_by" | "bookmarked_by">): FeedPost {
   const post: FeedPost = { ...data, id: `feed-${uid()}`, created_at: new Date().toISOString(), like_count: 0, comment_count: 0, repost_count: 0, liked_by: [], bookmarked_by: [] };
   lsSet(KEY_FEED, [post, ...ls<FeedPost[]>(KEY_FEED, [])]);
   return post;
+}
+
+export function updateFeedPost(postId: string, content: string): FeedPost | null {
+  const all = getFeed();
+  const post = all.find((p) => p.id === postId);
+  if (!post || post.user_id !== MOCK_USER_ID) return null;
+  const updated = { ...post, content };
+  const local = ls<FeedPost[]>(KEY_FEED, []);
+  const idx = local.findIndex((p) => p.id === postId);
+  if (idx >= 0) { local[idx] = updated; lsSet(KEY_FEED, local); }
+  else { lsSet(KEY_FEED, [updated, ...local]); }
+  return updated;
+}
+
+export function deleteFeedPost(postId: string): boolean {
+  const local = ls<FeedPost[]>(KEY_FEED, []);
+  const next = local.filter((p) => p.id !== postId);
+  if (next.length === local.length) return false; // seed post — can't delete
+  lsSet(KEY_FEED, next);
+  return true;
 }
 
 export function toggleLikeFeedPost(postId: string): FeedPost | null {
@@ -1009,6 +1355,42 @@ export function toggleLikeFeedPost(postId: string): FeedPost | null {
   return updated;
 }
 
+export function repostFeedPost(postId: string): FeedPost | null {
+  const all = getFeed();
+  const original = all.find((p) => p.id === postId);
+  if (!original) return null;
+
+  // Increment repost_count on original
+  const updatedOriginal = { ...original, repost_count: original.repost_count + 1 };
+  const local = ls<FeedPost[]>(KEY_FEED, []);
+  const idx = local.findIndex((p) => p.id === postId);
+  if (idx >= 0) { local[idx] = updatedOriginal; lsSet(KEY_FEED, local); }
+
+  // Create new repost entry
+  const author = getProfile(original.user_id);
+  const repost = saveFeedPost({
+    user_id: MOCK_USER_ID,
+    type: original.type,
+    content: `🔁 Reposted from ${author?.full_name ?? "Researcher"}:\n\n${original.content}`,
+    linked_experiment_id: original.linked_experiment_id,
+    linked_publication_id: original.linked_publication_id,
+    linked_question_id: original.linked_question_id,
+  });
+  return repost;
+}
+
+export function incrementFeedCommentCount(postId: string): void {
+  const local = ls<FeedPost[]>(KEY_FEED, []);
+  const idx = local.findIndex((p) => p.id === postId);
+  if (idx >= 0) { local[idx] = { ...local[idx], comment_count: local[idx].comment_count + 1 }; lsSet(KEY_FEED, local); }
+}
+
+export function decrementFeedCommentCount(postId: string): void {
+  const local = ls<FeedPost[]>(KEY_FEED, []);
+  const idx = local.findIndex((p) => p.id === postId);
+  if (idx >= 0) { local[idx] = { ...local[idx], comment_count: Math.max(0, local[idx].comment_count - 1) }; lsSet(KEY_FEED, local); }
+}
+
 export function toggleBookmarkFeedPost(postId: string): FeedPost | null {
   const all = getFeed();
   const post = all.find((p) => p.id === postId);
@@ -1020,6 +1402,10 @@ export function toggleBookmarkFeedPost(postId: string): FeedPost | null {
   if (idx >= 0) { local[idx] = updated; lsSet(KEY_FEED, local); }
   else { lsSet(KEY_FEED, [updated, ...local]); }
   return updated;
+}
+
+export function getBookmarkedPosts(): FeedPost[] {
+  return getFeed().filter((p) => p.bookmarked_by.includes(MOCK_USER_ID));
 }
 
 // ─── Follows ──────────────────────────────────────────────────
@@ -1052,7 +1438,9 @@ export function getFollowers(): string[] {
 
 export function getNotifications(): Notification[] {
   const local = ls<Notification[]>(KEY_NOTIFICATIONS, []);
-  return [...local, ...SEED_NOTIFICATIONS].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  const localIds = new Set(local.map((n) => n.id));
+  const seeds = SEED_NOTIFICATIONS.filter((n) => !localIds.has(n.id));
+  return [...local, ...seeds].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
 export function getUnreadCount(): number {
@@ -1079,7 +1467,9 @@ export function markAllNotificationsRead() {
 export function getNotificationsWithReadState(): Notification[] {
   const overrides = ls<Record<string, boolean>>("scicollab_notif_read", {});
   const local = ls<Notification[]>(KEY_NOTIFICATIONS, []);
-  const all = [...local, ...SEED_NOTIFICATIONS.map((n) => ({ ...n, is_read: overrides[n.id] ?? n.is_read }))];
+  const localIds = new Set(local.map((n) => n.id));
+  const seeds = SEED_NOTIFICATIONS.filter((n) => !localIds.has(n.id)).map((n) => ({ ...n, is_read: overrides[n.id] ?? n.is_read }));
+  const all = [...local, ...seeds];
   return all.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
@@ -1115,12 +1505,15 @@ export function voteStandaloneQuestion(id: string, delta: 1 | -1) {
 // ─── Messages ─────────────────────────────────────────────────
 
 export function getConversations(): Conversation[] {
-  return [...ls<Conversation[]>(KEY_CONVOS, []), ...SEED_CONVOS];
+  const local = ls<Conversation[]>(KEY_CONVOS, []);
+  const localIds = new Set(local.map((c) => c.id));
+  return [...local, ...SEED_CONVOS.filter((c) => !localIds.has(c.id))];
 }
 
 export function getMessages(conversationId: string): Message[] {
   const local = ls<Message[]>(KEY_MESSAGES, []);
-  const seed  = SEED_MESSAGES;
+  const localIds = new Set(local.map((m) => m.id));
+  const seed  = SEED_MESSAGES.filter((m) => !localIds.has(m.id));
   return [...local, ...seed].filter((m) => m.conversation_id === conversationId).sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 }
 
@@ -1146,4 +1539,388 @@ export function getLabs(): Lab[] { return SEED_LABS; }
 
 export function getMyLab(): Lab | null {
   return SEED_LABS.find((l) => l.pi_user_id === MOCK_USER_ID || l.members.some((m) => m.user_id === MOCK_USER_ID)) ?? null;
+}
+
+export function deletePublication(id: string): void {
+  const local = ls<Publication[]>(KEY_PUBLICATIONS, []);
+  lsSet(KEY_PUBLICATIONS, local.filter((p) => p.id !== id));
+}
+
+// ─── Comments ─────────────────────────────────────────────────
+
+export function getComments(targetType: "experiment" | "publication" | "feedpost" | "project", targetId: string): Comment[] {
+  return ls<Comment[]>(KEY_COMMENTS, [])
+    .filter((c) => c.target_type === targetType && c.target_id === targetId)
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+}
+
+export function addComment(data: Omit<Comment, "id" | "created_at"> & { target_type: "experiment" | "publication" | "feedpost" | "project" }): Comment {
+  const comment: Comment = { ...data, id: `cmt-${uid()}`, created_at: new Date().toISOString() };
+  lsSet(KEY_COMMENTS, [...ls<Comment[]>(KEY_COMMENTS, []), comment]);
+  return comment;
+}
+
+export function deleteComment(id: string): void {
+  const all = ls<Comment[]>(KEY_COMMENTS, []);
+  lsSet(KEY_COMMENTS, all.filter((c) => !(c.id === id && c.user_id === MOCK_USER_ID)));
+}
+
+// ─── Privacy Settings ─────────────────────────────────────────
+
+const DEFAULT_PRIVACY: PrivacySettings = {
+  profile_visibility: "public",
+  email_visible: false,
+  show_experiments: true,
+  show_publications: true,
+  allow_messages: "all",
+  indexed_by_search: true,
+};
+
+export function getPrivacySettings(): PrivacySettings {
+  return ls<PrivacySettings>(KEY_PRIVACY, DEFAULT_PRIVACY);
+}
+
+export function updatePrivacySettings(s: Partial<PrivacySettings>): PrivacySettings {
+  const current = getPrivacySettings();
+  const updated = { ...current, ...s };
+  lsSet(KEY_PRIVACY, updated);
+  return updated;
+}
+
+// ─── People Search ────────────────────────────────────────────
+
+export function searchProfiles(query: string): Profile[] {
+  const q = query.toLowerCase().trim();
+  const all = [...SEED_PROFILES, getMockProfile()];
+  if (!q) return all;
+  return all.filter((p) =>
+    p.full_name.toLowerCase().includes(q) ||
+    p.institution.toLowerCase().includes(q) ||
+    p.research_domain.toLowerCase().includes(q) ||
+    p.techniques.some((t) => t.toLowerCase().includes(q)) ||
+    p.skills.some((s) => s.toLowerCase().includes(q))
+  );
+}
+
+// ─── Reports ─────────────────────────────────────────────────
+
+export function addReport(data: Omit<Report, "id" | "created_at" | "status">): Report {
+  const report: Report = { ...data, id: `rpt-${uid()}`, created_at: new Date().toISOString(), status: "pending" };
+  lsSet(KEY_REPORTS, [...ls<Report[]>(KEY_REPORTS, []), report]);
+  return report;
+}
+
+export function getReports(): Report[] {
+  return ls<Report[]>(KEY_REPORTS, []).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+}
+
+export function updateReportStatus(id: string, status: Report["status"]): void {
+  const all = ls<Report[]>(KEY_REPORTS, []);
+  lsSet(KEY_REPORTS, all.map((r) => r.id === id ? { ...r, status } : r));
+}
+
+export function hasReported(targetId: string): boolean {
+  return ls<Report[]>(KEY_REPORTS, []).some((r) => r.reporter_id === MOCK_USER_ID && r.target_id === targetId);
+}
+
+// ─── ORCID ────────────────────────────────────────────────────
+
+export function updateOrcidId(orcid: string): void {
+  const current = getMockProfile();
+  lsSet(KEY_PROFILE, { ...current, orcid_id: orcid });
+}
+
+// ─── Google Scholar ───────────────────────────────────────────
+
+export function updateGoogleScholarId(scholarId: string): void {
+  const current = getMockProfile();
+  lsSet(KEY_PROFILE, { ...current, google_scholar_id: scholarId });
+}
+
+// ─── Semantic Scholar / OpenAlex — live sync helpers ─────────
+
+export function updateSemanticScholarId(ssId: string): void {
+  const current = getMockProfile();
+  lsSet(KEY_PROFILE, { ...current, semantic_scholar_id: ssId });
+}
+
+/** Merge live stats from Semantic Scholar / OpenAlex into the mock profile. */
+export function updateProfileStats(patch: {
+  h_index?: number;
+  citation_count?: number;
+  publication_count?: number;
+  semantic_scholar_id?: string;
+}): void {
+  const current = getMockProfile();
+  lsSet(KEY_PROFILE, { ...current, ...patch });
+}
+
+/** Import publications fetched from an external API into localStorage.
+ *  Skips duplicates (matched by DOI or arXiv ID or title). */
+export function importPublicationsFromData(
+  items: Array<{
+    title: string;
+    authors: string[];
+    year: number;
+    journal: string | null;
+    doi: string | null;
+    arxiv_id: string | null;
+    abstract: string | null;
+    citation_count: number;
+    tags: string[];
+  }>
+): { added: number; skipped: number } {
+  const existing = getAllPublications();
+  const me = getMockProfile();
+  let added = 0; let skipped = 0;
+
+  for (const item of items) {
+    // Dedup: DOI match, arXiv match, or title match
+    const isDup = existing.some(
+      (p) =>
+        (item.doi && p.doi && p.doi.toLowerCase() === item.doi.toLowerCase()) ||
+        (item.arxiv_id && p.arxiv_id && p.arxiv_id === item.arxiv_id) ||
+        p.title.toLowerCase() === item.title.toLowerCase()
+    );
+    if (isDup) { skipped++; continue; }
+
+    savePublication({
+      user_id: me.id,
+      title: item.title,
+      abstract: item.abstract,
+      authors: item.authors,
+      journal: item.journal,
+      year: item.year,
+      doi: item.doi,
+      arxiv_id: item.arxiv_id,
+      type: "paper",
+      tags: item.tags,
+      status: "published",
+    });
+    // patch the saved pub's citation_count directly
+    if (item.citation_count > 0) {
+      const pubs = getAllPublications();
+      const saved = pubs[pubs.length - 1];
+      if (saved) {
+        const patched = pubs.map((p) =>
+          p.id === saved.id ? { ...p, citation_count: item.citation_count } : p
+        );
+        lsSet(KEY_PUBLICATIONS, patched);
+      }
+    }
+    added++;
+  }
+  return { added, skipped };
+}
+
+// ─── Projects ─────────────────────────────────────────────────
+
+export function getProjects(): Project[] {
+  const local = ls<Project[]>(KEY_PROJECTS, []);
+  const localIds = new Set(local.map((p) => p.id));
+  return [...local, ...SEED_PROJECTS.filter((p) => !localIds.has(p.id))];
+}
+
+export function getProject(id: string): Project | null {
+  return getProjects().find((p) => p.id === id) ?? null;
+}
+
+export function getUserProjects(userId: string): Project[] {
+  return getProjects().filter((p) => p.user_id === userId || p.collaborator_ids.includes(userId));
+}
+
+export function addProjectContributor(projectId: string, userId: string): Project | null {
+  const p = getProject(projectId);
+  if (!p || p.collaborator_ids.includes(userId)) return p ?? null;
+  return updateProject(projectId, { collaborator_ids: [...p.collaborator_ids, userId] });
+}
+
+export function removeProjectContributor(projectId: string, userId: string): Project | null {
+  const p = getProject(projectId);
+  if (!p) return null;
+  return updateProject(projectId, { collaborator_ids: p.collaborator_ids.filter((id) => id !== userId) });
+}
+
+export function saveProject(data: Omit<Project, "id" | "created_at" | "updated_at">): Project {
+  const now = new Date().toISOString();
+  const proj: Project = { ...data, id: `proj-${uid()}`, created_at: now, updated_at: now };
+  lsSet(KEY_PROJECTS, [proj, ...ls<Project[]>(KEY_PROJECTS, [])]);
+  return proj;
+}
+
+export function updateProject(id: string, patch: Partial<Omit<Project, "id" | "created_at">>): Project | null {
+  const all = getProjects();
+  const proj = all.find((p) => p.id === id);
+  if (!proj) return null;
+  const updated = { ...proj, ...patch, updated_at: new Date().toISOString() };
+  const local = ls<Project[]>(KEY_PROJECTS, []);
+  const idx = local.findIndex((p) => p.id === id);
+  if (idx >= 0) { local[idx] = updated; lsSet(KEY_PROJECTS, local); }
+  else { lsSet(KEY_PROJECTS, [updated, ...local]); }
+  return updated;
+}
+
+export function deleteProject(id: string): void {
+  const local = ls<Project[]>(KEY_PROJECTS, []);
+  lsSet(KEY_PROJECTS, local.filter((p) => p.id !== id));
+}
+
+// ─── Wiki ─────────────────────────────────────────────────────
+
+export function getWikiPages(projectId: string): WikiPage[] {
+  const local = ls<WikiPage[]>(KEY_WIKI, []).filter((w) => w.project_id === projectId);
+  const localIds = new Set(local.map((w) => w.id));
+  const seed = SEED_WIKI.filter((w) => w.project_id === projectId && !localIds.has(w.id));
+  return [...local, ...seed].sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+}
+
+export function saveWikiPage(data: Omit<WikiPage, "id" | "created_at" | "updated_at">): WikiPage {
+  const now = new Date().toISOString();
+  const page: WikiPage = { ...data, id: `wiki-${uid()}`, created_at: now, updated_at: now };
+  lsSet(KEY_WIKI, [page, ...ls<WikiPage[]>(KEY_WIKI, [])]);
+  return page;
+}
+
+export function updateWikiPage(id: string, content: string, title: string, parent_id?: string | null): WikiPage | null {
+  const all = ls<WikiPage[]>(KEY_WIKI, []);
+  const idx = all.findIndex((w) => w.id === id);
+  const patch: Partial<WikiPage> = { content, title, updated_at: new Date().toISOString() };
+  if (parent_id !== undefined) patch.parent_id = parent_id;
+  if (idx >= 0) {
+    all[idx] = { ...all[idx], ...patch };
+    lsSet(KEY_WIKI, all);
+    return all[idx];
+  }
+  // If it's a seed page, copy to local storage
+  const seed = SEED_WIKI.find((w) => w.id === id);
+  if (seed) {
+    const updated = { ...seed, ...patch };
+    lsSet(KEY_WIKI, [updated, ...all]);
+    return updated;
+  }
+  return null;
+}
+
+export function deleteWikiPage(id: string): void {
+  const local = ls<WikiPage[]>(KEY_WIKI, []);
+  lsSet(KEY_WIKI, local.filter((w) => w.id !== id));
+}
+
+// ─── Issues ───────────────────────────────────────────────────
+
+export function getIssues(projectId: string): Issue[] {
+  const local = ls<Issue[]>(KEY_ISSUES, []).filter((i) => i.project_id === projectId);
+  const localIds = new Set(local.map((i) => i.id));
+  const seed = SEED_ISSUES.filter((i) => i.project_id === projectId && !localIds.has(i.id));
+  return [...local, ...seed].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+}
+
+export function saveIssue(data: Omit<Issue, "id" | "created_at" | "comments">): Issue {
+  const issue: Issue = { ...data, id: `issue-${uid()}`, comments: [], created_at: new Date().toISOString() };
+  lsSet(KEY_ISSUES, [issue, ...ls<Issue[]>(KEY_ISSUES, [])]);
+  return issue;
+}
+
+function patchIssue(id: string, patch: Partial<Issue>): void {
+  const all = ls<Issue[]>(KEY_ISSUES, []);
+  const idx = all.findIndex((i) => i.id === id);
+  if (idx >= 0) {
+    all[idx] = { ...all[idx], ...patch };
+    lsSet(KEY_ISSUES, all);
+    return;
+  }
+  // Copy seed issue to local if not found in local
+  const seed = SEED_ISSUES.find((i) => i.id === id);
+  if (seed) lsSet(KEY_ISSUES, [{ ...seed, ...patch }, ...all]);
+}
+
+export function updateIssueStatus(id: string, status: Issue["status"]): void {
+  patchIssue(id, { status });
+}
+
+export function deleteIssue(id: string): void {
+  lsSet(KEY_ISSUES, ls<Issue[]>(KEY_ISSUES, []).filter((i) => i.id !== id));
+}
+
+export function updateIssuePriority(id: string, priority: Issue["priority"]): void {
+  patchIssue(id, { priority });
+}
+
+export function addIssueComment(issueId: string, body: string): IssueComment {
+  const comment: IssueComment = {
+    id: `ic-${uid()}`,
+    issue_id: issueId,
+    user_id: MOCK_USER_ID,
+    body,
+    created_at: new Date().toISOString(),
+  };
+  const all = ls<Issue[]>(KEY_ISSUES, []);
+  const idx = all.findIndex((i) => i.id === issueId);
+  if (idx >= 0) {
+    all[idx] = { ...all[idx], comments: [...all[idx].comments, comment] };
+    lsSet(KEY_ISSUES, all);
+  } else {
+    // Copy seed issue to local with the new comment
+    const seed = SEED_ISSUES.find((i) => i.id === issueId);
+    if (seed) lsSet(KEY_ISSUES, [{ ...seed, comments: [...seed.comments, comment] }, ...all]);
+  }
+  return comment;
+}
+
+// ─── Analytics ────────────────────────────────────────────────
+
+function simpleHash(str: string): number {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
+
+function seededRandom(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 0xffffffff;
+  };
+}
+
+export function getAuthorAnalytics(userId: string): AuthorAnalytics {
+  const seed = simpleHash(userId);
+  const rand = seededRandom(seed);
+
+  function makeSeries(base: number): AnalyticsSeries {
+    return Array.from({ length: 30 }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (29 - i));
+      return {
+        date: d.toISOString().slice(0, 10),
+        value: Math.max(0, Math.round(base * (0.5 + rand()) + rand() * base * 0.3)),
+      };
+    });
+  }
+
+  const userExps = getAllExperiments().filter((e) => e.user_id === userId);
+  const userPubs = getAllPublications().filter((p) => p.user_id === userId);
+
+  return {
+    profile_views: makeSeries(40 + Math.round(rand() * 60)),
+    experiment_views: makeSeries(20 + Math.round(rand() * 40)),
+    publication_views: makeSeries(30 + Math.round(rand() * 80)),
+    total_forks: Math.round(rand() * 15),
+    total_citations: userPubs.reduce((s, p) => s + p.citation_count, 0),
+    total_followers_gained: Math.round(rand() * 25 + 3),
+    top_experiments: userExps.slice(0, 3).map((e) => ({
+      id: e.id,
+      title: e.title,
+      views: Math.round(rand() * 800 + 100),
+      forks: Math.round(rand() * 10),
+    })),
+    top_publications: userPubs.slice(0, 3).map((p) => ({
+      id: p.id,
+      title: p.title,
+      views: p.read_count,
+      citations: p.citation_count,
+    })),
+  };
 }

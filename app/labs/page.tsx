@@ -3,13 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getLabs, getProfile, getMyLab, type Lab } from "@/lib/mock-db";
+import { getLabs, getProfile, getMyLab, getUserPublications, getAllExperiments, type Lab } from "@/lib/mock-db";
 
 const ROLE_LABEL: Record<string, string> = { pi: "PI", postdoc: "Postdoc", phd: "PhD Student", research_assistant: "Research Asst." };
 const ROLE_COLOR: Record<string, string> = { pi: "bg-purple-50 text-purple-700 border-purple-200", postdoc: "bg-blue-50 text-blue-700 border-blue-200", phd: "bg-emerald-50 text-emerald-700 border-emerald-200", research_assistant: "bg-slate-50 text-slate-600 border-slate-200" };
 
+const OUTCOME_ICON: Record<string, string> = { success: "✅", partial: "⚠️", failed: "❌" };
+
 function LabCard({ lab, isMyLab }: { lab: Lab; isMyLab: boolean }) {
   const pi = getProfile(lab.pi_user_id);
+  const [showMemberResearch, setShowMemberResearch] = useState(false);
+
   return (
     <div className={`bg-white border rounded-2xl p-6 ${isMyLab ? "border-blue-300 shadow-sm" : "border-slate-200"}`}>
       <div className="flex items-start justify-between gap-3 mb-4">
@@ -72,6 +76,85 @@ function LabCard({ lab, isMyLab }: { lab: Lab; isMyLab: boolean }) {
             </div>
           );
         })}
+      </div>
+
+      {/* Member Research expandable section */}
+      <div className="mt-5 pt-4 border-t border-slate-100">
+        <button
+          onClick={() => setShowMemberResearch((v) => !v)}
+          className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+          {showMemberResearch ? "▲ Hide member research" : "📊 View member research"}
+        </button>
+
+        {showMemberResearch && (
+          <div className="mt-4 space-y-5">
+            {lab.members.map((m) => {
+              const member = getProfile(m.user_id);
+              if (!member) return null;
+              const memberPubs = getUserPublications(m.user_id)
+                .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+                .slice(0, 2);
+              const memberExps = getAllExperiments()
+                .filter((e) => e.user_id === m.user_id)
+                .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+                .slice(0, 2);
+
+              return (
+                <div key={m.user_id} className="bg-slate-50 rounded-xl p-4">
+                  {/* Member header */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${member.avatar_color || "bg-slate-600"}`}>
+                      {member.avatar_initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-sm font-semibold text-slate-800">{member.full_name}</span>
+                      <span className="text-xs text-slate-500 ml-2">{ROLE_LABEL[m.role] ?? m.role}</span>
+                    </div>
+                    <Link href={`/profile/${m.user_id}`} className="text-xs text-blue-600 hover:underline flex-shrink-0">
+                      View profile →
+                    </Link>
+                  </div>
+
+                  {/* Recent publications */}
+                  {memberPubs.length > 0 && (
+                    <div className="mb-3">
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5">Recent Publications</p>
+                      <div className="space-y-1.5">
+                        {memberPubs.map((pub) => (
+                          <Link key={pub.id} href={`/publications/${pub.id}`}
+                            className="flex items-center justify-between gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2 hover:border-blue-200 transition-colors">
+                            <span className="text-slate-700 line-clamp-1 flex-1">{pub.title}</span>
+                            <span className="text-slate-400 flex-shrink-0">{pub.year} · {pub.citation_count} cit.</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Recent experiments */}
+                  {memberExps.length > 0 && (
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5">Recent Experiments</p>
+                      <div className="space-y-1.5">
+                        {memberExps.map((exp) => (
+                          <Link key={exp.id} href={`/experiments/${exp.id}`}
+                            className="flex items-center gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2 hover:border-blue-200 transition-colors">
+                            <span>{exp.outcome ? OUTCOME_ICON[exp.outcome] ?? "⏳" : "⏳"}</span>
+                            <span className="text-slate-700 line-clamp-1 flex-1">{exp.title}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {memberPubs.length === 0 && memberExps.length === 0 && (
+                    <p className="text-xs text-slate-400">No public work yet.</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

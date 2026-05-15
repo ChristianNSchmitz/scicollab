@@ -157,7 +157,7 @@ export default function DashboardPage() {
                   <div className="h-full bg-amber-500 rounded-full" style={{ width: `${profile.profile_completeness}%` }} />
                 </div>
                 <p className="text-xs text-amber-700 mb-3">{profile.profile_completeness}% complete</p>
-                <Link href="/onboarding" className="block w-full bg-amber-500 text-white text-sm font-semibold py-2 rounded-xl hover:bg-amber-600 text-center">
+                <Link href="/settings" className="block w-full bg-amber-500 text-white text-sm font-semibold py-2 rounded-xl hover:bg-amber-600 text-center">
                   Complete profile →
                 </Link>
               </div>
@@ -193,6 +193,9 @@ export default function DashboardPage() {
                   ["🌐", "Discover",       "/discover"],
                   ["✉️", "Messages",       "/messages"],
                   ["🏛️", "Lab Workspaces", "/labs"],
+                  ["📊", "Analytics",      "/analytics"],
+                  ["⚙️", "Settings",       "/settings"],
+                  ["🛡️", "Moderation",    "/moderation"],
                 ].map(([icon, label, href]) => (
                   <Link key={href} href={href} className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 hover:bg-slate-50 px-2 py-1.5 rounded-lg transition-colors">
                     <span>{icon}</span> {label}
@@ -200,6 +203,15 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
+
+            <Link href="/analytics"
+              className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:from-blue-100 hover:to-indigo-100 transition-colors">
+              <span className="text-2xl">📊</span>
+              <div>
+                <p className="text-sm font-semibold text-blue-800">View Analytics</p>
+                <p className="text-xs text-blue-600">Views, citations & forks</p>
+              </div>
+            </Link>
           </div>
         </div>
       </div>

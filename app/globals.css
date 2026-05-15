@@ -185,3 +185,20 @@ html { scroll-behavior: smooth; }
 .animate-spin, [class*="animate-"] {
   transition: none !important;
 }
+
+@keyframes slide-in {
+  from { transform: translateY(10px) scale(0.96); }
+  to   { transform: translateY(0)    scale(1); }
+}
+.animate-slide-in {
+  /* opacity not animated — avoids interaction with the * transition rule */
+  animation: slide-in 0.15s ease-out both;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

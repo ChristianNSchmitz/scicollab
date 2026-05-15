@@ -8,10 +8,12 @@ import {
   getExperiment, getProfile, getQuestions, getMockProfile, MOCK_USER_ID,
   updateExperiment, type Experiment, type Question,
 } from "@/lib/mock-db";
-import QASection   from "./components/QASection";
-import ForkButton  from "./components/ForkButton";
-import VersionTree from "./components/VersionTree";
-import CiteModal   from "./components/CiteModal";
+import QASection      from "./components/QASection";
+import ForkButton     from "./components/ForkButton";
+import VersionTree    from "./components/VersionTree";
+import CiteModal      from "./components/CiteModal";
+import CommentSection from "@/components/CommentSection";
+import ReportModal    from "@/components/ReportModal";
 
 /* ── helpers ── */
 function timeAgo(d: string) {
@@ -66,6 +68,7 @@ export default function ExperimentPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [notFound, setNotFound] = useState(false);
   const [showCite, setShowCite] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   // Edit mode state
   const [editing, setEditing]       = useState(false);
@@ -145,6 +148,7 @@ export default function ExperimentPage() {
       <NavBar />
 
       {showCite && <CiteModal experiment={exp} onClose={() => setShowCite(false)} />}
+      {showReport && <ReportModal targetType="experiment" targetId={exp.id} onClose={() => setShowReport(false)} />}
 
       <div className="max-w-4xl mx-auto px-4 py-10">
         {/* Breadcrumb */}
@@ -264,6 +268,10 @@ export default function ExperimentPage() {
                   className="text-xs border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-50 transition-colors font-medium">
                   📝 Cite
                 </button>
+                <button onClick={() => setShowReport(true)}
+                  className="text-xs text-slate-400 hover:text-slate-600 hover:underline">
+                  ⚑ Report
+                </button>
               </div>
             </div>
 
@@ -364,6 +372,9 @@ export default function ExperimentPage() {
           initialQuestions={questions}
           onQuestionsChange={setQuestions}
         />
+
+        {/* Comments */}
+        <CommentSection targetType="experiment" targetId={exp.id} />
 
         {/* Next actions */}
         <div className="grid sm:grid-cols-3 gap-4">
