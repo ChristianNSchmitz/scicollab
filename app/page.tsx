@@ -80,19 +80,29 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="flex-1 flex flex-col items-center justify-center text-center px-6 py-24 bg-gradient-to-b from-slate-50 to-white">
+      {/* Hero — inline styles use CSS vars to bypass global dark-mode !important overrides */}
+      <section
+        className="flex-1 flex flex-col items-center justify-center text-center px-6 py-24"
+        style={{ background: "var(--background)" }}
+      >
         <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-1.5 mb-8">
-          <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+          <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
           <span className="text-xs font-medium text-blue-700">Invite-only beta · 418 experiments uploaded</span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.15] max-w-3xl mb-6">
-          Where scientists<br />
-          <span className="text-blue-600">debug their research</span><br />
+        <h1
+          className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.15] max-w-3xl mb-6"
+          style={{ color: "var(--foreground)" }}
+        >
+          Where scientists{" "}
+          <span className="text-blue-600">debug their&nbsp;research</span>{" "}
           together
         </h1>
-        <p className="text-lg text-slate-600 max-w-2xl mb-10 leading-relaxed">
+
+        <p
+          className="text-lg max-w-2xl mb-10 leading-relaxed"
+          style={{ color: "var(--muted)" }}
+        >
           A collaborative platform for live and unpublished raw science — every experiment,
           successful or not, becomes a building block for the next breakthrough.
           GitHub × Stack Overflow × Database, built for the lab bench.
@@ -107,7 +117,8 @@ export default function LandingPage() {
           </Link>
           <a
             href="#how-it-works"
-            className="border border-slate-300 text-slate-700 px-8 py-3.5 rounded-xl font-semibold hover:bg-slate-50 transition-colors text-base"
+            className="border border-slate-300 px-8 py-3.5 rounded-xl font-semibold hover:bg-slate-50 transition-colors text-base"
+            style={{ color: "var(--foreground)" }}
           >
             See how it works
           </a>
@@ -115,9 +126,9 @@ export default function LandingPage() {
 
         {/* Waitlist inline */}
         <div className="w-full max-w-md mb-12">
-          <p className="text-xs text-slate-400 mb-2">Or join the waitlist — no commitment:</p>
+          <p className="text-xs mb-2" style={{ color: "var(--muted)" }}>Or join the waitlist — no commitment:</p>
           <WaitlistForm />
-          <p className="text-xs text-slate-400 mt-2">
+          <p className="text-xs mt-2" style={{ color: "var(--muted)" }}>
             Already have a code?{" "}
             <Link href="/onboarding" className="text-blue-600 hover:underline">Sign up →</Link>
           </p>
@@ -126,14 +137,14 @@ export default function LandingPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-2xl w-full">
           {[
-            { value: "67%", label: "of experiments never shared — until now" },
+            { value: "67%",  label: "of experiments never shared — until now" },
             { value: "100%", label: "of researchers use AI as their first step" },
             { value: "<24h", label: "peer answers in our concierge prototype" },
             { value: "$28B", label: "wasted annually on non-reproducible research" },
           ].map((stat) => (
             <div key={stat.value} className="text-center">
-              <div className="text-2xl font-bold text-slate-900">{stat.value}</div>
-              <div className="text-xs text-slate-500 mt-1 leading-snug">{stat.label}</div>
+              <div className="text-2xl font-bold" style={{ color: "var(--foreground)" }}>{stat.value}</div>
+              <div className="text-xs mt-1 leading-snug" style={{ color: "var(--muted)" }}>{stat.label}</div>
             </div>
           ))}
         </div>
@@ -225,13 +236,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA with waitlist */}
-      <section className="py-24 px-6 bg-gradient-to-b from-white to-blue-50">
+      {/* CTA with waitlist — inline style avoids gradient dark-mode issue */}
+      <section className="py-24 px-6" style={{ background: "var(--surface-2)" }}>
         <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl font-bold mb-4" style={{ color: "var(--foreground)" }}>
             Ready to stop losing research?
           </h2>
-          <p className="text-slate-600 mb-8">
+          <p className="mb-8" style={{ color: "var(--muted)" }}>
             Join the beta. Get your lab workspace, upload your first experiment, and connect with peers in under 5 minutes.
           </p>
           <Link
@@ -240,9 +251,9 @@ export default function LandingPage() {
           >
             Create your account →
           </Link>
-          <p className="text-sm text-slate-500 mb-4">or join the waitlist:</p>
+          <p className="text-sm mb-4" style={{ color: "var(--muted)" }}>or join the waitlist:</p>
           <WaitlistForm compact />
-          <p className="text-xs text-slate-400 mt-4">Free for individual researchers · No credit card required</p>
+          <p className="text-xs mt-4" style={{ color: "var(--muted)" }}>Free for individual researchers · No credit card required</p>
         </div>
       </section>
 
