@@ -107,6 +107,12 @@ export default function ProjectsPage() {
                       🐙 {proj.git_url.replace("https://github.com/", "")}
                     </a>
                   )}
+                  {proj.gitlab_url && (
+                    <a href={proj.gitlab_url} target="_blank" rel="noopener"
+                      className="inline-flex items-center gap-1.5 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-lg px-2.5 py-1 hover:border-orange-400 w-fit">
+                      🦊 {proj.gitlab_url.replace("https://gitlab.com/", "")}
+                    </a>
+                  )}
 
                   {/* Footer: owner + collaborators + pub count + link */}
                   <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">

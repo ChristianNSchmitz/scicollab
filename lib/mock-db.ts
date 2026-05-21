@@ -56,6 +56,7 @@ export type Project = {
   description: string;
   status: "active" | "completed" | "paused";
   git_url: string | null;
+  gitlab_url: string | null;
   publication_ids: string[];
   collaborator_ids: string[];
   tags: string[];
@@ -935,6 +936,7 @@ const SEED_PROJECTS: Project[] = [
     description: "A systematic study of transfer buffer conditions, methanol percentages, and blocking agents for improved high-MW protein detection in HEK293 cells.",
     status: "active",
     git_url: "https://github.com/lpark-jhu/wb-optimisation",
+    gitlab_url: null,
     publication_ids: ["pub-001", "pub-002"],
     collaborator_ids: ["user-mehta"],
     tags: ["Western Blot", "Proteomics", "Methods"],
@@ -948,6 +950,7 @@ const SEED_PROJECTS: Project[] = [
     description: "Reproducible, container-based RNA-seq pipeline validated across multiple tissue types. All code open-source on GitHub.",
     status: "active",
     git_url: "https://github.com/mosei-eth/rnaseq-pipeline",
+    gitlab_url: null,
     publication_ids: ["pub-003", "pub-005"],
     collaborator_ids: ["user-sato"],
     tags: ["RNA-seq", "Bioinformatics", "Open Source"],

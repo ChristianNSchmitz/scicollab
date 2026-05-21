@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import CommentSection from "@/components/CommentSection";
+import GitLabPanel from "@/components/GitLabPanel";
 import { useToast } from "@/lib/toast";
 import {
   getProject, updateProject, deleteProject,
@@ -15,7 +16,7 @@ import {
   getCurrentUserId, MOCK_USER_ID, type Project, type WikiPage, type Issue,
 } from "@/lib/mock-db";
 
-const TAB_LIST = ["Overview", "Publications", "Discussion", "Wiki", "Issues"] as const;
+const TAB_LIST = ["Overview", "Code", "Publications", "Discussion", "Wiki", "Issues"] as const;
 type Tab = typeof TAB_LIST[number];
 
 type SortMode = "date" | "impact" | "first_author";
@@ -78,6 +79,7 @@ export default function ProjectDetailPage() {
   const [editTitle, setEditTitle]   = useState("");
   const [editDesc, setEditDesc]     = useState("");
   const [editGit, setEditGit]       = useState("");
+  const [editGitlab, setEditGitlab] = useState("");
   const [editStatus, setEditStatus] = useState<Project["status"]>("active");
   const [editTags, setEditTags]     = useState("");
 
@@ -169,6 +171,7 @@ export default function ProjectDetailPage() {
     setEditTitle(project.title);
     setEditDesc(project.description);
     setEditGit(project.git_url ?? "");
+    setEditGitlab(project.gitlab_url ?? "");
     setEditStatus(project.status);
     setEditTags(project.tags.join(", "));
     setEditing(true);
@@ -180,6 +183,7 @@ export default function ProjectDetailPage() {
       title: editTitle.trim(),
       description: editDesc.trim(),
       git_url: editGit.trim() || null,
+      gitlab_url: editGitlab.trim() || null,
       status: editStatus,
       tags: editTags.split(",").map((t) => t.trim()).filter(Boolean),
     });
@@ -369,6 +373,12 @@ export default function ProjectDetailPage() {
                       🐙 GitHub
                     </a>
                   )}
+                  {project.gitlab_url && (
+                    <a href={project.gitlab_url} target="_blank" rel="noopener"
+                      className="text-xs bg-orange-50 border border-orange-200 rounded-full px-2.5 py-1 text-orange-700 hover:border-orange-400 flex items-center gap-1">
+                      🦊 GitLab
+                    </a>
+                  )}
                 </div>
                 {/* Collaborators */}
                 <div className="flex items-center gap-2 mt-3">
@@ -402,8 +412,10 @@ export default function ProjectDetailPage() {
                 className="w-full text-xl font-bold border border-slate-200 rounded-xl px-4 py-2 outline-none focus:border-blue-500" />
               <textarea value={editDesc} onChange={(e) => setEditDesc(e.target.value)} rows={3}
                 className="w-full border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-500 resize-none" />
-              <input value={editGit} onChange={(e) => setEditGit(e.target.value)} placeholder="Git URL"
+              <input value={editGit} onChange={(e) => setEditGit(e.target.value)} placeholder="Git URL (GitHub)"
                 className="w-full border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-500 font-mono" />
+              <input value={editGitlab} onChange={(e) => setEditGitlab(e.target.value)} placeholder="GitLab URL (https://gitlab.com/…)"
+                className="w-full border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-orange-400 font-mono" />
               <input value={editTags} onChange={(e) => setEditTags(e.target.value)} placeholder="Tags (comma-separated)"
                 className="w-full border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-500" />
               <div className="flex gap-2">
@@ -574,6 +586,19 @@ export default function ProjectDetailPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* ── Code ── */}
+        {tab === "Code" && (
+          <GitLabPanel
+            projectId={project.id}
+            gitlabUrl={project.gitlab_url ?? null}
+            isOwner={isOwner}
+            onUrlSaved={(url) => {
+              const updated = updateProject(project.id, { gitlab_url: url || null });
+              if (updated) setProject(updated);
+            }}
+          />
         )}
 
         {/* ── Publications ── */}

@@ -12,6 +12,7 @@ export default function NewProjectPage() {
   const [description, setDesc]      = useState("");
   const [status, setStatus]         = useState<"active" | "completed" | "paused">("active");
   const [gitUrl, setGitUrl]         = useState("");
+  const [gitlabUrl, setGitlabUrl]   = useState("");
   const [tagsInput, setTagsInput]   = useState("");
   const [myPubs, setMyPubs]         = useState<Publication[]>([]);
   const [selectedPubs, setSelectedPubs] = useState<Set<string>>(new Set());
@@ -46,6 +47,7 @@ export default function NewProjectPage() {
       description: description.trim(),
       status,
       git_url: gitUrl.trim() || null,
+      gitlab_url: gitlabUrl.trim() || null,
       publication_ids: Array.from(selectedPubs),
       collaborator_ids: [],
       tags,
@@ -118,6 +120,18 @@ export default function NewProjectPage() {
               type="url"
               className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 font-mono"
             />
+          </div>
+
+          {/* GitLab URL */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5">
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">🦊 GitLab Repository (optional)</label>
+            <input
+              value={gitlabUrl} onChange={(e) => setGitlabUrl(e.target.value)}
+              placeholder="https://gitlab.com/username/repository"
+              type="url"
+              className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-50 font-mono"
+            />
+            <p className="text-xs text-slate-400 mt-1.5">Link a GitLab repo to enable the Code tab with live file browser</p>
           </div>
 
           {/* Tags */}
