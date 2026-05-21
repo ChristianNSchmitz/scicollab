@@ -212,3 +212,34 @@ html { scroll-behavior: smooth; }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ─── Force light mode on specific pages ────────────────────────
+   color-scheme: only light tells the browser (and Chrome's auto
+   dark-mode feature) to never invert colors inside this element.
+   Combine with hardcoded hex inline styles to also block our own
+   .dark !important overrides.
+   ─────────────────────────────────────────────────────────────── */
+.force-light {
+  color-scheme: only light;
+}
+
+/* Undo every .dark override for descendants of .force-light */
+.dark .force-light .bg-white    { background-color: #ffffff !important; }
+.dark .force-light .bg-slate-50 { background-color: #f8fafc !important; }
+.dark .force-light .text-slate-900 { color: #0f172a !important; }
+.dark .force-light .text-slate-800 { color: #1e293b !important; }
+.dark .force-light .text-slate-700 { color: #334155 !important; }
+.dark .force-light .text-slate-600 { color: #475569 !important; }
+.dark .force-light .text-slate-500 { color: #64748b !important; }
+.dark .force-light .text-slate-400 { color: #94a3b8 !important; }
+.dark .force-light .border-slate-200 { border-color: #e2e8f0 !important; }
+.dark .force-light .border-slate-100 { border-color: #f1f5f9 !important; }
+.dark .force-light input,
+.dark .force-light textarea,
+.dark .force-light select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+.dark .force-light input::placeholder,
+.dark .force-light textarea::placeholder { color: #94a3b8 !important; }

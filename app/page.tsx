@@ -74,8 +74,8 @@ function WaitlistForm({ compact = false }: { compact?: boolean }) {
 
 export default function LandingPage() {
   return (
-    /* Outer wrapper: hardcoded light bg — dark-mode selectors have no Tailwind classes to target here */
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: L.bg, color: L.text }}>
+    /* colorScheme:"only light" blocks browser forced-dark-mode; hardcoded hex blocks our custom .dark overrides */
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: L.bg, color: L.text, colorScheme: "only light" }}>
 
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
       <nav style={{ position: "sticky", top: 0, zIndex: 50, borderBottom: `1px solid ${L.border}`, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)" }}>

@@ -119,21 +119,21 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        {/* Card */}
-        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="px-8 py-5 border-b border-slate-100 bg-slate-50">
-            <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-0.5">
+        {/* Card — colorScheme:only light prevents browser & custom dark-mode from touching it */}
+        <div className="w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden" style={{ colorScheme: "only light", background: "#ffffff" }}>
+          <div style={{ padding: "20px 32px", borderBottom: "1px solid #f1f5f9", background: "#f8fafc" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#2563eb", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
               Step {currentStep + 1} of {STEPS.length}
             </div>
-            <h1 className="text-xl font-bold text-slate-900">{STEPS[currentStep].description}</h1>
+            <h1 style={{ fontSize: 20, fontWeight: 700, color: "#0f172a", margin: 0 }}>{STEPS[currentStep].description}</h1>
             {currentStep === 0 && (
-              <p className="text-sm text-slate-500 mt-1">
+              <p style={{ fontSize: 14, color: "#64748b", marginTop: 4, marginBottom: 0 }}>
                 Zero-friction onboarding — up and uploading in under 5 minutes.
               </p>
             )}
           </div>
 
-          <div className="px-8 py-8">
+          <div className="px-8 py-8 force-light" style={{ background: "#ffffff", color: "#0f172a" }}>
             {currentStep === 0 && <StepAccountCreation data={data} updateData={updateData} onNext={next} />}
             {currentStep === 1 && <StepLabWorkspace data={data} updateData={updateData} onNext={next} onBack={back} />}
             {currentStep === 2 && <StepExpertiseTags data={data} updateData={updateData} onNext={next} onBack={back} />}
