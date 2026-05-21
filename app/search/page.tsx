@@ -74,7 +74,11 @@ function ExperimentsTab({ query }: { query: string }) {
     <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
       <div className="text-4xl mb-3">🔎</div>
       <p className="font-semibold text-slate-800 mb-1">No experiments found for &ldquo;{query}&rdquo;</p>
-      <p className="text-sm text-slate-500">Try different keywords or <Link href="/experiments/new" className="text-blue-600 underline">upload yours</Link>.</p>
+      <p className="text-sm text-slate-500 mb-4">Try clearing filters or using different keywords.</p>
+      <Link href="/experiments/new"
+        className="inline-block bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors">
+        Upload your experiment →
+      </Link>
     </div>
   );
   return (
@@ -124,7 +128,11 @@ function PublicationsTab({ query }: { query: string }) {
     <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
       <div className="text-4xl mb-3">🔎</div>
       <p className="font-semibold text-slate-800 mb-1">No publications found for &ldquo;{query}&rdquo;</p>
-      <p className="text-sm text-slate-500">Try different keywords or <Link href="/publications/new" className="text-blue-600 underline">add yours</Link>.</p>
+      <p className="text-sm text-slate-500 mb-4">Try different keywords — author names, journal, or topic.</p>
+      <Link href="/publications/new"
+        className="inline-block bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors">
+        Add your publication →
+      </Link>
     </div>
   );
   const typeIcon: Record<string, string> = { paper: "📄", preprint: "📋", dataset: "🗄️", code: "💻", thesis: "🎓" };
@@ -201,7 +209,17 @@ function ProjectsTab({ query }: { query: string }) {
     <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
       <div className="text-4xl mb-3">🔎</div>
       <p className="font-semibold text-slate-800 mb-1">No projects found for &ldquo;{query}&rdquo;</p>
-      <p className="text-sm text-slate-500">Try different keywords or <Link href="/projects/new" className="text-blue-600 underline">start one</Link>.</p>
+      <p className="text-sm text-slate-500 mb-4">Try broader keywords, or browse all projects.</p>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <Link href="/projects/new"
+          className="inline-block bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors">
+          Create a project →
+        </Link>
+        <Link href="/search?q=&tab=Projects"
+          className="inline-block border border-slate-200 text-slate-700 text-sm font-semibold px-4 py-2 rounded-xl hover:bg-slate-50 transition-colors">
+          Browse all projects
+        </Link>
+      </div>
     </div>
   );
   return (
@@ -246,7 +264,7 @@ function PeopleTab({ query }: { query: string }) {
         <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
           <div className="text-4xl mb-3">👤</div>
           <p className="font-semibold text-slate-800 mb-1">No researchers found for &ldquo;{query}&rdquo;</p>
-          <p className="text-sm text-slate-500">Try different keywords.</p>
+          <p className="text-sm text-slate-500">Try a shorter search term — first name, institution, or field.</p>
         </div>
       ) : (
         <div className="space-y-3">

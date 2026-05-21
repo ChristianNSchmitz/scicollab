@@ -214,12 +214,12 @@ export default function LandingPage() {
       </section>
 
       {/* Quote */}
-      <section className="py-16 px-6 bg-slate-900 text-white">
+      <section className="py-16 px-6 bg-slate-900 dark:bg-slate-800 text-white">
         <div className="max-w-3xl mx-auto text-center">
           <blockquote className="text-xl font-medium leading-relaxed mb-6 text-slate-100">
             &ldquo;A dedicated database of what didn&apos;t work would save others months of troubleshooting.&rdquo;
           </blockquote>
-          <cite className="text-sm text-slate-400 not-italic">
+          <cite className="text-sm not-italic" style={{ color: "#94a3b8" }}>
             Tanzila Mukhtar · Researcher interview, Nov 2025
           </cite>
         </div>

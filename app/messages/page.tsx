@@ -115,8 +115,8 @@ function MessagesInner() {
       <div className="max-w-5xl mx-auto px-4 py-6">
         <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden" style={{ height: "calc(100vh - 120px)", minHeight: 500 }}>
           <div className="flex h-full">
-            {/* Conversation list */}
-            <div className="w-72 border-r border-slate-200 flex flex-col flex-shrink-0">
+            {/* Conversation list — hidden on mobile when a conv is active */}
+            <div className={`${activeConv ? "hidden md:flex" : "flex"} w-full md:w-72 border-r border-slate-200 flex-col flex-shrink-0`}>
               <div className="px-4 py-4 border-b border-slate-200">
                 <div className="flex items-center justify-between">
                   <h2 className="font-bold text-slate-900">Messages</h2>
@@ -162,8 +162,12 @@ function MessagesInner() {
                 {convos.length === 0 ? (
                   <div className="text-center py-12 px-4">
                     <p className="text-3xl mb-2">✉️</p>
-                    <p className="text-sm text-slate-500">No conversations yet.</p>
-                    <Link href="/discover" className="text-xs text-blue-600 hover:underline mt-1 block">Find researchers →</Link>
+                    <p className="text-sm font-semibold text-slate-700 mb-1">No conversations yet</p>
+                    <p className="text-xs text-slate-400 mb-3">Start a direct conversation with any researcher on the platform</p>
+                    <Link href="/discover" className="text-xs text-blue-600 hover:underline block mb-2">Find researchers →</Link>
+                    <Link href="/discover" className="block text-xs bg-blue-50 text-blue-700 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition-colors font-medium">
+                      Browse profiles
+                    </Link>
                   </div>
                 ) : convos.map((conv) => {
                   const otherId   = conv.participant_ids.find((id) => id !== getCurrentUserId());
@@ -198,8 +202,8 @@ function MessagesInner() {
               </div>
             </div>
 
-            {/* Message thread */}
-            <div className="flex-1 flex flex-col">
+            {/* Message thread — hidden on mobile when no conv active */}
+            <div className={`${activeConv ? "flex" : "hidden md:flex"} flex-1 flex-col min-w-0`}>
               {!activeConv || !active ? (
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center">
@@ -211,6 +215,13 @@ function MessagesInner() {
                 <>
                   {/* Header */}
                   <div className="px-5 py-4 border-b border-slate-200 flex items-center gap-3">
+                    {/* Back button — mobile only */}
+                    <button
+                      onClick={() => setActiveConv(null)}
+                      className="md:hidden text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 mr-1"
+                    >
+                      ← Back
+                    </button>
                     {otherUser && (
                       <>
                         <Link href={`/profile/${otherUserId}`}

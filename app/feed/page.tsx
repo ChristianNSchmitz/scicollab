@@ -474,10 +474,10 @@ export default function FeedPage() {
       <NavBar />
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 items-start">
 
           {/* ── Main feed column ── */}
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0">
 
             {/* Compose */}
             <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-6 shadow-sm">
@@ -486,7 +486,7 @@ export default function FeedPage() {
                   <textarea rows={4} value={newPost} onChange={(e) => setNewPost(e.target.value)}
                     placeholder="Share a finding, ask a question, or announce something…"
                     className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-500 resize-none mb-3" autoFocus />
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <button onClick={handlePost} disabled={posting || !newPost.trim()}
                       className="bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors">
                       {posting ? "Posting…" : "Post"}
@@ -517,7 +517,7 @@ export default function FeedPage() {
             </div>
 
             {/* Filter tabs */}
-            <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
+            <div className="flex gap-2 mb-5 overflow-x-auto scrollbar-hide pb-1">
               {FILTERS.map((f) => (
                 <button key={f} onClick={() => setFilter(f)}
                   className={`flex-shrink-0 text-sm px-4 py-2 rounded-full font-medium transition-colors ${filter === f ? "bg-blue-600 text-white" : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"}`}>
@@ -668,7 +668,7 @@ export default function FeedPage() {
                       })()}
 
                       {/* Action bar */}
-                      <div className="flex items-center gap-1 pt-3 border-t border-slate-100">
+                      <div className="flex flex-wrap items-center gap-1 pt-3 border-t border-slate-100">
                         <button onClick={() => handleLike(post.id)}
                           className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg font-medium transition-colors ${hasLiked ? "text-red-500 bg-red-50" : "text-slate-500 hover:bg-slate-50"}`}>
                           {hasLiked ? "❤️" : "🤍"} {post.like_count}
@@ -718,7 +718,7 @@ export default function FeedPage() {
           </div>
 
           {/* ── Right sidebar ── */}
-          <aside className="w-72 flex-shrink-0 hidden lg:flex flex-col gap-4 sticky top-20">
+          <aside className="hidden lg:flex flex-col gap-4 sticky top-20">
             <HotTopics userSkills={userSkills} />
             <TopContributors userDomain={userDomain} userSkills={userSkills} />
             <PeerContributions following={following} />

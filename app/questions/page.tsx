@@ -92,9 +92,19 @@ export default function QuestionsPage() {
             {/* List */}
             {visible.length === 0 ? (
               <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
-                <p className="text-3xl mb-2">💬</p>
-                <p className="font-semibold text-slate-800">No questions found</p>
-                <Link href="/questions/new" className="text-sm text-blue-600 hover:underline mt-2 block">Be the first to ask →</Link>
+                <p className="text-3xl mb-3">❓</p>
+                <p className="font-semibold text-slate-800 mb-2">No questions yet</p>
+                <p className="text-sm text-slate-500 mb-5 max-w-xs mx-auto">Be the first to ask — or browse experiments to find something worth asking about.</p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link href="/questions/new"
+                    className="inline-block bg-blue-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-blue-700 transition-colors">
+                    Ask a Question
+                  </Link>
+                  <Link href="/experiments"
+                    className="inline-block border border-slate-200 text-slate-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-slate-50 transition-colors">
+                    Browse Experiments
+                  </Link>
+                </div>
               </div>
             ) : (
               <div className="space-y-3">

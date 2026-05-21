@@ -175,7 +175,7 @@ export default function AnalyticsPage() {
                   </Link>
                   <div className="flex-1 bg-slate-100 rounded-full h-3 overflow-hidden">
                     <div
-                      className="h-full bg-blue-500 rounded-full transition-all"
+                      className="h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all"
                       style={{ width: `${Math.round((e.views / maxViews) * 100)}%` }}
                     />
                   </div>

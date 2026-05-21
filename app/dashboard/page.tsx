@@ -71,9 +71,9 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
-            <div className="flex gap-3">
-              <Link href="/experiments/new" className="bg-white text-blue-700 text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-50 transition-colors">+ Upload</Link>
-              <Link href="/feed" className="bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-400 border border-blue-400 transition-colors">Feed →</Link>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/experiments/new" className="bg-white text-blue-700 text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-50 transition-colors text-center">+ Upload</Link>
+              <Link href="/feed" className="bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-400 border border-blue-400 transition-colors text-center">Feed →</Link>
             </div>
           </div>
         </div>
@@ -94,6 +94,26 @@ export default function DashboardPage() {
           ))}
         </div>
 
+        {/* Mobile quick access — icon row visible below lg */}
+        <div className="flex lg:hidden gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">
+          {[
+            ["🏠", "Feed",        "/feed"],
+            ["🔍", "Search",      "/search"],
+            ["💬", "Q&A",         "/questions"],
+            ["📄", "Papers",      "/publications"],
+            ["🌐", "Discover",    "/discover"],
+            ["✉️", "Messages",   "/messages"],
+            ["📊", "Analytics",  "/analytics"],
+            ["⚙️", "Settings",   "/settings"],
+          ].map(([icon, label, href]) => (
+            <Link key={href} href={href}
+              className="flex flex-col items-center gap-1 flex-shrink-0 bg-white border border-slate-200 rounded-xl px-3 py-2 hover:border-blue-200 transition-colors text-center">
+              <span className="text-xl leading-none">{icon}</span>
+              <span className="text-xs text-slate-500 whitespace-nowrap">{label}</span>
+            </Link>
+          ))}
+        </div>
+
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
@@ -103,10 +123,15 @@ export default function DashboardPage() {
             {myExps.length === 0 ? (
               <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-8 text-center">
                 <div className="text-4xl mb-3">🔬</div>
-                <p className="font-semibold text-slate-800 mb-4">No experiments yet</p>
-                <Link href="/experiments/new" className="inline-block bg-blue-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-blue-700">
+                <p className="font-semibold text-slate-800 mb-1">No experiments yet</p>
+                <p className="text-sm text-slate-500 mb-4 max-w-xs mx-auto">Upload your first protocol, successful or failed — every result helps the community</p>
+                <Link href="/experiments/new" className="inline-block bg-blue-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-blue-700 mb-3">
                   Upload first experiment →
                 </Link>
+                <p className="text-sm text-slate-400">
+                  or{" "}
+                  <Link href="/experiments" className="text-blue-600 hover:underline">explore community experiments →</Link>
+                </p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -118,7 +143,7 @@ export default function DashboardPage() {
                       <p className="font-semibold text-slate-900 truncate">{exp.title}</p>
                       <p className="text-xs text-slate-400">{exp.protocol_version} · {timeAgo(exp.created_at)}</p>
                     </div>
-                    <div className="flex gap-1">
+                    <div className="hidden sm:flex gap-1">
                       {exp.technique_tags.slice(0, 2).map((t) => <span key={t} className="text-xs bg-blue-50 text-blue-700 rounded-full px-2 py-0.5 border border-blue-100">{t}</span>)}
                     </div>
                   </Link>
@@ -141,7 +166,7 @@ export default function DashboardPage() {
                         <p className="font-medium text-slate-900 truncate">{exp.title}</p>
                         <p className="text-xs text-slate-400">{timeAgo(exp.created_at)}</p>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="hidden sm:flex gap-1">
                         {exp.technique_tags.slice(0, 1).map((t) => <span key={t} className="text-xs bg-slate-50 text-slate-600 rounded-full px-2 py-0.5 border border-slate-200">{t}</span>)}
                       </div>
                     </Link>

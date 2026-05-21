@@ -163,6 +163,16 @@ body {
 .dark .to-indigo-600 { --tw-gradient-to:   #4338ca !important; }
 .dark .to-blue-700   { --tw-gradient-to:   #1e40af !important; }
 
+/* ─── Gradient backgrounds for hero / page sections ────────────
+   Without these, from-slate-50 and to-white stay light in dark
+   mode while text is inverted to near-white → invisible text.
+   ─────────────────────────────────────────────────────────────── */
+.dark .from-slate-50 { --tw-gradient-from: #0f172a !important; }
+.dark .from-white    { --tw-gradient-from: #1e293b !important; }
+.dark .to-white      { --tw-gradient-to:   #1e293b !important; }
+.dark .to-blue-50    { --tw-gradient-to:   #172554 !important; }
+.dark .to-slate-50   { --tw-gradient-to:   #0f172a !important; }
+
 /* ─── Smooth scrolling ───────────────────────────────────────── */
 html { scroll-behavior: smooth; }
 
