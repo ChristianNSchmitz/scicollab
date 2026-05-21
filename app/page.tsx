@@ -4,9 +4,25 @@ import { useState } from "react";
 import Link from "next/link";
 import { addToWaitlist } from "@/lib/mock-db";
 
+/* ─── Hardcoded light-mode palette ─────────────────────────────────────────
+   The landing page is intentionally always in light mode (like most SaaS
+   marketing sites). We use inline hex values instead of Tailwind color
+   classes so that globals.css dark-mode !important overrides have nothing
+   to target.
+────────────────────────────────────────────────────────────────────────── */
+const L = {
+  bg:       "#f8fafc",   // slate-50
+  surface:  "#ffffff",
+  surface2: "#f1f5f9",   // slate-100
+  border:   "#e2e8f0",   // slate-200
+  text:     "#0f172a",   // slate-900
+  muted:    "#475569",   // slate-600
+  subtle:   "#94a3b8",   // slate-400
+};
+
 function WaitlistForm({ compact = false }: { compact?: boolean }) {
-  const [email, setEmail]     = useState("");
-  const [status, setStatus]   = useState<"idle" | "success" | "dupe" | "invalid">("idle");
+  const [email, setEmail]   = useState("");
+  const [status, setStatus] = useState<"idle" | "success" | "dupe" | "invalid">("idle");
   const [loading, setLoading] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
@@ -23,248 +39,205 @@ function WaitlistForm({ compact = false }: { compact?: boolean }) {
 
   if (status === "success") {
     return (
-      <div className={`flex items-center gap-2 text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 ${compact ? "text-sm" : ""}`}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 12, padding: "12px 16px", color: "#15803d", fontSize: compact ? 14 : 16 }}>
         <span>🎉</span>
-        <span className="font-medium">You&apos;re on the list! We&apos;ll be in touch.</span>
+        <span style={{ fontWeight: 600 }}>You&apos;re on the list! We&apos;ll be in touch.</span>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`flex gap-2 ${compact ? "flex-col sm:flex-row" : "flex-col sm:flex-row"}`}>
+    <form onSubmit={handleSubmit} style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
       <input
         type="email"
         placeholder="your@institution.edu"
         value={email}
         onChange={(e) => { setEmail(e.target.value); if (status !== "idle") setStatus("idle"); }}
-        className={`flex-1 border border-slate-300 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors ${
-          status === "invalid" ? "border-red-400" : ""
-        }`}
+        style={{
+          flex: 1, minWidth: 180, border: `1px solid ${status === "invalid" ? "#f87171" : L.border}`,
+          borderRadius: 12, padding: "12px 16px", fontSize: 14, outline: "none",
+          background: L.surface, color: L.text,
+        }}
       />
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-sm whitespace-nowrap disabled:opacity-60"
+        style={{ background: "#2563eb", color: "#fff", border: "none", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.6 : 1, whiteSpace: "nowrap" }}
       >
         {loading ? "Joining…" : "Request access"}
       </button>
-      {status === "dupe" && (
-        <p className="text-xs text-amber-600 self-center">You&apos;re already on the list!</p>
-      )}
-      {status === "invalid" && (
-        <p className="text-xs text-red-500 self-center">Please enter a valid email.</p>
-      )}
+      {status === "dupe"    && <p style={{ fontSize: 12, color: "#d97706", alignSelf: "center", margin: 0 }}>You&apos;re already on the list!</p>}
+      {status === "invalid" && <p style={{ fontSize: 12, color: "#dc2626", alignSelf: "center", margin: 0 }}>Please enter a valid email.</p>}
     </form>
   );
 }
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-blue-600 tracking-tight">SciCollab</span>
-            <span className="text-xs font-medium text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 ml-1">beta</span>
+    /* Outer wrapper: hardcoded light bg — dark-mode selectors have no Tailwind classes to target here */
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: L.bg, color: L.text }}>
+
+      {/* ── Nav ─────────────────────────────────────────────────────────── */}
+      <nav style={{ position: "sticky", top: 0, zIndex: 50, borderBottom: `1px solid ${L.border}`, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 22, fontWeight: 700, color: "#2563eb", letterSpacing: "-0.02em" }}>SciCollab</span>
+            <span style={{ fontSize: 11, fontWeight: 500, color: L.subtle, border: `1px solid ${L.border}`, borderRadius: 4, padding: "2px 6px" }}>beta</span>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">Sign in</Link>
-            <Link
-              href="/onboarding"
-              className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <Link href="/login" style={{ fontSize: 14, color: L.muted, textDecoration: "none" }}>Sign in</Link>
+            <Link href="/onboarding" style={{ fontSize: 14, background: "#2563eb", color: "#fff", padding: "8px 16px", borderRadius: 8, fontWeight: 600, textDecoration: "none" }}>
               Join for free
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero — inline styles use CSS vars to bypass global dark-mode !important overrides */}
-      <section
-        className="flex-1 flex flex-col items-center justify-center text-center px-6 py-24"
-        style={{ background: "var(--background)" }}
-      >
-        <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-1.5 mb-8">
-          <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-          <span className="text-xs font-medium text-blue-700">Invite-only beta · 418 experiments uploaded</span>
+      {/* ── Hero ────────────────────────────────────────────────────────── */}
+      <section style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "96px 24px", background: L.bg }}>
+
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "6px 16px", marginBottom: 32 }}>
+          <span style={{ width: 8, height: 8, background: "#3b82f6", borderRadius: "50%", display: "inline-block", animation: "pulse 2s infinite" }} />
+          <span style={{ fontSize: 12, fontWeight: 500, color: "#1d4ed8" }}>Invite-only beta · 418 experiments uploaded</span>
         </div>
 
-        <h1
-          className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.15] max-w-3xl mb-6"
-          style={{ color: "var(--foreground)" }}
-        >
+        <h1 style={{ fontSize: "clamp(2rem, 5vw, 3.75rem)", fontWeight: 700, lineHeight: 1.15, maxWidth: 768, marginBottom: 24, color: L.text }}>
           Where scientists{" "}
-          <span className="text-blue-600">debug their&nbsp;research</span>{" "}
+          <span style={{ color: "#2563eb" }}>debug their&nbsp;research</span>{" "}
           together
         </h1>
 
-        <p
-          className="text-lg max-w-2xl mb-10 leading-relaxed"
-          style={{ color: "var(--muted)" }}
-        >
+        <p style={{ fontSize: 18, color: L.muted, maxWidth: 640, marginBottom: 40, lineHeight: 1.7 }}>
           A collaborative platform for live and unpublished raw science — every experiment,
           successful or not, becomes a building block for the next breakthrough.
           GitHub × Stack Overflow × Database, built for the lab bench.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          <Link
-            href="/onboarding"
-            className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-base shadow-sm"
-          >
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginBottom: 24 }}>
+          <Link href="/onboarding" style={{ background: "#2563eb", color: "#fff", padding: "14px 32px", borderRadius: 12, fontWeight: 600, fontSize: 16, textDecoration: "none", boxShadow: "0 1px 3px rgba(0,0,0,.12)" }}>
             Get started — it&apos;s free
           </Link>
-          <a
-            href="#how-it-works"
-            className="border border-slate-300 px-8 py-3.5 rounded-xl font-semibold hover:bg-slate-50 transition-colors text-base"
-            style={{ color: "var(--foreground)" }}
-          >
+          <a href="#how-it-works" style={{ border: `1px solid ${L.border}`, color: L.text, padding: "14px 32px", borderRadius: 12, fontWeight: 600, fontSize: 16, textDecoration: "none" }}>
             See how it works
           </a>
         </div>
 
-        {/* Waitlist inline */}
-        <div className="w-full max-w-md mb-12">
-          <p className="text-xs mb-2" style={{ color: "var(--muted)" }}>Or join the waitlist — no commitment:</p>
+        <div style={{ width: "100%", maxWidth: 448, marginBottom: 48 }}>
+          <p style={{ fontSize: 12, color: L.subtle, marginBottom: 8 }}>Or join the waitlist — no commitment:</p>
           <WaitlistForm />
-          <p className="text-xs mt-2" style={{ color: "var(--muted)" }}>
+          <p style={{ fontSize: 12, color: L.subtle, marginTop: 8 }}>
             Already have a code?{" "}
-            <Link href="/onboarding" className="text-blue-600 hover:underline">Sign up →</Link>
+            <Link href="/onboarding" style={{ color: "#2563eb" }}>Sign up →</Link>
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-2xl w-full">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 32, maxWidth: 640, width: "100%" }}>
           {[
             { value: "67%",  label: "of experiments never shared — until now" },
             { value: "100%", label: "of researchers use AI as their first step" },
             { value: "<24h", label: "peer answers in our concierge prototype" },
             { value: "$28B", label: "wasted annually on non-reproducible research" },
-          ].map((stat) => (
-            <div key={stat.value} className="text-center">
-              <div className="text-2xl font-bold" style={{ color: "var(--foreground)" }}>{stat.value}</div>
-              <div className="text-xs mt-1 leading-snug" style={{ color: "var(--muted)" }}>{stat.label}</div>
+          ].map((s) => (
+            <div key={s.value} style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 24, fontWeight: 700, color: L.text }}>{s.value}</div>
+              <div style={{ fontSize: 12, color: L.subtle, marginTop: 4, lineHeight: 1.4 }}>{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="how-it-works" className="py-24 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">One platform. Three jobs done.</h2>
-            <p className="text-slate-600 max-w-xl mx-auto">
+      {/* ── How it works ────────────────────────────────────────────────── */}
+      <section id="how-it-works" style={{ padding: "96px 24px", background: L.surface }}>
+        <div style={{ maxWidth: 1024, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <h2 style={{ fontSize: 30, fontWeight: 700, color: L.text, marginBottom: 16 }}>One platform. Three jobs done.</h2>
+            <p style={{ color: L.muted, maxWidth: 480, margin: "0 auto" }}>
               Scientists have GitHub for code, Stack Overflow for debugging, and databases for data.
               SciCollab connects all three for the experimental lab.
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 32 }}>
             {[
-              {
-                icon: "🧪",
-                title: "Method Cards",
-                description:
-                  "Structured experiment records with protocol version, conditions, reagents, and outcomes. Negative results are first-class citizens — not an afterthought.",
-                tag: "Upload & Tag",
-              },
-              {
-                icon: "💬",
-                title: "Peer Q&A",
-                description:
-                  "Ask questions grounded in specific experiments. AI routes to researchers with matching expertise. Every answer enriches the method card.",
-                tag: "Ask Peers",
-              },
-              {
-                icon: "🤖",
-                title: "AI Retrieval",
-                description:
-                  "AI grounded in structured artifacts — not generative hallucination. If no experiment matches your query, it says so. Reliable, not just confident.",
-                tag: "Search & Discover",
-              },
-            ].map((feature) => (
-              <div key={feature.title} className="border border-slate-200 rounded-2xl p-6 hover:border-blue-200 hover:shadow-sm transition-all">
-                <div className="text-3xl mb-4">{feature.icon}</div>
-                <div className="inline-block text-xs font-medium text-blue-600 bg-blue-50 rounded-full px-2.5 py-0.5 mb-3">
-                  {feature.tag}
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{feature.description}</p>
+              { icon: "🧪", tag: "Upload & Tag",    title: "Method Cards",  desc: "Structured experiment records with protocol version, conditions, reagents, and outcomes. Negative results are first-class citizens — not an afterthought." },
+              { icon: "💬", tag: "Ask Peers",        title: "Peer Q&A",      desc: "Ask questions grounded in specific experiments. AI routes to researchers with matching expertise. Every answer enriches the method card." },
+              { icon: "🤖", tag: "Search & Discover",title: "AI Retrieval",  desc: "AI grounded in structured artifacts — not generative hallucination. If no experiment matches your query, it says so. Reliable, not just confident." },
+            ].map((f) => (
+              <div key={f.title} style={{ border: `1px solid ${L.border}`, borderRadius: 16, padding: 24 }}>
+                <div style={{ fontSize: 30, marginBottom: 16 }}>{f.icon}</div>
+                <span style={{ fontSize: 11, fontWeight: 600, color: "#2563eb", background: "#eff6ff", borderRadius: 999, padding: "3px 10px", display: "inline-block", marginBottom: 12 }}>{f.tag}</span>
+                <h3 style={{ fontSize: 18, fontWeight: 600, color: L.text, marginBottom: 8 }}>{f.title}</h3>
+                <p style={{ fontSize: 14, color: L.muted, lineHeight: 1.6 }}>{f.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Workflow steps */}
-      <section className="py-24 px-6 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">How researchers use SciCollab</h2>
-            <p className="text-slate-600">From onboarding to breakthrough — the full loop.</p>
+      {/* ── Workflow steps ───────────────────────────────────────────────── */}
+      <section style={{ padding: "96px 24px", background: L.surface2 }}>
+        <div style={{ maxWidth: 896, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <h2 style={{ fontSize: 30, fontWeight: 700, color: L.text, marginBottom: 16 }}>How researchers use SciCollab</h2>
+            <p style={{ color: L.muted }}>From onboarding to breakthrough — the full loop.</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
             {[
-              { step: "01", title: "Onboard", desc: "Sign up, verify ORCID, join your lab workspace" },
-              { step: "02", title: "Upload", desc: "Create a method card with conditions, protocol, and outcome" },
-              { step: "03", title: "Search", desc: "AI-grounded discovery across all structured experiments" },
-              { step: "04", title: "Ask Peers", desc: "Post Q&A anchored to specific experiment artifacts" },
-              { step: "05", title: "Fork & Adapt", desc: "Build on existing protocols with tracked attribution" },
-              { step: "06", title: "Contribute Back", desc: "Earn reputation — even from negative results" },
+              { step: "01", title: "Onboard",         desc: "Sign up, verify ORCID, join your lab workspace" },
+              { step: "02", title: "Upload",           desc: "Create a method card with conditions, protocol, and outcome" },
+              { step: "03", title: "Search",           desc: "AI-grounded discovery across all structured experiments" },
+              { step: "04", title: "Ask Peers",        desc: "Post Q&A anchored to specific experiment artifacts" },
+              { step: "05", title: "Fork & Adapt",     desc: "Build on existing protocols with tracked attribution" },
+              { step: "06", title: "Contribute Back",  desc: "Earn reputation — even from negative results" },
             ].map((item) => (
-              <div key={item.step} className="bg-white rounded-xl p-5 border border-slate-200">
-                <div className="text-xs font-bold text-blue-500 mb-2">{item.step}</div>
-                <div className="font-semibold text-slate-900 mb-1">{item.title}</div>
-                <div className="text-sm text-slate-500">{item.desc}</div>
+              <div key={item.step} style={{ background: L.surface, borderRadius: 12, padding: 20, border: `1px solid ${L.border}` }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#3b82f6", marginBottom: 8 }}>{item.step}</div>
+                <div style={{ fontWeight: 600, color: L.text, marginBottom: 4 }}>{item.title}</div>
+                <div style={{ fontSize: 14, color: L.muted }}>{item.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Quote */}
-      <section className="py-16 px-6 bg-slate-900 dark:bg-slate-800 text-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <blockquote className="text-xl font-medium leading-relaxed mb-6 text-slate-100">
+      {/* ── Quote ───────────────────────────────────────────────────────── */}
+      <section style={{ padding: "64px 24px", background: "#0f172a" }}>
+        <div style={{ maxWidth: 768, margin: "0 auto", textAlign: "center" }}>
+          <blockquote style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.7, color: "#f1f5f9", marginBottom: 24 }}>
             &ldquo;A dedicated database of what didn&apos;t work would save others months of troubleshooting.&rdquo;
           </blockquote>
-          <cite className="text-sm not-italic" style={{ color: "#94a3b8" }}>
+          <cite style={{ fontSize: 14, color: "#94a3b8", fontStyle: "normal" }}>
             Tanzila Mukhtar · Researcher interview, Nov 2025
           </cite>
         </div>
       </section>
 
-      {/* CTA with waitlist — inline style avoids gradient dark-mode issue */}
-      <section className="py-24 px-6" style={{ background: "var(--surface-2)" }}>
-        <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4" style={{ color: "var(--foreground)" }}>
+      {/* ── CTA ─────────────────────────────────────────────────────────── */}
+      <section style={{ padding: "96px 24px", background: "#eff6ff" }}>
+        <div style={{ maxWidth: 512, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: 30, fontWeight: 700, color: L.text, marginBottom: 16 }}>
             Ready to stop losing research?
           </h2>
-          <p className="mb-8" style={{ color: "var(--muted)" }}>
+          <p style={{ color: L.muted, marginBottom: 32 }}>
             Join the beta. Get your lab workspace, upload your first experiment, and connect with peers in under 5 minutes.
           </p>
-          <Link
-            href="/onboarding"
-            className="inline-block bg-blue-600 text-white px-10 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-base shadow-sm mb-6"
-          >
+          <Link href="/onboarding" style={{ display: "inline-block", background: "#2563eb", color: "#fff", padding: "16px 40px", borderRadius: 12, fontWeight: 600, fontSize: 16, textDecoration: "none", boxShadow: "0 1px 3px rgba(0,0,0,.15)", marginBottom: 24 }}>
             Create your account →
           </Link>
-          <p className="text-sm mb-4" style={{ color: "var(--muted)" }}>or join the waitlist:</p>
+          <p style={{ fontSize: 14, color: L.muted, marginBottom: 16 }}>or join the waitlist:</p>
           <WaitlistForm compact />
-          <p className="text-xs mt-4" style={{ color: "var(--muted)" }}>Free for individual researchers · No credit card required</p>
+          <p style={{ fontSize: 12, color: L.subtle, marginTop: 16 }}>Free for individual researchers · No credit card required</p>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 py-8 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-blue-600">SciCollab</span>
-            <span className="text-xs text-slate-400">… Science Made Easy</span>
+      {/* ── Footer ──────────────────────────────────────────────────────── */}
+      <footer style={{ borderTop: `1px solid ${L.border}`, padding: "32px 24px", background: L.surface }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontWeight: 700, color: "#2563eb" }}>SciCollab</span>
+            <span style={{ fontSize: 12, color: L.subtle }}>… Science Made Easy</span>
           </div>
-          <p className="text-xs text-slate-400">© 2026 SciCollab · EU data residency · GDPR compliant</p>
+          <p style={{ fontSize: 12, color: L.subtle }}>© 2026 SciCollab · EU data residency · GDPR compliant</p>
         </div>
       </footer>
     </div>
