@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getAllPublications, getProfile, toggleLikePublication, deletePublication, MOCK_USER_ID, type Publication } from "@/lib/mock-db";
+import { getAllPublications, getProfile, toggleLikePublication, deletePublication, getCurrentUserId, type Publication } from "@/lib/mock-db";
 import { useToast } from "@/lib/toast";
 import { PublicationSkeleton } from "@/components/Skeleton";
 
@@ -138,8 +138,9 @@ export default function PublicationsPage() {
           <div className="space-y-4">
             {visible.map((pub) => {
               const author  = getProfile(pub.user_id);
-              const hasLiked = pub.liked_by.includes(MOCK_USER_ID);
-              const isOwn = pub.user_id === MOCK_USER_ID;
+              const currentId = getCurrentUserId();
+              const hasLiked = pub.liked_by.includes(currentId);
+              const isOwn = pub.user_id === currentId;
               const isConfirming = confirmDelete === pub.id;
               return (
                 <div key={pub.id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-200 transition-colors">

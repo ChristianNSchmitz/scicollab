@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { saveProject, getUserPublications, MOCK_USER_ID, type Publication } from "@/lib/mock-db";
+import { saveProject, getUserPublications, getCurrentUserId, getMockProfile, type Publication } from "@/lib/mock-db";
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function NewProjectPage() {
   const [saving, setSaving]         = useState(false);
 
   useEffect(() => {
-    setMyPubs(getUserPublications(MOCK_USER_ID));
+    setMyPubs(getUserPublications(getCurrentUserId()));
   }, []);
 
   const filteredPubs = myPubs.filter((p) =>
@@ -41,7 +41,7 @@ export default function NewProjectPage() {
     setSaving(true);
     const tags = tagsInput.split(",").map((t) => t.trim()).filter(Boolean);
     const proj = saveProject({
-      user_id: MOCK_USER_ID,
+      user_id: getCurrentUserId(),
       title: title.trim(),
       description: description.trim(),
       status,

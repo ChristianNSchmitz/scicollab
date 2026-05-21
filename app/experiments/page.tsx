@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getAllExperiments, getProfile, type Experiment } from "@/lib/mock-db";
+import { getAllExperiments, getProfile, getExperimentViews, type Experiment } from "@/lib/mock-db";
 import { ExperimentSkeleton } from "@/components/Skeleton";
 
 function timeAgo(d: string) {
@@ -194,13 +194,19 @@ export default function ExperimentsPage() {
                     <p className="text-sm text-slate-600 line-clamp-2 mb-3">{exp.outcome_summary}</p>
                   )}
 
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-1.5 mb-2">
                     {exp.technique_tags.map((t) => (
                       <span key={t} className="text-xs bg-blue-50 text-blue-700 rounded-full px-2 py-0.5 border border-blue-100">{t}</span>
                     ))}
                     {exp.organism_tags.map((t) => (
                       <span key={t} className="text-xs bg-emerald-50 text-emerald-700 rounded-full px-2 py-0.5 border border-emerald-100">{t}</span>
                     ))}
+                  </div>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="text-xs text-slate-400">👁 {getExperimentViews(exp.id).toLocaleString()} views</span>
+                    {exp.attached_files?.length > 0 && (
+                      <span className="text-xs text-slate-400">📎 {exp.attached_files.length} file{exp.attached_files.length !== 1 ? "s" : ""}</span>
+                    )}
                   </div>
                 </Link>
               );

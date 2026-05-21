@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getProjects, getProfile, MOCK_USER_ID, type Project } from "@/lib/mock-db";
+import { getProjects, getProfile, getCurrentUserId, type Project } from "@/lib/mock-db";
 
 type FilterTab = "All" | "Active" | "Completed" | "Paused" | "Mine";
 const STATUS_BADGE: Record<Project["status"], string> = {
@@ -27,7 +27,7 @@ export default function ProjectsPage() {
 
   const visible = projects.filter((p) => {
     if (filterTab === "All") return true;
-    if (filterTab === "Mine") return p.user_id === MOCK_USER_ID || p.collaborator_ids.includes(MOCK_USER_ID);
+    if (filterTab === "Mine") { const cid = getCurrentUserId(); return p.user_id === cid || p.collaborator_ids.includes(cid); }
     return p.status === filterTab.toLowerCase();
   });
 

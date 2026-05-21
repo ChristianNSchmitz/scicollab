@@ -6,7 +6,7 @@ import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
   getStandaloneQuestion, getProfile, saveStandaloneAnswer, voteStandaloneQuestion,
-  MOCK_USER_ID, type StandaloneQuestion, type StandaloneAnswer,
+  getCurrentUserId, type StandaloneQuestion, type StandaloneAnswer,
 } from "@/lib/mock-db";
 
 function timeAgo(d: string) {
@@ -146,7 +146,7 @@ export default function QuestionDetailPage() {
             {/* Answer form */}
             <div className="bg-white border border-slate-200 rounded-2xl p-6">
               <h2 className="font-semibold text-slate-900 mb-3">Your Answer</h2>
-              {q.user_id === MOCK_USER_ID ? (
+              {q.user_id === getCurrentUserId() ? (
                 <p className="text-sm text-slate-500 italic">You asked this question. You&apos;ll be notified when others answer.</p>
               ) : (
                 <form onSubmit={handleAnswer}>

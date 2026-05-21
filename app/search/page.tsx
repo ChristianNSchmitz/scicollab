@@ -6,8 +6,8 @@ import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
   searchExperiments, searchProfiles, searchPublications, getProjects,
-  getProfile, isFollowing, toggleFollow,
-  MOCK_USER_ID, type Experiment, type Publication, type Profile, type Project,
+  getProfile, isFollowing, toggleFollow, getCurrentUserId,
+  type Experiment, type Publication, type Profile, type Project,
 } from "@/lib/mock-db";
 
 type Tab = "Experiments" | "Publications" | "Projects" | "People";
@@ -49,7 +49,7 @@ const SUGGESTED = ["Western Blot", "CRISPR-Cas9", "RNA-seq", "Organoid Culture",
 function FollowButton({ userId }: { userId: string }) {
   const [following, setFollowing] = useState(false);
   useEffect(() => { setFollowing(isFollowing(userId)); }, [userId]);
-  if (userId === MOCK_USER_ID) return null;
+  if (userId === getCurrentUserId()) return null;
   function handle() { setFollowing(toggleFollow(userId)); }
   return (
     <button onClick={handle}

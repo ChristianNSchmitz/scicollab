@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getPublication, getProfile, toggleLikePublication, getAllPublications, MOCK_USER_ID, type Publication } from "@/lib/mock-db";
+import { getPublication, getProfile, toggleLikePublication, getAllPublications, getCurrentUserId, type Publication } from "@/lib/mock-db";
 import CommentSection from "@/components/CommentSection";
 import ReportModal from "@/components/ReportModal";
 import { CrossRefCitationBadge } from "@/components/AcademicSync";
@@ -39,7 +39,7 @@ export default function PublicationDetailPage() {
   );
 
   const author   = getProfile(pub.user_id);
-  const hasLiked = pub.liked_by.includes(MOCK_USER_ID);
+  const hasLiked = pub.liked_by.includes(getCurrentUserId());
   const typeLabel = { paper: "Journal Paper", preprint: "Preprint", dataset: "Dataset", code: "Code", thesis: "Thesis" }[pub.type] ?? "Publication";
   const typeIcon  = { paper: "📄", preprint: "📋", dataset: "🗄️", code: "💻", thesis: "🎓" }[pub.type] ?? "📄";
 

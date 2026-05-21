@@ -10,6 +10,7 @@ import {
   updateGoogleScholarId, saveMockProfile, getAuthorAnalytics,
   updateProfileStats, importPublicationsFromData, getUserProjects,
   deletePublication, calcProfileCompleteness,
+  getCurrentUserId,
   MOCK_USER_ID, type Profile, type Publication, type Experiment, type AnalyticsSeries,
 } from "@/lib/mock-db";
 import AcademicSync from "@/components/AcademicSync";
@@ -58,7 +59,7 @@ function InlineSparkline({ data }: { data: AnalyticsSeries }) {
 export default function ProfilePage() {
   const { id }   = useParams<{ id: string }>();
   const router   = useRouter();
-  const resolvedId = id === "me" ? MOCK_USER_ID : id;
+  const resolvedId = id === "me" ? getCurrentUserId() : id;
 
   const [profile, setProfile]   = useState<Profile | null>(null);
   const [pubs, setPubs]         = useState<Publication[]>([]);
@@ -85,7 +86,7 @@ export default function ProfilePage() {
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [confirmTimer, setConfirmTimer]   = useState<ReturnType<typeof setTimeout> | null>(null);
 
-  const isSelf = resolvedId === MOCK_USER_ID;
+  const isSelf = resolvedId === getCurrentUserId();
 
   useEffect(() => {
     const p = getProfile(resolvedId);
@@ -96,7 +97,7 @@ export default function ProfilePage() {
     setFollowing(isFollowing(resolvedId));
 
     // Auto-sync stats + publications from OpenAlex if this is the logged-in user and they have an ORCID
-    if (resolvedId === MOCK_USER_ID && p.orcid_id) {
+    if (resolvedId === getCurrentUserId() && p.orcid_id) {
       setOrcidSyncStatus("syncing");
       fetch(`https://api.openalex.org/authors?filter=orcid:${p.orcid_id}`)
         .then((r) => r.ok ? r.json() : Promise.reject())
@@ -147,7 +148,7 @@ export default function ProfilePage() {
 
           const updated = getMockProfile();
           setProfile(updated);
-          setPubs(getUserPublications(MOCK_USER_ID));
+          setPubs(getUserPublications(getCurrentUserId()));
           setOrcidSyncStatus("done");
           setTimeout(() => setOrcidSyncStatus("idle"), 4000);
         })
@@ -280,7 +281,12 @@ export default function ProfilePage() {
                 {profile.is_verified && (
                   <span className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5 font-medium">✓ Verified</span>
                 )}
-                {profile.orcid_id && (
+                {profile.orcid_verified && (
+                  <span className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 font-medium">
+                    ✅ ORCID Verified
+                  </span>
+                )}
+                {profile.orcid_id && !profile.orcid_verified && (
                   <a href={`https://orcid.org/${profile.orcid_id}`} target="_blank" rel="noopener"
                     className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 font-medium hover:bg-emerald-100">
                     🆔 ORCID
@@ -813,7 +819,7 @@ export default function ProfilePage() {
                 <AcademicSync onUpdate={() => {
                   const updated = getMockProfile();
                   setProfile(updated);
-                  setPubs(getUserPublications(MOCK_USER_ID));
+                  setPubs(getUserPublications(getCurrentUserId()));
                 }} />
               ) : (
                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 text-center text-slate-400 text-sm">

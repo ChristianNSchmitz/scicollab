@@ -1,4 +1,62 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { addToWaitlist } from "@/lib/mock-db";
+
+function WaitlistForm({ compact = false }: { compact?: boolean }) {
+  const [email, setEmail]     = useState("");
+  const [status, setStatus]   = useState<"idle" | "success" | "dupe" | "invalid">("idle");
+  const [loading, setLoading] = useState(false);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || !email.includes("@")) { setStatus("invalid"); return; }
+    setLoading(true);
+    setTimeout(() => {
+      const added = addToWaitlist(email.trim());
+      setStatus(added ? "success" : "dupe");
+      setLoading(false);
+      if (added) setEmail("");
+    }, 600);
+  }
+
+  if (status === "success") {
+    return (
+      <div className={`flex items-center gap-2 text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 ${compact ? "text-sm" : ""}`}>
+        <span>🎉</span>
+        <span className="font-medium">You&apos;re on the list! We&apos;ll be in touch.</span>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className={`flex gap-2 ${compact ? "flex-col sm:flex-row" : "flex-col sm:flex-row"}`}>
+      <input
+        type="email"
+        placeholder="your@institution.edu"
+        value={email}
+        onChange={(e) => { setEmail(e.target.value); if (status !== "idle") setStatus("idle"); }}
+        className={`flex-1 border border-slate-300 rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors ${
+          status === "invalid" ? "border-red-400" : ""
+        }`}
+      />
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-sm whitespace-nowrap disabled:opacity-60"
+      >
+        {loading ? "Joining…" : "Request access"}
+      </button>
+      {status === "dupe" && (
+        <p className="text-xs text-amber-600 self-center">You&apos;re already on the list!</p>
+      )}
+      {status === "invalid" && (
+        <p className="text-xs text-red-500 self-center">Please enter a valid email.</p>
+      )}
+    </form>
+  );
+}
 
 export default function LandingPage() {
   return (
@@ -29,9 +87,9 @@ export default function LandingPage() {
           <span className="text-xs font-medium text-blue-700">Invite-only beta · 418 experiments uploaded</span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 leading-tight max-w-3xl mb-6">
-          Where scientists{" "}
-          <span className="text-blue-600">debug their research</span>{" "}
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.15] max-w-3xl mb-6">
+          Where scientists<br />
+          <span className="text-blue-600">debug their research</span><br />
           together
         </h1>
         <p className="text-lg text-slate-600 max-w-2xl mb-10 leading-relaxed">
@@ -40,7 +98,7 @@ export default function LandingPage() {
           GitHub × Stack Overflow × Database, built for the lab bench.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-16">
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <Link
             href="/onboarding"
             className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-base shadow-sm"
@@ -53,6 +111,16 @@ export default function LandingPage() {
           >
             See how it works
           </a>
+        </div>
+
+        {/* Waitlist inline */}
+        <div className="w-full max-w-md mb-12">
+          <p className="text-xs text-slate-400 mb-2">Or join the waitlist — no commitment:</p>
+          <WaitlistForm />
+          <p className="text-xs text-slate-400 mt-2">
+            Already have a code?{" "}
+            <Link href="/onboarding" className="text-blue-600 hover:underline">Sign up →</Link>
+          </p>
         </div>
 
         {/* Stats */}
@@ -157,7 +225,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA with waitlist */}
       <section className="py-24 px-6 bg-gradient-to-b from-white to-blue-50">
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -168,10 +236,12 @@ export default function LandingPage() {
           </p>
           <Link
             href="/onboarding"
-            className="inline-block bg-blue-600 text-white px-10 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-base shadow-sm"
+            className="inline-block bg-blue-600 text-white px-10 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-base shadow-sm mb-6"
           >
             Create your account →
           </Link>
+          <p className="text-sm text-slate-500 mb-4">or join the waitlist:</p>
+          <WaitlistForm compact />
           <p className="text-xs text-slate-400 mt-4">Free for individual researchers · No credit card required</p>
         </div>
       </section>

@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getConversations, getMessages, getProfile, sendMessage, startConversation, searchProfiles, MOCK_USER_ID, type Conversation, type Message, type Profile } from "@/lib/mock-db";
+import { getConversations, getMessages, getProfile, sendMessage, startConversation, searchProfiles, getCurrentUserId, type Conversation, type Message, type Profile } from "@/lib/mock-db";
 import { useToast } from "@/lib/toast";
 
 function timeAgo(d: string) {
@@ -71,7 +71,7 @@ function MessagesInner() {
 
   useEffect(() => {
     if (newConvSearch.length >= 2) {
-      setNewConvResults(searchProfiles(newConvSearch).filter((p) => p.id !== MOCK_USER_ID));
+      setNewConvResults(searchProfiles(newConvSearch).filter((p) => p.id !== getCurrentUserId()));
     } else {
       setNewConvResults([]);
     }
@@ -106,7 +106,7 @@ function MessagesInner() {
   }
 
   const active = convos.find((c) => c.id === activeConv);
-  const otherUserId = active?.participant_ids.find((id) => id !== MOCK_USER_ID);
+  const otherUserId = active?.participant_ids.find((id) => id !== getCurrentUserId());
   const otherUser   = otherUserId ? getProfile(otherUserId) : null;
 
   return (
@@ -166,7 +166,7 @@ function MessagesInner() {
                     <Link href="/discover" className="text-xs text-blue-600 hover:underline mt-1 block">Find researchers →</Link>
                   </div>
                 ) : convos.map((conv) => {
-                  const otherId   = conv.participant_ids.find((id) => id !== MOCK_USER_ID);
+                  const otherId   = conv.participant_ids.find((id) => id !== getCurrentUserId());
                   const otherP    = otherId ? getProfile(otherId) : null;
                   const isActive  = conv.id === activeConv;
                   const isUnread  = !!conv.last_message_at && !readConvIds.has(conv.id);
@@ -230,7 +230,7 @@ function MessagesInner() {
                   {/* Messages */}
                   <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
                     {messages.map((m) => {
-                      const isMe = m.sender_id === MOCK_USER_ID;
+                      const isMe = m.sender_id === getCurrentUserId();
                       const sender = getProfile(m.sender_id);
                       return (
                         <div key={m.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>

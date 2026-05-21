@@ -8,7 +8,7 @@ import {
   getFeed, getProfile, toggleLikeFeedPost, toggleBookmarkFeedPost,
   saveFeedPost, updateFeedPost, deleteFeedPost, getMockProfile, getFollowing,
   getExperiment, getPublication, repostFeedPost, incrementFeedCommentCount,
-  getAllProfiles, getAllExperiments, getMyExperiments,
+  getAllProfiles, getAllExperiments, getMyExperiments, getCurrentUserId,
   MOCK_USER_ID, type FeedPost, type Profile, type Experiment,
 } from "@/lib/mock-db";
 import CommentSection from "@/components/CommentSection";
@@ -128,7 +128,7 @@ function HotTopics({ userSkills }: { userSkills: string[] }) {
 
 // ─── Sidebar: Top Contributors ────────────────────────────────
 function TopContributors({ userDomain, userSkills }: { userDomain: string; userSkills: string[] }) {
-  const allProfiles = getAllProfiles().filter((p) => p.id !== MOCK_USER_ID);
+  const allProfiles = getAllProfiles().filter((p) => p.id !== getCurrentUserId());
 
   // Score by domain/technique overlap + h-index
   const scored = allProfiles.map((p) => {
@@ -432,7 +432,7 @@ export default function FeedPage() {
     if (!newPost.trim()) return;
     setPosting(true);
     const post = saveFeedPost({
-      user_id: MOCK_USER_ID,
+      user_id: getCurrentUserId(),
       type: "post",
       content: newPost.trim(),
       linked_experiment_id: null,
@@ -457,7 +457,7 @@ export default function FeedPage() {
         .map(({ post, score }) => ({ post, score, recommended: score >= 5 }));
     }
     const filtered = feed.filter((p) => {
-      if (filter === "Following") return following.includes(p.user_id) || p.user_id === MOCK_USER_ID;
+      if (filter === "Following") return following.includes(p.user_id) || p.user_id === getCurrentUserId();
       if (filter === "Experiments")  return p.type === "experiment";
       if (filter === "Publications") return p.type === "publication";
       if (filter === "Discussions")  return p.type === "post" || p.type === "question";
@@ -543,9 +543,10 @@ export default function FeedPage() {
               <div className="space-y-4">
                 {visible.map(({ post, recommended }) => {
                   const author     = getProfile(post.user_id);
-                  const hasLiked   = post.liked_by.includes(MOCK_USER_ID);
-                  const hasBookmarked = post.bookmarked_by.includes(MOCK_USER_ID);
-                  const isOwnPost  = post.user_id === MOCK_USER_ID;
+                  const currentId  = getCurrentUserId();
+                  const hasLiked   = post.liked_by.includes(currentId);
+                  const hasBookmarked = post.bookmarked_by.includes(currentId);
+                  const isOwnPost  = post.user_id === currentId;
                   const isEditing  = editingPostId === post.id;
                   return (
                     <div key={post.id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-slate-300 transition-colors">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { saveQuestion, saveAnswer, endorseAnswer, getProfile, getMockProfile, MOCK_USER_ID, type Question } from "@/lib/mock-db";
+import { saveQuestion, saveAnswer, endorseAnswer, getProfile, getMockProfile, getCurrentUserId, type Question } from "@/lib/mock-db";
 
 function timeAgo(d: string) {
   const diff = Date.now() - new Date(d).getTime();
@@ -28,7 +28,7 @@ export default function QASection({ experimentId, experimentOwnerId, initialQues
   const [postingA, setPostingA]           = useState<string | null>(null);
 
   const currentUser = getMockProfile();
-  const isOwner = experimentOwnerId === MOCK_USER_ID || experimentOwnerId === currentUser.id;
+  const isOwner = experimentOwnerId === getCurrentUserId() || experimentOwnerId === currentUser.id;
 
   function update(q: Question[]) { setQuestions(q); onQuestionsChange(q); }
 

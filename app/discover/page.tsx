@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getAllProfiles, isFollowing, toggleFollow, getMockProfile, MOCK_USER_ID, type Profile } from "@/lib/mock-db";
+import { getAllProfiles, isFollowing, toggleFollow, getMockProfile, getCurrentUserId, type Profile } from "@/lib/mock-db";
 
 const DOMAINS = ["All", "Biochemistry", "Cell Biology", "Genomics", "Proteomics", "Organoid Biology", "Genome Editing"] as const;
 type Domain = typeof DOMAINS[number];
@@ -15,7 +15,7 @@ export default function DiscoverPage() {
   const [follows, setFollows]   = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    const all = getAllProfiles().filter((p) => p.id !== MOCK_USER_ID);
+    const all = getAllProfiles().filter((p) => p.id !== getCurrentUserId());
     setProfiles(all);
     const f: Record<string, boolean> = {};
     all.forEach((p) => { f[p.id] = isFollowing(p.id); });

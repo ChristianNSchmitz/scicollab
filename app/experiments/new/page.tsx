@@ -102,6 +102,7 @@ export default function NewExperimentPage() {
     setPublishError("");
     const profile = getMockProfile();
 
+    const dataWithAttachments = data as ExperimentData & { attachments?: { name: string; size: number; type: string; dataUrl: string }[] };
     const experiment = saveExperiment({
       user_id:          profile.id,
       parent_id:        null,
@@ -118,6 +119,7 @@ export default function NewExperimentPage() {
       failure_context:  data.failureContext || null,
       root_cause:       data.rootCause || null,
       attached_files:   data.attachedFiles,
+      attachments:      dataWithAttachments.attachments ?? [],
       code_notebook_url: data.codeNotebookUrl || null,
       visibility:       data.visibility,
       co_authors:       data.coAuthors,

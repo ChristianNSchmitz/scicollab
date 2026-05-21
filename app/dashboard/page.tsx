@@ -5,7 +5,8 @@ import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
   getMockProfile, getMyExperiments, getAllExperiments, getUnreadCount,
-  getNotificationsWithReadState, getUserPublications, MOCK_USER_ID,
+  getNotificationsWithReadState, getUserPublications, getCurrentUserId,
+  MOCK_USER_ID,
   type Experiment, type Notification,
 } from "@/lib/mock-db";
 
@@ -40,12 +41,13 @@ export default function DashboardPage() {
   useEffect(() => {
     const p = getMockProfile();
     setProfile({ full_name: p.full_name, avatar_initials: p.avatar_initials || p.full_name?.[0]?.toUpperCase() || "R", avatar_color: p.avatar_color || "bg-slate-600", h_index: p.h_index || 0, citation_count: p.citation_count || 0, publication_count: p.publication_count || 0, profile_completeness: p.profile_completeness || 20, institution: p.institution || "", research_domain: p.research_domain || "" });
+    const currentId = getCurrentUserId();
     setMyExps(getMyExperiments());
-    setRecentExps(getAllExperiments().filter((e) => e.user_id !== MOCK_USER_ID && e.visibility === "public").slice(0, 4));
+    setRecentExps(getAllExperiments().filter((e) => e.user_id !== currentId && e.visibility === "public").slice(0, 4));
     const n = getNotificationsWithReadState();
     setNotifs(n.slice(0, 5));
     setUnread(n.filter((x) => !x.is_read).length);
-    setPubCount(getUserPublications(MOCK_USER_ID).length);
+    setPubCount(getUserPublications(currentId).length);
   }, []);
 
   const hasProfile = profile.full_name && profile.full_name !== "Researcher";

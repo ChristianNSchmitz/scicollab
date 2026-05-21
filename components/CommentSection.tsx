@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import {
   getComments, addComment, deleteComment, getMockProfile, getProfile,
-  MOCK_USER_ID, type Comment,
+  getCurrentUserId, type Comment,
 } from "@/lib/mock-db";
 import ReportModal from "@/components/ReportModal";
 
@@ -38,7 +38,7 @@ interface CommentItemProps {
 function CommentItem({ comment, targetType, onDelete, onReply, replyingTo, replyText, setReplyText, onSubmitReply }: CommentItemProps) {
   const [reportTarget, setReportTarget] = useState<string | null>(null);
   const author = getProfile(comment.user_id);
-  const isOwn = comment.user_id === MOCK_USER_ID;
+  const isOwn = comment.user_id === getCurrentUserId();
   const initials = author?.avatar_initials || author?.full_name?.[0]?.toUpperCase() || "?";
 
   return (
@@ -125,7 +125,7 @@ export default function CommentSection({ targetType, targetId, compact = false, 
 
   function handleAdd() {
     if (!newBody.trim()) return;
-    addComment({ target_type: targetType, target_id: targetId, user_id: MOCK_USER_ID, body: newBody.trim(), parent_id: null });
+    addComment({ target_type: targetType, target_id: targetId, user_id: getCurrentUserId(), body: newBody.trim(), parent_id: null });
     setNewBody("");
     refresh();
     onCommentAdded?.();
@@ -143,7 +143,7 @@ export default function CommentSection({ targetType, targetId, compact = false, 
 
   function handleSubmitReply(parentId: string) {
     if (!replyText.trim()) return;
-    addComment({ target_type: targetType, target_id: targetId, user_id: MOCK_USER_ID, body: replyText.trim(), parent_id: parentId });
+    addComment({ target_type: targetType, target_id: targetId, user_id: getCurrentUserId(), body: replyText.trim(), parent_id: parentId });
     setReplyingTo(null);
     setReplyText("");
     refresh();

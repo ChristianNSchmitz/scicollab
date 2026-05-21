@@ -5,7 +5,7 @@ import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
   getBookmarkedPosts, getProfile, toggleBookmarkFeedPost,
-  MOCK_USER_ID, type FeedPost,
+  getCurrentUserId, type FeedPost,
 } from "@/lib/mock-db";
 import { useToast } from "@/lib/toast";
 
@@ -64,7 +64,7 @@ export default function BookmarksPage() {
           <div className="space-y-4">
             {posts.map((post) => {
               const author = getProfile(post.user_id);
-              const hasLiked = post.liked_by.includes(MOCK_USER_ID);
+              const hasLiked = post.liked_by.includes(getCurrentUserId());
               return (
                 <div key={post.id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-slate-300 transition-colors">
                   {/* Author row */}

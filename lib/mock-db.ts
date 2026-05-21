@@ -7,6 +7,15 @@
 
 // ─── Core types ──────────────────────────────────────────────
 
+export type StoredUser = {
+  id: string;
+  email: string;
+  name: string;
+  password: string;
+  avatar_color: string;
+  avatar_initials: string;
+};
+
 export type Reagent      = { name: string; concentration: string; supplier: string };
 export type AttachedFile = { name: string; type: string; size: string };
 
@@ -33,6 +42,7 @@ export type Profile = {
   grants: string[];
   social_links: { twitter?: string; github?: string; website?: string; linkedin?: string };
   is_verified: boolean;
+  orcid_verified: boolean;
   profile_completeness: number;
   joined_at: string;
 };
@@ -144,6 +154,7 @@ export type Experiment = {
   failure_context: string | null;
   root_cause: string | null;
   attached_files: AttachedFile[];
+  attachments?: { name: string; size: number; type: string; dataUrl: string }[];
   code_notebook_url: string | null;
   visibility: "lab" | "network" | "public";
   co_authors: string[];
@@ -306,6 +317,68 @@ function lsSet(key: string, value: unknown) {
 }
 function uid() { return `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`; }
 
+// ─── Auth helpers ─────────────────────────────────────────────
+const KEY_USERS   = "scicollab_users";
+const KEY_SESSION = "scicollab_session";
+
+const AVATAR_COLORS = [
+  "bg-blue-600", "bg-purple-600", "bg-emerald-600", "bg-orange-600",
+  "bg-teal-600", "bg-indigo-600", "bg-rose-600", "bg-amber-600",
+];
+
+export function getCurrentUserId(): string {
+  return ls<string>(KEY_SESSION, "mock-user");
+}
+
+export function setCurrentUserId(id: string): void {
+  lsSet(KEY_SESSION, id);
+}
+
+export function registerUser(email: string, password: string, name: string): StoredUser {
+  const users = ls<StoredUser[]>(KEY_USERS, []);
+  const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+  if (existing) {
+    // Already registered — log them in
+    setCurrentUserId(existing.id);
+    return existing;
+  }
+  const parts = name.trim().split(" ");
+  const initials = parts.length > 1
+    ? `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
+    : name[0]?.toUpperCase() ?? "R";
+  const color = AVATAR_COLORS[users.length % AVATAR_COLORS.length];
+  const newUser: StoredUser = {
+    id: `user-${uid()}`,
+    email,
+    name,
+    password,
+    avatar_color: color,
+    avatar_initials: initials,
+  };
+  lsSet(KEY_USERS, [...users, newUser]);
+  setCurrentUserId(newUser.id);
+  return newUser;
+}
+
+export function loginUser(email: string, password: string): StoredUser | null {
+  const users = ls<StoredUser[]>(KEY_USERS, []);
+  const user = users.find(
+    (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+  );
+  if (!user) return null;
+  setCurrentUserId(user.id);
+  return user;
+}
+
+export function logoutUser(): void {
+  if (typeof window === "undefined") return;
+  try { localStorage.removeItem(KEY_SESSION); } catch { /* noop */ }
+}
+
+export function getMockUserId(): string {
+  return getCurrentUserId();
+}
+
 // ─── localStorage keys ────────────────────────────────────────
 const KEY_EXPERIMENTS   = "scicollab_experiments";
 const KEY_QUESTIONS     = "scicollab_questions";
@@ -351,6 +424,7 @@ const SEED_PROFILES: Profile[] = [
     grants: ["NIH R01 GM123456", "NSF MCB-2012345"],
     social_links: { twitter: "@lpark_lab", github: "lpark-jhu" },
     is_verified: true,
+    orcid_verified: true,
     profile_completeness: 95,
     joined_at: new Date(Date.now() - 400 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -376,6 +450,7 @@ const SEED_PROFILES: Profile[] = [
     grants: [],
     social_links: { github: "rmehta-mit" },
     is_verified: false,
+    orcid_verified: false,
     profile_completeness: 72,
     joined_at: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -401,6 +476,7 @@ const SEED_PROFILES: Profile[] = [
     grants: ["JSPS Postdoctoral Fellowship"],
     social_links: { twitter: "@tsato_proteomics" },
     is_verified: true,
+    orcid_verified: true,
     profile_completeness: 88,
     joined_at: new Date(Date.now() - 290 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -426,6 +502,7 @@ const SEED_PROFILES: Profile[] = [
     grants: [],
     social_links: { github: "agomez-irb", twitter: "@gomez_crispr" },
     is_verified: false,
+    orcid_verified: false,
     profile_completeness: 80,
     joined_at: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -451,6 +528,7 @@ const SEED_PROFILES: Profile[] = [
     grants: ["NIH R35 GM456789", "Chan Zuckerberg Initiative"],
     social_links: { twitter: "@nguyen_organoids", website: "https://nguyenlab.ucla.edu" },
     is_verified: true,
+    orcid_verified: true,
     profile_completeness: 98,
     joined_at: new Date(Date.now() - 500 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -476,6 +554,7 @@ const SEED_PROFILES: Profile[] = [
     grants: ["Swiss National Science Foundation Postdoc.Mobility"],
     social_links: { github: "mosei-eth" },
     is_verified: true,
+    orcid_verified: true,
     profile_completeness: 91,
     joined_at: new Date(Date.now() - 220 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -1105,24 +1184,37 @@ const SEED_LABS: Lab[] = [
 // ─── Profile ──────────────────────────────────────────────────
 
 export function getMockProfile(): Profile {
-  const saved = ls<Profile | null>(KEY_PROFILE, null);
+  const currentId = getCurrentUserId();
+  // If this is a seed user (not the registered user), return seed profile
+  if (currentId !== MOCK_USER_ID) {
+    const seedProfile = SEED_PROFILES.find((p) => p.id === currentId);
+    if (seedProfile) return seedProfile;
+  }
+  const saved = ls<Profile | null>(KEY_PROFILE + "_" + currentId, null)
+    ?? ls<Profile | null>(KEY_PROFILE, null);
   if (saved && typeof saved === "object") {
     // Backfill fields added after initial release
     const p = saved as Profile;
     const backfill: Partial<Profile> = {};
     if (!("google_scholar_id"   in p) || p.google_scholar_id   === undefined) backfill.google_scholar_id   = null;
     if (!("semantic_scholar_id" in p) || p.semantic_scholar_id === undefined) backfill.semantic_scholar_id = null;
+    if (!("orcid_verified"      in p) || p.orcid_verified      === undefined) backfill.orcid_verified      = false;
     return Object.keys(backfill).length ? { ...p, ...backfill } : p;
   }
+  // Build default profile from StoredUser if available
+  const storedUsers = ls<StoredUser[]>(KEY_USERS, []);
+  const storedUser = storedUsers.find((u) => u.id === currentId);
   return {
-    id: MOCK_USER_ID, full_name: "Researcher", institution: "",
+    id: currentId, full_name: storedUser?.name ?? "Researcher", institution: "",
     orcid_id: null, google_scholar_id: null, semantic_scholar_id: null,
     role: "", research_domain: "", techniques: [],
-    bio: null, avatar_initials: "R", avatar_color: "bg-slate-600",
+    bio: null,
+    avatar_initials: storedUser?.avatar_initials ?? "R",
+    avatar_color: storedUser?.avatar_color ?? "bg-slate-600",
     h_index: 0, citation_count: 0, publication_count: 0,
     followers_count: 0, following_count: 0,
     skills: [], grants: [], social_links: {},
-    is_verified: false, profile_completeness: 20,
+    is_verified: false, orcid_verified: false, profile_completeness: 20,
     joined_at: new Date().toISOString(),
   };
 }
@@ -1142,8 +1234,9 @@ export function calcProfileCompleteness(p: Profile): number {
 }
 
 export function saveMockProfile(p: Partial<Profile>) {
+  const currentId = getCurrentUserId();
   const current = getMockProfile();
-  const updated = { ...current, ...p, id: MOCK_USER_ID };
+  const updated = { ...current, ...p, id: currentId };
   // auto-compute initials + completeness
   if (p.full_name) {
     const parts = p.full_name.trim().split(" ");
@@ -1153,11 +1246,17 @@ export function saveMockProfile(p: Partial<Profile>) {
   }
   const fields = [updated.full_name, updated.institution, updated.role, updated.research_domain, updated.bio, updated.orcid_id];
   updated.profile_completeness = Math.round((fields.filter(Boolean).length / fields.length) * 100);
-  lsSet(KEY_PROFILE, updated);
+  lsSet(KEY_PROFILE + "_" + currentId, updated);
+  // Legacy key for backward compatibility
+  if (currentId === MOCK_USER_ID) lsSet(KEY_PROFILE, updated);
 }
 
 export function getProfile(userId: string): Profile | null {
-  if (userId === MOCK_USER_ID) return getMockProfile();
+  const currentId = getCurrentUserId();
+  if (userId === currentId || userId === MOCK_USER_ID) return getMockProfile();
+  // Check saved profiles for registered users
+  const saved = ls<Profile | null>(KEY_PROFILE + "_" + userId, null);
+  if (saved) return saved;
   return SEED_PROFILES.find((p) => p.id === userId) ?? null;
 }
 
@@ -1197,16 +1296,32 @@ export function updateExperiment(id: string, patch: Partial<Omit<Experiment, "id
 }
 
 export function forkExperiment(source: Experiment): Experiment {
+  const currentId = getCurrentUserId();
+  const originalId = source.id;
+  const originalOwnerId = source.user_id;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id: _id, created_at: _ca, ...rest } = source;
-  return saveExperiment({
+  const forked = saveExperiment({
     ...rest,
-    parent_id: source.id,
-    user_id: MOCK_USER_ID,
+    parent_id: originalId,
+    user_id: currentId,
     title: `${source.title} (fork)`,
     outcome: null, outcome_summary: null, failure_context: null, root_cause: null,
     attached_files: [], visibility: "lab", co_authors: [],
   });
+  // Notify the original owner
+  if (originalOwnerId !== currentId) {
+    const forkerProfile = getMockProfile();
+    createNotification(originalOwnerId, {
+      type: "fork",
+      title: "Your protocol was forked",
+      body: `${forkerProfile.full_name} forked your experiment "${source.title}".`,
+      linked_type: "experiment",
+      linked_id: originalId,
+      user_id: originalOwnerId,
+    });
+  }
+  return forked;
 }
 
 export function getForks(parentId: string): Experiment[] {
@@ -1217,7 +1332,8 @@ export function searchExperiments(query: string): Array<Experiment & { matchPct:
   const q = query.toLowerCase().trim();
   if (!q) return [];
   const terms = q.split(/\s+/).filter(Boolean);
-  const all = getAllExperiments().filter((e) => e.visibility === "public" || e.user_id === MOCK_USER_ID);
+  const currentId = getCurrentUserId();
+  const all = getAllExperiments().filter((e) => e.visibility === "public" || e.user_id === currentId);
   function score(e: Experiment): number {
     let s = 0;
     for (const t of terms) {
@@ -1243,13 +1359,13 @@ export function getQuestions(experimentId: string): Question[] {
 }
 
 export function saveQuestion(experimentId: string, body: string): Question {
-  const q: Question = { id: `q-${uid()}`, experiment_id: experimentId, user_id: MOCK_USER_ID, body, created_at: new Date().toISOString(), answers: [] };
+  const q: Question = { id: `q-${uid()}`, experiment_id: experimentId, user_id: getCurrentUserId(), body, created_at: new Date().toISOString(), answers: [] };
   lsSet(KEY_QUESTIONS, [q, ...ls<Question[]>(KEY_QUESTIONS, [])]);
   return q;
 }
 
 export function saveAnswer(questionId: string, body: string): Answer {
-  const a: Answer = { id: `a-${uid()}`, question_id: questionId, user_id: MOCK_USER_ID, body, is_endorsed: false, created_at: new Date().toISOString() };
+  const a: Answer = { id: `a-${uid()}`, question_id: questionId, user_id: getCurrentUserId(), body, is_endorsed: false, created_at: new Date().toISOString() };
   const all = ls<Question[]>(KEY_QUESTIONS, []);
   lsSet(KEY_QUESTIONS, all.map((q) => q.id === questionId ? { ...q, answers: [...q.answers, a] } : q));
   return a;
@@ -1285,11 +1401,12 @@ export function savePublication(data: Omit<Publication, "id" | "created_at" | "l
 }
 
 export function toggleLikePublication(pubId: string): Publication | null {
+  const currentId = getCurrentUserId();
   const all = [...ls<Publication[]>(KEY_PUBLICATIONS, []), ...SEED_PUBLICATIONS];
   const pub = all.find((p) => p.id === pubId);
   if (!pub) return null;
-  const hasLiked = pub.liked_by.includes(MOCK_USER_ID);
-  const updated = { ...pub, liked_by: hasLiked ? pub.liked_by.filter((id) => id !== MOCK_USER_ID) : [...pub.liked_by, MOCK_USER_ID], like_count: hasLiked ? pub.like_count - 1 : pub.like_count + 1 };
+  const hasLiked = pub.liked_by.includes(currentId);
+  const updated = { ...pub, liked_by: hasLiked ? pub.liked_by.filter((id) => id !== currentId) : [...pub.liked_by, currentId], like_count: hasLiked ? pub.like_count - 1 : pub.like_count + 1 };
   const local = ls<Publication[]>(KEY_PUBLICATIONS, []);
   const localIdx = local.findIndex((p) => p.id === pubId);
   if (localIdx >= 0) { local[localIdx] = updated; lsSet(KEY_PUBLICATIONS, local); }
@@ -1323,9 +1440,10 @@ export function saveFeedPost(data: Omit<FeedPost, "id" | "created_at" | "like_co
 }
 
 export function updateFeedPost(postId: string, content: string): FeedPost | null {
+  const currentId = getCurrentUserId();
   const all = getFeed();
   const post = all.find((p) => p.id === postId);
-  if (!post || post.user_id !== MOCK_USER_ID) return null;
+  if (!post || post.user_id !== currentId) return null;
   const updated = { ...post, content };
   const local = ls<FeedPost[]>(KEY_FEED, []);
   const idx = local.findIndex((p) => p.id === postId);
@@ -1343,11 +1461,12 @@ export function deleteFeedPost(postId: string): boolean {
 }
 
 export function toggleLikeFeedPost(postId: string): FeedPost | null {
+  const currentId = getCurrentUserId();
   const all = getFeed();
   const post = all.find((p) => p.id === postId);
   if (!post) return null;
-  const hasLiked = post.liked_by.includes(MOCK_USER_ID);
-  const updated = { ...post, liked_by: hasLiked ? post.liked_by.filter((id) => id !== MOCK_USER_ID) : [...post.liked_by, MOCK_USER_ID], like_count: hasLiked ? post.like_count - 1 : post.like_count + 1 };
+  const hasLiked = post.liked_by.includes(currentId);
+  const updated = { ...post, liked_by: hasLiked ? post.liked_by.filter((id) => id !== currentId) : [...post.liked_by, currentId], like_count: hasLiked ? post.like_count - 1 : post.like_count + 1 };
   const local = ls<FeedPost[]>(KEY_FEED, []);
   const idx = local.findIndex((p) => p.id === postId);
   if (idx >= 0) { local[idx] = updated; lsSet(KEY_FEED, local); }
@@ -1369,7 +1488,7 @@ export function repostFeedPost(postId: string): FeedPost | null {
   // Create new repost entry
   const author = getProfile(original.user_id);
   const repost = saveFeedPost({
-    user_id: MOCK_USER_ID,
+    user_id: getCurrentUserId(),
     type: original.type,
     content: `🔁 Reposted from ${author?.full_name ?? "Researcher"}:\n\n${original.content}`,
     linked_experiment_id: original.linked_experiment_id,
@@ -1392,11 +1511,12 @@ export function decrementFeedCommentCount(postId: string): void {
 }
 
 export function toggleBookmarkFeedPost(postId: string): FeedPost | null {
+  const currentId = getCurrentUserId();
   const all = getFeed();
   const post = all.find((p) => p.id === postId);
   if (!post) return null;
-  const hasBookmarked = post.bookmarked_by.includes(MOCK_USER_ID);
-  const updated = { ...post, bookmarked_by: hasBookmarked ? post.bookmarked_by.filter((id) => id !== MOCK_USER_ID) : [...post.bookmarked_by, MOCK_USER_ID] };
+  const hasBookmarked = post.bookmarked_by.includes(currentId);
+  const updated = { ...post, bookmarked_by: hasBookmarked ? post.bookmarked_by.filter((id) => id !== currentId) : [...post.bookmarked_by, currentId] };
   const local = ls<FeedPost[]>(KEY_FEED, []);
   const idx = local.findIndex((p) => p.id === postId);
   if (idx >= 0) { local[idx] = updated; lsSet(KEY_FEED, local); }
@@ -1405,7 +1525,8 @@ export function toggleBookmarkFeedPost(postId: string): FeedPost | null {
 }
 
 export function getBookmarkedPosts(): FeedPost[] {
-  return getFeed().filter((p) => p.bookmarked_by.includes(MOCK_USER_ID));
+  const currentId = getCurrentUserId();
+  return getFeed().filter((p) => p.bookmarked_by.includes(currentId));
 }
 
 // ─── Follows ──────────────────────────────────────────────────
@@ -1415,26 +1536,72 @@ export function getFollows(): Follow[] {
 }
 
 export function isFollowing(targetId: string): boolean {
-  return getFollows().some((f) => f.follower_id === MOCK_USER_ID && f.following_id === targetId);
+  const currentId = getCurrentUserId();
+  return getFollows().some((f) => f.follower_id === currentId && f.following_id === targetId);
+}
+
+export function followUser(targetId: string): void {
+  const currentId = getCurrentUserId();
+  const local = ls<Follow[]>(KEY_FOLLOWS, []);
+  const existing = local.find((f) => f.follower_id === currentId && f.following_id === targetId);
+  if (existing) return;
+  lsSet(KEY_FOLLOWS, [...local, { follower_id: currentId, following_id: targetId, created_at: new Date().toISOString() }]);
+  const followerProfile = getMockProfile();
+  createNotification(targetId, {
+    type: "follow",
+    title: "New follower",
+    body: `${followerProfile.full_name} started following you.`,
+    linked_type: "profile",
+    linked_id: currentId,
+    user_id: targetId,
+  });
 }
 
 export function toggleFollow(targetId: string): boolean {
+  const currentId = getCurrentUserId();
   const local = ls<Follow[]>(KEY_FOLLOWS, []);
-  const existing = local.findIndex((f) => f.follower_id === MOCK_USER_ID && f.following_id === targetId);
+  const existing = local.findIndex((f) => f.follower_id === currentId && f.following_id === targetId);
   if (existing >= 0) { local.splice(existing, 1); lsSet(KEY_FOLLOWS, local); return false; }
-  lsSet(KEY_FOLLOWS, [...local, { follower_id: MOCK_USER_ID, following_id: targetId, created_at: new Date().toISOString() }]);
+  lsSet(KEY_FOLLOWS, [...local, { follower_id: currentId, following_id: targetId, created_at: new Date().toISOString() }]);
+  // Notify on follow
+  const followerProfile = getMockProfile();
+  createNotification(targetId, {
+    type: "follow",
+    title: "New follower",
+    body: `${followerProfile.full_name} started following you.`,
+    linked_type: "profile",
+    linked_id: currentId,
+    user_id: targetId,
+  });
   return true;
 }
 
 export function getFollowing(): string[] {
-  return getFollows().filter((f) => f.follower_id === MOCK_USER_ID).map((f) => f.following_id);
+  const currentId = getCurrentUserId();
+  return getFollows().filter((f) => f.follower_id === currentId).map((f) => f.following_id);
 }
 
 export function getFollowers(): string[] {
-  return getFollows().filter((f) => f.following_id === MOCK_USER_ID).map((f) => f.follower_id);
+  const currentId = getCurrentUserId();
+  return getFollows().filter((f) => f.following_id === currentId).map((f) => f.follower_id);
 }
 
 // ─── Notifications ────────────────────────────────────────────
+
+export function createNotification(
+  forUserId: string,
+  notif: Omit<Notification, "id" | "created_at" | "is_read">
+): void {
+  const key = `scicollab_notifications_${forUserId}`;
+  const existing = ls<Notification[]>(key, []);
+  const newNotif: Notification = {
+    ...notif,
+    id: `notif-${uid()}`,
+    created_at: new Date().toISOString(),
+    is_read: false,
+  };
+  lsSet(key, [newNotif, ...existing]);
+}
 
 export function getNotifications(): Notification[] {
   const local = ls<Notification[]>(KEY_NOTIFICATIONS, []);
@@ -1465,11 +1632,20 @@ export function markAllNotificationsRead() {
 }
 
 export function getNotificationsWithReadState(): Notification[] {
+  const currentId = getCurrentUserId();
   const overrides = ls<Record<string, boolean>>("scicollab_notif_read", {});
+  // User-specific notifications created by actions
+  const userSpecific = ls<Notification[]>(`scicollab_notifications_${currentId}`, []);
   const local = ls<Notification[]>(KEY_NOTIFICATIONS, []);
-  const localIds = new Set(local.map((n) => n.id));
-  const seeds = SEED_NOTIFICATIONS.filter((n) => !localIds.has(n.id)).map((n) => ({ ...n, is_read: overrides[n.id] ?? n.is_read }));
-  const all = [...local, ...seeds];
+  const userSpecificIds = new Set(userSpecific.map((n) => n.id));
+  const localIds = new Set([...userSpecific, ...local].map((n) => n.id));
+  // Seed notifications only for mock-user (they're community seed data)
+  const seeds = currentId === MOCK_USER_ID
+    ? SEED_NOTIFICATIONS.filter((n) => !localIds.has(n.id)).map((n) => ({ ...n, is_read: overrides[n.id] ?? n.is_read }))
+    : [];
+  // For non-mock users, include seed notifications that aren't user-specific
+  const legacyLocal = local.filter((n) => !userSpecificIds.has(n.id));
+  const all = [...userSpecific, ...legacyLocal, ...seeds];
   return all.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
@@ -1485,13 +1661,13 @@ export function getStandaloneQuestion(id: string): StandaloneQuestion | null {
 }
 
 export function saveStandaloneQuestion(title: string, body: string, tags: string[]): StandaloneQuestion {
-  const q: StandaloneQuestion = { id: `sq-${uid()}`, user_id: MOCK_USER_ID, title, body, tags, vote_count: 0, view_count: 0, is_answered: false, accepted_answer_id: null, answers: [], created_at: new Date().toISOString() };
+  const q: StandaloneQuestion = { id: `sq-${uid()}`, user_id: getCurrentUserId(), title, body, tags, vote_count: 0, view_count: 0, is_answered: false, accepted_answer_id: null, answers: [], created_at: new Date().toISOString() };
   lsSet(KEY_SQ, [q, ...ls<StandaloneQuestion[]>(KEY_SQ, [])]);
   return q;
 }
 
 export function saveStandaloneAnswer(questionId: string, body: string): StandaloneAnswer {
-  const a: StandaloneAnswer = { id: `sqa-${uid()}`, question_id: questionId, user_id: MOCK_USER_ID, body, vote_count: 0, is_accepted: false, created_at: new Date().toISOString() };
+  const a: StandaloneAnswer = { id: `sqa-${uid()}`, question_id: questionId, user_id: getCurrentUserId(), body, vote_count: 0, is_accepted: false, created_at: new Date().toISOString() };
   const local = ls<StandaloneQuestion[]>(KEY_SQ, []);
   lsSet(KEY_SQ, local.map((q) => q.id === questionId ? { ...q, answers: [...q.answers, a] } : q));
   return a;
@@ -1518,7 +1694,7 @@ export function getMessages(conversationId: string): Message[] {
 }
 
 export function sendMessage(conversationId: string, body: string): Message {
-  const m: Message = { id: `msg-${uid()}`, conversation_id: conversationId, sender_id: MOCK_USER_ID, body, is_read: false, created_at: new Date().toISOString() };
+  const m: Message = { id: `msg-${uid()}`, conversation_id: conversationId, sender_id: getCurrentUserId(), body, is_read: false, created_at: new Date().toISOString() };
   lsSet(KEY_MESSAGES, [...ls<Message[]>(KEY_MESSAGES, []), m]);
   const convos = ls<Conversation[]>(KEY_CONVOS, []);
   lsSet(KEY_CONVOS, convos.map((c) => c.id === conversationId ? { ...c, last_message: body, last_message_at: m.created_at } : c));
@@ -1526,9 +1702,10 @@ export function sendMessage(conversationId: string, body: string): Message {
 }
 
 export function startConversation(otherUserId: string): Conversation {
-  const existing = getConversations().find((c) => c.participant_ids.includes(otherUserId) && c.participant_ids.includes(MOCK_USER_ID));
+  const currentId = getCurrentUserId();
+  const existing = getConversations().find((c) => c.participant_ids.includes(otherUserId) && c.participant_ids.includes(currentId));
   if (existing) return existing;
-  const conv: Conversation = { id: `conv-${uid()}`, participant_ids: [MOCK_USER_ID, otherUserId], last_message: null, last_message_at: null, created_at: new Date().toISOString() };
+  const conv: Conversation = { id: `conv-${uid()}`, participant_ids: [currentId, otherUserId], last_message: null, last_message_at: null, created_at: new Date().toISOString() };
   lsSet(KEY_CONVOS, [conv, ...ls<Conversation[]>(KEY_CONVOS, [])]);
   return conv;
 }
@@ -1538,7 +1715,8 @@ export function startConversation(otherUserId: string): Conversation {
 export function getLabs(): Lab[] { return SEED_LABS; }
 
 export function getMyLab(): Lab | null {
-  return SEED_LABS.find((l) => l.pi_user_id === MOCK_USER_ID || l.members.some((m) => m.user_id === MOCK_USER_ID)) ?? null;
+  const currentId = getCurrentUserId();
+  return SEED_LABS.find((l) => l.pi_user_id === currentId || l.members.some((m) => m.user_id === currentId)) ?? null;
 }
 
 export function deletePublication(id: string): void {
@@ -1561,8 +1739,9 @@ export function addComment(data: Omit<Comment, "id" | "created_at"> & { target_t
 }
 
 export function deleteComment(id: string): void {
+  const currentId = getCurrentUserId();
   const all = ls<Comment[]>(KEY_COMMENTS, []);
-  lsSet(KEY_COMMENTS, all.filter((c) => !(c.id === id && c.user_id === MOCK_USER_ID)));
+  lsSet(KEY_COMMENTS, all.filter((c) => !(c.id === id && c.user_id === currentId)));
 }
 
 // ─── Privacy Settings ─────────────────────────────────────────
@@ -1620,28 +1799,26 @@ export function updateReportStatus(id: string, status: Report["status"]): void {
 }
 
 export function hasReported(targetId: string): boolean {
-  return ls<Report[]>(KEY_REPORTS, []).some((r) => r.reporter_id === MOCK_USER_ID && r.target_id === targetId);
+  const currentId = getCurrentUserId();
+  return ls<Report[]>(KEY_REPORTS, []).some((r) => r.reporter_id === currentId && r.target_id === targetId);
 }
 
 // ─── ORCID ────────────────────────────────────────────────────
 
 export function updateOrcidId(orcid: string): void {
-  const current = getMockProfile();
-  lsSet(KEY_PROFILE, { ...current, orcid_id: orcid });
+  saveMockProfile({ orcid_id: orcid });
 }
 
 // ─── Google Scholar ───────────────────────────────────────────
 
 export function updateGoogleScholarId(scholarId: string): void {
-  const current = getMockProfile();
-  lsSet(KEY_PROFILE, { ...current, google_scholar_id: scholarId });
+  saveMockProfile({ google_scholar_id: scholarId });
 }
 
 // ─── Semantic Scholar / OpenAlex — live sync helpers ─────────
 
 export function updateSemanticScholarId(ssId: string): void {
-  const current = getMockProfile();
-  lsSet(KEY_PROFILE, { ...current, semantic_scholar_id: ssId });
+  saveMockProfile({ semantic_scholar_id: ssId });
 }
 
 /** Merge live stats from Semantic Scholar / OpenAlex into the mock profile. */
@@ -1651,8 +1828,7 @@ export function updateProfileStats(patch: {
   publication_count?: number;
   semantic_scholar_id?: string;
 }): void {
-  const current = getMockProfile();
-  lsSet(KEY_PROFILE, { ...current, ...patch });
+  saveMockProfile(patch);
 }
 
 /** Import publications fetched from an external API into localStorage.
@@ -1850,7 +2026,7 @@ export function addIssueComment(issueId: string, body: string): IssueComment {
   const comment: IssueComment = {
     id: `ic-${uid()}`,
     issue_id: issueId,
-    user_id: MOCK_USER_ID,
+    user_id: getCurrentUserId(),
     body,
     created_at: new Date().toISOString(),
   };
@@ -1865,6 +2041,41 @@ export function addIssueComment(issueId: string, body: string): IssueComment {
     if (seed) lsSet(KEY_ISSUES, [{ ...seed, comments: [...seed.comments, comment] }, ...all]);
   }
   return comment;
+}
+
+// ─── View Counters ────────────────────────────────────────────
+
+export function incrementExperimentView(id: string): void {
+  const key = `scicollab_views_${id}`;
+  const current = ls<number>(key, 0);
+  lsSet(key, current + 1);
+}
+
+export function getExperimentViews(id: string): number {
+  const key = `scicollab_views_${id}`;
+  const stored = ls<number>(key, -1);
+  if (stored >= 0) return stored;
+  // Base value from experiment data
+  const exp = getExperiment(id);
+  return exp ? Math.round(simpleHashFn(id) % 500 + 50) : 0;
+}
+
+function simpleHashFn(str: string): number {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
+
+// ─── Waitlist ─────────────────────────────────────────────────
+
+export function addToWaitlist(email: string): boolean {
+  const key = "scicollab_waitlist";
+  const list = ls<{ email: string; timestamp: string }[]>(key, []);
+  if (list.some((e) => e.email.toLowerCase() === email.toLowerCase())) return false;
+  lsSet(key, [...list, { email, timestamp: new Date().toISOString() }]);
+  return true;
 }
 
 // ─── Analytics ────────────────────────────────────────────────
@@ -1913,7 +2124,7 @@ export function getAuthorAnalytics(userId: string): AuthorAnalytics {
     top_experiments: userExps.slice(0, 3).map((e) => ({
       id: e.id,
       title: e.title,
-      views: Math.round(rand() * 800 + 100),
+      views: getExperimentViews(e.id),
       forks: Math.round(rand() * 10),
     })),
     top_publications: userPubs.slice(0, 3).map((p) => ({

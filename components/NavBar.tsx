@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { getMockProfile, getNotificationsWithReadState } from "@/lib/mock-db";
+import { getMockProfile, getNotificationsWithReadState, logoutUser } from "@/lib/mock-db";
 import { toggleTheme, getCurrentTheme } from "@/components/ThemeProvider";
 
 const NAV_LINKS = [
@@ -17,11 +17,13 @@ const NAV_LINKS = [
 
 export default function NavBar() {
   const pathname = usePathname();
+  const router   = useRouter();
 
   const [profile, setProfile]     = useState({ full_name: "Researcher", avatar_initials: "R", avatar_color: "bg-slate-600" });
   const [unread,  setUnread]      = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDark,  setIsDark]      = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   // Refresh unread count (called on mount, path change, and notif-read events)
   const refreshUnread = useCallback(() => {
@@ -56,6 +58,11 @@ export default function NavBar() {
   function handleThemeToggle() {
     const next = toggleTheme();
     setIsDark(next === "dark");
+  }
+
+  function handleLogout() {
+    logoutUser();
+    router.push("/");
   }
 
   return (
@@ -130,11 +137,32 @@ export default function NavBar() {
               <span className="text-xl">⚙️</span>
             </Link>
 
-            {/* Avatar */}
-            <Link href="/profile/me"
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${profile.avatar_color} flex-shrink-0`}>
-              {profile.avatar_initials}
-            </Link>
+            {/* Avatar + User menu */}
+            <div className="relative flex-shrink-0">
+              <button
+                onClick={() => setShowUserMenu((v) => !v)}
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${profile.avatar_color}`}
+                aria-label="User menu">
+                {profile.avatar_initials}
+              </button>
+              {showUserMenu && (
+                <div className="absolute right-0 top-10 w-44 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50">
+                  <Link href="/profile/me" onClick={() => setShowUserMenu(false)}
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                    <span>👤</span> My Profile
+                  </Link>
+                  <Link href="/settings" onClick={() => setShowUserMenu(false)}
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                    <span>⚙️</span> Settings
+                  </Link>
+                  <div className="border-t border-slate-100 my-1" />
+                  <button onClick={handleLogout}
+                    className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 text-left">
+                    <span>🚪</span> Sign out
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Mobile menu toggle */}
             <button onClick={() => setMobileOpen((o) => !o)}
@@ -177,10 +205,14 @@ export default function NavBar() {
               className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-700">
               <span>⚙️</span> Settings
             </Link>
-            <div className="px-4 py-3 border-t border-slate-100">
+            <div className="px-4 py-3 border-t border-slate-100 space-y-2">
               <button onClick={handleThemeToggle}
                 className="flex items-center gap-2 text-sm text-slate-600">
                 {isDark ? "☀️ Light mode" : "🌙 Dark mode"}
+              </button>
+              <button onClick={handleLogout}
+                className="flex items-center gap-2 text-sm text-red-600">
+                🚪 Sign out
               </button>
             </div>
           </div>

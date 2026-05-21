@@ -6,7 +6,9 @@ import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
   getExperiment, getProfile, getQuestions, getMockProfile, MOCK_USER_ID,
-  updateExperiment, type Experiment, type Question,
+  updateExperiment, incrementExperimentView, getExperimentViews,
+  getCurrentUserId,
+  type Experiment, type Question,
 } from "@/lib/mock-db";
 import QASection      from "./components/QASection";
 import ForkButton     from "./components/ForkButton";
@@ -69,6 +71,7 @@ export default function ExperimentPage() {
   const [notFound, setNotFound] = useState(false);
   const [showCite, setShowCite] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  const [viewCount, setViewCount] = useState(0);
 
   // Edit mode state
   const [editing, setEditing]       = useState(false);
@@ -86,6 +89,9 @@ export default function ExperimentPage() {
     if (!found) { setNotFound(true); return; }
     setExp(found);
     setQuestions(getQuestions(id));
+    // Increment view and read count
+    incrementExperimentView(id);
+    setViewCount(getExperimentViews(id) + 1);
   }, [id]);
 
   function startEdit(e: Experiment) {
@@ -137,7 +143,8 @@ export default function ExperimentPage() {
   }
 
   const currentUser    = getMockProfile();
-  const isOwner        = exp.user_id === MOCK_USER_ID || exp.user_id === currentUser.id;
+  const currentId      = getCurrentUserId();
+  const isOwner        = exp.user_id === currentId || exp.user_id === MOCK_USER_ID || exp.user_id === currentUser.id;
   const authorProfile  = getProfile(exp.user_id);
   const parentExp      = exp.parent_id ? getExperiment(exp.parent_id) : null;
   const oc             = exp.outcome ? outcomeConfig[exp.outcome] : outcomeConfig.success;
@@ -357,8 +364,46 @@ export default function ExperimentPage() {
               <span className="text-xs text-slate-400">
                 {exp.visibility === "public" ? "🌐 Public" : exp.visibility === "network" ? "🤝 Collaborator network" : "🔒 Lab only"}
               </span>
-              <span className="text-xs text-slate-400">{exp.protocol_version}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-slate-400">👁 {viewCount.toLocaleString()} views</span>
+                <span className="text-xs text-slate-400">{exp.protocol_version}</span>
+              </div>
             </div>
+
+            {/* Real attachments */}
+            {exp.attachments && exp.attachments.length > 0 && (
+              <div className="pt-2 border-t border-slate-100">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Attached Files</p>
+                <div className="space-y-2">
+                  {exp.attachments.map((att, i) => {
+                    const icon = att.type.startsWith("image/") ? "🖼️"
+                      : att.name.endsWith(".pdf") ? "📋"
+                      : att.name.endsWith(".csv") || att.name.endsWith(".tsv") ? "📄"
+                      : att.name.endsWith(".zip") ? "📦"
+                      : "📄";
+                    const sizeStr = att.size < 1024 ? `${att.size} B`
+                      : att.size < 1024 * 1024 ? `${(att.size / 1024).toFixed(1)} KB`
+                      : `${(att.size / (1024 * 1024)).toFixed(1)} MB`;
+                    return (
+                      <a
+                        key={i}
+                        href={att.dataUrl}
+                        download={att.name}
+                        className="flex items-center gap-3 border border-slate-200 rounded-xl px-4 py-2.5 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span className="text-lg">{icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-slate-900 truncate">{att.name}</p>
+                          <p className="text-xs text-slate-400">{sizeStr}</p>
+                        </div>
+                        <span className="text-xs text-blue-600 font-medium flex-shrink-0">⬇ Download</span>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

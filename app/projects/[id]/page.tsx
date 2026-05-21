@@ -12,7 +12,7 @@ import {
   getIssues, saveIssue, updateIssueStatus, deleteIssue, addIssueComment,
   addProjectContributor, removeProjectContributor,
   getAllPublications, getProfile, searchProfiles,
-  MOCK_USER_ID, type Project, type WikiPage, type Issue,
+  getCurrentUserId, MOCK_USER_ID, type Project, type WikiPage, type Issue,
 } from "@/lib/mock-db";
 
 const TAB_LIST = ["Overview", "Publications", "Discussion", "Wiki", "Issues"] as const;
@@ -159,8 +159,9 @@ export default function ProjectDetailPage() {
     }
   }, []);
 
-  const isOwner = project?.user_id === MOCK_USER_ID;
-  const isCollab = project?.collaborator_ids.includes(MOCK_USER_ID) ?? false;
+  const currentId = getCurrentUserId();
+  const isOwner = project?.user_id === currentId;
+  const isCollab = project?.collaborator_ids.includes(currentId) ?? false;
   const canEdit = isOwner || isCollab;
 
   function startEdit() {
@@ -230,7 +231,7 @@ export default function ProjectDetailPage() {
 
   function handleNewWikiSave() {
     if (!newWikiTitle.trim()) return;
-    saveWikiPage({ project_id: id, title: newWikiTitle.trim(), content: newWikiContent.trim(), parent_id: newWikiParentId || null, created_by: MOCK_USER_ID });
+    saveWikiPage({ project_id: id, title: newWikiTitle.trim(), content: newWikiContent.trim(), parent_id: newWikiParentId || null, created_by: currentId });
     setNewWikiTitle(""); setNewWikiContent(""); setNewWikiParentId(""); setShowNewWiki(false); setPreviewMode(false);
     refreshWiki();
     toast("Wiki page saved");
@@ -279,7 +280,7 @@ export default function ProjectDetailPage() {
     if (!newIssueTitle.trim()) return;
     saveIssue({
       project_id: id,
-      user_id: MOCK_USER_ID,
+      user_id: currentId,
       title: newIssueTitle.trim(),
       body: newIssueBody.trim(),
       status: "open",
@@ -945,7 +946,7 @@ export default function ProjectDetailPage() {
                 {filteredIssues.map((issue) => {
                   const expanded = expandedIssue === issue.id;
                   const issueOwner = getProfile(issue.user_id);
-                  const canManage = project.user_id === MOCK_USER_ID || issue.user_id === MOCK_USER_ID;
+                  const canManage = project.user_id === currentId || issue.user_id === currentId;
                   const statusInfo = ISSUE_STATUS_LABEL[issue.status] ?? { label: issue.status, cls: "bg-slate-100 text-slate-500 border-slate-200" };
                   return (
                     <div key={issue.id} className={`bg-white border rounded-2xl transition-colors ${expanded ? "border-blue-200" : "border-slate-200"}`}>

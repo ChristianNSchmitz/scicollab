@@ -39,12 +39,13 @@ export default function StepAccountCreation({ data, updateData, onNext }: Props)
   }
 
   function simulateOrcidVerify() {
-    if (!data.orcidId.trim()) return;
+    if (!data.orcidId.trim() || !isOrcidFormat) return;
     setOrcidChecking(true);
     setTimeout(() => {
       setOrcidChecking(false);
       setOrcidVerified(true);
-    }, 1200);
+      updateData({ orcidVerified: true });
+    }, 1500);
   }
 
   const isOrcidFormat = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(data.orcidId);

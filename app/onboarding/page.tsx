@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { saveMockProfile } from "@/lib/mock-db";
+import { saveMockProfile, registerUser } from "@/lib/mock-db";
 import StepAccountCreation from "@/components/onboarding/StepAccountCreation";
 import StepLabWorkspace from "@/components/onboarding/StepLabWorkspace";
 import StepExpertiseTags from "@/components/onboarding/StepExpertiseTags";
@@ -15,6 +15,7 @@ export type OnboardingData = {
   password: string;
   institution: string;
   orcidId: string;
+  orcidVerified: boolean;
   labMode: "create" | "join" | "";
   labName: string;
   labJoinCode: string;
@@ -31,7 +32,7 @@ export type OnboardingData = {
 };
 
 const INITIAL_DATA: OnboardingData = {
-  fullName: "", email: "", password: "", institution: "", orcidId: "",
+  fullName: "", email: "", password: "", institution: "", orcidId: "", orcidVerified: false,
   labMode: "", labName: "", labJoinCode: "", inviteEmails: [], role: "",
   researchDomain: "", subfields: [], techniques: [],
   notifyNewMatch: true, notifyAnswerRequest: true, notifyFork: true, notifyEndorsement: true,
@@ -61,10 +62,14 @@ export default function OnboardingPage() {
   }
 
   async function handleComplete() {
+    // Register (or re-login) the user — sets the session
+    registerUser(data.email || `user-${Date.now()}@scicollab.local`, data.password || "scicollab123", data.fullName || "Researcher");
+    // Save profile for this user
     saveMockProfile({
       full_name:       data.fullName || "Researcher",
       institution:     data.institution,
       orcid_id:        data.orcidId || null,
+      orcid_verified:  data.orcidVerified,
       role:            data.role,
       research_domain: data.researchDomain,
       techniques:      data.techniques,

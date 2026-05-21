@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addReport, hasReported, MOCK_USER_ID, type Report } from "@/lib/mock-db";
+import { addReport, hasReported, getCurrentUserId, type Report } from "@/lib/mock-db";
 
 const REASONS: Array<{ value: Report["reason"]; label: string }> = [
   { value: "spam",          label: "Spam" },
@@ -25,7 +25,7 @@ export default function ReportModal({ targetType, targetId, onClose }: Props) {
 
   function handleSubmit() {
     addReport({
-      reporter_id: MOCK_USER_ID,
+      reporter_id: getCurrentUserId(),
       target_type: targetType,
       target_id: targetId,
       reason,
