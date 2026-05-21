@@ -78,46 +78,59 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-blue-600">SciCollab</Link>
-        <span className="text-sm text-slate-500">
+    <div className="min-h-screen bg-gradient-to-br from-blue-700 via-indigo-700 to-blue-900 flex flex-col">
+      {/* Nav */}
+      <div className="px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="text-xl font-bold text-white">SciCollab</Link>
+        <span className="text-sm text-blue-200">
           Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">Sign in</Link>
+          <Link href="/login" className="text-white font-semibold hover:underline">Sign in</Link>
         </span>
       </div>
 
-      <div className="flex-1 flex flex-col items-center py-12 px-4">
+      <div className="flex-1 flex flex-col items-center py-10 px-4">
         {/* Step progress */}
-        <div className="w-full max-w-2xl mb-10">
+        <div className="w-full max-w-2xl mb-8">
           <div className="flex items-center gap-0">
             {STEPS.map((step, idx) => (
               <div key={step.id} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-shrink-0">
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
-                    idx < currentStep ? "bg-blue-600 text-white"
-                    : idx === currentStep ? "bg-blue-600 text-white ring-4 ring-blue-100"
-                    : "bg-white text-slate-400 border-2 border-slate-200"
+                    idx < currentStep
+                      ? "bg-white text-blue-700"
+                      : idx === currentStep
+                      ? "bg-white text-blue-700 ring-4 ring-white/30"
+                      : "bg-white/20 text-white border-2 border-white/40"
                   }`}>
                     {idx < currentStep ? <CheckIcon /> : step.id}
                   </div>
                   <div className="mt-1.5 text-center">
-                    <div className={`text-xs font-medium ${idx <= currentStep ? "text-blue-600" : "text-slate-400"}`}>{step.label}</div>
+                    <div className={`text-xs font-medium ${idx <= currentStep ? "text-white" : "text-blue-200"}`}>
+                      {step.label}
+                    </div>
                   </div>
                 </div>
                 {idx < STEPS.length - 1 && (
-                  <div className="flex-1 h-0.5 mx-2 mt-[-16px]" style={{ backgroundColor: idx < currentStep ? "#2563eb" : "#e2e8f0" }} />
+                  <div className="flex-1 h-0.5 mx-2 mt-[-16px]"
+                    style={{ backgroundColor: idx < currentStep ? "white" : "rgba(255,255,255,0.25)" }} />
                 )}
               </div>
             ))}
           </div>
         </div>
 
-        <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="px-8 py-6 border-b border-slate-100 bg-slate-50">
-            <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">Step {currentStep + 1} of {STEPS.length}</div>
+        {/* Card */}
+        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="px-8 py-5 border-b border-slate-100 bg-slate-50">
+            <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-0.5">
+              Step {currentStep + 1} of {STEPS.length}
+            </div>
             <h1 className="text-xl font-bold text-slate-900">{STEPS[currentStep].description}</h1>
-            {currentStep === 0 && <p className="text-sm text-slate-500 mt-1">Goal: zero-friction onboarding — up and uploading in under 5 minutes.</p>}
+            {currentStep === 0 && (
+              <p className="text-sm text-slate-500 mt-1">
+                Zero-friction onboarding — up and uploading in under 5 minutes.
+              </p>
+            )}
           </div>
 
           <div className="px-8 py-8">
@@ -128,8 +141,9 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        <p className="text-xs text-slate-400 mt-6 text-center max-w-sm">
-          By creating an account you agree to our Terms of Service and Privacy Policy. Your data is stored locally on this device.
+        <p className="text-xs text-blue-200 mt-6 text-center max-w-sm">
+          By creating an account you agree to our Terms of Service and Privacy Policy.
+          Your data is stored locally on this device.
         </p>
       </div>
     </div>
