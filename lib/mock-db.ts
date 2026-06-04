@@ -327,8 +327,32 @@ const AVATAR_COLORS = [
   "bg-teal-600", "bg-indigo-600", "bg-rose-600", "bg-amber-600",
 ];
 
+export function ensureDummyUser(): void {
+  if (typeof window === "undefined") return;
+  // If no session at all, auto-login as the built-in dummy user
+  const existing = ls<string | null>(KEY_SESSION, null);
+  if (existing) return;
+
+  // Register the dummy user if not yet in KEY_USERS
+  const users = ls<StoredUser[]>(KEY_USERS, []);
+  const dummyId = MOCK_USER_ID;
+  if (!users.find((u) => u.id === dummyId)) {
+    const dummy: StoredUser = {
+      id: dummyId,
+      email: "demo@scicollab.local",
+      name: "Demo Researcher",
+      password: "demo",
+      avatar_color: "bg-blue-600",
+      avatar_initials: "DR",
+    };
+    lsSet(KEY_USERS, [...users, dummy]);
+  }
+  lsSet(KEY_SESSION, dummyId);
+}
+
 export function getCurrentUserId(): string {
-  return ls<string>(KEY_SESSION, "mock-user");
+  ensureDummyUser();
+  return ls<string>(KEY_SESSION, MOCK_USER_ID);
 }
 
 export function setCurrentUserId(id: string): void {

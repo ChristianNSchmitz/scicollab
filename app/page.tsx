@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { addToWaitlist } from "@/lib/mock-db";
+import { useRouter } from "next/navigation";
+import { addToWaitlist, ensureDummyUser } from "@/lib/mock-db";
 
 /* ─── Hardcoded light-mode palette ─────────────────────────────────────────
    The landing page is intentionally always in light mode (like most SaaS
@@ -73,9 +74,30 @@ function WaitlistForm({ compact = false }: { compact?: boolean }) {
 }
 
 export default function LandingPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Auto-login as dummy user and redirect straight to the dashboard
+    ensureDummyUser();
+    router.replace("/dashboard");
+  }, [router]);
+
+  // Show nothing while redirecting
   return (
-    /* colorScheme:"only light" blocks browser forced-dark-mode; hardcoded hex blocks our custom .dark overrides */
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: L.bg, color: L.text, colorScheme: "only light" }}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc" }}>
+      <div style={{ textAlign: "center" }}>
+        <div style={{ width: 36, height: 36, border: "3px solid #2563eb", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
+        <p style={{ color: "#64748b", fontSize: 14 }}>Loading SciCollab…</p>
+      </div>
+    </div>
+  );
+}
+
+// Landing page kept below for reference — currently bypassed by auto-redirect above.
+// Remove the comment block below if you ever want to restore the marketing page.
+function _LandingPageFull() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "#f8fafc", color: "#0f172a", colorScheme: "only light" }}>
 
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
       <nav style={{ position: "sticky", top: 0, zIndex: 50, borderBottom: `1px solid ${L.border}`, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)" }}>
@@ -237,7 +259,7 @@ export default function LandingPage() {
             <span style={{ fontWeight: 700, color: "#2563eb" }}>SciCollab</span>
             <span style={{ fontSize: 12, color: L.subtle }}>… Science Made Easy</span>
           </div>
-          <p style={{ fontSize: 12, color: L.subtle }}>© 2026 SciCollab · EU data residency · GDPR compliant</p>
+          <p style={{ fontSize: 12, color: "#94a3b8" }}>© 2026 SciCollab · EU data residency · GDPR compliant</p>
         </div>
       </footer>
     </div>
