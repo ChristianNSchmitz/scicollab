@@ -6,6 +6,7 @@ import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import CommentSection from "@/components/CommentSection";
 import GitLabPanel from "@/components/GitLabPanel";
+import BuiltInRepo from "@/components/BuiltInRepo";
 import { useToast } from "@/lib/toast";
 import {
   getProject, updateProject, deleteProject,
@@ -73,6 +74,9 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [tab, setTab] = useState<Tab>("Overview");
+
+  // Code tab source toggle
+  const [codeSource, setCodeSource] = useState<"builtin" | "gitlab">("builtin");
 
   // Edit mode
   const [editing, setEditing]       = useState(false);
@@ -590,15 +594,51 @@ export default function ProjectDetailPage() {
 
         {/* ── Code ── */}
         {tab === "Code" && (
-          <GitLabPanel
-            projectId={project.id}
-            gitlabUrl={project.gitlab_url ?? null}
-            isOwner={isOwner}
-            onUrlSaved={(url) => {
-              const updated = updateProject(project.id, { gitlab_url: url || null });
-              if (updated) setProject(updated);
-            }}
-          />
+          <div className="space-y-4">
+            {/* Source toggle */}
+            <div className="flex items-center gap-2">
+              <div className="flex rounded-xl border border-slate-200 overflow-hidden bg-white">
+                <button
+                  onClick={() => setCodeSource("builtin")}
+                  className={`px-4 py-2 text-sm font-medium transition-colors ${codeSource === "builtin" ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
+                >
+                  🗄️ Built-in Repo
+                </button>
+                <button
+                  onClick={() => setCodeSource("gitlab")}
+                  className={`px-4 py-2 text-sm font-medium transition-colors border-l border-slate-200 ${codeSource === "gitlab" ? "bg-orange-500 text-white" : "text-slate-600 hover:bg-slate-50"}`}
+                >
+                  🦊 GitLab
+                </button>
+              </div>
+              {codeSource === "builtin" && (
+                <span className="text-xs text-slate-400">Files stored directly in this project</span>
+              )}
+              {codeSource === "gitlab" && (
+                <span className="text-xs text-slate-400">Connect an external GitLab repository</span>
+              )}
+            </div>
+
+            {codeSource === "builtin" && (
+              <BuiltInRepo
+                projectId={project.id}
+                projectName={project.title}
+                isOwner={isOwner}
+              />
+            )}
+
+            {codeSource === "gitlab" && (
+              <GitLabPanel
+                projectId={project.id}
+                gitlabUrl={project.gitlab_url ?? null}
+                isOwner={isOwner}
+                onUrlSaved={(url) => {
+                  const updated = updateProject(project.id, { gitlab_url: url || null });
+                  if (updated) setProject(updated);
+                }}
+              />
+            )}
+          </div>
         )}
 
         {/* ── Publications ── */}
