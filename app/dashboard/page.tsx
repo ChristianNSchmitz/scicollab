@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
-  getMockProfile, getMyExperiments, getAllExperiments, getUnreadCount,
+  getMockProfile, getUnreadCount,
   getNotificationsWithReadState, getUserPublications, getCurrentUserId,
   MOCK_USER_ID,
   type Experiment, type Notification,
 } from "@/lib/mock-db";
+import { getMyExperimentsFromDb, getAllExperimentsFromDb, type DbExperiment } from "@/app/actions/experiments";
+
+const DEV_USER_ID = "00000000-0000-0000-0000-000000000001";
 
 function timeAgo(d: string) {
   const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
@@ -32,8 +35,8 @@ const NOTIF_ICON: Record<Notification["type"], string> = {
 
 export default function DashboardPage() {
   const [profile, setProfile] = useState({ full_name: "", avatar_initials: "R", avatar_color: "bg-slate-600", h_index: 0, citation_count: 0, publication_count: 0, profile_completeness: 20, institution: "", research_domain: "" });
-  const [myExps, setMyExps]   = useState<Experiment[]>([]);
-  const [recentExps, setRecentExps] = useState<Experiment[]>([]);
+  const [myExps, setMyExps]   = useState<DbExperiment[]>([]);
+  const [recentExps, setRecentExps] = useState<DbExperiment[]>([]);
   const [notifs, setNotifs]   = useState<Notification[]>([]);
   const [unread, setUnread]   = useState(0);
   const [pubCount, setPubCount] = useState(0);
@@ -41,13 +44,14 @@ export default function DashboardPage() {
   useEffect(() => {
     const p = getMockProfile();
     setProfile({ full_name: p.full_name, avatar_initials: p.avatar_initials || p.full_name?.[0]?.toUpperCase() || "R", avatar_color: p.avatar_color || "bg-slate-600", h_index: p.h_index || 0, citation_count: p.citation_count || 0, publication_count: p.publication_count || 0, profile_completeness: p.profile_completeness || 20, institution: p.institution || "", research_domain: p.research_domain || "" });
-    const currentId = getCurrentUserId();
-    setMyExps(getMyExperiments());
-    setRecentExps(getAllExperiments().filter((e) => e.user_id !== currentId && e.visibility === "public").slice(0, 4));
+    getMyExperimentsFromDb(DEV_USER_ID).then(setMyExps).catch(console.error);
+    getAllExperimentsFromDb()
+      .then((all) => setRecentExps(all.filter((e) => e.user_id !== DEV_USER_ID).slice(0, 4)))
+      .catch(console.error);
     const n = getNotificationsWithReadState();
     setNotifs(n.slice(0, 5));
     setUnread(n.filter((x) => !x.is_read).length);
-    setPubCount(getUserPublications(currentId).length);
+    setPubCount(getUserPublications(getCurrentUserId()).length);
   }, []);
 
   const hasProfile = profile.full_name && profile.full_name !== "Researcher";

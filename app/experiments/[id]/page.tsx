@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
@@ -10,6 +10,7 @@ import {
   getCurrentUserId,
   type Experiment, type Question,
 } from "@/lib/mock-db";
+import { getExperimentFromDb, deleteExperimentFromDb } from "@/app/actions/experiments";
 import QASection      from "./components/QASection";
 import ForkButton     from "./components/ForkButton";
 import VersionTree    from "./components/VersionTree";
@@ -63,6 +64,7 @@ function EditField({ label, value, onChange, multiline = false }: { label: strin
 /* ── main page ── */
 export default function ExperimentPage() {
   const { id }      = useParams<{ id: string }>();
+  const router      = useRouter();
   const searchParams = useSearchParams();
   const forked      = searchParams.get("forked");
 
@@ -83,15 +85,20 @@ export default function ExperimentPage() {
   const [editOutcome, setEditOutcome] = useState<"success" | "partial" | "failed" | "">("");
   const [editVersion, setEditVersion] = useState("");
   const [saving, setSaving]         = useState(false);
+  const [deleting, setDeleting]     = useState(false);
 
   useEffect(() => {
-    const found = getExperiment(id);
-    if (!found) { setNotFound(true); return; }
-    setExp(found);
-    setQuestions(getQuestions(id));
-    // Increment view and read count
-    incrementExperimentView(id);
-    setViewCount(getExperimentViews(id) + 1);
+    async function load() {
+      // Try Supabase first, fall back to mock-db seed data
+      const dbExp = await getExperimentFromDb(id);
+      const found = dbExp ?? getExperiment(id);
+      if (!found) { setNotFound(true); return; }
+      setExp(found as Experiment);
+      setQuestions(getQuestions(id));
+      incrementExperimentView(id);
+      setViewCount(getExperimentViews(id) + 1);
+    }
+    load();
   }, [id]);
 
   function startEdit(e: Experiment) {
@@ -103,6 +110,14 @@ export default function ExperimentPage() {
     setEditOutcome(e.outcome ?? "");
     setEditVersion(e.protocol_version);
     setEditing(true);
+  }
+
+  async function handleDelete() {
+    if (!exp) return;
+    if (!confirm("Delete this experiment? This cannot be undone.")) return;
+    setDeleting(true);
+    await deleteExperimentFromDb(exp.id);
+    router.push("/experiments");
   }
 
   function saveEdit() {
@@ -144,7 +159,8 @@ export default function ExperimentPage() {
 
   const currentUser    = getMockProfile();
   const currentId      = getCurrentUserId();
-  const isOwner        = exp.user_id === currentId || exp.user_id === MOCK_USER_ID || exp.user_id === currentUser.id;
+  const DEV_USER_ID    = "00000000-0000-0000-0000-000000000001";
+  const isOwner        = exp.user_id === currentId || exp.user_id === MOCK_USER_ID || exp.user_id === currentUser.id || exp.user_id === DEV_USER_ID;
   const authorProfile  = getProfile(exp.user_id);
   const parentExp      = exp.parent_id ? getExperiment(exp.parent_id) : null;
   const oc             = exp.outcome ? outcomeConfig[exp.outcome] : outcomeConfig.success;
@@ -177,10 +193,16 @@ export default function ExperimentPage() {
                   </button>
                 </>
               ) : (
-                <button onClick={() => startEdit(exp)}
-                  className="text-xs text-slate-600 border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-50 font-medium">
-                  ✏️ Edit
-                </button>
+                <>
+                  <button onClick={() => startEdit(exp)}
+                    className="text-xs text-slate-600 border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-50 font-medium">
+                    ✏️ Edit
+                  </button>
+                  <button onClick={handleDelete} disabled={deleting}
+                    className="text-xs text-red-600 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-50 font-medium disabled:opacity-60">
+                    {deleting ? "Deleting…" : "🗑 Delete"}
+                  </button>
+                </>
               )}
             </span>
           )}

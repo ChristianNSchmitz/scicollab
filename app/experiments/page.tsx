@@ -3,7 +3,8 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { getAllExperiments, getProfile, getExperimentViews, type Experiment } from "@/lib/mock-db";
+import { getProfile, getExperimentViews } from "@/lib/mock-db";
+import { getAllExperimentsFromDb, type DbExperiment } from "@/app/actions/experiments";
 import { ExperimentSkeleton } from "@/components/Skeleton";
 
 function timeAgo(d: string) {
@@ -13,13 +14,13 @@ function timeAgo(d: string) {
   return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
-function outcomeStyle(o: Experiment["outcome"]) {
+function outcomeStyle(o: DbExperiment["outcome"]) {
   if (o === "success") return "bg-emerald-50 text-emerald-700 border-emerald-200";
   if (o === "partial")  return "bg-amber-50 text-amber-700 border-amber-200";
   if (o === "failed")   return "bg-red-50 text-red-700 border-red-200";
   return "bg-slate-50 text-slate-500 border-slate-200";
 }
-function outcomeLabel(o: Experiment["outcome"]) {
+function outcomeLabel(o: DbExperiment["outcome"]) {
   if (o === "success") return "✅ Success";
   if (o === "partial")  return "⚠️ Partial";
   if (o === "failed")   return "❌ Negative result";
@@ -36,9 +37,14 @@ const OUTCOME_FILTERS: { value: OutcomeFilter; label: string }[] = [
 
 export default function ExperimentsPage() {
   const [loading, setLoading] = useState(true);
-  const allExperiments = useMemo(() => getAllExperiments(), []);
+  const [allExperiments, setAllExperiments] = useState<DbExperiment[]>([]);
 
-  useEffect(() => { setLoading(false); }, []);
+  useEffect(() => {
+    getAllExperimentsFromDb()
+      .then(setAllExperiments)
+      .catch((err) => console.error("Failed to load experiments:", err))
+      .finally(() => setLoading(false));
+  }, []);
 
   // Collect all unique technique tags
   const allTechniques = useMemo(() => {

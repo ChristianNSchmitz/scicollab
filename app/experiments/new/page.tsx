@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { saveExperiment, getMockProfile } from "@/lib/mock-db";
+import { saveExperimentToDb } from "@/app/actions/experiments";
 import StepInitiate from "@/components/experiments/StepInitiate";
 import StepMethodCard from "@/components/experiments/StepMethodCard";
 import StepOutcome from "@/components/experiments/StepOutcome";
@@ -98,34 +98,39 @@ export default function NewExperimentPage() {
     }
   }
 
+  // Fixed UUID for the prototype dummy user (real auth will replace this)
+  const DEV_USER_ID = "00000000-0000-0000-0000-000000000001";
+
   async function handlePublish() {
     setPublishError("");
-    const profile = getMockProfile();
 
-    const dataWithAttachments = data as ExperimentData & { attachments?: { name: string; size: number; type: string; dataUrl: string }[] };
-    const experiment = saveExperiment({
-      user_id:          profile.id,
-      parent_id:        null,
-      title:            data.title,
-      protocol_version: data.protocolVersion,
-      hypothesis:       data.hypothesis || null,
-      methods:          data.methods || null,
-      conditions:       data.conditions || null,
-      reagents:         data.reagents,
-      technique_tags:   data.techniqueTags,
-      organism_tags:    data.organismTags,
-      outcome:          (data.outcome || null) as "success" | "partial" | "failed" | null,
-      outcome_summary:  data.outcomeSummary || null,
-      failure_context:  data.failureContext || null,
-      root_cause:       data.rootCause || null,
-      attached_files:   data.attachedFiles,
-      attachments:      dataWithAttachments.attachments ?? [],
-      code_notebook_url: data.codeNotebookUrl || null,
-      visibility:       data.visibility,
-      co_authors:       data.coAuthors,
-    });
+    try {
+      const experiment = await saveExperimentToDb({
+        user_id:           DEV_USER_ID,
+        parent_id:         null,
+        title:             data.title,
+        protocol_version:  data.protocolVersion,
+        hypothesis:        data.hypothesis || null,
+        methods:           data.methods || null,
+        conditions:        data.conditions || null,
+        reagents:          data.reagents,
+        technique_tags:    data.techniqueTags,
+        organism_tags:     data.organismTags,
+        outcome:           (data.outcome || null) as "success" | "partial" | "failed" | null,
+        outcome_summary:   data.outcomeSummary || null,
+        failure_context:   data.failureContext || null,
+        root_cause:        data.rootCause || null,
+        attached_files:    data.attachedFiles,
+        code_notebook_url: data.codeNotebookUrl || null,
+        visibility:        data.visibility,
+        embargo_until:     data.embargoUntil || null,
+        co_authors:        data.coAuthors,
+      });
 
-    router.push(`/experiments/${experiment.id}`);
+      router.push(`/experiments/${experiment.id}`);
+    } catch (err) {
+      setPublishError(err instanceof Error ? err.message : "Failed to save experiment");
+    }
   }
 
   return (
