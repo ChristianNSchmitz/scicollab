@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
-  getNotificationsWithReadState, getUserPublications, getCurrentUserId,
+  getNotificationsWithReadState, getUserPublications, getCurrentUserId, getMockProfile,
   type Experiment, type Notification,
 } from "@/lib/mock-db";
 import { getMyExperimentsFromDb, getAllExperimentsFromDb, type DbExperiment } from "@/app/actions/experiments";
@@ -53,22 +53,30 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Seed from the local mock-db profile so the greeting + completeness are
+    // correct instantly and consistent with the profile page.
+    const local = getMockProfile();
+    const localChecks = [!!local.institution, !!local.research_domain, !!local.bio, (local.techniques?.length ?? 0) > 0, (local.skills?.length ?? 0) > 0];
+    setProfile({
+      full_name:            local.full_name,
+      avatar_initials:      local.avatar_initials || initialsOf(local.full_name),
+      institution:          local.institution || "",
+      research_domain:      local.research_domain || "",
+      profile_completeness: local.profile_completeness || Math.round((localChecks.filter(Boolean).length / localChecks.length) * 100),
+    });
+
     const supabase = createClient();
     supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (!user) { setLoading(false); return; }
+      if (!user) { setLoading(false); return; } // keep local profile
       const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single();
-      const name = prof?.full_name || user.email || "Researcher";
-
-      // Completeness from actual profile fields, not a magic number
+      const name = prof?.full_name || user.email || local.full_name;
       const checks = [!!prof?.full_name, !!prof?.institution, !!prof?.research_domain, !!prof?.orcid_id, (prof?.techniques?.length ?? 0) > 0];
-      const completeness = Math.round((checks.filter(Boolean).length / checks.length) * 100);
-
       setProfile({
         full_name:            name,
         avatar_initials:      initialsOf(name),
-        institution:          prof?.institution || "",
-        research_domain:      prof?.research_domain || "",
-        profile_completeness: completeness,
+        institution:          prof?.institution || local.institution || "",
+        research_domain:      prof?.research_domain || local.research_domain || "",
+        profile_completeness: Math.round((checks.filter(Boolean).length / checks.length) * 100),
       });
 
       const [mine, all] = await Promise.all([

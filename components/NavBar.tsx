@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { getNotificationsWithReadState } from "@/lib/mock-db";
+import { getNotificationsWithReadState, getMockProfile } from "@/lib/mock-db";
+import { initialsOf } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { toggleTheme, getCurrentTheme } from "@/components/ThemeProvider";
 
@@ -32,24 +33,38 @@ export default function NavBar() {
   }, []);
 
   useEffect(() => {
+    // Start from the local mock-db profile so the avatar is correct instantly
+    // and stays consistent with the profile page even without a Supabase session.
+    const local = getMockProfile();
+    setProfile({
+      full_name: local.full_name,
+      avatar_initials: local.avatar_initials || initialsOf(local.full_name),
+      avatar_color: local.avatar_color || "bg-blue-600",
+    });
+
     const supabase = createClient();
     supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (!user) return;
+      if (!user) return; // keep the local profile
       const { data: prof } = await supabase.from("profiles").select("full_name, institution").eq("id", user.id).single();
-      // Priority: profiles table → signup metadata → email
       const name = prof?.full_name
         || (user.user_metadata?.full_name as string | undefined)
         || user.email
-        || "Researcher";
-      const parts = name.trim().split(/\s+/);
-      const initials = parts.length > 1
-        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-        : name.slice(0, 2).toUpperCase();
-      setProfile({ full_name: name, avatar_initials: initials, avatar_color: "bg-blue-600" });
+        || local.full_name;
+      setProfile({ full_name: name, avatar_initials: initialsOf(name), avatar_color: "bg-blue-600" });
     });
     setIsDark(getCurrentTheme() === "dark");
     refreshUnread();
   }, [pathname, refreshUnread]);
+
+  // Close the user menu on Escape or outside click
+  useEffect(() => {
+    if (!showUserMenu) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setShowUserMenu(false); };
+    const onClick = () => setShowUserMenu(false);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("click", onClick);
+    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("click", onClick); };
+  }, [showUserMenu]);
 
   // Listen for notification-read events (dispatched from NotificationsPage)
   useEffect(() => {
@@ -151,13 +166,19 @@ export default function NavBar() {
             {/* Avatar + User menu */}
             <div className="relative flex-shrink-0">
               <button
-                onClick={() => setShowUserMenu((v) => !v)}
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${profile.avatar_color}`}
-                aria-label="User menu">
+                onClick={(e) => { e.stopPropagation(); setShowUserMenu((v) => !v); }}
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${profile.avatar_color} hover:ring-2 hover:ring-blue-200 transition-all`}
+                aria-label="User menu"
+                title={profile.full_name}>
                 {profile.avatar_initials}
               </button>
               {showUserMenu && (
-                <div className="absolute right-0 top-10 w-44 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50">
+                <div onClick={(e) => e.stopPropagation()}
+                  className="absolute right-0 top-10 w-52 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50 animate-slide-in">
+                  <div className="px-4 py-2.5 border-b border-slate-100">
+                    <p className="text-sm font-semibold text-slate-900 truncate">{profile.full_name}</p>
+                    <p className="text-xs text-slate-400">View your profile</p>
+                  </div>
                   <Link href="/profile/me" onClick={() => setShowUserMenu(false)}
                     className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
                     <span>👤</span> My Profile
