@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { ensureDemoUser } from "@/app/actions/auth";
+
+const DEMO_EMAIL = "b00834203@essec.edu";
+const DEMO_PASSWORD = "Admin@123";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,6 +16,15 @@ export default function LoginPage() {
   const [showPw, setShowPw]     = useState(false);
   const [error, setError]       = useState("");
   const [loading, setLoading]   = useState(false);
+
+  // The standing demo account must always exist — create it if missing
+  useEffect(() => { ensureDemoUser().catch(() => {}); }, []);
+
+  function fillDemo() {
+    setEmail(DEMO_EMAIL);
+    setPassword(DEMO_PASSWORD);
+    setError("");
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -78,6 +91,11 @@ export default function LoginPage() {
             ) : "Sign in"}
           </button>
         </form>
+
+        <button type="button" onClick={fillDemo}
+          className="w-full mt-3 border border-slate-200 text-slate-600 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition-colors">
+          🎓 Use demo account
+        </button>
 
         <div className="mt-6 pt-6 border-t border-slate-100 text-center">
           <p className="text-sm text-slate-500">

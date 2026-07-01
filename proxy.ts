@@ -6,6 +6,13 @@ const PUBLIC_PATHS = ["/", "/login", "/onboarding"];
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // Local dev without real Supabase credentials (placeholder env):
+  // skip the auth gate entirely so the app remains browsable.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  if (!supabaseUrl || supabaseUrl.includes("placeholder")) {
+    return response;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
