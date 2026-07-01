@@ -92,59 +92,59 @@ export default function NavBar() {
   }
 
   return (
-    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-14">
+    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6">
+        <div className="flex items-center justify-between h-14 gap-2">
 
           {/* Logo */}
           <Link href="/feed" className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-xl font-bold text-blue-600">SciCollab</span>
+            <span className="text-lg sm:text-xl font-bold text-blue-600">SciCollab</span>
             <span className="hidden sm:inline text-xs text-slate-400 font-medium bg-slate-100 px-1.5 py-0.5 rounded">beta</span>
           </Link>
 
-          {/* Nav links — icon on xs, icon+label on md+ */}
-          <div className="flex items-center gap-1">
+          {/* Primary nav links — desktop only; mobile uses the hamburger menu */}
+          <div className="hidden md:flex items-center gap-1">
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href || pathname.startsWith(link.href + "/");
               return (
                 <Link key={link.href} href={link.href}
-                  className={`flex items-center gap-1.5 px-2 sm:px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-2 lg:px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     active
                       ? "bg-blue-50 text-blue-600"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}>
                   <span className="text-base">{link.icon}</span>
-                  <span className="hidden sm:inline">{link.label}</span>
+                  <span className="hidden lg:inline">{link.label}</span>
                 </Link>
               );
             })}
           </div>
 
           {/* Right side */}
-          <div className="flex items-center gap-1.5">
-            {/* Upload CTA */}
+          <div className="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
+            {/* Upload CTA — always visible */}
             <Link href="/experiments/new"
-              className="flex items-center gap-1.5 bg-blue-600 text-white text-sm font-semibold px-3.5 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              className="flex items-center gap-1.5 bg-blue-600 text-white text-sm font-semibold px-3 sm:px-3.5 py-2 rounded-lg hover:bg-blue-700 transition-colors">
               <span className="hidden sm:inline">+ Upload</span>
-              <span className="sm:hidden">+</span>
+              <span className="sm:hidden text-base leading-none">+</span>
             </Link>
 
-            {/* Dark mode toggle */}
+            {/* Dark mode toggle — hidden on mobile (available in menu) */}
             <button
               onClick={handleThemeToggle}
               title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              className="p-2 rounded-lg hover:bg-slate-50 transition-colors text-lg leading-none select-none"
+              className="hidden sm:block p-2 rounded-lg hover:bg-slate-50 transition-colors text-lg leading-none select-none"
               aria-label="Toggle dark mode">
               {isDark ? "☀️" : "🌙"}
             </button>
 
-            {/* Bookmarks */}
-            <Link href="/bookmarks" className="p-2 rounded-lg hover:bg-slate-50 transition-colors" title="Saved posts">
+            {/* Bookmarks — desktop only */}
+            <Link href="/bookmarks" className="hidden md:block p-2 rounded-lg hover:bg-slate-50 transition-colors" title="Saved posts" aria-label="Saved posts">
               <span className="text-xl">🔖</span>
             </Link>
 
-            {/* Notifications */}
-            <Link href="/notifications" className="relative p-2 rounded-lg hover:bg-slate-50 transition-colors">
+            {/* Notifications — always visible */}
+            <Link href="/notifications" className="relative p-2 rounded-lg hover:bg-slate-50 transition-colors" aria-label="Notifications">
               <span className="text-xl">🔔</span>
               {unread > 0 && (
                 <span className="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center leading-none">
@@ -153,18 +153,18 @@ export default function NavBar() {
               )}
             </Link>
 
-            {/* Messages */}
-            <Link href="/messages" className="p-2 rounded-lg hover:bg-slate-50 transition-colors">
+            {/* Messages — desktop only */}
+            <Link href="/messages" className="hidden md:block p-2 rounded-lg hover:bg-slate-50 transition-colors" aria-label="Messages">
               <span className="text-xl">✉️</span>
             </Link>
 
-            {/* Settings */}
-            <Link href="/settings" className="p-2 rounded-lg hover:bg-slate-50 transition-colors" title="Settings">
+            {/* Settings — desktop only */}
+            <Link href="/settings" className="hidden md:block p-2 rounded-lg hover:bg-slate-50 transition-colors" title="Settings" aria-label="Settings">
               <span className="text-xl">⚙️</span>
             </Link>
 
-            {/* Avatar + User menu */}
-            <div className="relative flex-shrink-0">
+            {/* Avatar + User menu — desktop only (mobile uses the hamburger) */}
+            <div className="relative flex-shrink-0 hidden md:block">
               <button
                 onClick={(e) => { e.stopPropagation(); setShowUserMenu((v) => !v); }}
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${profile.avatar_color} hover:ring-2 hover:ring-blue-200 transition-all`}
@@ -207,6 +207,18 @@ export default function NavBar() {
         {/* Mobile nav */}
         {mobileOpen && (
           <div className="md:hidden border-t border-slate-100 py-2">
+            {/* Signed-in user */}
+            <Link href="/profile/me" onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 mb-1 hover:bg-slate-50">
+              <span className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold ${profile.avatar_color}`}>
+                {profile.avatar_initials}
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-slate-900 truncate">{profile.full_name}</p>
+                <p className="text-xs text-slate-400">View profile</p>
+              </div>
+            </Link>
+            <div className="border-t border-slate-100 mb-1" />
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href;
               return (
