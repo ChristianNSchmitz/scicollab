@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { ensureDemoUser } from "@/app/actions/auth";
+import { loginUser, registerUser } from "@/lib/mock-db";
 
 const DEMO_EMAIL = "b00834203@essec.edu";
 const DEMO_PASSWORD = "Admin@123";
@@ -18,7 +19,8 @@ export default function LoginPage() {
   const [loading, setLoading]   = useState(false);
 
   // The standing demo account must always exist — create it if missing
-  useEffect(() => { ensureDemoUser().catch(() => {}); }, []);
+  // (only meaningful when Supabase is configured)
+  useEffect(() => { if (isSupabaseConfigured()) ensureDemoUser().catch(() => {}); }, []);
 
   function fillDemo() {
     setEmail(DEMO_EMAIL);
@@ -31,6 +33,21 @@ export default function LoginPage() {
     setError("");
     if (!email.trim() || !password) { setError("Please enter your email and password."); return; }
     setLoading(true);
+
+    // Local dev / demo: no real Supabase backend — authenticate against the
+    // local mock-db so login works offline.
+    if (!isSupabaseConfigured()) {
+      const addr = email.trim();
+      const existing = loginUser(addr, password);
+      if (!existing) {
+        // Auto-provision a local account for this email
+        const namePart = addr.split("@")[0].replace(/[._]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+        registerUser(addr, password, namePart || "Researcher");
+      }
+      router.replace("/dashboard");
+      return;
+    }
+
     const supabase = createClient();
     const { error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
