@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -9,12 +11,6 @@ import {
   getCurrentUserId, type StandaloneQuestion, type StandaloneAnswer,
 } from "@/lib/mock-db";
 
-function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const hrs = Math.floor(diff / 3600000);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
 
 export default function QuestionDetailPage() {
   const { id } = useParams<{ id: string }>();

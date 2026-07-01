@@ -1,16 +1,12 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import { getStandaloneQuestions, getProfile, type StandaloneQuestion } from "@/lib/mock-db";
 
-function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const hrs = Math.floor(diff / 3600000);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
 
 const SORTS = ["Top Voted", "Newest", "Unanswered"] as const;
 type Sort = typeof SORTS[number];

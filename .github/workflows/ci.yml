@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: TypeScript
+        run: npx tsc --noEmit
+      # Informational for now — the codebase has pre-existing lint findings.
+      # Flip to blocking once they're cleaned up.
+      - name: ESLint (non-blocking)
+        run: npm run lint
+        continue-on-error: true

@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
@@ -8,14 +10,6 @@ import NavBar from "@/components/NavBar";
 import { getConversations, getMessages, getProfile, sendMessage, startConversation, searchProfiles, getCurrentUserId, type Conversation, type Message, type Profile } from "@/lib/mock-db";
 import { useToast } from "@/lib/toast";
 
-function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
 
 function MessagesInner() {
   const searchParams = useSearchParams();

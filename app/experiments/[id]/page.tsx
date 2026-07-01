@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -20,16 +22,6 @@ import CommentSection from "@/components/CommentSection";
 import ReportModal    from "@/components/ReportModal";
 
 /* ── helpers ── */
-function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 const outcomeConfig = {
   success: { border: "border-emerald-200", bg: "bg-emerald-50", badge: "border-emerald-300 bg-emerald-50 text-emerald-700", label: "✅ Success" },

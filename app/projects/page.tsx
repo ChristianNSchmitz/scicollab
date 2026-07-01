@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
@@ -12,12 +14,6 @@ const STATUS_BADGE: Record<Project["status"], string> = {
   paused:    "bg-slate-100 text-slate-500 border-slate-200",
 };
 
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days === 0) return "today";
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);

@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
 import { getReports, updateReportStatus, type Report } from "@/lib/mock-db";
@@ -14,12 +16,6 @@ function statusBadge(status: Report["status"]) {
   return "bg-slate-50 text-slate-500 border-slate-200";
 }
 
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days === 0) return "today";
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 export default function ModerationPage() {
   const [reports, setReports]       = useState<Report[]>([]);

@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -15,12 +17,6 @@ import {
 } from "@/lib/mock-db";
 import AcademicSync from "@/components/AcademicSync";
 
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days === 0) return "today";
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 type SortMode = "date" | "impact" | "first_author";
 

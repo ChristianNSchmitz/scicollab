@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -44,15 +46,6 @@ const ISSUE_STATUS_LABEL: Record<string, { label: string; cls: string }> = {
 
 type IssueFilter = "open" | "in_process" | "waiting" | "solved" | "closed" | "all";
 
-function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
 
 function renderMarkdown(text: string): string {
   return text

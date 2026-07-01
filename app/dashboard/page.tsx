@@ -1,28 +1,40 @@
 "use client";
 
+import { timeAgo, initialsOf } from "@/lib/utils";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
   getNotificationsWithReadState, getUserPublications, getCurrentUserId,
-  MOCK_USER_ID,
   type Experiment, type Notification,
 } from "@/lib/mock-db";
 import { getMyExperimentsFromDb, getAllExperimentsFromDb, type DbExperiment } from "@/app/actions/experiments";
 import { createClient } from "@/lib/supabase/client";
 
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days === 0) return "today";
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 function outcomeIcon(o: Experiment["outcome"]) {
   if (o === "success") return "✅";
   if (o === "partial")  return "⚠️";
   if (o === "failed")   return "❌";
   return "⏳";
+}
+
+/** Card-shaped shimmer placeholder while Supabase data loads. */
+function CardSkeleton({ rows = 3 }: { rows?: number }) {
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="bg-white border border-slate-200 rounded-xl px-5 py-4 flex items-center gap-4 animate-pulse">
+          <div className="w-8 h-8 bg-slate-100 rounded-full flex-shrink-0" />
+          <div className="flex-1 space-y-2">
+            <div className="h-3.5 bg-slate-100 rounded w-2/3" />
+            <div className="h-2.5 bg-slate-100 rounded w-1/3" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 const NOTIF_ICON: Record<Notification["type"], string> = {
@@ -32,35 +44,40 @@ const NOTIF_ICON: Record<Notification["type"], string> = {
 };
 
 export default function DashboardPage() {
-  const [profile, setProfile] = useState({ full_name: "", avatar_initials: "R", avatar_color: "bg-slate-600", h_index: 0, citation_count: 0, publication_count: 0, profile_completeness: 20, institution: "", research_domain: "" });
+  const [profile, setProfile] = useState({ full_name: "", avatar_initials: "R", institution: "", research_domain: "", profile_completeness: 0 });
   const [myExps, setMyExps]   = useState<DbExperiment[]>([]);
   const [recentExps, setRecentExps] = useState<DbExperiment[]>([]);
   const [notifs, setNotifs]   = useState<Notification[]>([]);
   const [unread, setUnread]   = useState(0);
   const [pubCount, setPubCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (!user) return;
+      if (!user) { setLoading(false); return; }
       const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single();
       const name = prof?.full_name || user.email || "Researcher";
-      const initials = name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
+
+      // Completeness from actual profile fields, not a magic number
+      const checks = [!!prof?.full_name, !!prof?.institution, !!prof?.research_domain, !!prof?.orcid_id, (prof?.techniques?.length ?? 0) > 0];
+      const completeness = Math.round((checks.filter(Boolean).length / checks.length) * 100);
+
       setProfile({
-        full_name:           name,
-        avatar_initials:     initials,
-        avatar_color:        "bg-blue-600",
-        h_index:             0,
-        citation_count:      0,
-        publication_count:   0,
-        profile_completeness: prof ? 70 : 20,
-        institution:         prof?.institution || "",
-        research_domain:     prof?.research_domain || "",
+        full_name:            name,
+        avatar_initials:      initialsOf(name),
+        institution:          prof?.institution || "",
+        research_domain:      prof?.research_domain || "",
+        profile_completeness: completeness,
       });
-      getMyExperimentsFromDb(user.id).then(setMyExps).catch(console.error);
-      getAllExperimentsFromDb()
-        .then((all) => setRecentExps(all.filter((e) => e.user_id !== user.id).slice(0, 4)))
-        .catch(console.error);
+
+      const [mine, all] = await Promise.all([
+        getMyExperimentsFromDb(user.id).catch(() => [] as DbExperiment[]),
+        getAllExperimentsFromDb().catch(() => [] as DbExperiment[]),
+      ]);
+      setMyExps(mine);
+      setRecentExps(all.filter((e) => e.user_id !== user.id).slice(0, 4));
+      setLoading(false);
     });
     const n = getNotificationsWithReadState();
     setNotifs(n.slice(0, 5));
@@ -68,7 +85,8 @@ export default function DashboardPage() {
     setPubCount(getUserPublications(getCurrentUserId()).length);
   }, []);
 
-  const hasProfile = profile.full_name && profile.full_name !== "Researcher";
+  const successCount = myExps.filter((e) => e.outcome === "success").length;
+  const hasProfile = profile.profile_completeness >= 60;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -78,7 +96,7 @@ export default function DashboardPage() {
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 mb-8 text-white">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-white text-xl font-bold ${profile.avatar_color}`}>
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-xl font-bold bg-white/20 border border-white/30">
                 {profile.avatar_initials}
               </div>
               <div>
@@ -99,14 +117,14 @@ export default function DashboardPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { icon: "🔬", label: "Experiments",  value: myExps.length,  href: "/dashboard" },
-            { icon: "📄", label: "Publications",  value: pubCount,        href: "/publications" },
-            { icon: "📈", label: "h-index",       value: profile.h_index, href: "/profile/me" },
-            { icon: "🔔", label: "Unread",        value: unread,          href: "/notifications" },
+            { icon: "🔬", label: "My Experiments", value: myExps.length,   href: "/experiments" },
+            { icon: "✅", label: "Successful",      value: successCount,    href: "/experiments" },
+            { icon: "📄", label: "Publications",    value: pubCount,        href: "/publications" },
+            { icon: "🔔", label: "Unread",          value: unread,          href: "/notifications" },
           ].map((s) => (
             <Link key={s.label} href={s.href} className="bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-200 hover:shadow-sm transition-all text-center">
               <p className="text-2xl mb-1">{s.icon}</p>
-              <p className="text-2xl font-bold text-slate-900">{s.value}</p>
+              <p className="text-2xl font-bold text-slate-900">{loading ? "–" : s.value}</p>
               <p className="text-xs text-slate-500">{s.label}</p>
             </Link>
           ))}
@@ -138,7 +156,9 @@ export default function DashboardPage() {
               <h2 className="font-bold text-slate-900">My Experiments</h2>
               <Link href="/experiments/new" className="text-sm text-blue-600 hover:underline">+ New</Link>
             </div>
-            {myExps.length === 0 ? (
+            {loading ? (
+              <CardSkeleton rows={3} />
+            ) : myExps.length === 0 ? (
               <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-8 text-center">
                 <div className="text-4xl mb-3">🔬</div>
                 <p className="font-semibold text-slate-800 mb-1">No experiments yet</p>
@@ -213,18 +233,27 @@ export default function DashboardPage() {
                 <h3 className="font-semibold text-slate-900 text-sm">Notifications</h3>
                 {unread > 0 && <span className="bg-red-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5">{unread}</span>}
               </div>
-              <div className="space-y-2">
-                {notifs.slice(0, 4).map((n) => (
-                  <div key={n.id} className={`flex items-start gap-2 p-2 rounded-lg ${!n.is_read ? "bg-blue-50" : ""}`}>
-                    <span className="text-base flex-shrink-0">{NOTIF_ICON[n.type] ?? "🔔"}</span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-slate-800 leading-snug">{n.title}</p>
-                      <p className="text-xs text-slate-500 line-clamp-1">{n.body}</p>
-                    </div>
+              {notifs.length === 0 ? (
+                <div className="text-center py-4">
+                  <p className="text-2xl mb-1.5">🔕</p>
+                  <p className="text-xs text-slate-500 leading-relaxed">No notifications yet.<br />They&apos;ll appear when peers interact with your work.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    {notifs.slice(0, 4).map((n) => (
+                      <div key={n.id} className={`flex items-start gap-2 p-2 rounded-lg ${!n.is_read ? "bg-blue-50" : ""}`}>
+                        <span className="text-base flex-shrink-0">{NOTIF_ICON[n.type] ?? "🔔"}</span>
+                        <div className="min-w-0">
+                          <p className="text-xs font-medium text-slate-800 leading-snug">{n.title}</p>
+                          <p className="text-xs text-slate-500 line-clamp-1">{n.body}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <Link href="/notifications" className="block text-center text-xs text-blue-600 hover:underline mt-3 font-medium">View all →</Link>
+                  <Link href="/notifications" className="block text-center text-xs text-blue-600 hover:underline mt-3 font-medium">View all →</Link>
+                </>
+              )}
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-4">

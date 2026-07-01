@@ -29,7 +29,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4" style={{ colorScheme: "only light" }}>
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4 force-light" style={{ colorScheme: "only light" }}>
       <Link href="/" className="text-2xl font-bold text-blue-600 mb-8">SciCollab</Link>
 
       <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-sm p-8">

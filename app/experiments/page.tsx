@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
@@ -7,12 +9,6 @@ import { getProfile, getExperimentViews } from "@/lib/mock-db";
 import { getAllExperimentsFromDb, type DbExperiment } from "@/app/actions/experiments";
 import { ExperimentSkeleton } from "@/components/Skeleton";
 
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days === 0) return "today";
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 function outcomeStyle(o: DbExperiment["outcome"]) {
   if (o === "success") return "bg-emerald-50 text-emerald-700 border-emerald-200";

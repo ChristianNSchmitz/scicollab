@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
@@ -11,11 +13,6 @@ const TYPES = ["All", "Paper", "Preprint", "Dataset", "Code"] as const;
 type Filter = typeof TYPES[number];
 type SortMode = "date" | "impact" | "first_author";
 
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 function typeIcon(t: Publication["type"]) {
   return { paper: "📄", preprint: "📋", dataset: "🗄️", code: "💻", thesis: "🎓" }[t] ?? "📄";
@@ -195,7 +192,8 @@ export default function PublicationsPage() {
                         <button
                           onClick={() => handleDeleteClick(pub.id)}
                           className={`text-xs px-2 py-1 rounded-lg font-medium transition-colors mt-1 ${isConfirming ? "bg-red-600 text-white" : "text-slate-400 hover:text-red-500"}`}
-                          title={isConfirming ? "Click again to confirm delete" : "Delete publication"}>
+                          title={isConfirming ? "Click again to confirm delete" : "Delete publication"}
+                          aria-label={isConfirming ? "Confirm delete publication" : "Delete publication"}>
                           {isConfirming ? "Confirm?" : "🗑"}
                         </button>
                       )}
@@ -212,7 +210,7 @@ export default function PublicationsPage() {
                       💬 Discuss
                     </Link>
                     <button onClick={() => navigator.clipboard.writeText(`https://scicollab.io/publications/${pub.id}`)}
-                      className="text-xs text-slate-400 hover:text-slate-600">
+                      className="text-xs text-slate-400 hover:text-slate-600" aria-label="Copy share link">
                       🔗 Share
                     </button>
                     <Link href={`/publications/${pub.id}`} className="ml-auto text-xs text-blue-600 hover:underline font-medium">

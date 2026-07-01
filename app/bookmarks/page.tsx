@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
@@ -9,14 +11,6 @@ import {
 } from "@/lib/mock-db";
 import { useToast } from "@/lib/toast";
 
-function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
 
 const POST_TYPE_ICON: Record<FeedPost["type"], string> = {
   experiment:  "🔬",

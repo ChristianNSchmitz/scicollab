@@ -61,9 +61,18 @@ function loadRepo(projectId: string): ProjectRepo | null {
   }
 }
 
-function saveRepo(repo: ProjectRepo): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(repoKey(repo.project_id), JSON.stringify(repo));
+/** Max size for a single uploaded file (localStorage holds ~5 MB total). */
+export const MAX_FILE_BYTES = 2 * 1024 * 1024;
+
+/** Returns false when the browser storage quota is exceeded. */
+function saveRepo(repo: ProjectRepo): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    localStorage.setItem(repoKey(repo.project_id), JSON.stringify(repo));
+    return true;
+  } catch {
+    return false; // QuotaExceededError — repo unchanged in storage
+  }
 }
 
 function shortId(): string {
@@ -317,7 +326,7 @@ export function commitFiles(
   const branchMeta = repo.branches.find((b) => b.name === branch);
   if (branchMeta) branchMeta.head_commit_id = commitId;
 
-  saveRepo(repo);
+  if (!saveRepo(repo)) return null; // storage quota exceeded
   return commit;
 }
 
@@ -380,20 +389,4 @@ export function isTextFile(name: string): boolean {
   return textExts.has(ext) || name === "Makefile" || name === "Dockerfile";
 }
 
-export function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-export function timeAgoRepo(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 30) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
+export { formatBytes, timeAgo as timeAgoRepo } from "./utils";

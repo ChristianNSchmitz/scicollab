@@ -222,9 +222,14 @@ html { scroll-behavior: smooth; }
 .force-light {
   color-scheme: only light;
 }
+/* Reset inherited dark-body text color inside forced-light regions */
+.dark .force-light { color: #0f172a; }
 
-/* Undo every .dark override for descendants of .force-light */
+/* Undo every .dark override for descendants of .force-light —
+   including the element carrying .force-light itself */
+.dark .force-light.bg-white,
 .dark .force-light .bg-white    { background-color: #ffffff !important; }
+.dark .force-light.bg-slate-50,
 .dark .force-light .bg-slate-50 { background-color: #f8fafc !important; }
 .dark .force-light .text-slate-900 { color: #0f172a !important; }
 .dark .force-light .text-slate-800 { color: #1e293b !important; }
@@ -243,3 +248,6 @@ html { scroll-behavior: smooth; }
 }
 .dark .force-light input::placeholder,
 .dark .force-light textarea::placeholder { color: #94a3b8 !important; }
+.dark .force-light .text-blue-600 { color: #2563eb !important; }
+.dark .force-light .text-blue-700 { color: #1d4ed8 !important; }
+.dark .force-light .bg-blue-50    { background-color: #eff6ff !important; }

@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +11,7 @@ import {
   getProfile, isFollowing, toggleFollow, getCurrentUserId,
   type Experiment, type Publication, type Profile, type Project,
 } from "@/lib/mock-db";
+import { getAllExperimentsFromDb, type DbExperiment } from "@/app/actions/experiments";
 
 type Tab = "Experiments" | "Publications" | "Projects" | "People";
 const TABS: { value: Tab; icon: string }[] = [
@@ -37,12 +40,6 @@ function outcomeLabel(o: string | null) {
   if (o === "failed")   return "❌ Negative result";
   return "—";
 }
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days === 0) return "today";
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 const SUGGESTED = ["Western Blot", "CRISPR-Cas9", "RNA-seq", "Organoid Culture", "HEK293", "ELISA", "Flow Cytometry"];
 
@@ -60,9 +57,39 @@ function FollowButton({ userId }: { userId: string }) {
 }
 
 // ─── Experiments results ──────────────────────────────────────
+
+/** Simple relevance score for DB experiments (mirrors mock-db's scoring). */
+function scoreDbExperiment(exp: DbExperiment, q: string): number {
+  const query = q.toLowerCase();
+  let score = 0;
+  if (exp.title.toLowerCase().includes(query)) score += 60;
+  if (exp.technique_tags.some((t) => t.toLowerCase().includes(query))) score += 30;
+  if (exp.organism_tags.some((t) => t.toLowerCase().includes(query))) score += 30;
+  if ((exp.outcome_summary ?? "").toLowerCase().includes(query)) score += 20;
+  if ((exp.hypothesis ?? "").toLowerCase().includes(query)) score += 15;
+  return Math.min(score, 98);
+}
+
 function ExperimentsTab({ query }: { query: string }) {
-  const results = useMemo<ExpResult[]>(() =>
-    query.trim() ? searchExperiments(query) : [], [query]);
+  const [dbExps, setDbExps] = useState<DbExperiment[]>([]);
+  useEffect(() => {
+    getAllExperimentsFromDb().then(setDbExps).catch(() => {});
+  }, []);
+
+  const results = useMemo<ExpResult[]>(() => {
+    if (!query.trim()) return [];
+    const mockResults = searchExperiments(query);
+    // Real DB experiments, mapped onto the card shape used below
+    const dbResults = dbExps
+      .map((e) => ({ exp: e, matchPct: scoreDbExperiment(e, query) }))
+      .filter(({ matchPct }) => matchPct > 0)
+      .map(({ exp, matchPct }) => ({ ...exp, matchPct } as unknown as ExpResult));
+    // Dedupe by id, real DB content included alongside seeded demos
+    const seen = new Set<string>();
+    return [...dbResults, ...mockResults]
+      .filter((r) => !seen.has(r.id) && seen.add(r.id))
+      .sort((a, b) => b.matchPct - a.matchPct);
+  }, [query, dbExps]);
 
   if (!query) return (
     <div className="text-center py-16">

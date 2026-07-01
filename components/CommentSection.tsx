@@ -1,5 +1,7 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import { useState, useEffect } from "react";
 import {
   getComments, addComment, deleteComment, getMockProfile, getProfile,
@@ -7,15 +9,6 @@ import {
 } from "@/lib/mock-db";
 import ReportModal from "@/components/ReportModal";
 
-function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
 
 interface Props {
   targetType: "experiment" | "publication" | "feedpost" | "project";

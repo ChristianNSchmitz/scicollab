@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import {
   initRepo, getRepo, listDirectory, getFileContent, getCommits, getBranches,
   createBranch, commitFiles, deleteFile, deleteDirectory,
-  fileIcon, isTextFile, formatBytes, timeAgoRepo,
+  fileIcon, isTextFile, formatBytes, timeAgoRepo, MAX_FILE_BYTES,
   type RepoFile, type RepoCommit, type RepoBranch, type FileChange,
 } from "@/lib/repo-db";
 import { useToast } from "@/lib/toast";
@@ -195,6 +195,14 @@ export default function BuiltInRepo({ projectId, projectName, isOwner }: Props) 
   function handleFileInput(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
+
+    // localStorage holds ~5 MB total — reject oversized files upfront
+    const tooBig = files.filter((f) => f.size > MAX_FILE_BYTES);
+    if (tooBig.length > 0) {
+      toast(`File too large: ${tooBig[0].name} (max 2 MB per file)`, "error");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
     setUploading(true);
 
     const readers = files.map(
@@ -230,7 +238,7 @@ export default function BuiltInRepo({ projectId, projectName, isOwner }: Props) 
         refresh();
         toast(`${changes.length} file${changes.length > 1 ? "s" : ""} uploaded`);
       } else {
-        toast("Upload failed", "error");
+        toast("Upload failed — browser storage is full. Delete some files first.", "error");
       }
     });
   }
@@ -503,6 +511,7 @@ export default function BuiltInRepo({ projectId, projectName, isOwner }: Props) 
                     onClick={() => copyPath(selectedFile.path)}
                     className="text-xs text-slate-400 hover:text-slate-600"
                     title="Copy path"
+                    aria-label="Copy file path"
                   >
                     🔗
                   </button>
@@ -837,7 +846,7 @@ function Modal({ title, onClose, children, wide }: {
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
           <h3 className="font-bold text-slate-800">{title}</h3>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-lg leading-none">✕</button>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-lg leading-none" aria-label="Close dialog">✕</button>
         </div>
         <div className="px-5 py-4">{children}</div>
       </div>

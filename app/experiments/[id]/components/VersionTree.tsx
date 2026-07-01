@@ -1,14 +1,10 @@
 "use client";
 
+import { timeAgo } from "@/lib/utils";
+
 import Link from "next/link";
 import { getExperiment, getForks, getProfile, type Experiment } from "@/lib/mock-db";
 
-function timeAgo(d: string) {
-  const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
-  if (days === 0) return "today";
-  if (days < 30) return `${days}d ago`;
-  return new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
 
 function outcomeChip(outcome: Experiment["outcome"]) {
   if (outcome === "success") return <span className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">✅ Success</span>;
