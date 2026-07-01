@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import NavBar from "@/components/NavBar";
+import ScholarImport from "@/components/ScholarImport";
 import { toast } from "@/lib/toast";
 import {
   getMockProfile, saveMockProfile,
@@ -59,7 +60,7 @@ export default function SettingsPage() {
   });
   const [resetting, setResetting] = useState(false);
 
-  useEffect(() => {
+  function loadProfileFields() {
     const p = getMockProfile();
     setFullName(p.full_name ?? "");
     setInstitution(p.institution ?? "");
@@ -73,6 +74,10 @@ export default function SettingsPage() {
     setTwitter(p.social_links?.twitter ?? "");
     setGithub(p.social_links?.github ?? "");
     setLinkedin(p.social_links?.linkedin ?? "");
+  }
+
+  useEffect(() => {
+    loadProfileFields();
     setPrivacy(getPrivacySettings());
     const raw = localStorage.getItem("scicollab_notif_prefs");
     if (raw) { try { setNotifs(JSON.parse(raw)); } catch { /* ok */ } }
@@ -226,6 +231,9 @@ export default function SettingsPage() {
             </button>
           </div>
         </section>
+
+        {/* ── Scholarly metadata import ────────────────────────────── */}
+        <ScholarImport defaultQuery={fullName} onImported={loadProfileFields} />
 
         {/* ── Privacy ──────────────────────────────────────────────── */}
         <section className="bg-white border border-slate-200 rounded-2xl p-6 space-y-5">
