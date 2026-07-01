@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveExperimentToDb } from "@/app/actions/experiments";
+import { createClient } from "@/lib/supabase/client";
 import StepInitiate from "@/components/experiments/StepInitiate";
 import StepMethodCard from "@/components/experiments/StepMethodCard";
 import StepOutcome from "@/components/experiments/StepOutcome";
@@ -98,15 +99,15 @@ export default function NewExperimentPage() {
     }
   }
 
-  // Fixed UUID for the prototype dummy user (real auth will replace this)
-  const DEV_USER_ID = "00000000-0000-0000-0000-000000000001";
-
   async function handlePublish() {
     setPublishError("");
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setPublishError("You must be logged in to publish."); return; }
 
     try {
       const experiment = await saveExperimentToDb({
-        user_id:           DEV_USER_ID,
+        user_id:           user.id,
         parent_id:         null,
         title:             data.title,
         protocol_version:  data.protocolVersion,

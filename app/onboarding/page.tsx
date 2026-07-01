@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { saveMockProfile, registerUser } from "@/lib/mock-db";
+import { createClient } from "@/lib/supabase/client";
+import { saveProfileToDb } from "@/app/actions/auth";
 import StepAccountCreation from "@/components/onboarding/StepAccountCreation";
 import StepLabWorkspace from "@/components/onboarding/StepLabWorkspace";
 import StepExpertiseTags from "@/components/onboarding/StepExpertiseTags";
@@ -62,18 +63,36 @@ export default function OnboardingPage() {
   }
 
   async function handleComplete() {
-    // Register (or re-login) the user — sets the session
-    registerUser(data.email || `user-${Date.now()}@scicollab.local`, data.password || "scicollab123", data.fullName || "Researcher");
-    // Save profile for this user
-    saveMockProfile({
-      full_name:       data.fullName || "Researcher",
-      institution:     data.institution,
-      orcid_id:        data.orcidId || null,
-      orcid_verified:  data.orcidVerified,
-      role:            data.role,
-      research_domain: data.researchDomain,
-      techniques:      data.techniques,
+    const supabase = createClient();
+    const { data: { user }, error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          full_name:       data.fullName || "Researcher",
+          institution:     data.institution,
+          role:            data.role,
+          research_domain: data.researchDomain,
+        },
+      },
     });
+    if (error) throw new Error(error.message);
+    if (!user) throw new Error("Signup failed — please try again.");
+
+    try {
+      await saveProfileToDb({
+        id:              user.id,
+        full_name:       data.fullName || "Researcher",
+        institution:     data.institution,
+        orcid_id:        data.orcidId || null,
+        role:            data.role,
+        research_domain: data.researchDomain,
+        techniques:      data.techniques,
+      });
+    } catch {
+      // Profile will be saved on next login if this fails
+    }
+
     router.push("/dashboard");
   }
 

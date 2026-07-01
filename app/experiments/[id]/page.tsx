@@ -11,6 +11,7 @@ import {
   type Experiment, type Question,
 } from "@/lib/mock-db";
 import { getExperimentFromDb, deleteExperimentFromDb } from "@/app/actions/experiments";
+import { createClient } from "@/lib/supabase/client";
 import QASection      from "./components/QASection";
 import ForkButton     from "./components/ForkButton";
 import VersionTree    from "./components/VersionTree";
@@ -68,6 +69,7 @@ export default function ExperimentPage() {
   const searchParams = useSearchParams();
   const forked      = searchParams.get("forked");
 
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [exp, setExp]           = useState<Experiment | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [notFound, setNotFound] = useState(false);
@@ -89,7 +91,10 @@ export default function ExperimentPage() {
 
   useEffect(() => {
     async function load() {
-      // Try Supabase first, fall back to mock-db seed data
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) setCurrentUserId(user.id);
+
       const dbExp = await getExperimentFromDb(id);
       const found = dbExp ?? getExperiment(id);
       if (!found) { setNotFound(true); return; }
@@ -159,8 +164,7 @@ export default function ExperimentPage() {
 
   const currentUser    = getMockProfile();
   const currentId      = getCurrentUserId();
-  const DEV_USER_ID    = "00000000-0000-0000-0000-000000000001";
-  const isOwner        = exp.user_id === currentId || exp.user_id === MOCK_USER_ID || exp.user_id === currentUser.id || exp.user_id === DEV_USER_ID;
+  const isOwner        = exp.user_id === currentUserId || exp.user_id === currentId || exp.user_id === MOCK_USER_ID || exp.user_id === currentUser.id;
   const authorProfile  = getProfile(exp.user_id);
   const parentExp      = exp.parent_id ? getExperiment(exp.parent_id) : null;
   const oc             = exp.outcome ? outcomeConfig[exp.outcome] : outcomeConfig.success;

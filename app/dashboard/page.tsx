@@ -4,14 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import {
-  getMockProfile, getUnreadCount,
   getNotificationsWithReadState, getUserPublications, getCurrentUserId,
   MOCK_USER_ID,
   type Experiment, type Notification,
 } from "@/lib/mock-db";
 import { getMyExperimentsFromDb, getAllExperimentsFromDb, type DbExperiment } from "@/app/actions/experiments";
-
-const DEV_USER_ID = "00000000-0000-0000-0000-000000000001";
+import { createClient } from "@/lib/supabase/client";
 
 function timeAgo(d: string) {
   const days = Math.floor((Date.now() - new Date(d).getTime()) / 86400000);
@@ -42,12 +40,28 @@ export default function DashboardPage() {
   const [pubCount, setPubCount] = useState(0);
 
   useEffect(() => {
-    const p = getMockProfile();
-    setProfile({ full_name: p.full_name, avatar_initials: p.avatar_initials || p.full_name?.[0]?.toUpperCase() || "R", avatar_color: p.avatar_color || "bg-slate-600", h_index: p.h_index || 0, citation_count: p.citation_count || 0, publication_count: p.publication_count || 0, profile_completeness: p.profile_completeness || 20, institution: p.institution || "", research_domain: p.research_domain || "" });
-    getMyExperimentsFromDb(DEV_USER_ID).then(setMyExps).catch(console.error);
-    getAllExperimentsFromDb()
-      .then((all) => setRecentExps(all.filter((e) => e.user_id !== DEV_USER_ID).slice(0, 4)))
-      .catch(console.error);
+    const supabase = createClient();
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) return;
+      const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+      const name = prof?.full_name || user.email || "Researcher";
+      const initials = name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
+      setProfile({
+        full_name:           name,
+        avatar_initials:     initials,
+        avatar_color:        "bg-blue-600",
+        h_index:             0,
+        citation_count:      0,
+        publication_count:   0,
+        profile_completeness: prof ? 70 : 20,
+        institution:         prof?.institution || "",
+        research_domain:     prof?.research_domain || "",
+      });
+      getMyExperimentsFromDb(user.id).then(setMyExps).catch(console.error);
+      getAllExperimentsFromDb()
+        .then((all) => setRecentExps(all.filter((e) => e.user_id !== user.id).slice(0, 4)))
+        .catch(console.error);
+    });
     const n = getNotificationsWithReadState();
     setNotifs(n.slice(0, 5));
     setUnread(n.filter((x) => !x.is_read).length);

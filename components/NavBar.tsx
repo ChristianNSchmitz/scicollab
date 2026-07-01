@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
-import { getMockProfile, getNotificationsWithReadState, logoutUser } from "@/lib/mock-db";
+import { getNotificationsWithReadState } from "@/lib/mock-db";
+import { createClient } from "@/lib/supabase/client";
 import { toggleTheme, getCurrentTheme } from "@/components/ThemeProvider";
 
 const NAV_LINKS = [
@@ -31,11 +32,20 @@ export default function NavBar() {
   }, []);
 
   useEffect(() => {
-    const p = getMockProfile();
-    setProfile({
-      full_name:       p.full_name,
-      avatar_initials: p.avatar_initials || p.full_name?.[0]?.toUpperCase() || "R",
-      avatar_color:    p.avatar_color || "bg-slate-600",
+    const supabase = createClient();
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) return;
+      const { data: prof } = await supabase.from("profiles").select("full_name, institution").eq("id", user.id).single();
+      // Priority: profiles table → signup metadata → email
+      const name = prof?.full_name
+        || (user.user_metadata?.full_name as string | undefined)
+        || user.email
+        || "Researcher";
+      const parts = name.trim().split(/\s+/);
+      const initials = parts.length > 1
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : name.slice(0, 2).toUpperCase();
+      setProfile({ full_name: name, avatar_initials: initials, avatar_color: "bg-blue-600" });
     });
     setIsDark(getCurrentTheme() === "dark");
     refreshUnread();
@@ -60,8 +70,9 @@ export default function NavBar() {
     setIsDark(next === "dark");
   }
 
-  function handleLogout() {
-    logoutUser();
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
     router.push("/");
   }
 

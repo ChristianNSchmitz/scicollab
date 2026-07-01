@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { loginUser } from "@/lib/mock-db";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,11 +18,10 @@ export default function LoginPage() {
     setError("");
     if (!email.trim() || !password) { setError("Please enter your email and password."); return; }
     setLoading(true);
-    // Small delay for UX
-    await new Promise((r) => setTimeout(r, 400));
-    const user = loginUser(email.trim(), password);
+    const supabase = createClient();
+    const { error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
-    if (!user) {
+    if (authError) {
       setError("Invalid email or password. New here? Create an account below.");
       return;
     }
@@ -30,7 +29,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4" style={{ colorScheme: "only light" }}>
       <Link href="/" className="text-2xl font-bold text-blue-600 mb-8">SciCollab</Link>
 
       <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
@@ -39,9 +38,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              Email Address
-            </label>
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
             <input
               type="email"
               autoComplete="email"
@@ -53,9 +50,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              Password
-            </label>
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
             <div className="relative">
               <input
                 type={showPw ? "text" : "password"}
@@ -65,32 +60,21 @@ export default function LoginPage() {
                 onChange={(e) => { setPassword(e.target.value); setError(""); }}
                 className="w-full border border-slate-200 rounded-lg px-3 py-2.5 pr-10 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition-colors"
               />
-              <button
-                type="button"
-                onClick={() => setShowPw((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
-              >
+              <button type="button" onClick={() => setShowPw((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
                 {showPw ? "Hide" : "Show"}
               </button>
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-sm text-red-700">
-              {error}
-            </div>
+            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-sm text-red-700">{error}</div>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
+          <button type="submit" disabled={loading}
+            className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
             {loading ? (
-              <>
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Signing in…
-              </>
+              <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />Signing in…</>
             ) : "Sign in"}
           </button>
         </form>
@@ -98,16 +82,10 @@ export default function LoginPage() {
         <div className="mt-6 pt-6 border-t border-slate-100 text-center">
           <p className="text-sm text-slate-500">
             New to SciCollab?{" "}
-            <Link href="/onboarding" className="text-blue-600 font-medium hover:underline">
-              Create your account →
-            </Link>
+            <Link href="/onboarding" className="text-blue-600 font-medium hover:underline">Create your account →</Link>
           </p>
         </div>
       </div>
-
-      <p className="text-xs text-slate-400 mt-4 text-center max-w-sm">
-        Demo: Use any account you created via the onboarding flow. Seed data (community experiments) is always visible.
-      </p>
     </div>
   );
 }
