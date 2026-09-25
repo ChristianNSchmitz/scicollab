@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+  @keyframes scpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">BATCH H · BOARD 1 OF 6</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">The feed, and the controls that keep it honest</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:88ch">Screens 1–5. The workbook names ranked feeds as <b>the single largest determinant of time spent</b> and their risk as filter bubbles, popularity bias and the suppression of unfashionable fields. Its three prescribed mitigations — a chronological toggle, a per-item explanation, and deliberate cross-field injection — are not settings buried in preferences here. They are the feed's own chrome.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab H2 - Search.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">H2 search →</a>
+      <a href="SciCollab H5 - AI.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">H5 AI</a>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">1</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">HOME FEED (E01, E19, E20)</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 900 · six object types · toggle and explanation in the header</span>
+    </div>
+    <div style="position:relative;width:1440px;height:900px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column;overflow:hidden">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:56px;flex:none;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--ink)">
+        <a href="SciCollab Foundation.dc.html" style="display:flex;align-items:flex-end;text-decoration:none"><span style="position:relative;font:700 15px/1 var(--mono);letter-spacing:-.03em;color:var(--ink)">scicollab<span style="position:absolute;left:0;bottom:-4px;width:10px;height:3px;background:var(--signal)"></span></span><span style="font:700 15px/1 var(--mono);color:var(--signal)">/</span></a>
+        <a href="SciCollab H2 - Search.dc.html#s1" style="flex:1;max-width:460px;display:flex;align-items:center;gap:9px;height:32px;padding:0 10px;border:1px solid var(--rule);background:var(--bg);text-decoration:none" style-hover="border-color:#0D0D0D"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span style="font:400 11px/1 var(--mono);color:var(--mute);flex:1">Search people, projects, datasets, methods, discussions</span><span style="font:500 10px/1 var(--mono);color:var(--mute);border:1px solid var(--rule);padding:3px 5px;background:var(--surface)">⌘K</span></a>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:9px">
+          <a href="SciCollab C1 - Ask and Compose.dc.html#s1" style="display:flex;align-items:center;gap:6px;height:30px;padding:0 11px;background:var(--signal);color:#fff;border:1px solid var(--signal);font:500 11px/1 var(--mono)">+ Create</a>
+          <a href="SciCollab G4 - Messaging.dc.html#s5" style="position:relative;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid transparent;color:var(--ink)" style-hover="border-color:var(--rule);background:var(--bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/></svg><span style="position:absolute;top:0;right:-2px;min-width:14px;height:14px;padding:0 3px;background:var(--signal);color:#fff;font:500 9px/14px var(--mono);text-align:center">4</span></a>
+          <a href="SciCollab B2 - Identity and Profile.dc.html#s1" style="width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);background:var(--bg);position:relative;color:var(--ink);text-decoration:none">AR<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></a>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;min-height:0">
+        <nav style="width:56px;flex:none;background:var(--surface);border-right:1px solid var(--rule);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px">
+          <span style="position:relative;width:38px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--bg)"><span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--signal)"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 9.8 12 3l9 6.8V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/></svg></span>
+          <a href="SciCollab C1 - Ask and Compose.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.3 2.4v1.8"/></svg></a>
+          <a href="SciCollab C2 - Method Cards.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2"/></svg></a>
+          <a href="SciCollab D1 - Projects and ELN.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></a>
+          <a href="SciCollab E2 - Dataset Detail.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/></svg></a>
+          <a href="SciCollab E5 - Code and Compute.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg></a>
+          <a href="SciCollab F1 - Drafting.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5h8.5"/><path d="M16.6 3.9a2.05 2.05 0 0 1 2.9 2.9L7.4 18.9l-3.9 1 1-3.9z"/></svg></a>
+          <a href="SciCollab G1 - Network and Discovery.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2a6 6 0 0 1 12 0"/><path d="M16.2 5.3a3.2 3.2 0 0 1 0 5.4"/></svg></a>
+          <a href="SciCollab B2 - Identity and Profile.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></svg></a>
+        </nav>
+        <main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+          <div style="height:44px;flex:none;display:flex;align-items:center;gap:0;padding:0 16px;border-bottom:1px solid var(--rule);background:var(--surface)">
+            <span style="padding:13px 13px;font:500 11px/1 var(--mono);border-bottom:2px solid var(--signal);margin-bottom:-1px">Relevant</span>
+            <a href="SciCollab H1 - Feed.dc.html#s1" style="padding:13px 13px;font:400 11px/1 var(--mono);color:var(--mute)" style-hover="color:#0D0D0D">Chronological</a>
+            <a href="SciCollab H1 - Feed.dc.html#s4" style="padding:13px 13px;font:400 11px/1 var(--mono);color:var(--mute)" style-hover="color:#0D0D0D">Cross-field</a>
+            <a href="SciCollab H3 - Engagement.dc.html#s2" style="padding:13px 13px;font:400 11px/1 var(--mono);color:var(--mute)" style-hover="color:#0D0D0D">Trending</a>
+            <span style="margin-left:auto;display:flex;align-items:center;gap:9px">
+              <span style="font:400 10px/1 var(--mono);color:var(--mute)">ranking is on</span>
+              <a href="SciCollab H1 - Feed.dc.html#s3" style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 9px;border:1px solid var(--ink);background:var(--surface);font:500 10px/1 var(--mono);color:var(--ink)" style-hover="background:var(--ink);color:#F7F6F3"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 16.5v-4.5M12 8.2v.01"/></svg>How this is ranked</a>
+              <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 9px;border:1px solid var(--rule);font:400 10px/1 var(--mono);color:var(--mute);cursor:pointer" style-hover="border-color:#0D0D0D;color:#0D0D0D">Switch to chronological</span>
+            </span>
+          </div>
+          <div style="flex:1;display:grid;grid-template-columns:minmax(0,1fr) 320px;min-height:0;overflow:hidden">
+            <div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden">
+
+              <a href="SciCollab C3 - Negative Results.dc.html#s2" style="border:1px solid var(--signal);background:var(--surface);text-decoration:none;color:var(--ink);flex:none" style-hover="border-color:#B33600">
+                <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--rule);background:#FFF8F5">
+                  <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 7px;border:1px solid var(--signal);background:var(--signal);color:#fff;border-radius:2px;font:500 9px/1.3 var(--mono)">NEGATIVE RESULT</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute)">T. Okafor · 2 h ago</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.3 var(--mono)">PUBLIC</span>
+                  <span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--mute);border-bottom:1px solid var(--rule)">why am I seeing this?</span>
+                </div>
+                <div style="padding:13px">
+                  <div style="font:500 15px/1.35 var(--mono);margin-bottom:8px">Nucleofection does not rescue efficiency in primary fibroblasts</div>
+                  <div style="font:400 13px/1.55 var(--sans);color:var(--mute);margin-bottom:11px">Ruled out the delivery method as the variable across 4 donors. Confidence: suggestive. This closes off one of the two routes we were both considering.</div>
+                  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)">
+                    <div style="background:var(--bg);padding:7px 9px"><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-bottom:3px">RULES OUT</div><div style="font:400 10px/1.3 var(--mono)">delivery method</div></div>
+                    <div style="background:var(--bg);padding:7px 9px"><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-bottom:3px">n</div><div style="font:400 10px/1.3 var(--mono)">4 donors</div></div>
+                    <div style="background:var(--bg);padding:7px 9px"><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-bottom:3px">DATA</div><div style="font:400 10px/1.3 var(--mono);color:var(--ok)">attached</div></div>
+                    <div style="background:var(--bg);padding:7px 9px"><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-bottom:3px">SAVED</div><div style="font:400 10px/1.3 var(--mono);color:#B33600">2 labs</div></div>
+                  </div>
+                </div>
+              </a>
+
+              <a href="SciCollab C1 - Ask and Compose.dc.html#s5" style="border:1px solid var(--flag);background:var(--surface);text-decoration:none;color:var(--ink);flex:none" style-hover="border-color:#8A7300">
+                <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--rule);background:#FFFCEF">
+                  <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 7px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;border-radius:2px;font:500 9px/1.3 var(--mono)">QUESTION · UNANSWERED</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute)">M. Lindqvist · 5 h ago</span>
+                  <span style="margin-left:auto;font:400 9px/1 var(--mono);color:#6B5900">you have answered 14 questions in this tag</span>
+                </div>
+                <div style="padding:13px;display:flex;gap:14px">
+                  <div style="width:58px;flex:none;display:flex;flex-direction:column;gap:6px;text-align:center">
+                    <div style="border:1px solid var(--rule);padding:7px"><div style="font:700 14px/1 var(--mono)">3</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:3px">SIGNAL</div></div>
+                    <div style="border:1px solid #8A7300;background:#FFFCEF;padding:7px"><div style="font:700 14px/1 var(--mono);color:#6B5900">0</div><div style="font:400 8px/1.3 var(--mono);color:#6B5900;margin-top:3px">ANSWERS</div></div>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font:500 15px/1.35 var(--mono);margin-bottom:8px">Does anyone see the FITC baseline shift after the July FACSymphony firmware update?</div>
+                    <div style="font:400 13px/1.55 var(--sans);color:var(--mute);margin-bottom:10px">Our historical gates no longer reproduce. Before I re-analyse two years of data I would like to know whether this is us or the instrument.</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">flow-cytometry</span><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">instrument-drift</span><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">2 artifacts</span></div>
+                  </div>
+                </div>
+              </a>
+
+              <div style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:12px;flex:none">
+                <a href="SciCollab C2 - Method Cards.dc.html#s4" style="border:1px solid var(--rule);background:var(--surface);text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D">
+                  <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--rule);background:var(--bg)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2"/></svg>
+                    <span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">METHOD CARD · NEW VERSION</span>
+                    <span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--mute)">you follow this</span>
+                  </div>
+                  <div style="padding:12px">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font:500 13px/1.3 var(--mono)">MC-0288</span><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.3 var(--mono)">v6 → v7</span></div>
+                    <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-bottom:9px">Step 3 rewritten and one failure mode added. Your fork MC-0533 does not include the change.</div>
+                    <div style="display:flex;gap:7px"><span style="padding:3px 7px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.2 var(--mono)">See the diff</span><span style="padding:3px 7px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.2 var(--mono);color:var(--mute)">Pull into my fork</span></div>
+                  </div>
+                </a>
+                <a href="SciCollab E2 - Dataset Detail.dc.html#s1" style="border:1px solid var(--rule);background:var(--surface);text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D">
+                  <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--rule);background:var(--bg)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex:none"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/></svg>
+                    <span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">DATASET</span>
+                    <span style="margin-left:auto;display:inline-flex;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.3 var(--mono)">PUBLIC</span>
+                  </div>
+                  <div style="padding:12px">
+                    <div style="font:500 13px/1.3 var(--mono);margin-bottom:7px">passage-series_2026_full.zip</div>
+                    <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-bottom:9px">R. Nakamura · 6.4 GB · FCS + CSV · CC-BY-4.0 · has code, has protocol</div>
+                    <div style="display:flex;gap:5px"><span style="padding:2px 6px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 8px/1.3 var(--mono)">DATA</span><span style="padding:2px 6px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 8px/1.3 var(--mono)">CODE</span><span style="padding:2px 6px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 8px/1.3 var(--mono)">PROTOCOL</span><span style="padding:2px 6px;border:1px solid var(--rule);color:var(--mute);border-radius:2px;font:500 8px/1.3 var(--mono)">NOT REPLICATED</span></div>
+                  </div>
+                </a>
+              </div>
+
+              <div style="border:1px solid var(--info);background:#F2F6FC;padding:12px;flex:none">
+                <div style="display:flex;gap:11px;align-items:flex-start">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1B4FA0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="3.4"/></svg>
+                  <div style="flex:1">
+                    <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px"><span style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--info)">FROM OUTSIDE YOUR FIELD · DELIBERATE INJECTION</span><a href="SciCollab H1 - Feed.dc.html#s4" style="margin-left:auto;font:400 9px/1 var(--mono)">why · adjust ratio →</a></div>
+                    <div style="font:500 13px/1.35 var(--mono);margin-bottom:6px">Cryo-EM grid vitrification failures follow the same passage-dependence pattern</div>
+                    <div style="font:400 12px/1.5 var(--sans)">Structural biology · shares your <span style="font-family:var(--mono);font-size:11px">passage-number</span> tag but nothing else. One in every eight items is injected from a field you do not follow.</div>
+                  </div>
+                </div>
+              </div>
+
+              <a href="SciCollab H4 - Visual and Ephemeral.dc.html#s1" style="border:1px solid var(--rule);background:var(--surface);text-decoration:none;color:var(--ink);flex:none" style-hover="border-color:#0D0D0D">
+                <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--rule);background:var(--bg)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" style="flex:none"><rect x="3" y="4" width="18" height="16"/><path d="m3 16 5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                  <span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">FIGURE</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute)">P. Aguirre · yesterday</span>
+                  <span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--ok)">underlying data linked</span>
+                </div>
+                <div style="padding:12px;display:flex;gap:12px">
+                  <div style="width:150px;height:96px;border:1px solid var(--ink);background:var(--bg);flex:none;padding:6px;display:flex;align-items:flex-end;gap:3px">
+                    <div style="flex:1;height:82%;background:#4A4843"></div><div style="flex:1;height:74%;background:#4A4843"></div><div style="flex:1;height:69%;background:#4A4843"></div><div style="flex:1;height:31%;background:var(--signal)"></div><div style="flex:1;height:14%;background:var(--signal)"></div><div style="flex:1;height:11%;background:var(--signal)"></div>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font:500 13px/1.35 var(--mono);margin-bottom:7px">Efficiency vs passage, HEK293 vs HEK293T side by side</div>
+                    <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-bottom:9px">The cliff sits at p22 in HEK293 and p18 in HEK293T. Both series and the plotting script are attached.</div>
+                    <div style="display:flex;gap:6px"><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.2 var(--mono)">DS-1174</span><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.2 var(--mono)">gate-and-quantify</span></div>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <aside style="border-left:1px solid var(--rule);background:var(--surface);display:flex;flex-direction:column;overflow:hidden">
+              <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">YOUR FEED, CONTROLLED</span></div>
+              <div style="padding:13px;display:flex;flex-direction:column;gap:13px;overflow:hidden">
+                <div style="border:1px solid var(--ink);background:var(--bg);padding:12px">
+                  <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">MIX · LAST 50 ITEMS</div>
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <div style="display:grid;grid-template-columns:96px 1fr 26px;gap:8px;align-items:center"><span style="font:400 10px/1 var(--mono)">Questions</span><span style="height:6px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:100%;background:var(--ink)"></span></span><span style="font:400 9px/1 var(--mono);text-align:right">16</span></div>
+                    <div style="display:grid;grid-template-columns:96px 1fr 26px;gap:8px;align-items:center"><span style="font:400 10px/1 var(--mono)">Method cards</span><span style="height:6px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:69%;background:var(--ink)"></span></span><span style="font:400 9px/1 var(--mono);text-align:right">11</span></div>
+                    <div style="display:grid;grid-template-columns:96px 1fr 26px;gap:8px;align-items:center"><span style="font:400 10px/1 var(--mono)">Datasets</span><span style="height:6px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:56%;background:var(--ink)"></span></span><span style="font:400 9px/1 var(--mono);text-align:right">9</span></div>
+                    <div style="display:grid;grid-template-columns:96px 1fr 26px;gap:8px;align-items:center"><span style="font:400 10px/1 var(--mono);color:#B33600">Null results</span><span style="height:6px;border:1px solid var(--signal);display:block"><span style="display:block;height:100%;width:44%;background:var(--signal)"></span></span><span style="font:400 9px/1 var(--mono);text-align:right;color:#B33600">7</span></div>
+                    <div style="display:grid;grid-template-columns:96px 1fr 26px;gap:8px;align-items:center"><span style="font:400 10px/1 var(--mono)">Figures</span><span style="height:6px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:25%;background:var(--ink)"></span></span><span style="font:400 9px/1 var(--mono);text-align:right">4</span></div>
+                    <div style="display:grid;grid-template-columns:96px 1fr 26px;gap:8px;align-items:center"><span style="font:400 10px/1 var(--mono)">Lab updates</span><span style="height:6px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:19%;background:var(--ink)"></span></span><span style="font:400 9px/1 var(--mono);text-align:right">3</span></div>
+                  </div>
+                  <div style="font:400 10px/1.45 var(--sans);color:var(--mute);margin-top:10px;padding-top:9px;border-top:1px solid var(--rule)">Shown so you can see when the feed narrows. A month of nothing but questions means the ranking has drifted.</div>
+                </div>
+                <div style="border:1px solid var(--rule);background:var(--bg);padding:12px">
+                  <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">CROSS-FIELD INJECTION</div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
+                    <span style="font:700 15px/1 var(--mono)">1 in 8</span>
+                    <span style="flex:1;height:6px;border:1px solid var(--ink);background:var(--surface);display:block"><span style="display:block;height:100%;width:13%;background:var(--info)"></span></span>
+                  </div>
+                  <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">Adjustable from 0 to 1 in 4. Never 0 by default — a feed that only shows you your own field is how a discipline stops noticing the discipline next door.</div>
+                </div>
+                <div style="border:1px solid var(--rule);background:var(--bg);padding:12px">
+                  <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">NOT IN THIS FEED</div>
+                  <div style="display:flex;flex-direction:column;gap:5px;font:400 11px/1.4 var(--sans);color:var(--mute)">
+                    <div>No infinite scroll — the feed ends.</div>
+                    <div>No autoplay.</div>
+                    <div>No "N people liked this".</div>
+                    <div>No unread count on the feed itself.</div>
+                  </div>
+                </div>
+                <div style="border:1px solid var(--ink);background:var(--surface);padding:12px;margin-top:auto">
+                  <div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">You are up to date.</div>
+                  <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">14 new items since yesterday. That is the whole feed — there is no more below.</div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </main>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">E01 · E18 · E19 · E20 · E21 · E22 · K18</span><span style="margin-left:auto">the feed ends · no infinite scroll, no like counts</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">2</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">FEED ITEM VARIANTS — SEVEN OBJECT TYPES, ONE SKELETON</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 620 · canvas region</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">same skeleton — type strip, provenance line, body, evidence row — so the eye learns one card and reads all seven</span>
+      </div>
+      <div style="padding:18px 20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px">
+        <div style="border:1px solid var(--flag);background:var(--surface)">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--rule);background:#FFFCEF;font:500 9px/1 var(--mono);letter-spacing:.08em">QUESTION</div>
+          <div style="padding:11px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">Title carries the effect and the variable</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">Vote and answer counts on the left rail; unanswered questions get the yellow ground.</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">signal · answers · tags · artifact count</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--rule);background:var(--bg);font:500 9px/1 var(--mono);letter-spacing:.08em">METHOD CARD</div>
+          <div style="padding:11px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">Version change is the headline</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">Not "someone edited a card" but "v6 → v7, and your fork diverges".</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">version · what changed · diff and pull actions</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--rule);background:var(--bg);font:500 9px/1 var(--mono);letter-spacing:.08em">DATASET</div>
+          <div style="padding:11px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">Reproducibility signals are the payload</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">Four chips: data, code, protocol, replicated. Absent ones show grey rather than being omitted.</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">size · formats · licence · E17 chips</div></div>
+        </div>
+        <div style="border:1px solid var(--signal);background:var(--surface)">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--signal);background:#FFF8F5;font:500 9px/1 var(--mono);letter-spacing:.08em;color:#B33600">NEGATIVE RESULT</div>
+          <div style="padding:11px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">"Rules out" is a first-class field</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">The four-cell strip leads with what it eliminates and how many labs it has already saved.</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">rules out · n · confidence · reuse</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--rule);background:var(--bg);font:500 9px/1 var(--mono);letter-spacing:.08em">FIGURE</div>
+          <div style="padding:11px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">Image left, data links mandatory</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">A figure card cannot render without at least one linked artifact — the workbook's mitigation for aesthetic selection bias.</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">thumbnail · caption · underlying data</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--rule);background:var(--bg);font:500 9px/1 var(--mono);letter-spacing:.08em">PUBLICATION</div>
+          <div style="padding:11px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">Rights state travels with it</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">Shows which version is readable here and which is behind the publisher, from the F3 rights check.</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">authors · venue · DOI · rights chip</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="padding:8px 10px;border-bottom:1px solid var(--rule);background:var(--bg);font:500 9px/1 var(--mono);letter-spacing:.08em">LAB UPDATE</div>
+          <div style="padding:11px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">The only social card</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">New member, open position, equipment now bookable. Capped at one per lab per week so it cannot become a broadcast channel.</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">lab · event type · one action</div></div>
+        </div>
+        <div style="border:1px dashed var(--rule);background:var(--bg);padding:11px;display:flex;flex-direction:column;justify-content:center">
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--mute);margin-bottom:8px">WHAT NO CARD HAS</div>
+          <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">A like button, a share count, a follower number, or a "trending" flame. Reactions are typed — <b>useful</b>, <b>reproduced</b>, <b>disagree</b> — and live on the artifact, not on the card.</div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">E01 · E02 · E03 · E17 · K18 · J04</span><span style="margin-left:auto">seven variants · one skeleton</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--signal);background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">3</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:#B33600">"WHY AM I SEEING THIS?" (E18)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">720 × 600 · expanded, with suppress controls</span>
+      </div>
+      <div style="position:relative;width:720px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">WHY THIS ITEM IS IN YOUR FEED</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">position 2 of 14</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:11px;margin-bottom:14px">
+            <div style="font:500 12px/1.35 var(--mono)">Does anyone see the FITC baseline shift after the July firmware update?</div>
+          </div>
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">FOUR REASONS, EACH WITH ITS WEIGHT AND ITS OWN OFF SWITCH</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:11px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 96px 84px;gap:11px;align-items:center">
+                <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">You follow the instrument <b>BD FACSymphony A3</b></div><div style="font:400 10px/1.4 var(--sans);color:var(--mute)">and this question is about it</div></div>
+                <span style="height:7px;border:1px solid var(--ink);display:block"><span style="display:block;height:100%;width:100%;background:var(--ink)"></span></span>
+                <span style="font:400 9px/1 var(--mono);color:var(--mute);text-align:right;cursor:pointer;border-bottom:1px solid var(--rule)">unfollow it</span>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:11px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 96px 84px;gap:11px;align-items:center">
+                <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">You have answered 14 questions tagged <b>flow-cytometry</b></div><div style="font:400 10px/1.4 var(--sans);color:var(--mute)">with 91% accepted</div></div>
+                <span style="height:7px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:72%;background:var(--ink)"></span></span>
+                <span style="font:400 9px/1 var(--mono);color:var(--mute);text-align:right;cursor:pointer;border-bottom:1px solid var(--rule)">mute tag</span>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:11px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 96px 84px;gap:11px;align-items:center">
+                <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">It is unanswered after 5 hours</div><div style="font:400 10px/1.4 var(--sans);color:var(--mute)">unanswered questions you could answer are lifted</div></div>
+                <span style="height:7px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:48%;background:var(--ink)"></span></span>
+                <span style="font:400 9px/1 var(--mono);color:var(--mute);text-align:right;cursor:pointer;border-bottom:1px solid var(--rule)">stop lifting</span>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:11px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 96px 84px;gap:11px;align-items:center">
+                <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">M. Lindqvist is a connection</div><div style="font:400 10px/1.4 var(--sans);color:var(--mute)">the smallest of the four weights</div></div>
+                <span style="height:7px;border:1px solid var(--rule);display:block"><span style="display:block;height:100%;width:22%;background:var(--ink)"></span></span>
+                <span style="font:400 9px/1 var(--mono);color:var(--mute);text-align:right;cursor:pointer;border-bottom:1px solid var(--rule)">mute person</span>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px;margin-bottom:13px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--err);margin-bottom:8px">WHAT IS NEVER A REASON</div>
+            <div style="display:flex;flex-direction:column;gap:5px;font:400 12px/1.5 var(--sans)">
+              <div>Popularity. An item is never lifted because many people engaged with it.</div>
+              <div>Recency alone, in the ranked view — that is what the chronological tab is for.</div>
+              <div>Your dwell time, scroll depth, or how long you looked at something.</div>
+              <div>Paid placement. There is none, on any surface, ever.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px;align-items:center">
+            <button style="height:30px;padding:0 12px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Show me less like this</button>
+            <span style="font:400 10px/1.4 var(--mono);color:var(--mute);flex:1">every reason is a real, inspectable rule — not a model output nobody can name</span>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">E18 · E19 · E22 · K09 · L11</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">4</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">CHRONOLOGICAL (E19) AND CROSS-FIELD (E20)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">640 × 600</span>
+      </div>
+      <div style="position:relative;width:640px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:0;padding:0 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="padding:12px 12px;font:400 11px/1 var(--mono);color:var(--mute)">Relevant</span>
+          <span style="padding:12px 12px;font:500 11px/1 var(--mono);border-bottom:2px solid var(--signal);margin-bottom:-1px">Chronological</span>
+          <span style="padding:12px 12px;font:400 11px/1 var(--mono);color:var(--mute)">Cross-field</span>
+          <span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--ok)">ranking off · sticky</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--ok);background:#F4FAF6;padding:12px;margin-bottom:14px">
+            <div style="font:500 12px/1.35 var(--mono);margin-bottom:6px">Ranking is off. This is everything, newest first.</div>
+            <div style="font:400 12px/1.5 var(--sans)">Your choice is remembered — you will not be silently returned to the ranked feed next week. The toggle sits in the header on every visit, at the same size as the ranked tab.</div>
+          </div>
+          <div style="border:1px solid var(--rule);margin-bottom:14px">
+            <div style="display:flex;gap:11px;align-items:center;padding:9px 11px;border-bottom:1px solid #EBE8E2"><span style="font:400 9px/1.3 var(--mono);color:var(--mute);width:44px;flex:none">14:02</span><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--rule);border-radius:2px;font:500 8px/1.3 var(--mono);color:var(--mute);flex:none">DATA</span><span style="font:400 11px/1.4 var(--mono);flex:1">passage-series_2026_full.zip</span></div>
+            <div style="display:flex;gap:11px;align-items:center;padding:9px 11px;border-bottom:1px solid #EBE8E2"><span style="font:400 9px/1.3 var(--mono);color:var(--mute);width:44px;flex:none">12:41</span><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--signal);color:#B33600;border-radius:2px;font:500 8px/1.3 var(--mono);flex:none">NULL</span><span style="font:400 11px/1.4 var(--mono);flex:1">Nucleofection does not rescue primary fibroblasts</span></div>
+            <div style="display:flex;gap:11px;align-items:center;padding:9px 11px;border-bottom:1px solid #EBE8E2"><span style="font:400 9px/1.3 var(--mono);color:var(--mute);width:44px;flex:none">11:18</span><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--rule);border-radius:2px;font:500 8px/1.3 var(--mono);color:var(--mute);flex:none">LAB</span><span style="font:400 11px/1.4 var(--mono);flex:1">Krieger group posted an open postdoc position</span></div>
+            <div style="display:flex;gap:11px;align-items:center;padding:9px 11px"><span style="font:400 9px/1.3 var(--mono);color:var(--mute);width:44px;flex:none">09:33</span><span style="display:inline-flex;padding:2px 5px;border:1px solid #8A7300;background:#FFFCEF;border-radius:2px;font:500 8px/1.3 var(--mono);color:#0D0D0D;flex:none">ASK</span><span style="font:400 11px/1.4 var(--mono);flex:1">FITC baseline shift after firmware update</span></div>
+          </div>
+          <div style="border:1px solid var(--info);background:#F2F6FC;padding:13px;margin-bottom:13px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--info);margin-bottom:9px">CROSS-FIELD TAB · E20</div>
+            <div style="font:400 12px/1.5 var(--sans);margin-bottom:11px">A whole tab of work from fields you do not follow, selected because it shares a <i>method</i>, an <i>instrument</i> or a <i>failure mode</i> with yours — never because it is popular.</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:9px 10px"><div style="font:400 11px/1.4 var(--mono);margin-bottom:3px">Palaeoclimate · same mass-spec drift correction you use</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">shared: instrument</div></div>
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:9px 10px"><div style="font:400 11px/1.4 var(--mono);margin-bottom:3px">Materials science · identical batch-effect problem</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">shared: failure mode</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px;font:400 12px/1.5 var(--sans)">Serendipity is the one thing a well-tuned recommender reliably destroys, and it is where a disproportionate number of methodological breakthroughs come from. It gets a tab, not a slider hidden in settings.</div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">E19 · E20 · E01 · E18</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

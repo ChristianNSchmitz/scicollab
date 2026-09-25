@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:36px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">EVALUATION LAYER · BOARD 2 OF 6</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">Usability evaluation · seven flows</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:88ch">Each flow stated as the user would state it, counted in clicks, with the decision points where someone plausibly goes wrong and an honest drop-off rating per step. <b>Click counts assume no mistakes</b> — the wrong-path column is where the real cost lives.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab K1 - Coverage Audit.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← K1 coverage</a>
+      <a href="SciCollab K3 - Heuristic Review.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">K3 heuristics →</a>
+    </div>
+  </div>
+
+  <div style="width:1440px;border:1px solid var(--ink);background:#0D0D0D;color:#F2F0EC;padding:18px 20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#2E2C29">
+    <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono);color:#3DBB86">7</div><div style="font:400 9px/1.3 var(--mono);color:#8E8B85;margin-top:6px">FLOWS EVALUATED</div></div>
+    <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono)">4–11</div><div style="font:400 9px/1.3 var(--mono);color:#8E8B85;margin-top:6px">CLICKS, ENTRY TO COMPLETION</div></div>
+    <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono);color:#F2685E">5</div><div style="font:400 9px/1.3 var(--mono);color:#8E8B85;margin-top:6px">HIGH-RISK STEPS IDENTIFIED</div></div>
+    <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono);color:#FFD400">3</div><div style="font:400 9px/1.3 var(--mono);color:#8E8B85;margin-top:6px">FLOWS WHERE THE FIRST STEP IS THE RISK</div></div>
+  </div>
+
+  <sc-for list="{{ flows }}" as="f" hint-placeholder-count="7">
+    <div style="position:relative;width:1440px;border:1px solid var(--ink);background:var(--surface)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--ink);background:var(--bg)">
+        <span style="width:24px;height:24px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--mono);flex:none">{{ f.n }}</span>
+        <span style="font:500 12px/1 var(--mono);letter-spacing:.06em">{{ f.name }}</span>
+        <a href="{{ f.href }}" style="font:400 10px/1 var(--mono)">open the ribbon →</a>
+        <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">{{ f.path }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1.15fr)">
+        <div style="padding:16px 18px;border-right:1px solid var(--rule)">
+          <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">THE TASK, AS THE USER STATES IT</div>
+          <div style="font:400 15px/1.5 var(--sans);margin-bottom:15px;font-style:italic">"{{ f.task }}"</div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:14px">
+            <div style="background:var(--bg);padding:9px 10px"><div style="font:700 16px/1 var(--mono)">{{ f.steps }}</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">STEPS</div></div>
+            <div style="background:var(--bg);padding:9px 10px"><div style="font:700 16px/1 var(--mono)">{{ f.clicks }}</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">CLICKS</div></div>
+            <div style="background:var(--bg);padding:9px 10px"><div style="font:700 16px/1 var(--mono)">{{ f.elapsed }}</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">ELAPSED</div></div>
+          </div>
+          <div style="border:1px solid var(--signal);background:#FFF8F5;padding:12px">
+            <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:#B33600;margin-bottom:8px">SUCCESS METRIC</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D">{{ f.metric }}</div>
+          </div>
+        </div>
+        <div style="padding:16px 18px;border-right:1px solid var(--rule)">
+          <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">DECISION POINTS · WHERE THE WRONG PATH IS PLAUSIBLE</div>
+          <sc-for list="{{ f.decisions }}" as="d" hint-placeholder-count="2">
+            <div style="border-left:2px solid var(--flag);padding-left:11px;margin-bottom:11px">
+              <div style="font:500 11px/1.35 var(--mono);margin-bottom:5px">{{ d.at }}</div>
+              <div style="font:400 12px/1.5 var(--sans);color:var(--mute)">{{ d.wrong }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">DROP-OFF RISK, STEP BY STEP</div>
+          <sc-for list="{{ f.risks }}" as="k" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:20px 62px minmax(0,1fr);gap:9px;align-items:start;padding:7px 0;border-bottom:1px solid #EBE8E2">
+              <span style="font:400 10px/1.5 var(--mono);color:var(--mute)">{{ k.i }}</span>
+              <span ref="{{ k.ref }}" style="font:500 9px/1.5 var(--mono);letter-spacing:.06em">{{ k.level }}</span>
+              <span style="font:400 11px/1.5 var(--sans)">{{ k.why }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="width:1440px;border:1px solid var(--err);background:#FCF3F2;padding:20px 22px">
+    <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--err);padding-bottom:10px;margin-bottom:14px">
+      <span style="font:500 11px/1 var(--mono);letter-spacing:.14em;color:var(--err)">THE FIVE HIGH-RISK STEPS, TOGETHER</span>
+      <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">if only five things get fixed before user testing, these are them</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px">
+      <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:7px">1 · Composer, seven fields</div><div style="font:400 12px/1.5 var(--sans)">The single largest abandonment risk in the product. A structured form asking for conditions is objectively more work than a text box, and the payoff is invisible until an answer arrives.</div></div>
+      <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:7px">2 · Deposit step 3, metadata</div><div style="font:400 12px/1.5 var(--sans)">Testers named the old upload as the worst screen. Stating requirements up front helps, but this is still where a 2 GB upload meets a form.</div></div>
+      <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:7px">3 · Null result, "what it rules out"</div><div style="font:400 12px/1.5 var(--sans)">The field that makes the object reusable is also the one requiring the most thought, at the end of a form, about work that failed.</div></div>
+      <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:7px">4 · Search → do anything</div><div style="font:400 12px/1.5 var(--sans)">Roughly 55% of people who find a relevant person take no action. Every route on screen 6 attacks this one bar.</div></div>
+      <div><div style="font:500 11px/1.3 var(--mono);margin-bottom:7px">5 · Handover pack, the six blanks</div><div style="font:400 12px/1.5 var(--sans)">94% compiles automatically; the last 6% needs a departing person's attention in their final week, which is when they have least of it.</div></div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const F = [
+  {n:'1', name:'COLD START TO FIRST CONTRIBUTION', href:'SciCollab B4 - Flow Ribbon.dc.html', path:'2→3→4→5→6→7→9', persona:'Alex',
+   task:'I have just been told to sign up. I want to see whether this is worth my time before I put anything real into it.',
+   steps:'7', clicks:'11', elapsed:'14 min',
+   metric:'Onboarding time. Target is under 15 minutes to a populated profile; measured here at 14, of which 9 are ORCID import running unattended.',
+   decisions:[
+     {at:'Step 2 · provider choice', wrong:'Picking Google because it is the familiar button. It works, but skips ORCID verification and silently costs the verified marker, publication import and the reputation-gate exemption.'},
+     {at:'Step 5 · co-author detection', wrong:'Reading "12 of your co-authors are here" as a prompt to invite all 27 who are not. There is deliberately no bulk button, which will read as a missing feature rather than a decision.'},
+     {at:'Step 6 · persona fork', wrong:'A senior postdoc running their own sub-group choosing PI, which routes them to institution-level setup they cannot complete.'}],
+   risks:[
+     {i:'2', level:'LOW', why:'Three familiar buttons, ORCID recommended with a stated reason.'},
+     {i:'3', level:'MEDIUM', why:'An OAuth consent screen listing write scopes is where cautious researchers stop.'},
+     {i:'4', level:'LOW', why:'34 publications appearing is the moment the product earns attention.'},
+     {i:'5', level:'MEDIUM', why:'Invitation screens carry ResearchGate-shaped memories; some will skip on principle.'},
+     {i:'6', level:'LOW', why:'Four clear cards, no wrong answer that cannot be changed.'},
+     {i:'7', level:'HIGH', why:'The checklist is the last screen before real work. Anyone who closes the tab here never returns.'},
+     {i:'9', level:'LOW', why:'A populated profile is the reward; nothing is being asked.'}]},
+
+  {n:'2', name:'HITS A WALL TO REUSABLE METHOD CARD', href:'SciCollab C5 - Flow Ribbons.dc.html', path:'1→2→3→5→4→7→8', persona:'Alex',
+   task:'I need to find out why my Western blot has no signal, before I repeat the same failure for another week.',
+   steps:'7', clicks:'9', elapsed:'6 h 27 m',
+   metric:'Time-to-first-actionable-answer. 6 h 27 m to an answer with an artifact attached. Of that, Alex spends 7 minutes and the platform spends 6 h 20 m waiting for a human.',
+   decisions:[
+     {at:'Step 2 · a 94% prior match appears', wrong:'Dismissing it as "not quite my case" without opening it — the most expensive wrong turn in the product, because it re-runs a week of failed work.'},
+     {at:'Step 3 · the quality assistant', wrong:'Reading three yellow warnings as a gate and abandoning the post. The button is live; the copy says so; some people will still stop.'},
+     {at:'Step 5 · widen to Institution', wrong:'Not widening, because the lab-only default feels safer — and then waiting four days in a room of eleven people.'}],
+   risks:[
+     {i:'1', level:'HIGH', why:'Seven structured fields against a text box. The payoff is invisible until an answer arrives.'},
+     {i:'2', level:'LOW', why:'Costs nothing, runs while typing, and can be ignored entirely.'},
+     {i:'3', level:'MEDIUM', why:'Warnings before posting read as friction even when explicitly optional.'},
+     {i:'5', level:'MEDIUM', why:'Reaching 48 h at all means the metric already failed; this screen is recovery.'},
+     {i:'4', level:'LOW', why:'Nothing required of the asker beyond reading.'},
+     {i:'7', level:'MEDIUM', why:'Promotion is optional and comes after the need is met — pure altruism at the moment of relief.'},
+     {i:'8', level:'LOW', why:'The card exists; no further action needed.'}]},
+
+  {n:'3', name:'NEGATIVE RESULT BECOMES A REUSABLE OBJECT', href:'SciCollab C5 - Flow Ribbons.dc.html', path:'12→13', persona:'Alex',
+   task:'This did not work, I have three weeks of data proving it, and I do not want the next person to lose the same three weeks.',
+   steps:'2', clicks:'6', elapsed:'12 min',
+   metric:'Not time-to-answer — this flow has no answer. Measured on reuse: 4 labs recorded stopping a planned experiment because of NR-0118 within 7 days.',
+   decisions:[
+     {at:'Step 12 · confidence rating', wrong:'Choosing "suggestive" out of modesty when the evidence is solid, which under-weights the result everywhere it later appears.'},
+     {at:'Step 12 · visibility', wrong:'Publishing to Lab rather than Public because a failure feels private. It then never reaches the four labs it would have saved.'}],
+   risks:[
+     {i:'12a', level:'MEDIUM', why:'Opening a form about failed work at all. The framing carries this, but the emotional cost is real.'},
+     {i:'12b', level:'HIGH', why:'"What this rules out" is the hardest thinking in the flow, at the end of a form, about a failure.'},
+     {i:'12c', level:'LOW', why:'Publish is one click; the data is already attached.'},
+     {i:'13', level:'LOW', why:'Nothing is asked. The reuse counter is the reward.'}]},
+
+  {n:'4', name:'DEPOSIT A DATASET', href:'SciCollab E6 - Flow Ribbon.dc.html', path:'1→2→3→4→5→6→7', persona:'Alex',
+   task:'I have 2 GB of flow data and my funder says it has to be deposited. I want to know exactly what is expected before I start.',
+   steps:'7', clicks:'11', elapsed:'18 min + upload',
+   metric:'Time-to-first-actionable-answer indirectly — a deposited dataset is what makes the next person\'s answer possible. Directly: FAIR score at deposit, and the 61% institutional data-sharing rate.',
+   decisions:[
+     {at:'Step 4 · licence', wrong:'Choosing "all rights reserved" to be safe, which blocks every reuse the deposit existed to enable and often breaches the funder mandate that prompted it.'},
+     {at:'Step 4 · embargo', wrong:'Setting an embargo "just in case" and never returning to lift it. The date is stated on the chip precisely because of this.'},
+     {at:'Step 5 · personal-data scan', wrong:'Overriding a quasi-identifier flag without reading it, because the upload is nearly done and the flag looks like a formality.'}],
+   risks:[
+     {i:'1', level:'LOW', why:'The fix testers asked for: requirements stated before a file is chosen.'},
+     {i:'2', level:'LOW', why:'Resumable, with a checksum shown. Nothing is asked of the user.'},
+     {i:'3', level:'HIGH', why:'The metadata form. Named by testers as the worst part of the old prototype; still the longest screen here.'},
+     {i:'4', level:'MEDIUM', why:'A legal decision most researchers have never been taught to make.'},
+     {i:'5', level:'MEDIUM', why:'A blocking scan result late in a flow reads as an obstacle, not a safeguard.'},
+     {i:'6', level:'LOW', why:'DOI minted. This is the payoff screen.'},
+     {i:'7', level:'LOW', why:'Arrival, not a task.'}]},
+
+  {n:'5', name:'DRAFT TO PREPRINT, RIGHTS-CHECKED', href:'SciCollab F6 - Flow Ribbon.dc.html', path:'1→2→4→5→6→8→9', persona:'Alex + PI',
+   task:'We want this on bioRxiv this week without getting a letter from the publisher.',
+   steps:'7', clicks:'10', elapsed:'3 days',
+   metric:'Not a speed metric. Measured on correctness: zero rights violations, and the institution\'s 74% open-access rate, which this flow is the mechanism for.',
+   decisions:[
+     {at:'Step 6 · rights check returns "private only"', wrong:'Reading the amber state as a soft warning and publishing anyway. This is the screen ResearchGate settled over; the copy has to carry that weight.'},
+     {at:'Step 5 · peer challenge', wrong:'Skipping it because the draft feels finished. Cheap to skip, expensive later.'},
+     {at:'Step 8 · preprint target', wrong:'Choosing a server whose scope does not match, which is unrecoverable — preprints cannot be withdrawn cleanly.'}],
+   risks:[
+     {i:'1', level:'LOW', why:'Drawing on artifacts the project already holds.'},
+     {i:'2', level:'MEDIUM', why:'A collaborative editor competes directly with Word and Overleaf habits.'},
+     {i:'4', level:'MEDIUM', why:'Asking colleagues for internal review depends on them, not on the tool.'},
+     {i:'5', level:'HIGH', why:'Inviting peers to attack an unfinished draft is socially expensive. Most will skip it.'},
+     {i:'6', level:'LOW', why:'Automatic, and states a plain result.'},
+     {i:'8', level:'LOW', why:'Target picker with scopes shown.'},
+     {i:'9', level:'LOW', why:'Automatic linkage once the version of record appears.'}]},
+
+  {n:'6', name:'FIND THE PERSON WHO CAN UNBLOCK ME', href:'SciCollab G5 - Flow Ribbon.dc.html', path:'5→6→12→16', persona:'Alex',
+   task:'I need cryo-EM on a membrane transporter before the grant renewal, and I do not know anyone who can do it.',
+   steps:'4', clicks:'7', elapsed:'4 days',
+   metric:'Time-to-first-actionable-answer at project scale. 4 days from search to a working conversation, against "hours to days, if a colleague is reachable" today.',
+   decisions:[
+     {at:'Step 6 · three routes offered', wrong:'Sending a cold DM because it is the most familiar action, when it has the lowest response rate of the four options on screen.'},
+     {at:'Step 12 · what you offer', wrong:'Writing a vague offer ("co-authorship possible") which reads as a request for free work. The field is required precisely to force specificity.'},
+     {at:'Step 5 · availability filter', wrong:'Leaving it off and messaging someone who set themselves heads-down — they are excluded from results, so this cannot actually happen.'}],
+   risks:[
+     {i:'5', level:'LOW', why:'Faceted search is familiar and costs nothing.'},
+     {i:'6', level:'HIGH', why:'The largest loss in the flow. About 55% of people who find candidates take no action at all.'},
+     {i:'12', level:'MEDIUM', why:'Posting a request means committing budget and co-authorship in public; often needs the PI.'},
+     {i:'16', level:'LOW', why:'Responding to a request opens the channel with no gate.'}]},
+
+  {n:'7', name:'CAMILLE EVALUATES, PILOTS AND AUDITS', href:'SciCollab I8 - Flow Ribbon.dc.html', path:'14→2→9→4', persona:'Camille',
+   task:'I need to know whether this survives our security review and whether it actually changes anything in six months.',
+   steps:'4', clicks:'9', elapsed:'14 months',
+   metric:'Audit readiness and onboarding time. Pilot measured 9-day onboarding against a 6-week baseline, 41% internal reuse, and 2 of 3 mock audits passed without manual assembly.',
+   decisions:[
+     {at:'Step 14 · reading the pilot dashboard', wrong:'Renewing on the 91% adoption figure from the strong lab without reading the 35% from the weak one. Both are on screen at equal weight for this reason.'},
+     {at:'Step 2 · SCIM connection', wrong:'IT connecting without a dry run. The dry-run diff exists because no competent IT department connects a new vendor blind.'},
+     {at:'Step 4 · the output dashboard', wrong:'Someone upstream asking for per-researcher figures. The red banner is the answer, and it prints on page one of every export.'}],
+   risks:[
+     {i:'14', level:'MEDIUM', why:'A pilot that shows a weak lab honestly can lose the renewal it deserves to win.'},
+     {i:'2', level:'LOW', why:'Standard SAML plus a test connection. This is the step IT expects to be routine.'},
+     {i:'9', level:'LOW', why:'Streaming to their own SIEM removes the question entirely.'},
+     {i:'4', level:'HIGH', why:'Not a usability risk — an institutional one. If Research Ops cannot defend refusing per-person metrics, the platform is used against researchers and the null results stop.'}]},
+];
+
+const COL = { HIGH:'#B3261E', MEDIUM:'#6B5900', LOW:'#0B7A4B' };
+
+class Component extends DCLogic {
+  refs = {};
+  ref(k) { return (this.refs[k] = this.refs[k] || React.createRef()); }
+  componentDidMount() { this.paint(); }
+  componentDidUpdate() { this.paint(); }
+  paint() {
+    F.forEach((f, fi) => f.risks.forEach((r, ri) => {
+      const el = (this.refs[fi + '-' + ri] || {}).current;
+      if (el) el.style.color = COL[r.level] || '#6B6B6B';
+    }));
+  }
+  renderVals() {
+    return {
+      flows: F.map((f, fi) => ({
+        ...f,
+        risks: f.risks.map((r, ri) => ({ ...r, ref: this.ref(fi + '-' + ri) })),
+      })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

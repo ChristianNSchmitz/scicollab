@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:32px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">EVALUATION LAYER · BOARD 5 OF 6</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">Open questions</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:88ch">Twelve decisions the brief did not settle and I had to make anyway. Each states <b>what I chose, why, what it costs, and who should overturn it</b>. Four are marked as needing an answer before build; the rest are live and reversible.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab K4 - Consistency.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← K4 consistency</a>
+      <a href="SciCollab K6 - Walkthrough.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">K6 walkthrough →</a>
+    </div>
+  </div>
+
+  <div style="width:1440px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--ink)">
+    <div style="background:#FCF3F2;padding:16px"><div style="font:700 26px/1 var(--mono);color:var(--err)">4</div><div style="font:500 10px/1.3 var(--mono);color:var(--err);margin-top:7px">BLOCKS BUILD</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:7px">A wrong answer here is expensive to reverse after launch.</div></div>
+    <div style="background:#FFFCEF;padding:16px"><div style="font:700 26px/1 var(--mono);color:#6B5900">5</div><div style="font:500 10px/1.3 var(--mono);color:#6B5900;margin-top:7px">DECIDE BEFORE PILOT</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:7px">Changeable, but users form habits around them.</div></div>
+    <div style="background:var(--surface);padding:16px"><div style="font:700 26px/1 var(--mono);color:var(--mute)">3</div><div style="font:500 10px/1.3 var(--mono);color:var(--mute);margin-top:7px">LIVE WITH IT FOR NOW</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:7px">A default that can move on any Tuesday.</div></div>
+  </div>
+
+  <sc-for list="{{ qs }}" as="q" hint-placeholder-count="12">
+    <div style="position:relative;width:1440px;border:1px solid var(--ink);background:var(--surface)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div ref="{{ q.hdr }}" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--ink);background:var(--bg)">
+        <span style="width:24px;height:24px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--mono);flex:none">{{ q.n }}</span>
+        <span ref="{{ q.badge }}" style="display:inline-flex;padding:3px 8px;border:1px solid var(--rule);font:500 9px/1.3 var(--mono);letter-spacing:.06em">{{ q.urgency }}</span>
+        <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">{{ q.title }}</span>
+        <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">{{ q.owner }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr)">
+        <div style="padding:15px 18px;border-right:1px solid var(--rule)">
+          <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">THE QUESTION</div>
+          <div style="font:400 14px/1.55 var(--sans);margin-bottom:13px">{{ q.question }}</div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:12px">
+            <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHAT I CHOSE, AND WHERE IT LIVES</div>
+            <div style="font:400 12px/1.5 var(--sans)">{{ q.chose }}</div>
+          </div>
+        </div>
+        <div style="padding:15px 18px;border-right:1px solid var(--rule)">
+          <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--ok);margin-bottom:9px">THE CASE FOR IT</div>
+          <div style="font:400 12px/1.55 var(--sans);margin-bottom:13px">{{ q.forIt }}</div>
+          <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--err);margin-bottom:9px">THE CASE AGAINST</div>
+          <div style="font:400 12px/1.55 var(--sans)">{{ q.against }}</div>
+        </div>
+        <div style="padding:15px 18px">
+          <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">COST OF CHANGING IT LATER</div>
+          <div style="font:400 12px/1.55 var(--sans);margin-bottom:13px">{{ q.cost }}</div>
+          <div style="border:1px solid var(--signal);background:#FFF8F5;padding:12px">
+            <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:#B33600;margin-bottom:8px">MY RECOMMENDATION</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D">{{ q.rec }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="width:1440px;border:1px solid var(--ink);background:#0D0D0D;color:#F2F0EC;padding:20px 22px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:26px">
+    <div>
+      <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#FF5A14;margin-bottom:11px">IF YOU ANSWER ONLY FOUR</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font:400 13px/1.55 var(--sans);color:#B6B2AC">
+        <div><b style="color:#F2F0EC">Q2 · CC0 or CC BY.</b> Every contribution made before this is settled inherits the wrong default and cannot be relicensed without asking each contributor.</div>
+        <div><b style="color:#F2F0EC">Q4 · lab stories.</b> The only feature in the product that contradicts its stated purpose. Decide whether that contradiction is acceptable or the feature goes.</div>
+        <div><b style="color:#F2F0EC">Q6 · pseudonymity.</b> Blocks A20 entirely and shapes the trust model.</div>
+        <div><b style="color:#F2F0EC">Q9 · individual metrics.</b> Not a design question. If an institution can ever get per-person data, the null results stop and the differentiator dies.</div>
+      </div>
+    </div>
+    <div>
+      <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#FF5A14;margin-bottom:11px">WHAT I WOULD NOT REOPEN</div>
+      <div style="font:400 12px/1.55 var(--sans);color:#B6B2AC">Q1 the type split, Q5 the reputation thresholds and Q11 the mobile scope are all defensible as they stand and cheap to change later. Spending founder time on them now is a poor trade against the four above.</div>
+    </div>
+    <div>
+      <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#FF5A14;margin-bottom:11px">HOW THESE WERE CHOSEN</div>
+      <div style="font:400 12px/1.55 var(--sans);color:#B6B2AC">Every item here is a decision I made <i>silently</i> during a batch because the brief did not cover it and the design could not proceed without one. None is a preference; each has a screen that would be different if answered otherwise.</div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const Q = [
+ {n:'1', urgency:'BEFORE PILOT', owner:'founders + brand', title:'JETBRAINS MONO vs INTER FOR BODY TEXT',
+  question:'The v3 brand direction is monospace throughout. Should long-form prose — question bodies, answers, abstracts, protocol steps — be set in Inter instead?',
+  chose:'Inter for body text at 14px and above; JetBrains Mono for all interface chrome. Flagged on the design-system board from batch 01, applied to all 162 screens since.',
+  forIt:'A 400-word answer set in monospace is measurably slower to read, and dense scientific prose is exactly the content this product exists to carry. The brand voice survives intact in the chrome, which is where a reader actually notices it.',
+  against:'It is a visible break from an agreed brand direction, made unilaterally by a designer. Monospace throughout is a stronger and rarer identity, and "it is hard to read" has been said about every distinctive typographic choice ever made.',
+  cost:'Low. It is two font stacks and a size rule. Reverting is a token change plus a re-read of a dozen dense screens.',
+  rec:'Keep it. If the founders disagree, the honest compromise is monospace for answers under 100 words and Inter above — but a conditional typeface is worse than either option.'},
+
+ {n:'2', urgency:'BLOCKS BUILD', owner:'counsel + founders', title:'CC0 OR CC BY FOR EXTERNAL CONTRIBUTIONS',
+  question:'When someone adds a failure mode to a method card they do not own, what licence attaches to that contribution by default?',
+  chose:'Nothing. Both options are presented with equal weight on I7 and neither is pre-selected — the contribution cannot be submitted until the person chooses.',
+  forIt:'Forcing an explicit choice is defensible while the framework is unsettled, and it surfaces the question to the only people who can answer it.',
+  against:'A required choice with no default is friction on every single contribution, and most contributors have no basis to decide. In practice they will pick whichever is listed first, which makes the ordering the de facto default without anyone owning it.',
+  cost:'High and asymmetric. Contributions made under CC BY cannot be relicensed to CC0 without contacting every contributor. CC0 to CC BY is impossible — a waiver cannot be un-waived.',
+  rec:'Decide before a single external contribution exists. My view: CC BY, because credit-as-a-right is consistent with everything else the product does, and attribution stacking is solvable with a collective notice.'},
+
+ {n:'3', urgency:'BEFORE PILOT', owner:'founders', title:'REPUTATION LADDER — STACK OVERFLOW\u2019S NUMBERS OR RECALIBRATED?',
+  question:'Upvote at 15, comment at 50, bounties at 75, downvote at 125, edit at 2000. Those thresholds were tuned for a community of millions. Do they hold for a platform with 400 users at launch?',
+  chose:'Stack Overflow\u2019s numbers, unchanged, on B3. Chosen because they are proven and because a recognisable ladder needs no explanation.',
+  forIt:'They are the most battle-tested privilege thresholds in existence, and the shape — early trust, late power — is right. Inventing numbers with no data behind them is worse than borrowing numbers with fifteen years behind them.',
+  against:'They are almost certainly wrong at this scale. In a 400-person pilot, 2000 reputation may be unreachable by anyone in year one, which means the edit privilege effectively does not exist and the community cannot self-maintain. Scientific voting is also far lower-volume than programming Q&A — a good answer here might get 6 votes, not 60.',
+  cost:'Low to change, high to change twice. Lowering a threshold is painless; raising one after people have earned a privilege is not.',
+  rec:'Recalibrate down for the pilot — roughly divide by four — and state on the ladder screen that thresholds are provisional and will move. Being explicit that they are tuned is better than being quietly wrong.'},
+
+ {n:'4', urgency:'BLOCKS BUILD', owner:'founders', title:'ARE EPHEMERAL LAB STORIES COMPATIBLE WITH A PERMANENT RECORD?',
+  question:'The product exists to make research permanently findable. Lab stories expire after 24 hours. Can both be true?',
+  chose:'Built, with four hard constraints: a permanent orange "not part of the scientific record" banner, Lab visibility maximum, no search or audit-trail presence, and a make-permanent action that promotes a story into a real figure.',
+  forIt:'Low stakes unlock posting by people who would never write a lab update. A PhD student will photograph a plate at midnight; the same student will not compose a post. Some of those photographs matter, and the escape hatch catches them.',
+  against:'It is the one feature in the product that contradicts its own thesis, and the workbook says so plainly. Worse: the most valuable observations are exactly the ones posted casually at midnight, and a 24-hour timer deletes them by default. We have built a feature whose success case is that people use the escape hatch.',
+  cost:'Low to remove — one board, no dependencies. Expensive to remove after people rely on it.',
+  rec:'This is the one I would genuinely reconsider. An alternative worth costing: keep the low-friction capture, drop the expiry, and make everything a private draft in the notebook that the poster can discard. Same posting cost, no contradiction.'},
+
+ {n:'5', urgency:'LIVE WITH IT', owner:'design', title:'WHAT COUNTS AS AN "ARTIFACT SCREEN" FOR THE VISIBILITY CHIP?',
+  question:'The rule says every screen showing an artifact carries a permanent visibility chip. Does a table row referencing a dataset count? Does a search result?',
+  chose:'Chip on any screen where an artifact is the subject; not on tables that aggregate counts. K4 found one place this is wrong — the institutional dashboard names specific datasets without chips.',
+  forIt:'Chipping every row in a 200-row table is visual noise that would train people to ignore the chip everywhere else.',
+  against:'The dashboard is precisely where a governance decision depends on knowing an artifact\u2019s visibility, and it is the screen the rule was written for.',
+  cost:'Trivial. One chip column on two tables.',
+  rec:'Fix the dashboard, and rewrite the rule as "any screen where a visibility decision could be made or should be checked" rather than "any screen showing an artifact".'},
+
+ {n:'6', urgency:'BLOCKS BUILD', owner:'founders + counsel', title:'PSEUDONYMOUS MODE FOR SENSITIVE QUESTIONS',
+  question:'A20. Can a researcher ask a question — about a supervisor, a suspected misconduct case, a failing project — without their ORCID attached?',
+  chose:'Not designed. Left in the gap list rather than guessed at.',
+  forIt:'The entire trust model rests on verified identity. Anonymity is how every research forum before this one filled with unfalsifiable claims, and ORCID verification is what makes the impersonation case resolvable in 24 hours.',
+  against:'The people with the most valuable and most dangerous questions are the ones who cannot ask them under their own name. The early-career space exists because we accepted this argument once already; refusing pseudonymity elsewhere is inconsistent with having built C21.',
+  cost:'High. Retrofitting anonymity into a system built on verified identity touches moderation, reputation, audit and the trust story simultaneously.',
+  rec:'Decide the principle now even if the design waits. My view: a narrow, moderator-visible pseudonymity — the platform knows who you are, the community does not — scoped to specific question types, never to artifacts.'},
+
+ {n:'7', urgency:'BEFORE PILOT', owner:'founders', title:'IS THE INSTITUTION RAIL ITEM PERSONA-GATED OR PLAN-GATED?',
+  question:'The navigation shell shows an Institution item only for the R&D-buyer persona. Is that a role permission or a paid-plan feature?',
+  chose:'Persona-gated in the shell — it appears for administrators regardless of plan.',
+  forIt:'A lab manager at a free-tier institution still needs to see governance settings that apply to them.',
+  against:'It gives away the institutional console\u2019s existence to users who cannot buy it, and the pricing page already positions it as the Institution tier\u2019s value.',
+  cost:'Low. A permission check.',
+  rec:'Role-gated for visibility, plan-gated for function — the item shows, the screens behind it explain what the tier unlocks. That converts better than hiding it.'},
+
+ {n:'8', urgency:'BEFORE PILOT', owner:'founders', title:'IS PUBLIC + DOI GENUINELY IRREVERSIBLE?',
+  question:'Both the publish modal and the patentability gate tell users that a public artifact with a minted DOI cannot be made private again. Is that our actual policy?',
+  chose:'Yes, stated as absolute in every copy string that touches it.',
+  forIt:'It is technically true — once data is downloaded it is gone — and a DOI that stops resolving breaks the citation graph for everyone who used it.',
+  against:'It is only true for the data, not the metadata. GDPR erasure, a retraction, or a genuine mistake all create cases where something must change, and "irreversible" as written leaves no room for a tombstone.',
+  cost:'Low now, reputational later. Telling users something is permanent and then reversing it once is worse than a nuanced statement today.',
+  rec:'Keep the strong statement, add the exception explicitly: the artifact can be tombstoned — DOI resolves to a withdrawal notice, files removed — and say so in one line on the modal.'},
+
+ {n:'9', urgency:'BLOCKS BUILD', owner:'founders + institutions', title:'CAN AN INSTITUTION EVER OBTAIN PER-RESEARCHER METRICS?',
+  question:'Every dashboard states that individual figures are not computed. Is that a product guarantee or a current default?',
+  chose:'A guarantee. Aggregation happens before storage; groups under five report as a range; the data to evaluate an individual does not exist.',
+  forIt:'A researcher who believes the platform feeds their appraisal stops recording honest null results within a month, and null results are the differentiator. This is not only ethics — it is what keeps the data worth having.',
+  against:'It will lose deals. Some institutions will require per-person reporting as a procurement condition, and we will have to walk away from them.',
+  cost:'Catastrophic to reverse. The moment one institution gets per-person data and researchers learn of it, the honesty of the whole corpus is gone and cannot be rebuilt.',
+  rec:'Write it into the terms of service as a binding commitment, not a setting. It is the single strongest trust claim the product has, and it is only credible if it is contractual.'},
+
+ {n:'10', urgency:'LIVE WITH IT', owner:'design + engineering', title:'CROSS-FIELD INJECTION RATE IN THE FEED',
+  question:'One item in eight comes from outside the user\u2019s field. Where did that number come from?',
+  chose:'I made it up. It is adjustable from 0 to 1-in-4 and never 0 by default.',
+  forIt:'Serendipity is the thing a well-tuned recommender reliably destroys, and a non-zero floor is the mitigation the workbook asks for.',
+  against:'One in eight is not grounded in anything. It could be one in three and better, or one in twenty and still sufficient.',
+  cost:'None. It is a slider.',
+  rec:'Ship at one in eight, instrument it, and let the pilot tell you. This is the cleanest A/B question in the product — and one of the few where testing does not compromise the record.'},
+
+ {n:'11', urgency:'LIVE WITH IT', owner:'design', title:'WHAT "CAPTURE" MEANS ON MOBILE',
+  question:'The brief fixed five mobile tabs but not their contents. Capture stands in for Methods, Projects, Data, Code and Write.',
+  chose:'The phone gets an observation, a photograph or a failed run into a project in under 30 seconds. Authoring is desktop work.',
+  forIt:'It matches how a phone is actually used at a bench, and it avoids building five cramped versions of desktop screens nobody would use.',
+  against:'Field researchers may need genuine authoring on mobile, and we have decided they do not without asking one.',
+  cost:'Low. Adding an authoring path later is additive.',
+  rec:'Keep, and put it to a field scientist in the pilot. It is the assumption in this prototype with the least evidence behind it.'},
+
+ {n:'12', urgency:'BEFORE PILOT', owner:'founders', title:'WHO OWNS THE DATABASE RIGHT IN THE CORPUS?',
+  question:'N23. The EU sui generis database right may attach to the assembled corpus. Does the platform hold it, the institutions, or nobody?',
+  chose:'Nothing. It appears as a clause in the terms with no position taken.',
+  forIt:'It is genuinely a legal question and guessing would be worse than flagging.',
+  against:'It interacts directly with the open-source community edition, with institutional export rights, and with what happens to the corpus if the company is acquired — which is the question every institution\u2019s legal office will actually ask.',
+  cost:'High. It shapes the acquisition story and the exit guarantees.',
+  rec:'Get counsel before the first institutional contract. If the answer is "the platform holds it", say so publicly and pair it with an irrevocable licence back to contributors — otherwise the open-science positioning is not credible.'},
+];
+
+const U = { 'BLOCKS BUILD':['#B3261E','#FCF3F2','#B3261E'], 'BEFORE PILOT':['#6B5900','#FFFCEF','#8A7300'], 'LIVE WITH IT':['#6B6B6B','#FFFFFF','#D6D3CD'] };
+
+class Component extends DCLogic {
+  refs = {};
+  ref(k) { return (this.refs[k] = this.refs[k] || React.createRef()); }
+  componentDidMount() { this.paint(); }
+  componentDidUpdate() { this.paint(); }
+  paint() {
+    Q.forEach((q, i) => {
+      const b = (this.refs['b' + i] || {}).current;
+      const h = (this.refs['h' + i] || {}).current;
+      const c = U[q.urgency] || U['LIVE WITH IT'];
+      if (b) { b.style.color = c[0]; b.style.background = c[1]; b.style.borderColor = c[2]; }
+      if (h) h.style.background = q.urgency === 'BLOCKS BUILD' ? '#FCF3F2' : '#F7F6F3';
+    });
+  }
+  renderVals() {
+    return { qs: Q.map((q, i) => ({ ...q, badge: this.ref('b' + i), hdr: this.ref('h' + i) })) };
+  }
+}
+
+</script>
+</body>
+</html>

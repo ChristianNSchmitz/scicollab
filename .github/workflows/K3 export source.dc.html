@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#0D0D0D">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0D0D0D"/>
+    <g stroke="#FF4D00" stroke-width="22" fill="none" stroke-linecap="round">
+      <circle cx="530" cy="350" r="170"/>
+      <path d="M655 475 L790 610"/>
+    </g>
+    <g fill="#F2F0EC">
+      <rect x="420" y="286" width="150" height="20"/>
+      <rect x="420" y="340" width="110" height="20"/>
+      <rect x="420" y="394" width="140" height="20"/>
+    </g>
+    <rect x="330" y="640" width="540" height="26" fill="#B3261E"/>
+    <rect x="330" y="694" width="330" height="26" fill="#FFD400"/>
+  </svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:36px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">EVALUATION LAYER · BOARD 3 OF 6</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">Heuristic review · ten screens</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:88ch">The ten most complex screens against Nielsen's ten heuristics. <b>{{ total }} findings</b> — {{ nCat }} catastrophic, {{ nMaj }} major, {{ nMin }} minor, {{ nCos }} cosmetic. Each names the screen and the element. A review that found nothing would mean it was not performed.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab K2 - Usability.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← K2 usability</a>
+      <a href="SciCollab K4 - Consistency.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">K4 consistency →</a>
+    </div>
+  </div>
+
+  <div style="width:1440px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--ink)">
+    <div style="background:#FCF3F2;padding:16px"><div style="font:700 28px/1 var(--mono);color:var(--err)">{{ nCat }}</div><div style="font:500 10px/1.3 var(--mono);color:var(--err);margin-top:7px">CATASTROPHIC</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:7px">Blocks the task or causes irreversible loss. Fix before any user test.</div></div>
+    <div style="background:#FFFCEF;padding:16px"><div style="font:700 28px/1 var(--mono);color:#6B5900">{{ nMaj }}</div><div style="font:500 10px/1.3 var(--mono);color:#6B5900;margin-top:7px">MAJOR</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:7px">Users will fail or take a costly wrong path. Fix before the pilot.</div></div>
+    <div style="background:var(--surface);padding:16px"><div style="font:700 28px/1 var(--mono)">{{ nMin }}</div><div style="font:500 10px/1.3 var(--mono);color:var(--mute);margin-top:7px">MINOR</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:7px">Slows people down or annoys. Fix when the screen is next touched.</div></div>
+    <div style="background:var(--surface);padding:16px"><div style="font:700 28px/1 var(--mono);color:var(--mute)">{{ nCos }}</div><div style="font:500 10px/1.3 var(--mono);color:var(--mute);margin-top:7px">COSMETIC</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:7px">Noted, not scheduled. Fix if convenient.</div></div>
+  </div>
+
+  <div style="width:1440px;border:1px solid var(--err);background:#FCF3F2;padding:18px 20px">
+    <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--err);padding-bottom:10px;margin-bottom:14px">
+      <span style="font:500 11px/1 var(--mono);letter-spacing:.14em;color:var(--err)">THE TWO CATASTROPHIC FINDINGS</span>
+      <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">both are error-prevention failures, both are one-way doors</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px">
+      <div style="border:1px solid var(--err);background:var(--surface);padding:15px">
+        <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:10px"><span style="font:500 10px/1 var(--mono);color:var(--err);letter-spacing:.06em">H5 · ERROR PREVENTION</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">E1 deposit · step 4 licence picker</span></div>
+        <div style="font:500 13px/1.35 var(--mono);margin-bottom:9px">A licence choice is permanent and the screen does not say so</div>
+        <div style="font:400 13px/1.55 var(--sans);margin-bottom:11px">Once a dataset is public under CC-BY, that grant cannot be withdrawn from anyone who already has the data. The licence select on <a href="SciCollab E1 - Deposit Flow.dc.html#s4">deposit step 4</a> looks and behaves exactly like the format select two fields above it — same control, same weight, no confirmation, no statement of irreversibility. The <a href="SciCollab I3 - Confidential and Audit.dc.html#s2">patent gate</a> gets a full modal with type-to-confirm; a licence grant is the same class of one-way door and gets a dropdown.</div>
+        <div style="border-top:1px solid var(--rule);padding-top:10px;font:400 12px/1.5 var(--sans);color:var(--mute)"><b style="color:#0D0D0D">Fix:</b> a one-line irreversibility statement under the control, and a confirmation step when the choice is more permissive than the project default. Not a modal — the patent gate earns one because it is once per project; this fires on every deposit.</div>
+      </div>
+      <div style="border:1px solid var(--err);background:var(--surface);padding:15px">
+        <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:10px"><span style="font:500 10px/1 var(--mono);color:var(--err);letter-spacing:.06em">H1 · VISIBILITY OF SYSTEM STATUS</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">D1 ELN · entry view</span></div>
+        <div style="font:500 13px/1.35 var(--mono);margin-bottom:9px">Append-only is stated in words but never shown while typing</div>
+        <div style="font:400 13px/1.55 var(--sans);margin-bottom:11px">The <a href="SciCollab D1 - Projects and ELN.dc.html#s5">notebook entry</a> explains the append-only constraint in a panel, but the composing area gives no persistent signal that what is typed becomes immutable on save. A researcher who assumes normal draft-and-edit behaviour will commit a half-finished entry, and in a countersigned regulated notebook that entry cannot be removed — only superseded, visibly, forever.</div>
+        <div style="border-top:1px solid var(--rule);padding-top:10px;font:400 12px/1.5 var(--sans);color:var(--mute)"><b style="color:#0D0D0D">Fix:</b> a permanent chrome state on the editor itself — a left rule and a label reading <span style="font-family:var(--mono);font-size:11px">APPEND-ONLY · SAVE IS FINAL</span> — plus an explicit draft mode that is visibly <i>not</i> the notebook until committed.</div>
+      </div>
+    </div>
+  </div>
+
+  <sc-for list="{{ screens }}" as="s" hint-placeholder-count="10">
+    <div style="position:relative;width:1440px;border:1px solid var(--ink);background:var(--surface)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--ink);background:var(--bg)">
+        <span style="width:24px;height:24px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--mono);flex:none">{{ s.n }}</span>
+        <a href="{{ s.href }}" style="font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--ink)">{{ s.name }}</a>
+        <span style="font:400 10px/1 var(--mono);color:var(--mute)">{{ s.why }}</span>
+        <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">{{ s.count }}</span>
+      </div>
+      <div>
+        <sc-for list="{{ s.findings }}" as="x" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:104px 176px minmax(0,1fr);border-bottom:1px solid #EBE8E2;align-items:start">
+            <div style="padding:11px 12px"><span ref="{{ x.ref }}" style="display:inline-flex;padding:3px 8px;border:1px solid var(--rule);font:500 9px/1.3 var(--mono);letter-spacing:.06em">{{ x.sev }}</span></div>
+            <div style="padding:11px 8px;font:400 10px/1.45 var(--mono);color:var(--mute)">{{ x.heuristic }}</div>
+            <div style="padding:11px 12px"><span style="font:500 12px/1.45 var(--mono)">{{ x.el }}</span> <span style="font:400 13px/1.5 var(--sans)">— {{ x.text }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="width:1440px;border:1px solid var(--ink);background:#0D0D0D;color:#F2F0EC;padding:20px 22px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:26px">
+    <div>
+      <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#FF5A14;margin-bottom:11px">THE PATTERN ACROSS ALL {{ total }} FINDINGS</div>
+      <div style="font:400 13px/1.6 var(--sans);color:#B6B2AC;margin-bottom:13px">The largest cluster is <b style="color:#F2F0EC">{{ topH }}</b> with <b style="color:#F2F0EC">{{ topN }}</b> findings — nearly twice the next heuristic. The product repeatedly <i>shows a state without saying what it means</i>: a spinner with no scope, a v6 badge that does not say "current", 94% with no breakdown, a hash chain with no verification timestamp.</div>
+      <div style="font:400 13px/1.6 var(--sans);color:#B6B2AC">That is a different and more useful finding than the one this block previously asserted. It is also cheap to fix: almost every H1 finding is a missing label next to a number that is already on screen.</div>
+    </div>
+    <div>
+      <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#FF5A14;margin-bottom:11px">FINDINGS PER HEURISTIC · ALL {{ total }}</div>
+      <sc-for list="{{ bars }}" as="b" hint-placeholder-count="10">
+        <div style="display:grid;grid-template-columns:34px 1fr 22px;gap:9px;align-items:center;margin-bottom:6px">
+          <span style="font:500 10px/1 var(--mono);color:#8E8B85">{{ b.k }}</span>
+          <span style="display:block;height:8px;background:#2E2C29"><span ref="{{ b.ref }}" style="display:block;height:100%;background:#8E8B85"></span></span>
+          <span style="font:400 10px/1 var(--mono);color:#B6B2AC;text-align:right">{{ b.n }}</span>
+        </div>
+      </sc-for>
+      <div style="font:400 11px/1.5 var(--sans);color:#8E8B85;margin-top:11px;padding-top:10px;border-top:1px solid #2E2C29">Lowest is <b style="color:#F2F0EC">{{ lowH }}</b> at {{ lowN }}. <b style="color:#F2F0EC">H10 help</b> is genuinely strong — the product explains its own reasoning on almost every screen — but <b style="color:#F2F0EC">H8 minimalism</b> at 5 is joint-second, so "dense but never decorative" is doing less work than it looks.</div>
+    </div>
+    <div>
+      <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#FF5A14;margin-bottom:11px">WHAT THIS REVIEW CANNOT TELL YOU</div>
+      <div style="font:400 12px/1.55 var(--sans);color:#B6B2AC">Whether a researcher will fill in seven fields when a text box would do. No heuristic catches that — only the five testers can. It is the single largest risk in the product and it is not on this board.</div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const S = [
+ {n:'1', name:'C1 · QUESTION COMPOSER', href:'SciCollab C1 - Ask and Compose.dc.html#s1', why:'7 fields, live retrieval, 3 panels', findings:[
+  {sev:'MAJOR', heuristic:'H6 · recognition not recall', el:'Conditions block', text:'"4 of 6 filled" tells you a count but not which two are missing until you read every row. The two empty fields are yellow, but the counter should name them.'},
+  {sev:'MAJOR', heuristic:'H2 · match to the real world', el:'"Signal" as the vote label', text:'Researchers know upvotes. "Signal" is our word, defined nowhere on this screen, and it sits next to a number people will read as karma.'},
+  {sev:'MINOR', heuristic:'H1 · visibility of status', el:'Retrieval spinner', text:'The right panel spins with no indication of what it is searching or how long it takes. A first-time user cannot tell whether it is working or stuck.'},
+  {sev:'MINOR', heuristic:'H3 · user control', el:'DOI auto-expansion', text:'A pasted DOI silently expands into a citation card. Correct behaviour, but it happens without announcement and there is no visible undo.'},
+  {sev:'COSMETIC', heuristic:'H8 · minimalism', el:'Toolbar', text:'Seven format buttons compete with the seven content fields. TeX, code and molecule could live behind one "insert" affordance.'}]},
+
+ {n:'2', name:'E1 · DEPOSIT FLOW, STEP 3 METADATA', href:'SciCollab E1 - Deposit Flow.dc.html#s3', why:'the screen testers named as worst', findings:[
+  {sev:'MAJOR', heuristic:'H1 · visibility of status', el:'FAIR score meter', text:'The score rises as fields are completed but never states the target. Is 0.7 good? A number with no scale is decoration, and this one is doing real persuasive work.'},
+  {sev:'MAJOR', heuristic:'H7 · flexibility', el:'Discipline template', text:'No way to save a filled template as a personal default. A researcher depositing weekly re-types the same instrument and cell line every time — the exact friction this batch existed to remove.'},
+  {sev:'MINOR', heuristic:'H5 · error prevention', el:'Required-field marks', text:'Required and recommended fields are distinguished only by a small label. At a glance the form looks longer than it is mandatory.'},
+  {sev:'MINOR', heuristic:'H9 · recover from errors', el:'Upload continues behind the form', text:'If the form is abandoned, what happens to the 2 GB already uploaded is not stated anywhere on screen.'},
+  {sev:'COSMETIC', heuristic:'H4 · consistency', el:'Field order', text:'Instrument comes before organism here and after it on the composer. Trivial, but it is the same metadata.'}]},
+
+ {n:'3', name:'C2 · METHOD CARD, FULL VIEW', href:'SciCollab C2 - Method Cards.dc.html#s1', why:'9 steps, 3 failure modes, lineage, discussion', findings:[
+  {sev:'MAJOR', heuristic:'H6 · recognition not recall', el:'"Fork" vs "Record a run"', text:'Two primary-weight actions whose difference is the entire mental model of the object, explained nowhere on the card. A newcomer cannot tell which one they want.'},
+  {sev:'MINOR', heuristic:'H1 · visibility of status', el:'v6 badge', text:'Nothing indicates whether you are reading the current version or an old one until you open the version selector. The badge says v6; it does not say "current".'},
+  {sev:'MINOR', heuristic:'H8 · minimalism', el:'Steps section', text:'Showing 5 of 9 steps with "show all" saves space but breaks the one thing a protocol reader wants: to read the protocol.'},
+  {sev:'COSMETIC', heuristic:'H2 · match to the real world', el:'"Reproductions: 8, failed: 2"', text:'Reads as though the card failed twice. It means two labs ran it and got a different result, which is a different claim.'}]},
+
+ {n:'4', name:'I1 · ADMIN CONSOLE HOME', href:'SciCollab I1 - Console and Identity.dc.html#s1', why:'12 nav items, 4 stat cards, policy table', findings:[
+  {sev:'MAJOR', heuristic:'H5 · error prevention', el:'Policy defaults table', text:'The table displays policy values but gives no indication that changing one applies retroactively or only to new artifacts. That distinction is the difference between a safe edit and an incident.'},
+  {sev:'MINOR', heuristic:'H3 · user control', el:'Left rail, 12 items', text:'No grouping beyond one divider. Governance, reporting and compliance items interleave, so finding "audit log" requires reading all twelve.'},
+  {sev:'MINOR', heuristic:'H1 · visibility of status', el:'"NEEDS YOU · 3"', text:'Three urgent items in a yellow box with no indication of which is most urgent. The erasure request at day 19 of 30 is materially different from an ethics expiry 41 days out.'},
+  {sev:'COSMETIC', heuristic:'H8 · minimalism', el:'Seats card', text:'"14 dormant 90 d" is presented without a suggested action, so it reads as an accusation rather than information.'}]},
+
+ {n:'5', name:'H5 · AI ASSISTANT PANEL', href:'SciCollab H5 - AI.dc.html#s1', why:'4 claims, 6 sources, confidence model', findings:[
+  {sev:'MAJOR', heuristic:'H2 · match to the real world', el:'Confidence: MODERATE', text:'Users will read this as the model\'s certainty about its answer. It actually means "multiple sources, none replicated" — a claim about the evidence, not the AI. The distinction is stated in the sidebar and will be missed.'},
+  {sev:'MINOR', heuristic:'H6 · recognition not recall', el:'Claim-to-source mapping', text:'Sources list "claims 1, 2" but the claims are numbered in a different column. Following claim 3 to its source requires holding a number in your head across the screen.'},
+  {sev:'MINOR', heuristic:'H10 · help', el:'"What I did not find"', text:'Excellent, and buried below the fold under four claims. For a researcher assessing whether to trust this, it is the most important block on the screen.'},
+  {sev:'COSMETIC', heuristic:'H4 · consistency', el:'Source chips', text:'Chips here use a two-part label (type + id); the retrieval panel in C1 uses type on a separate line. Same object, two treatments.'}]},
+
+ {n:'6', name:'D2 · AUDIT TRAIL', href:'SciCollab D2 - Governance.dc.html#s1', why:'auditor-facing, 1.4M events', findings:[
+  {sev:'MAJOR', heuristic:'H7 · flexibility and efficiency', el:'Saved questions', text:'Good for the five questions provided; there is no way for an auditor to save their own. An auditor with a sixth question has to construct it every time.'},
+  {sev:'MINOR', heuristic:'H1 · visibility of status', el:'Hash-chain indicator', text:'The chain is stated as verified but there is no timestamp for when verification last ran. For an auditor that is the whole question.'},
+  {sev:'MINOR', heuristic:'H9 · recover from errors', el:'Filtered empty state', text:'A filter combination returning nothing is ambiguous: no events, or a malformed filter? The screen does not distinguish them.'},
+  {sev:'COSMETIC', heuristic:'H2 · match to the real world', el:'Event names', text:'"visibility change · lab → public" is clear; "policy change · AI training → disabled" reads like a log line rather than a sentence.'}]},
+
+ {n:'7', name:'F3 · RIGHTS CHECK', href:'SciCollab F3 - Rights and Publishing.dc.html#s1', why:'legally load-bearing, 3 outcome states', findings:[
+  {sev:'MAJOR', heuristic:'H1 · visibility of status', el:'Amber "private only" state', text:'The three outcomes are distinguished by colour and a label, but the amber state does not state the consequence of ignoring it. The ACS and Elsevier settlement is annotated as context, not as a warning to the person about to click.'},
+  {sev:'MINOR', heuristic:'H10 · help', el:'Policy source', text:'The publisher policy is quoted but not dated or linked to its source. Policies change; a researcher relying on this needs to know when we last checked.'},
+  {sev:'COSMETIC', heuristic:'H6 · recognition', el:'Version terminology', text:'"Accepted manuscript" and "version of record" are correct publishing terms that a first-year PhD student will not know, and they are not explained here.'}]},
+
+ {n:'8', name:'D5 · DEPARTURE HANDOVER PACK', href:'SciCollab D5 - Continuity.dc.html#s1', why:'the differentiating institutional screen', findings:[
+  {sev:'MAJOR', heuristic:'H3 · user control and freedom', el:'The six blanks', text:'The leaver is asked six questions with no way to say "I do not know" or "ask X instead". Someone in their final week will abandon rather than answer badly, and an abandoned pack is worse than a partial one.'},
+  {sev:'MINOR', heuristic:'H1 · visibility of status', el:'94% compiled', text:'The percentage is compelling but does not say what the missing 6% is until you scroll. Lead with the six items, not the number.'},
+  {sev:'COSMETIC', heuristic:'H8 · minimalism', el:'Interview questions', text:'Six generated questions is generous; three well-chosen ones would be answered.'}]},
+
+ {n:'9', name:'H1 · HOME FEED', href:'SciCollab H1 - Feed.dc.html#s1', why:'7 card variants, ranking controls', findings:[
+  {sev:'MINOR', heuristic:'H6 · recognition not recall', el:'"Why am I seeing this?"', text:'Present on every card as small grey text at the top right — the lowest-salience position on the card, for the control that answers the product\'s most important promise.'},
+  {sev:'MINOR', heuristic:'H4 · consistency', el:'Card action rows', text:'The negative-result card ends with a stat strip, the method-card variant with two buttons, the figure card with tag chips. Three different closing patterns in one scroll.'},
+  {sev:'MINOR', heuristic:'H7 · flexibility', el:'Chronological toggle', text:'Switching is one click, but there is no way to set chronological as the permanent default from the feed itself.'},
+  {sev:'COSMETIC', heuristic:'H1 · visibility', el:'"You are up to date"', text:'Excellent pattern, placed in the right sidebar rather than at the end of the feed where the user actually arrives.'}]},
+
+ {n:'10', name:'G4 · DIRECT MESSAGES, GATED STATE', href:'SciCollab G4 - Messaging.dc.html#s1', why:'refuses a user action, three exit paths', findings:[
+  {sev:'MINOR', heuristic:'H9 · recover from errors', el:'Three unlock paths', text:'All three are shown as equally weighted progress bars, but ORCID verification takes two minutes and reaching 15 reputation takes days. Only one is labelled "fastest".'},
+  {sev:'MINOR', heuristic:'H2 · match to the real world', el:'"15 reputation on any axis"', text:'A new account has no idea what 15 represents. Two accepted answers? Twenty? The number is meaningless without a worked example.'},
+  {sev:'COSMETIC', heuristic:'H8 · minimalism', el:'Four alternatives block', text:'Four suggested alternatives below three unlock paths is seven options on a screen whose message is "not yet".'}]},
+];
+
+const SEV = { CATASTROPHIC:['#B3261E','#FCF3F2','#B3261E'], MAJOR:['#6B5900','#FFFCEF','#8A7300'], MINOR:['#0D0D0D','#FFFFFF','#D6D3CD'], COSMETIC:['#6B6B6B','#FFFFFF','#D6D3CD'] };
+
+class Component extends DCLogic {
+  refs = {};
+  ref(k) { return (this.refs[k] = this.refs[k] || React.createRef()); }
+  componentDidMount() { this.paint(); }
+  componentDidUpdate() { this.paint(); }
+  paint() {
+    const t = this._tally || {};
+    const max = Math.max.apply(null, Object.keys(t).map(k => t[k]).concat([1]));
+    Object.keys(t).forEach(k => {
+      const el = (this.refs['t' + k] || {}).current; if (!el) return;
+      el.style.width = Math.round((t[k] / max) * 100) + '%';
+      el.style.background = t[k] >= max ? '#B3261E' : t[k] >= max * 0.55 ? '#0D0D0D' : '#B8B4AC';
+    });
+    S.forEach((s, si) => s.findings.forEach((f, fi) => {
+      const el = (this.refs[si + '-' + fi] || {}).current; if (!el) return;
+      const c = SEV[f.sev] || SEV.MINOR;
+      el.style.color = c[0]; el.style.background = c[1]; el.style.borderColor = c[2];
+    }));
+  }
+  renderVals() {
+    const all = S.flatMap(s => s.findings);
+    const n = sev => all.filter(f => f.sev === sev).length;
+    const CATASTROPHIC = 2; // the two in the callout block above, not repeated in the tables
+    // per-heuristic tally, including the two catastrophic findings from the callout
+    const tally = {};
+    const bump = h => { const k = (h.match(/H\d+/) || ['?'])[0]; tally[k] = (tally[k] || 0) + 1; };
+    all.forEach(f => bump(f.heuristic));
+    bump('H5 · error prevention');           // catastrophic 1 · licence picker
+    bump('H1 · visibility of system status'); // catastrophic 2 · append-only ELN
+    this._tally = tally;
+    const ranked = Object.keys(tally).sort((a, b) => tally[b] - tally[a] || a.localeCompare(b));
+    const top = ranked[0], second = ranked[1];
+    return {
+      total: all.length + CATASTROPHIC,
+      topH: top, topN: tally[top],
+      secondH: second, secondN: tally[second],
+      topTwoN: tally[top] + tally[second],
+      lowH: ranked[ranked.length - 1], lowN: tally[ranked[ranked.length - 1]],
+      bars: ranked.map(k => ({ k, n: tally[k], ref: this.ref('t' + k) })),
+      nCat: CATASTROPHIC,
+      nMaj: n('MAJOR'),
+      nMin: n('MINOR'),
+      nCos: n('COSMETIC'),
+      screens: S.map((s, si) => ({
+        ...s,
+        count: s.findings.length + ' findings',
+        findings: s.findings.map((f, fi) => ({ ...f, ref: this.ref(si + '-' + fi) })),
+      })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

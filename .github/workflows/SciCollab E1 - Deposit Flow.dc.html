@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+  @keyframes scspin { to { transform: rotate(360deg) } }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">BATCH E · BOARD 1 OF 6</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">Deposit a dataset — the flow testers said was too hard</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:84ch">Screens 1–6. The single biggest complaint about the last prototype was this flow: <i>"The upload flow should be simpler. I need to know exactly what metadata and file formats are expected."</i> The fix is structural, not cosmetic — the contract is stated in full <b>before the file picker is reachable</b>, and every subsequent step tells you what it will do before it does it.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab E2 - Dataset Detail.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">E2 dataset detail →</a>
+      <a href="SciCollab E6 - Flow Ribbon.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">E6 flow ribbon</a>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--signal);background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">1</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:#B33600">UPLOAD STEP 1 (H01) — THE CONTRACT, BEFORE ANY FILE IS CHOSEN</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 900 · the tester fix</span>
+    </div>
+    <div style="position:relative;width:1440px;height:900px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column;overflow:hidden">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:56px;flex:none;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--ink)">
+        <div style="display:flex;align-items:flex-end"><span style="position:relative;font:700 15px/1 var(--mono);letter-spacing:-.03em">scicollab<span style="position:absolute;left:0;bottom:-4px;width:10px;height:3px;background:var(--signal)"></span></span><span style="font:700 15px/1 var(--mono);color:var(--signal)">/</span></div>
+        <div style="flex:1;max-width:480px;display:flex;align-items:center;gap:9px;height:32px;padding:0 10px;border:1px solid var(--rule);background:var(--bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span style="font:400 11px/1 var(--mono);color:var(--mute);flex:1">Search people, projects, datasets, methods, discussions</span><span style="font:500 10px/1 var(--mono);color:var(--mute);border:1px solid var(--rule);padding:3px 5px;background:var(--surface)">⌘K</span></div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:9px">
+          <span style="font:400 11px/1 var(--mono);color:var(--mute)">nothing is uploaded yet</span>
+          <span style="width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);background:var(--bg);position:relative">AR<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;min-height:0">
+        <nav style="width:56px;flex:none;background:var(--surface);border-right:1px solid var(--rule);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px">
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 9.8 12 3l9 6.8V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.3 2.4v1.8"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></span>
+          <span style="position:relative;width:38px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--bg)"><span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--signal)"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5h8.5"/><path d="M16.6 3.9a2.05 2.05 0 0 1 2.9 2.9L7.4 18.9l-3.9 1 1-3.9z"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2a6 6 0 0 1 12 0"/><path d="M16.2 5.3a3.2 3.2 0 0 1 0 5.4"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></svg></span>
+          <div style="width:30px;height:1px;background:var(--rule);margin:8px 0"></div>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:#C2BDB4"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>
+          <span style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:#C2BDB4"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/></svg></span>
+        </nav>
+        <main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+          <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2a6 6 0 0 1 12 0"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">LAB</span></span>
+            <span style="font:400 11px/1 var(--mono);color:var(--mute)">this dataset will inherit LAB from the project · you can change it at step 4</span>
+            <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font:400 11px/1.4 var(--mono);color:var(--mute)"><span>Knock-in efficiency</span><span style="color:#C2BDB4">/</span><span>Data</span><span style="color:#C2BDB4">/</span><span style="color:#0D0D0D">New dataset</span></span>
+          </div>
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:0;padding:0 16px;border-bottom:1px solid var(--rule);background:var(--surface)">
+            <div style="display:flex;align-items:center;gap:9px;padding-right:18px"><span style="width:22px;height:22px;border:1px solid var(--signal);background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono)">1</span><span style="font:500 11px/1 var(--mono)">What is expected</span></div>
+            <span style="width:20px;height:1px;background:var(--rule)"></span>
+            <div style="display:flex;align-items:center;gap:9px;padding:0 18px"><span style="width:22px;height:22px;border:1px solid var(--rule);color:var(--mute);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono)">2</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">Files</span></div>
+            <span style="width:20px;height:1px;background:var(--rule)"></span>
+            <div style="display:flex;align-items:center;gap:9px;padding:0 18px"><span style="width:22px;height:22px;border:1px solid var(--rule);color:var(--mute);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono)">3</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">Metadata</span></div>
+            <span style="width:20px;height:1px;background:var(--rule)"></span>
+            <div style="display:flex;align-items:center;gap:9px;padding:0 18px"><span style="width:22px;height:22px;border:1px solid var(--rule);color:var(--mute);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono)">4</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">Licence &amp; access</span></div>
+            <span style="width:20px;height:1px;background:var(--rule)"></span>
+            <div style="display:flex;align-items:center;gap:9px;padding:0 18px"><span style="width:22px;height:22px;border:1px solid var(--rule);color:var(--mute);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono)">5</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">Privacy check</span></div>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">about 4 minutes · you can leave and come back</span>
+          </div>
+          <div style="flex:1;padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-height:0;overflow:hidden">
+            <div style="flex:none">
+              <h2 style="font:700 24px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.02em">Before you pick a file, here is exactly what this will ask for.</h2>
+              <p style="font:400 14px/1.5 var(--sans);color:var(--mute);margin:0;max-width:86ch">Everything on this page is knowable now. Nothing below appears as a surprise after your 2 GB upload finishes — if you cannot supply something here, you will know it before you start, not forty minutes in.</p>
+            </div>
+            <div style="flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;overflow:hidden">
+              <div style="display:flex;flex-direction:column;gap:14px;overflow:hidden">
+                <div style="border:1px solid var(--ink);background:var(--surface)">
+                  <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">ACCEPTED FORMATS</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">set by the Flow cytometry template</span></div>
+                  <div style="padding:13px">
+                    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px">
+                      <span style="padding:5px 9px;border:1px solid var(--ink);background:var(--bg);border-radius:2px;font:500 11px/1.2 var(--mono)">.fcs</span>
+                      <span style="padding:5px 9px;border:1px solid var(--ink);background:var(--bg);border-radius:2px;font:500 11px/1.2 var(--mono)">.csv</span>
+                      <span style="padding:5px 9px;border:1px solid var(--ink);background:var(--bg);border-radius:2px;font:500 11px/1.2 var(--mono)">.tsv</span>
+                      <span style="padding:5px 9px;border:1px solid var(--ink);background:var(--bg);border-radius:2px;font:500 11px/1.2 var(--mono)">.h5 / .hdf5</span>
+                      <span style="padding:5px 9px;border:1px solid var(--ink);background:var(--bg);border-radius:2px;font:500 11px/1.2 var(--mono)">.zip</span>
+                      <span style="padding:5px 9px;border:1px solid var(--rule);color:var(--mute);border-radius:2px;font:500 11px/1.2 var(--mono)">.png / .tiff · figures only</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:132px minmax(0,1fr);gap:7px 11px;font:400 11px/1.45 var(--mono);border-top:1px solid var(--rule);padding-top:11px">
+                      <span style="color:var(--mute)">MAXIMUM SIZE</span><span><b>5 GB per file</b> · 50 GB per dataset</span>
+                      <span style="color:var(--mute)">LARGER THAN THAT</span><span>use the desktop transfer client — <span style="color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">how</span></span>
+                      <span style="color:var(--mute)">RESUMABLE</span><span>yes · close the tab and come back</span>
+                      <span style="color:var(--mute)">REJECTED</span><span style="color:var(--err)">.docx, .xlsx, .pptx — attach those to a discussion instead</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="border:1px solid var(--ink);background:var(--surface);flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden">
+                  <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;border-bottom:1px solid var(--ink);background:var(--bg);flex:none"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">REQUIRED METADATA · 6 FIELDS</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">3 will be pre-filled</span></div>
+                  <div style="padding:13px;flex:1;overflow:hidden">
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <div style="display:flex;gap:10px;align-items:flex-start"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);font:500 8px/1.4 var(--mono);flex:none;margin-top:2px">AUTO</span><div style="flex:1"><div style="font:400 12px/1.4 var(--mono)">Instrument</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">read from the FCS header</div></div></div>
+                      <div style="display:flex;gap:10px;align-items:flex-start"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);font:500 8px/1.4 var(--mono);flex:none;margin-top:2px">AUTO</span><div style="flex:1"><div style="font:400 12px/1.4 var(--mono)">Acquisition date</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">read from the file</div></div></div>
+                      <div style="display:flex;gap:10px;align-items:flex-start"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);font:500 8px/1.4 var(--mono);flex:none;margin-top:2px">AUTO</span><div style="flex:1"><div style="font:400 12px/1.4 var(--mono)">Project, grant and ethics</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">inherited from Knock-in efficiency</div></div></div>
+                      <div style="display:flex;gap:10px;align-items:flex-start"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--signal);color:#B33600;font:500 8px/1.4 var(--mono);flex:none;margin-top:2px">YOU</span><div style="flex:1"><div style="font:400 12px/1.4 var(--mono)">Cell line and passage</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">Cellosaurus ID suggested as you type</div></div></div>
+                      <div style="display:flex;gap:10px;align-items:flex-start"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--signal);color:#B33600;font:500 8px/1.4 var(--mono);flex:none;margin-top:2px">YOU</span><div style="flex:1"><div style="font:400 12px/1.4 var(--mono)">Reagent lots used</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">picked from lab inventory — half of all "it stopped working" cases are lot changes</div></div></div>
+                      <div style="display:flex;gap:10px;align-items:flex-start"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--signal);color:#B33600;font:500 8px/1.4 var(--mono);flex:none;margin-top:2px">YOU</span><div style="flex:1"><div style="font:400 12px/1.4 var(--mono)">Gating file or analysis script</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">upload alongside, or link one already in the project</div></div></div>
+                    </div>
+                    <div style="border-top:1px solid var(--rule);margin-top:12px;padding-top:11px;font:400 12px/1.5 var(--sans);color:var(--mute)">Optional but scored: description, keywords, related publication, funder award number. These raise the FAIR score at step 3; none of them block you.</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px;overflow:hidden">
+                <div style="border:1px solid var(--ink);background:var(--surface)">
+                  <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">WHAT WILL BE GENERATED</span></div>
+                  <div style="padding:13px;display:flex;flex-direction:column;gap:10px">
+                    <div style="display:flex;gap:11px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5.5"/></svg><div style="flex:1"><div style="font:500 12px/1.4 var(--mono);margin-bottom:3px">A DOI, on publish</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">A concept DOI for the dataset and a version DOI for v1.0. Minted only when visibility becomes Public — not at upload.</div></div></div>
+                    <div style="display:flex;gap:11px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5.5"/></svg><div style="flex:1"><div style="font:500 12px/1.4 var(--mono);margin-bottom:3px">A SHA-256 checksum per file</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Computed in your browser during upload and re-verified server-side. Re-checked quarterly for the life of the dataset.</div></div></div>
+                    <div style="display:flex;gap:11px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5.5"/></svg><div style="flex:1"><div style="font:500 12px/1.4 var(--mono);margin-bottom:3px">A tabular profile and a codebook stub</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Column types, ranges and missingness, so reviewers can read the shape without downloading 2 GB.</div></div></div>
+                    <div style="display:flex;gap:11px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5.5"/></svg><div style="flex:1"><div style="font:500 12px/1.4 var(--mono);margin-bottom:3px">A personal-data scan</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Runs at step 5, before anything can be made Public. Flags direct identifiers and quasi-identifiers for you to confirm.</div></div></div>
+                  </div>
+                </div>
+                <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+                  <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">WHERE IT WILL LIVE</div>
+                  <div style="display:grid;grid-template-columns:118px minmax(0,1fr);gap:7px 11px;font:400 11px/1.45 var(--mono)">
+                    <span style="color:var(--mute)">RESIDENCY</span><span>EU · Belgium and Ireland replicas</span>
+                    <span style="color:var(--mute)">TIER</span><span>hot for 12 months, then cool · you can override</span>
+                    <span style="color:var(--mute)">COST TO PROJECT</span><span>≈ €0.21 / month for 2.1 GB</span>
+                    <span style="color:var(--mute)">RETENTION</span><span>10 years, per institution policy</span>
+                  </div>
+                </div>
+                <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px;flex:1">
+                  <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:9px">WHAT THIS PAGE IS FOR</div>
+                  <div style="font:400 13px/1.55 var(--sans);color:#0D0D0D">Five testers used the old flow. All five hit a required field they could not answer <i>after</i> the upload had run, and two abandoned the dataset entirely. This page exists so the answer to "what will this ask me for?" is available in the ten seconds before anyone commits.</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:none;display:flex;align-items:center;gap:12px;padding-top:4px">
+              <button style="height:36px;padding:0 18px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 13px/1 var(--mono);cursor:pointer" style-hover="background:#E04400;border-color:#E04400">I have these — choose files</button>
+              <button style="height:36px;padding:0 14px;background:transparent;border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Change the template</button>
+              <span style="font:400 11px/1.4 var(--mono);color:var(--mute)">or <span style="color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">print this checklist</span> and come back</span>
+            </div>
+          </div>
+        </main>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H01 · H05 · H12 · H13 · H14 · H20 · H22 · G17</span><span style="margin-left:auto">the whole contract, before the file picker</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">2</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">STEP 2 · FILES (H04, H14)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">700 × 620 · resumable · checksum shown as it computes</span>
+      </div>
+      <div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono)">LAB</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">STEP 2 OF 5 · FILES</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">safe to close this tab</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px dashed var(--ink);background:var(--bg);padding:16px;margin-bottom:14px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              <div style="flex:1"><div style="font:500 13px/1.35 var(--mono);margin-bottom:4px">Drop more files, or choose them</div><div style="font:400 11px/1.4 var(--mono);color:var(--mute)">.fcs .csv .tsv .h5 .zip · 5 GB per file · 50 GB per dataset · 47.9 GB remaining</div></div>
+              <button style="height:30px;padding:0 12px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer;flex:none" style-hover="background:var(--ink);color:#F7F6F3">Choose files</button>
+            </div>
+          </div>
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">3 FILES · 2.1 GB · 1 UPLOADING</div>
+          <div style="border:1px solid var(--ink);margin-bottom:14px">
+            <div style="padding:11px 12px;border-bottom:1px solid #EBE8E2">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" style="flex:none"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/></svg>
+                <span style="font:400 11px/1.3 var(--mono);flex:1">run17.fcs</span>
+                <span style="font:400 10px/1.3 var(--mono);color:var(--mute)">1.4 GB</span>
+                <span style="font:400 10px/1.3 var(--mono);color:#B33600">68% · 42 s left</span>
+              </div>
+              <div style="height:8px;border:1px solid var(--ink);background:var(--surface);margin-bottom:8px"><div style="height:100%;width:68%;background:var(--ink)"></div></div>
+              <div style="display:flex;gap:12px;align-items:center;font:400 9px/1.4 var(--mono);color:var(--mute)">
+                <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border:1.5px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:scspin .7s linear infinite;display:block"></span>computing SHA-256 as it uploads</span>
+                <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">a3f1 9c02 44e7 b18d …</span>
+                <span style="color:#B33600;cursor:pointer">pause</span>
+              </div>
+            </div>
+            <div style="padding:11px 12px;border-bottom:1px solid #EBE8E2">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" style="flex:none"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/></svg>
+                <span style="font:400 11px/1.3 var(--mono);flex:1">run16.fcs</span>
+                <span style="font:400 10px/1.3 var(--mono);color:var(--mute)">0.6 GB</span>
+                <span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.3 var(--mono);color:var(--ok)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg>verified</span>
+              </div>
+              <div style="font:400 9px/1.4 var(--mono);color:var(--mute)">sha256 <span style="color:#0D0D0D">7cd2 081b e44a 90f3 c118 5b27 a91f 44e0</span> · matched server-side</div>
+            </div>
+            <div style="padding:11px 12px">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg>
+                <span style="font:400 11px/1.3 var(--mono);flex:1">gate-and-quantify.R</span>
+                <span style="font:400 10px/1.3 var(--mono);color:var(--mute)">14 KB</span>
+                <span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.3 var(--mono);color:var(--ok)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg>verified</span>
+              </div>
+              <div style="font:400 9px/1.4 var(--mono);color:var(--mute)">recognised as the gating script — will satisfy required field 6</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px;margin-bottom:14px">
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="1.8" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16.2h.01"/></svg>
+              <div style="flex:1"><div style="font:500 12px/1.3 var(--mono);color:var(--err);margin-bottom:4px">notes.docx was rejected — and not uploaded</div><div style="font:400 12px/1.45 var(--sans);color:#0D0D0D">Word documents are not an accepted dataset format, as stated at step 1. Attach it to the project discussion instead, or convert the table to CSV.</div><div style="display:flex;gap:7px;margin-top:9px"><button style="height:24px;padding:0 9px;background:var(--ink);border:1px solid var(--ink);color:#F7F6F3;font:500 10px/1 var(--mono);cursor:pointer">Attach to discussion</button><button style="height:24px;padding:0 9px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 10px/1 var(--mono);cursor:pointer">Dismiss</button></div></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px;align-items:center">
+            <button style="height:32px;padding:0 14px;background:#F0EDE8;border:1px solid var(--rule);color:#A9A49B;font:500 12px/1 var(--mono);cursor:not-allowed">Next · metadata</button>
+            <span style="font:400 10px/1.4 var(--mono);color:var(--mute)">enabled when the first file finishes · you can start metadata now if you prefer</span>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H04 · H14 · H01 · H20 · H15</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">3</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">STEP 3 · METADATA + LIVE FAIR SCORE (H05, H06)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">700 × 620</span>
+      </div>
+      <div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono)">LAB</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">STEP 3 OF 5 · METADATA</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">Flow cytometry template</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 216px">
+          <div style="padding:16px;border-right:1px solid var(--rule)">
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div style="border:1px solid var(--ok);background:var(--bg);padding:11px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m5 12.5 5 5 9-11"/></svg><span style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--ok)">FILLED FROM THE FILES · 3 OF 6</span></div>
+                <div style="display:grid;grid-template-columns:104px minmax(0,1fr);gap:6px 10px;font:400 11px/1.4 var(--mono)">
+                  <span style="color:var(--mute)">INSTRUMENT</span><span>BD FACSymphony A3-02</span>
+                  <span style="color:var(--mute)">ACQUIRED</span><span>2026-09-08 14:22 CET</span>
+                  <span style="color:var(--mute)">PROJECT</span><span>Knock-in efficiency · FWO G0A2124N</span>
+                </div>
+              </div>
+              <div style="border:1px solid var(--ink);background:var(--surface);padding:11px">
+                <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:7px"><span style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--mute)">CELL LINE AND PASSAGE</span><span style="font:400 9px/1 var(--mono);color:var(--signal)">REQUIRED</span></div>
+                <div style="display:flex;gap:8px;align-items:center"><span style="font:400 12px/1.3 var(--mono);flex:1">HEK293T · p22</span><span style="display:inline-flex;padding:2px 6px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.3 var(--mono)">CVCL_0063</span></div>
+                <div style="font:400 10px/1.4 var(--sans);color:var(--mute);margin-top:6px">Matched to Cellosaurus as you typed. The ID is what makes this dataset findable by a lab that calls the line something else.</div>
+              </div>
+              <div style="border:1px solid var(--ink);background:var(--surface);padding:11px">
+                <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:7px"><span style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--mute)">REAGENT LOTS</span><span style="font:400 9px/1 var(--mono);color:var(--signal)">REQUIRED</span></div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="padding:3px 7px;border:1px solid var(--ink);border-radius:2px;font:400 10px/1.3 var(--mono)">L3K-2251 ×</span><span style="padding:3px 7px;border:1px solid var(--ink);border-radius:2px;font:400 10px/1.3 var(--mono)">prep 2026-07 ×</span><span style="padding:3px 7px;border:1px dashed var(--rule);color:var(--mute);border-radius:2px;font:400 10px/1.3 var(--mono);cursor:pointer">+ from inventory</span></div>
+              </div>
+              <div style="border:1px solid var(--flag);background:#FFFBE6;padding:11px">
+                <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:7px"><span style="font:700 10px/1 var(--mono);letter-spacing:.08em">GATING FILE</span><span style="font:400 9px/1 var(--mono);color:#6B5900">REQUIRED · SATISFIED</span></div>
+                <div style="font:400 12px/1.45 var(--sans);color:#0D0D0D">gate-and-quantify.R was recognised in step 2 and has been linked here automatically. <span style="color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">Use a different file</span></div>
+              </div>
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:11px">
+                <div style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--mute);margin-bottom:7px">DESCRIPTION · OPTIONAL, SCORED</div>
+                <div style="font:400 13px/1.5 var(--sans);color:#9A968E">What a stranger needs to know to reuse this…</div>
+              </div>
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:11px">
+                <div style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--mute);margin-bottom:7px">KEYWORDS · OPTIONAL, SCORED</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="padding:3px 7px;border:1px solid var(--ink);border-radius:2px;font:400 10px/1.3 var(--mono)">nucleofection</span><span style="padding:3px 7px;border:1px dashed var(--rule);color:var(--mute);border-radius:2px;font:400 10px/1.3 var(--mono)">+ suggested: passage-number, crispr-knock-in</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px;background:var(--bg);display:flex;flex-direction:column;gap:13px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">FAIR SCORE · LIVE</div>
+            <div style="border:1px solid var(--ink);background:var(--surface);padding:13px;text-align:center">
+              <div style="font:700 32px/1 var(--mono);margin-bottom:5px">72</div>
+              <div style="font:400 9px/1.3 var(--mono);color:var(--mute)">RISES AS YOU FILL FIELDS</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div><div style="display:flex;justify-content:space-between;font:400 10px/1.3 var(--mono);margin-bottom:4px"><span>Findable</span><span>85</span></div><div style="height:6px;border:1px solid var(--rule);background:var(--surface)"><span style="display:block;height:100%;width:85%;background:var(--ok)"></span></div></div>
+              <div><div style="display:flex;justify-content:space-between;font:400 10px/1.3 var(--mono);margin-bottom:4px"><span>Accessible</span><span>90</span></div><div style="height:6px;border:1px solid var(--rule);background:var(--surface)"><span style="display:block;height:100%;width:90%;background:var(--ok)"></span></div></div>
+              <div><div style="display:flex;justify-content:space-between;font:400 10px/1.3 var(--mono);margin-bottom:4px"><span>Interoperable</span><span>70</span></div><div style="height:6px;border:1px solid var(--rule);background:var(--surface)"><span style="display:block;height:100%;width:70%;background:var(--ink)"></span></div></div>
+              <div><div style="display:flex;justify-content:space-between;font:400 10px/1.3 var(--mono);margin-bottom:4px"><span style="color:#6B5900">Reusable</span><span style="color:#6B5900">44</span></div><div style="height:6px;border:1px solid #8A7300;background:var(--surface)"><span style="display:block;height:100%;width:44%;background:var(--flag)"></span></div></div>
+            </div>
+            <div style="border:1px solid var(--flag);background:#FFFBE6;padding:11px">
+              <div style="font:700 9px/1 var(--mono);letter-spacing:.08em;margin-bottom:7px">TO RAISE IT</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--sans);color:#0D0D0D">
+                <div>+14 · add a description</div>
+                <div>+10 · pick a licence (step 4)</div>
+                <div>+8 · link the related preprint</div>
+              </div>
+            </div>
+            <div style="font:400 10px/1.45 var(--sans);color:var(--mute);margin-top:auto">The score is advisory. Nothing here blocks the upload — but a dataset below 50 is one nobody outside this lab will be able to reuse.</div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H05 · H06 · H16 · H20 · G11 · F10</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">4</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">STEP 4 · LICENCE (H07) + EMBARGO (H08)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">700 × 620 · plain language, not licence names</span>
+      </div>
+      <div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono)">LAB</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">STEP 4 OF 5 · LICENCE &amp; ACCESS</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">FWO requires an open licence on final data</span>
+        </div>
+        <div style="padding:16px">
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">WHAT OTHERS MAY DO WITH THIS DATA</div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:15px">
+            <div style="border:1px solid var(--signal);background:#FFF8F5;padding:12px;cursor:pointer">
+              <div style="display:flex;gap:11px;align-items:flex-start">
+                <span style="width:15px;height:15px;border:1px solid var(--signal);border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px"><span style="width:8px;height:8px;background:var(--signal);border-radius:50%"></span></span>
+                <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font:500 13px/1.3 var(--mono)">Use it for anything, as long as they credit you</span><span style="display:inline-flex;padding:1px 5px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.4 var(--mono);color:var(--mute)">CC-BY-4.0</span></div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Including commercially, including in a paper that disagrees with yours. They must cite the DOI. This is what most funders now require.</div></div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:12px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;gap:11px;align-items:flex-start">
+                <span style="width:15px;height:15px;border:1px solid var(--ink);border-radius:50%;flex:none;margin-top:2px"></span>
+                <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font:500 13px/1.3 var(--mono)">Use it for anything, no conditions at all</span><span style="display:inline-flex;padding:1px 5px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.4 var(--mono);color:var(--mute)">CC0-1.0</span></div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">You waive attribution. Citation still happens in practice, and this maximises reuse — but you cannot require credit.</div></div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:12px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;gap:11px;align-items:flex-start">
+                <span style="width:15px;height:15px;border:1px solid var(--ink);border-radius:50%;flex:none;margin-top:2px"></span>
+                <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font:500 13px/1.3 var(--mono)">Credit you, and not sell it</span><span style="display:inline-flex;padding:1px 5px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.4 var(--mono);color:var(--mute)">CC-BY-NC-4.0</span></div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Blocks commercial reuse — which in practice also blocks some university spin-outs and many meta-analyses. <b style="color:#6B5900">Does not satisfy your FWO award.</b></div></div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:12px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;gap:11px;align-items:flex-start">
+                <span style="width:15px;height:15px;border:1px solid var(--ink);border-radius:50%;flex:none;margin-top:2px"></span>
+                <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font:500 13px/1.3 var(--mono)">Nothing without asking me first</span><span style="display:inline-flex;padding:1px 5px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.4 var(--mono);color:var(--mute)">controlled access</span></div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Metadata stays public and citable; files require a request and a data use agreement. For anything with a re-identification risk.</div></div>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:13px;margin-bottom:14px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">EMBARGO · H08</span><span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px"><span style="width:34px;height:19px;border:1px solid var(--signal);background:var(--signal);display:inline-flex;align-items:center;padding:2px;justify-content:flex-end"><span style="width:13px;height:13px;background:#fff"></span></span><span style="font:500 10px/1 var(--mono)">ON</span></span></div>
+            <div style="font:400 13px/1.5 var(--sans);margin-bottom:11px">Metadata, title, authors and the DOI go public immediately. <b>Files unlock automatically on the date you set</b> — no reminder to action, no risk of forgetting.</div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:9px"><div style="font:400 9px/1.3 var(--mono);color:var(--mute);margin-bottom:4px">RELEASES ON</div><div style="font:500 11px/1.3 var(--mono)">2027-03-01</div></div>
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:9px"><div style="font:400 9px/1.3 var(--mono);color:var(--mute);margin-bottom:4px">REASON</div><div style="font:500 11px/1.3 var(--mono)">manuscript under review</div></div>
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:9px"><div style="font:400 9px/1.3 var(--mono);color:var(--mute);margin-bottom:4px">MAX PERMITTED</div><div style="font:500 11px/1.3 var(--mono)">24 months · funder rule</div></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px;align-items:center">
+            <button style="height:32px;padding:0 14px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 12px/1 var(--mono);cursor:pointer">Next · privacy check</button>
+            <span style="font:400 10px/1.4 var(--mono);color:var(--mute);flex:1">the licence is written into the dataset's machine-readable metadata, so harvesters see it too</span>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H07 · H08 · H09 · H06 · G17</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">5</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">STEP 5 · PERSONAL-DATA SCAN (H11)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">700 × 620 · quasi-identifiers flagged before anything goes public</span>
+      </div>
+      <div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono)">LAB</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">STEP 5 OF 5 · PRIVACY CHECK</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">scan finished in 11 s</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px;margin-bottom:14px">
+            <div style="display:flex;gap:11px;align-items:flex-start">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8" stroke-linecap="round" style="flex:none;margin-top:1px"><path d="M12 4v11M12 19h.01"/></svg>
+              <div style="flex:1"><div style="font:500 14px/1.3 var(--mono);margin-bottom:6px">No direct identifiers. Two quasi-identifiers to confirm.</div><div style="font:400 13px/1.5 var(--sans);color:#0D0D0D">Nothing here is necessarily wrong. Quasi-identifiers are fields that are harmless alone and identifying in combination — you know your data, we do not, so this is a question rather than a verdict.</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ink);margin-bottom:14px">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;border-bottom:1px solid var(--ink);background:var(--bg)">
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">FIELD FOUND</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">CLASS</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute);text-align:right">ACTION</div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF">
+              <div style="padding:11px"><div style="font:400 12px/1.4 var(--mono);margin-bottom:3px">operator_initials</div><div style="font:400 10px/1.4 var(--sans);color:#6B5900">column 4 of passage_log.csv · 3 distinct values</div></div>
+              <div style="padding:11px"><span style="display:inline-flex;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;font:500 9px/1.4 var(--mono)">QUASI-ID</span></div>
+              <div style="padding:11px;text-align:right"><span style="font:400 10px/1.3 var(--mono);color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">pseudonymise</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF">
+              <div style="padding:11px"><div style="font:400 12px/1.4 var(--mono);margin-bottom:3px">acquisition_timestamp</div><div style="font:400 10px/1.4 var(--sans);color:#6B5900">second-level precision · combined with a public rota this can identify who ran it</div></div>
+              <div style="padding:11px"><span style="display:inline-flex;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;font:500 9px/1.4 var(--mono)">QUASI-ID</span></div>
+              <div style="padding:11px;text-align:right"><span style="font:400 10px/1.3 var(--mono);color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">round to day</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;align-items:center">
+              <div style="padding:11px"><div style="font:400 12px/1.4 var(--mono);margin-bottom:3px">No names, e-mails, IDs, dates of birth or free-text notes</div><div style="font:400 10px/1.4 var(--sans);color:var(--mute)">checked across 3 files, 41 columns and the FCS headers</div></div>
+              <div style="padding:11px"><span style="display:inline-flex;padding:2px 6px;border:1px solid var(--ok);color:var(--ok);font:500 9px/1.4 var(--mono)">CLEAR</span></div>
+              <div style="padding:11px;text-align:right;font:400 10px/1.3 var(--mono);color:var(--mute)">—</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px">
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHAT PSEUDONYMISE DOES</div><div style="font:400 12px/1.5 var(--sans)">Replaces values with stable tokens (<span style="font-family:var(--mono)">OP-1, OP-2</span>) in the published copy. The lab copy keeps the originals, and the mapping is stored with the project — so within your lab nothing is lost.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">IF YOU DISAGREE</div><div style="font:400 12px/1.5 var(--sans)">Mark either field as "not identifying in this context" with one line of reasoning. The reasoning is recorded on the dataset, so the decision is attributable rather than silent.</div></div>
+          </div>
+          <div style="display:flex;gap:9px;align-items:center">
+            <button style="height:32px;padding:0 14px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 12px/1 var(--mono);cursor:pointer">Apply both and finish</button>
+            <button style="height:32px;padding:0 13px;background:transparent;border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Neither is identifying</button>
+            <span style="margin-left:auto;font:400 10px/1.4 var(--mono);color:var(--mute)">scan runs again before any change to Public</span>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H11 · H09 · H07 · N02 · N04</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ok);background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">6</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:var(--ok)">UPLOAD CONFIRMATION — DOI MINTED, v1.0, VISIBILITY SET</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 520 · canvas region</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2a6 6 0 0 1 12 0"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">LAB</span></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid #8A7300;background:#FFFBE6;color:#6B5900;border-radius:2px;font:500 10px/1.2 var(--mono)">EMBARGOED UNTIL 2027-03-01</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">metadata and DOI are public now · files unlock automatically</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font:400 11px/1.4 var(--mono);color:var(--mute)"><span>Knock-in efficiency</span><span style="color:#C2BDB4">/</span><span>Data</span><span style="color:#C2BDB4">/</span><span style="color:#0D0D0D">DS-1207</span></span>
+      </div>
+      <div style="padding:22px 24px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px">
+        <div>
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px">
+            <span style="width:32px;height:32px;border:1px solid var(--ok);background:var(--ok);display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span>
+            <div><h2 style="font:700 22px/1.2 var(--mono);margin:0 0 4px;letter-spacing:-.02em">Deposited. Nothing else is needed from you.</h2><div style="font:400 11px/1.4 var(--mono);color:var(--mute)">3 files · 2.1 GB · 4 min 12 s from start to finish</div></div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--surface)">
+            <div style="display:grid;grid-template-columns:126px minmax(0,1fr);border-bottom:1px solid #EBE8E2"><div style="padding:10px 12px;background:var(--bg);border-right:1px solid #EBE8E2;font:500 9px/1.3 var(--mono);letter-spacing:.08em;color:var(--mute)">CONCEPT DOI</div><div style="padding:10px 12px;display:flex;align-items:center;gap:9px"><span style="font:400 11px/1.4 var(--mono);flex:1">10.5281/zenodo.8511</span><span style="font:400 9px/1.3 var(--mono);color:var(--mute)">always resolves to the newest version</span><span style="display:inline-flex;padding:2px 6px;border:1px solid var(--ink);font:500 9px/1.3 var(--mono);cursor:pointer">copy</span></div></div>
+            <div style="display:grid;grid-template-columns:126px minmax(0,1fr);border-bottom:1px solid #EBE8E2"><div style="padding:10px 12px;background:var(--bg);border-right:1px solid #EBE8E2;font:500 9px/1.3 var(--mono);letter-spacing:.08em;color:var(--mute)">VERSION DOI</div><div style="padding:10px 12px;display:flex;align-items:center;gap:9px"><span style="font:400 11px/1.4 var(--mono);flex:1">10.5281/zenodo.8512 · <b>v1.0</b></span><span style="font:400 9px/1.3 var(--mono);color:var(--mute)">this exact content, for ever</span><span style="display:inline-flex;padding:2px 6px;border:1px solid var(--ink);font:500 9px/1.3 var(--mono);cursor:pointer">copy</span></div></div>
+            <div style="display:grid;grid-template-columns:126px minmax(0,1fr);border-bottom:1px solid #EBE8E2"><div style="padding:10px 12px;background:var(--bg);border-right:1px solid #EBE8E2;font:500 9px/1.3 var(--mono);letter-spacing:.08em;color:var(--mute)">CHECKSUMS</div><div style="padding:10px 12px;font:400 11px/1.4 var(--mono)">3 of 3 verified · next fixity check 2026-12-10</div></div>
+            <div style="display:grid;grid-template-columns:126px minmax(0,1fr);border-bottom:1px solid #EBE8E2"><div style="padding:10px 12px;background:var(--bg);border-right:1px solid #EBE8E2;font:500 9px/1.3 var(--mono);letter-spacing:.08em;color:var(--mute)">LICENCE</div><div style="padding:10px 12px;font:400 11px/1.4 var(--mono)">CC-BY-4.0 · written into the machine-readable metadata</div></div>
+            <div style="display:grid;grid-template-columns:126px minmax(0,1fr)"><div style="padding:10px 12px;background:var(--bg);border-right:1px solid #EBE8E2;font:500 9px/1.3 var(--mono);letter-spacing:.08em;color:var(--mute)">FAIR SCORE</div><div style="padding:10px 12px;display:flex;align-items:center;gap:10px"><span style="font:400 11px/1.4 var(--mono)">86</span><span style="flex:1;height:6px;border:1px solid var(--rule);background:var(--surface);max-width:180px"><span style="display:block;height:100%;width:86%;background:var(--ok)"></span></span><span style="font:400 9px/1.3 var(--mono);color:var(--mute)">up from 72 — the licence and description did it</span></div></div>
+          </div>
+          <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+            <button style="height:32px;padding:0 13px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 11px/1 var(--mono);cursor:pointer">Open the dataset</button>
+            <button style="height:32px;padding:0 13px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Copy the citation</button>
+            <button style="height:32px;padding:0 13px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Attach to notebook entry #64</button>
+            <button style="height:32px;padding:0 13px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 11px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D;color:#0D0D0D">Deposit a copy to Zenodo</button>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="border:1px solid var(--ok);background:var(--surface);padding:14px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--ok);margin-bottom:10px">WHAT HAPPENED WITHOUT YOU ASKING</div>
+            <div style="display:flex;flex-direction:column;gap:7px;font:400 12px/1.5 var(--sans)">
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Profiled — 41 columns typed, ranges and missingness computed</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Codebook stub generated from the column names</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Linked to MC-0533 v1, PLX-0091 and entry #64</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Replicated to the Ireland region · quarterly fixity scheduled</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Counted against deliverable D3 in the FWO grant record</span></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:14px">
+            <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:9px">THE ONE THING TO KNOW</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D">On <b>2027-03-01</b> the files become public automatically. Nobody has to remember. If the manuscript slips, extend the embargo from the dataset page — but the default is release, not indefinite silence.</div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:14px;margin-top:auto">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">4 MIN 12 S</div>
+            <div style="font:400 12px/1.5 var(--sans)">The old flow took a median of 19 minutes across five testers, and two of them abandoned it. The difference is not fewer fields — it is that none of the fields were a surprise.</div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H03 · H04 · H06 · H07 · H08 · H12 · H16 · H17 · H24 · H25 · G16</span><span style="margin-left:auto">concept DOI and version DOI, both minted</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

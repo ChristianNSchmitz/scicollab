@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; }
+  a { color:#B33600; text-decoration:none; border-bottom:1px solid currentColor; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+  input::placeholder, textarea::placeholder { color:#9A968E; }
+  @keyframes scspin { to { transform: rotate(360deg) } }
+  @keyframes scpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+  @keyframes scslide { 0%{transform:translateX(-100%)} 100%{transform:translateX(400%)} }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-family:var(--mono);padding:0 0 96px">
+
+  <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;height:56px;padding:0 24px;background:var(--bg);border-bottom:1px solid var(--ink)">
+    <a href="SciCollab Foundation.dc.html" style="display:flex;align-items:flex-end;border:0;text-decoration:none">
+      <span style="position:relative;font:700 16px/1 var(--mono);letter-spacing:-.03em;color:var(--ink)">scicollab<span style="position:absolute;left:0;bottom:-5px;width:11px;height:3px;background:var(--signal)"></span></span><span style="font:700 16px/1 var(--mono);color:var(--signal)">/</span>
+    </a>
+    <span style="width:1px;height:20px;background:var(--rule)"></span>
+    <span style="font:500 12px/1 var(--mono);letter-spacing:.1em">COMPONENTS · ATOMS</span>
+    <a href="SciCollab Components - Molecules.dc.html" style="font:400 11px/1 var(--mono);border:0">molecules →</a>
+    <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">16 atoms · every state</span>
+  </div>
+
+  <div style="max-width:1400px;margin:0 auto;padding:0 24px">
+
+    <div style="padding:48px 0 32px;border-bottom:1px solid var(--rule)">
+      <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:20px">[ 002a ] FOUNDATION</div>
+      <h1 style="font:700 40px/1.2 var(--mono);margin:0 0 12px;letter-spacing:-.03em">Atoms.</h1>
+      <p style="font:400 15px/1.5 var(--sans);color:var(--mute);margin:0;max-width:64ch;text-wrap:pretty">Hover, active and focus-visible are shown as frozen specimens beside the live one, because a board that only shows resting states is a board nobody can build from. Focus-visible is 2px <span style="font-family:var(--mono);color:#0D0D0D">--signal</span> at 2px offset on every interactive element — non-negotiable, feature S01, European Accessibility Act.</p>
+    </div>
+
+    <section style="padding-top:40px;display:flex;flex-direction:column;gap:20px">
+
+      <div style="border:1px solid var(--rule);background:var(--surface)">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A01</span>
+          <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">BUTTON</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">4 variants × 6 states · 32px / 26px small · mono 12/500</span>
+        </div>
+        <div style="padding:18px;overflow-x:auto">
+          <div style="display:grid;grid-template-columns:96px repeat(6,minmax(96px,1fr));gap:12px;align-items:center;min-width:780px">
+            <span></span>
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">default</span>
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">hover</span>
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">active</span>
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">focus-visible</span>
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">disabled</span>
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">loading</span>
+
+            <span style="font:500 11px/1 var(--mono)">primary</span>
+            <button style="height:32px;padding:0 14px;background:var(--signal);color:#fff;border:1px solid var(--signal);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:#E04400;border-color:#E04400" style-active="background:#C43A00;border-color:#C43A00">Publish</button>
+            <button style="height:32px;padding:0 14px;background:#E04400;color:#fff;border:1px solid #E04400;font:500 12px/1 var(--mono);cursor:pointer">Publish</button>
+            <button style="height:32px;padding:0 14px;background:#C43A00;color:#fff;border:1px solid #C43A00;font:500 12px/1 var(--mono);cursor:pointer">Publish</button>
+            <button style="height:32px;padding:0 14px;background:var(--signal);color:#fff;border:1px solid var(--signal);font:500 12px/1 var(--mono);outline:2px solid var(--ink);outline-offset:2px;cursor:pointer">Publish</button>
+            <button disabled="true" style="height:32px;padding:0 14px;background:#F0EDE8;color:#A9A49B;border:1px solid var(--rule);font:500 12px/1 var(--mono);cursor:not-allowed">Publish</button>
+            <button style="height:32px;padding:0 14px;background:var(--signal);color:#fff;border:1px solid var(--signal);font:500 12px/1 var(--mono);display:inline-flex;align-items:center;gap:8px;cursor:progress">
+              <span style="width:11px;height:11px;border:1.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:scspin .7s linear infinite;display:inline-block"></span>Publish
+            </button>
+
+            <span style="font:500 11px/1 var(--mono)">secondary</span>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--ink);border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3" style-active="background:#333">Fork</button>
+            <button style="height:32px;padding:0 14px;background:var(--ink);color:#F7F6F3;border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer">Fork</button>
+            <button style="height:32px;padding:0 14px;background:#333;color:#F7F6F3;border:1px solid #333;font:500 12px/1 var(--mono);cursor:pointer">Fork</button>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--ink);border:1px solid var(--ink);font:500 12px/1 var(--mono);outline:2px solid var(--signal);outline-offset:2px;cursor:pointer">Fork</button>
+            <button disabled="true" style="height:32px;padding:0 14px;background:transparent;color:#A9A49B;border:1px solid var(--rule);font:500 12px/1 var(--mono);cursor:not-allowed">Fork</button>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--mute);border:1px solid var(--rule);font:500 12px/1 var(--mono);display:inline-flex;align-items:center;gap:8px;cursor:progress">
+              <span style="width:11px;height:11px;border:1.5px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:scspin .7s linear infinite;display:inline-block"></span>Fork
+            </button>
+
+            <span style="font:500 11px/1 var(--mono)">ghost</span>
+            <button style="height:32px;padding:0 12px;background:transparent;color:var(--ink);border:1px solid transparent;font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:#EFEDE8;border-color:var(--rule)" style-active="background:#E5E2DB">Cancel</button>
+            <button style="height:32px;padding:0 12px;background:#EFEDE8;color:var(--ink);border:1px solid var(--rule);font:500 12px/1 var(--mono);cursor:pointer">Cancel</button>
+            <button style="height:32px;padding:0 12px;background:#E5E2DB;color:var(--ink);border:1px solid var(--rule);font:500 12px/1 var(--mono);cursor:pointer">Cancel</button>
+            <button style="height:32px;padding:0 12px;background:transparent;color:var(--ink);border:1px solid transparent;font:500 12px/1 var(--mono);outline:2px solid var(--signal);outline-offset:2px;cursor:pointer">Cancel</button>
+            <button disabled="true" style="height:32px;padding:0 12px;background:transparent;color:#C2BDB4;border:1px solid transparent;font:500 12px/1 var(--mono);cursor:not-allowed">Cancel</button>
+            <button style="height:32px;padding:0 12px;background:transparent;color:var(--mute);border:1px solid transparent;font:500 12px/1 var(--mono);display:inline-flex;align-items:center;gap:8px;cursor:progress">
+              <span style="width:11px;height:11px;border:1.5px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:scspin .7s linear infinite;display:inline-block"></span>Cancel
+            </button>
+
+            <span style="font:500 11px/1 var(--mono)">destructive</span>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--err);border:1px solid var(--err);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--err);color:#fff" style-active="background:#8E1E17;border-color:#8E1E17;color:#fff">Delete</button>
+            <button style="height:32px;padding:0 14px;background:var(--err);color:#fff;border:1px solid var(--err);font:500 12px/1 var(--mono);cursor:pointer">Delete</button>
+            <button style="height:32px;padding:0 14px;background:#8E1E17;color:#fff;border:1px solid #8E1E17;font:500 12px/1 var(--mono);cursor:pointer">Delete</button>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--err);border:1px solid var(--err);font:500 12px/1 var(--mono);outline:2px solid var(--ink);outline-offset:2px;cursor:pointer">Delete</button>
+            <button disabled="true" style="height:32px;padding:0 14px;background:transparent;color:#C2BDB4;border:1px solid var(--rule);font:500 12px/1 var(--mono);cursor:not-allowed">Delete</button>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--mute);border:1px solid var(--rule);font:500 12px/1 var(--mono);display:inline-flex;align-items:center;gap:8px;cursor:progress">
+              <span style="width:11px;height:11px;border:1.5px solid var(--rule);border-top-color:var(--err);border-radius:50%;animation:scspin .7s linear infinite;display:inline-block"></span>Delete
+            </button>
+          </div>
+          <div style="display:flex;gap:20px;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);flex-wrap:wrap">
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">sizes + icon</span>
+            <button style="height:26px;padding:0 10px;background:transparent;color:var(--ink);border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer">small · 26</button>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--ink);border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer">default · 32</button>
+            <button style="height:40px;padding:0 18px;background:transparent;color:var(--ink);border:1px solid var(--ink);font:500 13px/1 var(--mono);cursor:pointer">large · 40</button>
+            <button style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;background:transparent;color:var(--ink);border:1px solid var(--ink);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+            <button style="height:32px;padding:0 14px;background:transparent;color:var(--ink);border:1px solid var(--ink);font:500 12px/1 var(--mono);display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Download</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:20px">
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A02</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">INPUT</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">32px · mono 12</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">default → hover → focus (live)</div>
+              <input placeholder="pcr-optimisation-2026" style="width:100%;height:32px;padding:0 10px;border:1px solid var(--rule);background:var(--bg);font:400 12px/1 var(--mono);color:var(--ink);outline:0;border-radius:0" style-hover="border-color:#0D0D0D" style-focus="border-color:#0D0D0D;outline:2px solid #FF4D00;outline-offset:2px;background:#FFFFFF"></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">filled</div>
+              <input value="10.5281/zenodo.8241" readOnly="true" style="width:100%;height:32px;padding:0 10px;border:1px solid var(--ink);background:var(--surface);font:400 12px/1 var(--mono);color:var(--ink);outline:0"></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">with unit affix</div>
+              <div style="display:flex;height:32px;border:1px solid var(--rule);background:var(--bg)"><input value="62.5" readOnly="true" style="flex:1;min-width:0;height:100%;padding:0 10px;border:0;background:transparent;font:400 12px/1 var(--mono);outline:0"><span style="display:flex;align-items:center;padding:0 10px;border-left:1px solid var(--rule);font:400 11px/1 var(--mono);color:var(--mute);background:var(--surface)">°C</span></div></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">error</div>
+              <input value="not-a-doi" readOnly="true" style="width:100%;height:32px;padding:0 10px;border:1px solid var(--err);background:#FCF3F2;font:400 12px/1 var(--mono);color:var(--ink);outline:0">
+              <div style="display:flex;align-items:center;gap:6px;margin-top:6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16.2h.01"/></svg><span style="font:400 11px/1.3 var(--mono);color:var(--err)">DOI must match 10.NNNN/suffix</span></div></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">disabled · inherited from project</div>
+              <input value="Lab — Krieger group" disabled="true" style="width:100%;height:32px;padding:0 10px;border:1px solid var(--rule);background:#F0EDE8;font:400 12px/1 var(--mono);color:#A9A49B;cursor:not-allowed"></div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A03 / A04</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">TEXTAREA · SELECT</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">textarea · Inter 14, counter, live</div>
+              <textarea placeholder="Describe what you observed, including what you expected instead…" style="width:100%;height:88px;padding:10px;border:1px solid var(--rule);background:var(--bg);font:400 14px/1.5 var(--sans);color:var(--ink);outline:0;resize:vertical;border-radius:0" style-hover="border-color:#0D0D0D" style-focus="border-color:#0D0D0D;outline:2px solid #FF4D00;outline-offset:2px;background:#FFFFFF"></textarea>
+              <div style="display:flex;justify-content:space-between;margin-top:5px"><span style="font:400 10px/1 var(--mono);color:var(--mute)">Markdown, LaTeX and code fences supported</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">0 / 4000</span></div></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">select · closed / open / disabled</div>
+              <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:170px;height:32px;padding:0 10px;border:1px solid var(--rule);background:var(--bg);cursor:pointer" style-hover="border-color:#0D0D0D"><span style="font:400 12px/1 var(--mono)">CC-BY-4.0</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div>
+                <div style="width:170px;border:1px solid var(--ink);background:var(--surface)">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;height:32px;padding:0 10px;border-bottom:1px solid var(--ink)"><span style="font:400 12px/1 var(--mono)">CC-BY-4.0</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8" stroke-linecap="round"><path d="m6 15 6-6 6 6"/></svg></div>
+                  <div style="padding:5px 10px;font:400 12px/1.8 var(--mono);background:var(--ink);color:#F7F6F3">CC-BY-4.0</div>
+                  <div style="padding:5px 10px;font:400 12px/1.8 var(--mono)" style-hover="background:#EFEDE8">CC0-1.0</div>
+                  <div style="padding:5px 10px;font:400 12px/1.8 var(--mono)" style-hover="background:#EFEDE8">MIT</div>
+                  <div style="padding:5px 10px;font:400 12px/1.8 var(--mono)" style-hover="background:#EFEDE8">All rights reserved</div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:170px;height:32px;padding:0 10px;border:1px solid var(--rule);background:#F0EDE8;cursor:not-allowed"><span style="font:400 12px/1 var(--mono);color:#A9A49B">Set by institution</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C2BDB4" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A05–A07</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">CHECKBOX · RADIO · TOGGLE</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">first of each row is live</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">checkbox · unchecked / checked / indeterminate / focus / disabled / error</div>
+              <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+                <span onClick="{{ toggleCheck }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer"><span ref="{{ boxRef }}" style="width:16px;height:16px;border:1px solid var(--ink);background:var(--surface);display:inline-flex;align-items:center;justify-content:center"></span><span style="font:400 12px/1 var(--mono)">Include null results</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border:1px solid var(--ink);background:var(--ink);display:inline-flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span><span style="font:400 12px/1 var(--mono)">checked</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border:1px solid var(--ink);background:var(--ink);display:inline-flex;align-items:center;justify-content:center"><span style="width:8px;height:2px;background:#F7F6F3"></span></span><span style="font:400 12px/1 var(--mono)">mixed</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border:1px solid var(--ink);background:var(--surface);outline:2px solid var(--signal);outline-offset:2px"></span><span style="font:400 12px/1 var(--mono)">focus</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border:1px solid var(--rule);background:#F0EDE8"></span><span style="font:400 12px/1 var(--mono);color:#A9A49B">disabled</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border:1px solid var(--err);background:#FCF3F2"></span><span style="font:400 12px/1 var(--mono);color:var(--err)">required</span></span>
+              </div>
+            </div>
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">radio · selected / unselected / focus / disabled</div>
+              <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+                <span onClick="{{ pickPositive }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer"><span style="width:16px;height:16px;border:1px solid var(--ink);border-radius:50%;display:inline-flex;align-items:center;justify-content:center"><span ref="{{ r1Ref }}" style="width:8px;height:8px;border-radius:50%;background:var(--ink)"></span></span><span style="font:400 12px/1 var(--mono)">Positive</span></span>
+                <span onClick="{{ pickNegative }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer"><span style="width:16px;height:16px;border:1px solid var(--ink);border-radius:50%;display:inline-flex;align-items:center;justify-content:center"><span ref="{{ r2Ref }}" style="width:8px;height:8px;border-radius:50%;background:transparent"></span></span><span style="font:400 12px/1 var(--mono)">Negative / null</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border:1px solid var(--ink);border-radius:50%;outline:2px solid var(--signal);outline-offset:2px"></span><span style="font:400 12px/1 var(--mono)">focus</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border:1px solid var(--rule);border-radius:50%;background:#F0EDE8"></span><span style="font:400 12px/1 var(--mono);color:#A9A49B">disabled</span></span>
+              </div>
+            </div>
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">toggle · off / on / focus / disabled — square, 36×20, no easing theatre</div>
+              <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+                <span onClick="{{ toggleSwitch }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer"><span ref="{{ swRef }}" style="width:36px;height:20px;border:1px solid var(--ink);background:var(--surface);display:inline-flex;align-items:center;padding:2px;justify-content:flex-start"><span ref="{{ swKnobRef }}" style="width:14px;height:14px;background:var(--ink)"></span></span><span ref="{{ swLabelRef }}" style="font:400 12px/1 var(--mono)">Notify my lab</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:36px;height:20px;border:1px solid var(--signal);background:var(--signal);display:inline-flex;align-items:center;padding:2px;justify-content:flex-end"><span style="width:14px;height:14px;background:#fff"></span></span><span style="font:400 12px/1 var(--mono)">on</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:36px;height:20px;border:1px solid var(--ink);background:var(--surface);outline:2px solid var(--signal);outline-offset:2px;display:inline-flex;align-items:center;padding:2px"><span style="width:14px;height:14px;background:var(--ink)"></span></span><span style="font:400 12px/1 var(--mono)">focus</span></span>
+                <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:36px;height:20px;border:1px solid var(--rule);background:#F0EDE8;display:inline-flex;align-items:center;padding:2px"><span style="width:14px;height:14px;background:#C2BDB4"></span></span><span style="font:400 12px/1 var(--mono);color:#A9A49B">disabled</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A08</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">SLIDER</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">drag the first one</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:18px">
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font:400 10px/1 var(--mono);color:var(--mute)">default · live</span><span style="font:500 11px/1 var(--mono)">{{ sliderLabel }}</span></div>
+              <div ref="{{ trackRef }}" onMouseDown="{{ onTrack }}" style="position:relative;height:20px;display:flex;align-items:center;cursor:pointer">
+                <span style="position:absolute;left:0;right:0;height:2px;background:var(--rule)"></span>
+                <span ref="{{ fillRef }}" style="position:absolute;left:0;height:2px;background:var(--ink);width:62%"></span>
+                <span ref="{{ knobRef }}" style="position:absolute;left:62%;width:12px;height:16px;background:var(--surface);border:1px solid var(--ink);transform:translateX(-6px)"></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:6px"><span style="font:400 10px/1 var(--mono);color:var(--mute)">0</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">100</span></div>
+            </div>
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">focus / range / disabled</div>
+              <div style="position:relative;height:20px;display:flex;align-items:center;margin-bottom:14px"><span style="position:absolute;left:0;right:0;height:2px;background:var(--rule)"></span><span style="position:absolute;left:0;height:2px;background:var(--ink);width:40%"></span><span style="position:absolute;left:40%;width:12px;height:16px;background:var(--surface);border:1px solid var(--ink);transform:translateX(-6px);outline:2px solid var(--signal);outline-offset:2px"></span></div>
+              <div style="position:relative;height:20px;display:flex;align-items:center;margin-bottom:14px"><span style="position:absolute;left:0;right:0;height:2px;background:var(--rule)"></span><span style="position:absolute;left:25%;height:2px;background:var(--ink);width:45%"></span><span style="position:absolute;left:25%;width:12px;height:16px;background:var(--surface);border:1px solid var(--ink);transform:translateX(-6px)"></span><span style="position:absolute;left:70%;width:12px;height:16px;background:var(--surface);border:1px solid var(--ink);transform:translateX(-6px)"></span></div>
+              <div style="position:relative;height:20px;display:flex;align-items:center"><span style="position:absolute;left:0;right:0;height:2px;background:#E5E2DB"></span><span style="position:absolute;left:0;height:2px;background:#C2BDB4;width:30%"></span><span style="position:absolute;left:30%;width:12px;height:16px;background:#F0EDE8;border:1px solid var(--rule);transform:translateX(-6px)"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A09 / A10</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">CHIP · BADGE</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">radius 2 · the only rounded things</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">chip · default / hover / selected / removable / disabled</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                <span style="padding:4px 8px;border:1px solid var(--rule);border-radius:2px;font:400 11px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D;background:#EFEDE8">CRISPR</span>
+                <span style="padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:400 11px/1.2 var(--mono);background:#EFEDE8">hover</span>
+                <span style="padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 11px/1.2 var(--mono);background:var(--ink);color:#F7F6F3">selected</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 6px 4px 8px;border:1px solid var(--ink);border-radius:2px;font:400 11px/1.2 var(--mono)">HEK293T<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="cursor:pointer"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+                <span style="padding:4px 8px;border:1px solid var(--rule);border-radius:2px;font:400 11px/1.2 var(--mono);color:#A9A49B;background:#F0EDE8">disabled</span>
+                <span style="padding:4px 8px;border:1px solid var(--rule);border-radius:2px;font:400 11px/1.2 var(--mono);color:var(--mute);border-style:dashed;cursor:pointer" style-hover="border-color:#0D0D0D;color:#0D0D0D">+ add tag</span>
+              </div></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">badge · count / status / dot / new</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+                <span style="min-width:18px;height:18px;padding:0 5px;background:var(--ink);color:#F7F6F3;font:500 10px/18px var(--mono);text-align:center;display:inline-block">7</span>
+                <span style="min-width:18px;height:18px;padding:0 5px;background:var(--signal);color:#fff;font:500 10px/18px var(--mono);text-align:center;display:inline-block">99+</span>
+                <span style="padding:2px 6px;border:1px solid var(--ok);color:var(--ok);font:500 10px/1.4 var(--mono);letter-spacing:.06em;border-radius:2px">ACCEPTED</span>
+                <span style="padding:2px 6px;border:1px solid #8A7300;color:#6B5900;background:#FFFBE6;font:500 10px/1.4 var(--mono);letter-spacing:.06em;border-radius:2px">UNRESOLVED</span>
+                <span style="display:inline-flex;align-items:center;gap:5px;font:400 11px/1 var(--mono);color:var(--mute)"><span style="width:7px;height:7px;background:var(--signal);border-radius:50%;animation:scpulse 1.6s ease-in-out infinite"></span>asking for help</span>
+                <span style="padding:2px 6px;background:var(--flag);color:#0D0D0D;font:700 10px/1.4 var(--mono);letter-spacing:.08em">NEW</span>
+              </div></div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A11</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">AVATAR</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">square · ORCID marker is a rule, not a badge</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap">
+              <span style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono);background:var(--bg)">AR</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">20</span></span>
+              <span style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);background:var(--bg)">AR</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">28</span></span>
+              <span style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="position:relative;width:40px;height:40px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 13px/1 var(--mono);background:var(--bg)">AR<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:3px;background:var(--ok)"></span></span><span style="font:400 9px/1 var(--mono);color:var(--ok)">ORCID ✓</span></span>
+              <span style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="position:relative;width:40px;height:40px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font:500 13px/1 var(--mono);background:#F0EDE8;color:var(--mute)">?<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:3px;background:var(--rule)"></span></span><span style="font:400 9px/1 var(--mono);color:var(--mute)">unverified</span></span>
+              <span style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="position:relative;width:40px;height:40px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 13px/1 var(--mono);background:var(--bg)">CL<span style="position:absolute;right:-4px;top:-4px;width:12px;height:12px;background:var(--info);border:1px solid var(--surface)"></span></span><span style="font:400 9px/1 var(--mono);color:var(--info)">institution</span></span>
+              <span style="display:flex;flex-direction:column;gap:6px;align-items:center"><span style="display:flex"><span style="width:28px;height:28px;border:1px solid var(--ink);background:var(--bg);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono)">AR</span><span style="width:28px;height:28px;border:1px solid var(--ink);background:var(--bg);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);margin-left:-1px">JK</span><span style="width:28px;height:28px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);margin-left:-1px">+5</span></span><span style="font:400 9px/1 var(--mono);color:var(--mute)">stack</span></span>
+            </div>
+            <div style="font:400 11px/1.5 var(--sans);color:var(--mute);border-top:1px solid var(--rule);padding-top:10px">The ORCID marker is a 3px green rule across the foot of the avatar — readable at 20px, survives greyscale, and cannot be mistaken for an online dot.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="border:1px solid var(--rule);background:var(--surface)">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A12</span>
+          <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">ICON SET</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">Lucide · stroke 1.5 · 16px grid · never filled</span>
+        </div>
+        <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)">
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round"><path d="M3 9.8 12 3l9 6.8V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">home</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.3 2.4c-.6.2-.9.7-.9 1.3v.5"/><path d="M12 16.8h.01"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">ask</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2M7.2 15.2h9.6"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">method</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">project</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">dataset</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">code</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">paper</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16"/><path d="m3 16 5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">figure</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V8m0 0 4-4 4 4m8 8v-4m-8 8h12"/><circle cx="18" cy="8" r="3"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">fork</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round"><path d="M12 7v5l3.5 2"/><circle cx="12" cy="12" r="9"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">version</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">private</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">public</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6.4V12c0 4.6 3.2 7.9 8 9 4.8-1.1 8-4.4 8-9V6.4z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">validated</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.2"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">ai-retrieve</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.2-6.9"/><path d="M21 4v5h-5"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">reproduce</span></div>
+          <div style="background:var(--surface);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M9 19V11M14 19V8M19 19v-6"/></svg><span style="font:400 9px/1 var(--mono);color:var(--mute)">metrics</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A13</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">TOOLTIP</span>
+          </div>
+          <div style="padding:28px 16px 34px;display:flex;gap:26px;justify-content:center;align-items:flex-start;flex-wrap:wrap">
+            <div style="position:relative;display:inline-flex">
+              <span style="padding:5px 8px;background:var(--ink);color:#F7F6F3;font:400 11px/1.3 var(--mono);white-space:nowrap;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%)">Copy DOI to clipboard</span>
+              <span style="width:32px;height:32px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12"/><path d="M15 5H4a1 1 0 0 0-1 1v11"/></svg></span>
+            </div>
+            <div style="position:relative;display:inline-flex">
+              <span style="padding:5px 8px;background:var(--ink);color:#F7F6F3;font:400 11px/1.3 var(--mono);white-space:nowrap;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center">Fork this method<span style="border:1px solid #4A4A4A;padding:1px 4px;font-size:10px">F</span></span>
+              <span style="width:32px;height:32px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V8m0 0 4-4 4 4m8 8v-4m-8 8h12"/><circle cx="18" cy="8" r="3"/></svg></span>
+            </div>
+            <div style="position:relative;display:inline-flex">
+              <span style="max-width:200px;padding:6px 8px;background:var(--ink);color:#F7F6F3;font:400 11px/1.45 var(--sans);position:absolute;top:calc(100% + 6px);left:0">Embargoed until 2027-03-01. Metadata is public, files are not.</span>
+              <span style="padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 11px/1.2 var(--mono)">EMBARGOED</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A14 / A15</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">PROGRESS · SPINNER</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font:400 10px/1 var(--mono);color:var(--mute)">determinate · upload</span><span style="font:400 10px/1 var(--mono)">68% · 1.4 GB / 2.1 GB</span></div><div style="height:8px;border:1px solid var(--ink);background:var(--surface)"><div style="height:100%;width:68%;background:var(--ink)"></div></div></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">indeterminate · checksumming</div><div style="height:8px;border:1px solid var(--ink);background:var(--surface);overflow:hidden;position:relative"><div style="position:absolute;top:0;bottom:0;width:25%;background:var(--ink);animation:scslide 1.3s linear infinite"></div></div></div>
+            <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">complete / failed</div><div style="display:flex;gap:10px"><div style="flex:1;height:8px;border:1px solid var(--ok);background:var(--ok)"></div><div style="flex:1;height:8px;border:1px solid var(--err);background:var(--surface)"><div style="height:100%;width:34%;background:var(--err)"></div></div></div></div>
+            <div style="display:flex;gap:20px;align-items:center;border-top:1px solid var(--rule);padding-top:14px">
+              <span style="display:flex;flex-direction:column;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1.5px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:scspin .7s linear infinite;display:block"></span><span style="font:400 9px/1 var(--mono);color:var(--mute)">14</span></span>
+              <span style="display:flex;flex-direction:column;gap:8px;align-items:center"><span style="width:20px;height:20px;border:2px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:scspin .7s linear infinite;display:block"></span><span style="font:400 9px/1 var(--mono);color:var(--mute)">20</span></span>
+              <span style="display:flex;flex-direction:column;gap:8px;align-items:center"><span style="width:28px;height:28px;border:2px solid var(--rule);border-top-color:var(--signal);border-radius:50%;animation:scspin .7s linear infinite;display:block"></span><span style="font:400 9px/1 var(--mono);color:var(--mute)">28 · signal</span></span>
+              <span style="font:400 11px/1.4 var(--sans);color:var(--mute);flex:1">Spinners only for waits under 2s. Anything longer gets a progress bar with a real number.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">A16</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">KEYBOARD HINT</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">⌘K</span>
+              <span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">/</span>
+              <span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">A</span>
+              <span style="font:500 10px/1 var(--mono);border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;padding:4px 6px">⇧</span>
+              <span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">↵</span>
+              <span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">ESC</span>
+            </div>
+            <div style="border-top:1px solid var(--rule);padding-top:12px;display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;justify-content:space-between"><span style="font:400 11px/1.4 var(--sans)">Open command palette</span><span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">⌘K</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font:400 11px/1.4 var(--sans)">New question</span><span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">A</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font:400 11px/1.4 var(--sans)">Fork method card</span><span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">F</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font:400 11px/1.4 var(--sans)">Cycle visibility (with confirm)</span><span style="font:500 10px/1 var(--mono);border:1px solid var(--rule);background:var(--bg);padding:4px 6px;color:var(--mute)">⇧V</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const CHECK = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg>';
+
+class Component extends DCLogic {
+  state = { checked: false, radio: 'pos', sw: false, slider: 62 };
+  boxRef = React.createRef();
+  r1Ref = React.createRef(); r2Ref = React.createRef();
+  swRef = React.createRef(); swKnobRef = React.createRef(); swLabelRef = React.createRef();
+  trackRef = React.createRef(); fillRef = React.createRef(); knobRef = React.createRef();
+
+  paintCheck() {
+    const el = this.boxRef.current; if (!el) return;
+    const on = this.state.checked;
+    el.style.background = on ? '#0D0D0D' : '#FFFFFF';
+    el.innerHTML = on ? CHECK : '';
+  }
+  paintRadio() {
+    const pos = this.state.radio === 'pos';
+    if (this.r1Ref.current) this.r1Ref.current.style.background = pos ? '#0D0D0D' : 'transparent';
+    if (this.r2Ref.current) this.r2Ref.current.style.background = pos ? 'transparent' : '#0D0D0D';
+  }
+  paintSwitch() {
+    const on = this.state.sw;
+    if (this.swRef.current) {
+      this.swRef.current.style.background = on ? '#FF4D00' : '#FFFFFF';
+      this.swRef.current.style.borderColor = on ? '#FF4D00' : '#0D0D0D';
+      this.swRef.current.style.justifyContent = on ? 'flex-end' : 'flex-start';
+    }
+    if (this.swKnobRef.current) this.swKnobRef.current.style.background = on ? '#FFFFFF' : '#0D0D0D';
+  }
+  paintSlider() {
+    const v = this.state.slider;
+    if (this.fillRef.current) this.fillRef.current.style.width = v + '%';
+    if (this.knobRef.current) this.knobRef.current.style.left = v + '%';
+  }
+  setFromEvent = e => {
+    const el = this.trackRef.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const v = Math.max(0, Math.min(100, Math.round(((e.clientX - r.left) / r.width) * 100)));
+    this.setState({ slider: v }, () => this.paintSlider());
+  };
+  onTrack = e => {
+    this.setFromEvent(e);
+    const move = ev => this.setFromEvent(ev);
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  };
+  renderVals() {
+    return {
+      boxRef: this.boxRef, r1Ref: this.r1Ref, r2Ref: this.r2Ref,
+      swRef: this.swRef, swKnobRef: this.swKnobRef, swLabelRef: this.swLabelRef,
+      trackRef: this.trackRef, fillRef: this.fillRef, knobRef: this.knobRef,
+      sliderLabel: this.state.slider + ' / 100',
+      toggleCheck: () => this.setState(s => ({ checked: !s.checked }), () => this.paintCheck()),
+      pickPositive: () => this.setState({ radio: 'pos' }, () => this.paintRadio()),
+      pickNegative: () => this.setState({ radio: 'neg' }, () => this.paintRadio()),
+      toggleSwitch: () => this.setState(s => ({ sw: !s.sw }), () => this.paintSwitch()),
+      onTrack: this.onTrack,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

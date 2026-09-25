@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+  @keyframes scpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">BATCH G · BOARD 1 OF 5</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">The graph, and how you find a person in it</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:86ch">Screens 1–6. Alex's third resort today is "ask a colleague, if one is reachable". This board makes reachability a designed property: a dual follow/connect model where each action's grants are stated, suggestions that always name their evidence, and an expert finder that answers a question rather than returning a ranked list of people.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab G2 - Communities.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">G2 communities →</a>
+      <a href="SciCollab G5 - Flow Ribbon.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">G5 flow ribbon</a>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">1</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">NETWORK HOME (C05, C06, C07)</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 900 · following, connections, suggestions</span>
+    </div>
+    <div style="position:relative;width:1440px;height:900px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column;overflow:hidden">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:56px;flex:none;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--ink)">
+        <a href="SciCollab Foundation.dc.html" style="display:flex;align-items:flex-end;text-decoration:none"><span style="position:relative;font:700 15px/1 var(--mono);letter-spacing:-.03em;color:var(--ink)">scicollab<span style="position:absolute;left:0;bottom:-4px;width:10px;height:3px;background:var(--signal)"></span></span><span style="font:700 15px/1 var(--mono);color:var(--signal)">/</span></a>
+        <a href="SciCollab G1 - Network and Discovery.dc.html#s5" style="flex:1;max-width:460px;display:flex;align-items:center;gap:9px;height:32px;padding:0 10px;border:1px solid var(--rule);background:var(--bg);text-decoration:none" style-hover="border-color:#0D0D0D"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span style="font:400 11px/1 var(--mono);color:var(--mute);flex:1">Search people, projects, datasets, methods, discussions</span><span style="font:500 10px/1 var(--mono);color:var(--mute);border:1px solid var(--rule);padding:3px 5px;background:var(--surface)">⌘K</span></a>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:9px">
+          <a href="SciCollab G4 - Messaging.dc.html#s5" style="position:relative;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid transparent;color:var(--ink)" style-hover="border-color:var(--rule);background:var(--bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/></svg><span style="position:absolute;top:0;right:-2px;min-width:14px;height:14px;padding:0 3px;background:var(--signal);color:#fff;font:500 9px/14px var(--mono);text-align:center">7</span></a>
+          <a href="SciCollab G4 - Messaging.dc.html#s1" style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid transparent;color:var(--ink)" style-hover="border-color:var(--rule);background:var(--bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14"/><path d="m3.5 6 8.5 6.5L20.5 6"/></svg></a>
+          <a href="SciCollab B2 - Identity and Profile.dc.html#s1" style="width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);background:var(--bg);position:relative;color:var(--ink);text-decoration:none">AR<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></a>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;min-height:0">
+        <nav style="width:56px;flex:none;background:var(--surface);border-right:1px solid var(--rule);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px">
+          <a href="SciCollab B1 - Onboarding.dc.html#s7" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 9.8 12 3l9 6.8V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/></svg></a>
+          <a href="SciCollab C1 - Ask and Compose.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.3 2.4v1.8"/></svg></a>
+          <a href="SciCollab C2 - Method Cards.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2"/></svg></a>
+          <a href="SciCollab D1 - Projects and ELN.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></a>
+          <a href="SciCollab E2 - Dataset Detail.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/></svg></a>
+          <a href="SciCollab E5 - Code and Compute.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg></a>
+          <a href="SciCollab F1 - Drafting.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5h8.5"/><path d="M16.6 3.9a2.05 2.05 0 0 1 2.9 2.9L7.4 18.9l-3.9 1 1-3.9z"/></svg></a>
+          <span style="position:relative;width:38px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--bg)"><span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--signal)"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2a6 6 0 0 1 12 0"/><path d="M16.2 5.3a3.2 3.2 0 0 1 0 5.4"/></svg></span>
+          <a href="SciCollab B2 - Identity and Profile.dc.html#s1" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></svg></a>
+          <div style="width:30px;height:1px;background:var(--rule);margin:8px 0"></div>
+          <a href="SciCollab B2 - Identity and Profile.dc.html#s6" style="width:38px;height:34px;display:flex;align-items:center;justify-content:center;color:#C2BDB4"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></a>
+        </nav>
+        <main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
+          <div style="height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--rule)">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">PUBLIC</span>
+            <span style="font:400 11px/1 var(--mono);color:var(--mute)">your following list is public · your connections are not</span>
+            <div style="margin-left:auto;display:flex;gap:0;border-bottom:0">
+              <span style="padding:9px 13px;font:500 11px/1 var(--mono);border-bottom:2px solid var(--signal);margin-bottom:-1px">Following <span style="color:var(--mute)">128</span></span>
+              <span style="padding:9px 13px;font:400 11px/1 var(--mono);color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Connections <span style="color:#C2BDB4">34</span></span>
+              <span style="padding:9px 13px;font:400 11px/1 var(--mono);color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Followers <span style="color:#C2BDB4">61</span></span>
+            </div>
+          </div>
+          <div style="flex:1;display:grid;grid-template-columns:minmax(0,1fr) 340px;min-height:0;overflow:hidden">
+            <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px;min-height:0;overflow:hidden">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;flex:none">
+                <span style="padding:5px 10px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer">ALL · 128</span>
+                <span style="padding:5px 10px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">PEOPLE · 96</span>
+                <a href="SciCollab G1 - Network and Discovery.dc.html#s3" style="padding:5px 10px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);color:var(--ink)" style-hover="border-color:#0D0D0D">METHODS · 14</a>
+                <a href="SciCollab G1 - Network and Discovery.dc.html#s3" style="padding:5px 10px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);color:var(--ink)" style-hover="border-color:#0D0D0D">INSTRUMENTS · 7</a>
+                <a href="SciCollab G1 - Network and Discovery.dc.html#s3" style="padding:5px 10px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);color:var(--ink)" style-hover="border-color:#0D0D0D">TAGS · 11</a>
+                <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border:1px solid var(--rule);border-radius:2px;font:400 11px/1.2 var(--mono);color:var(--mute);cursor:pointer">Activity · newest<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </div>
+              <div style="flex:1;min-height:0;overflow:hidden;border:1px solid var(--ink);background:var(--surface);display:flex;flex-direction:column">
+                <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg);flex:none"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">ACTIVITY FROM WHAT YOU FOLLOW · C05</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--mute)">no algorithmic ranking · reverse chronological</span></div>
+                <div style="flex:1;overflow:hidden">
+                  <a href="SciCollab C3 - Negative Results.dc.html#s2" style="display:flex;gap:11px;padding:12px;border-bottom:1px solid #EBE8E2;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6">
+                    <span style="position:relative;width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);flex:none">TO<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font:400 13px/1.5 var(--sans);margin-bottom:5px"><b>T. Okafor</b> published a negative result · <span style="font-family:var(--mono);color:#B33600">NR-0121</span></div>
+                      <div style="border:1px solid var(--signal);background:#FFF8F5;padding:9px 10px"><div style="font:500 12px/1.35 var(--mono);margin-bottom:4px">Nucleofection does not rescue efficiency in primary fibroblasts</div><div style="font:400 10px/1.4 var(--mono);color:var(--mute)">confidence: suggestive · n = 4 · rules out one of your planned next steps</div></div>
+                      <div style="font:400 10px/1.3 var(--mono);color:var(--mute);margin-top:6px">2 h ago</div>
+                    </div>
+                  </a>
+                  <a href="SciCollab C2 - Method Cards.dc.html#s4" style="display:flex;gap:11px;padding:12px;border-bottom:1px solid #EBE8E2;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6">
+                    <span style="width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;flex:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2"/></svg></span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font:400 13px/1.5 var(--sans);margin-bottom:5px">A method you follow · <span style="font-family:var(--mono);color:#B33600">MC-0288</span> moved to <b>v7</b></div>
+                      <div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Step 3 rewritten, one failure mode added. You have a fork — <span style="color:#B33600">MC-0533</span> — that does not include the change.</div>
+                      <div style="font:400 10px/1.3 var(--mono);color:var(--mute);margin-top:6px">5 h ago · following the object, not the person</div>
+                    </div>
+                  </a>
+                  <a href="SciCollab C3 - Negative Results.dc.html#s4" style="display:flex;gap:11px;padding:12px;border-bottom:1px solid #EBE8E2;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6">
+                    <span style="width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;flex:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="13"/><path d="M7 6V4h10v2"/><circle cx="12" cy="12.5" r="3"/></svg></span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font:400 13px/1.5 var(--sans);margin-bottom:5px">Instrument you follow · <b>BD FACSymphony A3</b></div>
+                      <div style="border:1px solid #8A7300;background:#FFFCEF;padding:9px 10px"><div style="font:400 12px/1.45 var(--sans);color:#0D0D0D">A ninth lab reported the plate-loader mis-seating on carrier revision C. Still unresolved, vendor case open.</div></div>
+                      <div style="font:400 10px/1.3 var(--mono);color:var(--mute);margin-top:6px">yesterday</div>
+                    </div>
+                  </a>
+                  <a href="SciCollab G2 - Communities.dc.html#s1" style="display:flex;gap:11px;padding:12px;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6">
+                    <span style="width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);flex:none">ML</span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font:400 13px/1.5 var(--sans);margin-bottom:5px"><b>M. Lindqvist</b> joined the community <span style="color:#B33600">Gene editing · methods and failures</span></div>
+                      <div style="font:400 10px/1.3 var(--mono);color:var(--mute);margin-top:6px">yesterday · shown because you follow her, not because it is popular</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <aside style="border-left:1px solid var(--rule);background:var(--surface);display:flex;flex-direction:column;overflow:hidden">
+              <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">YOUR GRAPH</span></div>
+              <div style="padding:13px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)">
+                  <a href="SciCollab G1 - Network and Discovery.dc.html#s2" style="background:var(--surface);padding:11px;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6"><div style="font:700 18px/1 var(--mono)">128</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">FOLLOWING · ASYMMETRIC</div></a>
+                  <a href="SciCollab G1 - Network and Discovery.dc.html#s2" style="background:var(--surface);padding:11px;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6"><div style="font:700 18px/1 var(--mono);color:#B33600">34</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">CONNECTED · MUTUAL</div></a>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">RESEARCHERS YOU MAY KNOW</span><a href="SciCollab G1 - Network and Discovery.dc.html#s4" style="margin-left:auto;font:400 9px/1 var(--mono)">all 12 →</a></div>
+                  <div style="border:1px solid var(--rule);background:var(--bg);padding:10px;margin-bottom:7px">
+                    <div style="display:flex;gap:9px;align-items:center;margin-bottom:7px"><span style="width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono);flex:none">PA</span><div style="flex:1;min-width:0"><div style="font:500 11px/1.3 var(--mono)">P. Aguirre</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">UCL · gene-editing core</div></div></div>
+                    <div style="font:400 10px/1.4 var(--sans);color:var(--mute);border-top:1px solid var(--rule);padding-top:7px;margin-bottom:8px">Commented on your published article about HEK293 passage tolerance</div>
+                    <div style="display:flex;gap:6px"><button style="flex:1;height:24px;background:transparent;border:1px solid var(--ink);font:500 9px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Follow</button><button style="flex:1;height:24px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 9px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D;color:#0D0D0D">Connect</button></div>
+                  </div>
+                  <div style="border:1px solid var(--rule);background:var(--bg);padding:10px">
+                    <div style="display:flex;gap:9px;align-items:center;margin-bottom:7px"><span style="width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono);flex:none">SB</span><div style="flex:1;min-width:0"><div style="font:500 11px/1.3 var(--mono)">S. Bhatt</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">industry R&amp;D · Basel</div></div></div>
+                    <div style="font:400 10px/1.4 var(--sans);color:var(--mute);border-top:1px solid var(--rule);padding-top:7px">Runs the same instrument and answered in your tags twice</div>
+                  </div>
+                </div>
+                <div style="border-top:1px solid var(--rule);padding-top:12px">
+                  <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">NON-PERSON FOLLOWS · C07</div>
+                  <a href="SciCollab G1 - Network and Discovery.dc.html#s3" style="display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #EBE8E2;text-decoration:none;color:var(--ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/></svg><span style="font:400 10px/1.3 var(--mono);flex:1">MC-0288 · method</span><span style="font:400 9px/1 var(--mono);color:#B33600">v7</span></a>
+                  <a href="SciCollab G1 - Network and Discovery.dc.html#s3" style="display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #EBE8E2;text-decoration:none;color:var(--ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex:none"><rect x="3" y="6" width="18" height="13"/><circle cx="12" cy="12.5" r="3"/></svg><span style="font:400 10px/1.3 var(--mono);flex:1">FACSymphony A3</span><span style="font:400 9px/1 var(--mono);color:#6B5900">1 open</span></a>
+                  <a href="SciCollab G1 - Network and Discovery.dc.html#s3" style="display:flex;gap:8px;align-items:center;padding:7px 0;text-decoration:none;color:var(--ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex:none"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/></svg><span style="font:400 10px/1.3 var(--mono);flex:1">DS-0904 · dataset</span></a>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </main>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">C05 · C06 · C07 · K09 · E14</span><span style="margin-left:auto">reverse chronological · no engagement ranking anywhere in this feed</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--signal);background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">2</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:#B33600">FOLLOW vs CONNECT — THE DUAL MODEL, MADE LEGIBLE (C06)</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 620 · one person card, two actions, every grant stated</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">PUBLIC PROFILE</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">the two actions are never merged into one button, and neither is called "friend"</span>
+      </div>
+      <div style="padding:20px 22px">
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:16px;margin-bottom:18px;display:flex;gap:16px;align-items:flex-start;max-width:900px">
+          <a href="SciCollab B2 - Identity and Profile.dc.html#s1" style="position:relative;width:56px;height:56px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 17px/1 var(--mono);flex:none;background:var(--bg);color:var(--ink);text-decoration:none">TO<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:3px;background:var(--ok)"></span></a>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:4px"><a href="SciCollab B2 - Identity and Profile.dc.html#s1" style="font:700 17px/1.2 var(--mono);color:var(--ink);letter-spacing:-.02em">T. Okafor</a><span style="font:400 9px/1 var(--mono);color:var(--ok)">ORCID ✓</span><span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1 var(--mono);color:#B33600"><span style="width:6px;height:6px;background:var(--signal);border-radius:50%;animation:scpulse 1.6s ease-in-out infinite"></span>open to collaborate</span></div>
+            <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-bottom:9px">Postdoc · <a href="SciCollab G2 - Communities.dc.html#s1">Krieger group</a>, <a href="SciCollab G2 - Communities.dc.html#s2">KU Leuven</a> · transfection, flow cytometry, HEK293T</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">31 answers</span><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">12 method cards</span><span style="padding:3px 6px;border:1px solid var(--signal);color:#B33600;border-radius:2px;font:400 10px/1.2 var(--mono)">4 null results</span></div>
+          </div>
+          <div style="flex:none;display:flex;gap:8px">
+            <button style="height:34px;padding:0 16px;background:var(--ink);border:1px solid var(--ink);color:#F7F6F3;font:500 12px/1 var(--mono);cursor:pointer">Follow</button>
+            <button style="height:34px;padding:0 16px;background:transparent;border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Connect</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--ink);background:var(--surface)">
+          <div style="border-right:1px solid var(--ink)">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+              <span style="height:26px;padding:0 12px;background:var(--ink);color:#F7F6F3;display:flex;align-items:center;font:500 11px/1 var(--mono)">FOLLOW</span>
+              <span style="font:500 12px/1.3 var(--mono)">asymmetric · public · no permission needed</span>
+            </div>
+            <div style="padding:16px">
+              <div style="font:400 14px/1.55 var(--sans);margin-bottom:14px">You start seeing their public activity. They are told once, and can do nothing about it — the same way you can read anyone's published papers without asking.</div>
+              <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--rule)">
+                <div style="display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #EBE8E2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m5 12.5 5 5 9-11"/></svg><div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">Grants you</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">their public artifacts in your feed · new method cards, null results, published papers, communities joined</div></div></div>
+                <div style="display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #EBE8E2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="2.4" stroke-linecap="round" style="flex:none;margin-top:2px"><path d="M6 6l12 12M18 6 6 18"/></svg><div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">Does not grant</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Lab-visibility artifacts · direct messages · their contact details · anything private</div></div></div>
+                <div style="display:flex;gap:11px;align-items:flex-start;padding:9px 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.8" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 8.2v.01M12 11v5"/></svg><div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">Visible to</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">everyone · your following list is public, because who you learn from is part of your scientific record</div></div></div>
+              </div>
+              <div style="border:1px solid var(--rule);background:var(--bg);padding:11px;margin-top:14px;font:400 12px/1.5 var(--sans)">Reversible in one click, silently. They are not notified when you unfollow.</div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--ink);background:#FFF8F5">
+              <span style="height:26px;padding:0 12px;background:var(--signal);color:#fff;display:flex;align-items:center;font:500 11px/1 var(--mono)">CONNECT</span>
+              <span style="font:500 12px/1.3 var(--mono)">symmetric · they must accept · unlocks sharing</span>
+            </div>
+            <div style="padding:16px">
+              <div style="font:400 14px/1.55 var(--sans);margin-bottom:14px">A request they accept or ignore. Accepting makes you mutually visible and opens the private channel — this is the edge that actually carries work between labs.</div>
+              <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--rule)">
+                <div style="display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #EBE8E2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m5 12.5 5 5 9-11"/></svg><div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">Grants both of you</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">direct messages without the reputation gate · the ability to share a <b>Lab</b>-visibility artifact one-to-one · warm-introduction paths through each other</div></div></div>
+                <div style="display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #EBE8E2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="2.4" stroke-linecap="round" style="flex:none;margin-top:2px"><path d="M6 6l12 12M18 6 6 18"/></svg><div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">Does not grant</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">access to your projects · your lab's data · anything your institution governs. A connection is a person-to-person edge, never an access-control decision.</div></div></div>
+                <div style="display:flex;gap:11px;align-items:flex-start;padding:9px 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.8" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 8.2v.01M12 11v5"/></svg><div><div style="font:500 11px/1.3 var(--mono);margin-bottom:3px">Visible to</div><div style="font:400 12px/1.45 var(--sans);color:var(--mute)">the two of you · connection lists are private by default, because they map collaborations that are not yet public</div></div></div>
+              </div>
+              <div style="border:1px solid var(--flag);background:#FFFBE6;padding:11px;margin-top:14px;font:400 12px/1.5 var(--sans);color:#0D0D0D">Either side can disconnect. The other is not notified, and any artifact already shared stays shared — revoking access is a separate, deliberate act on the artifact itself.</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px">
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:13px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHY TWO EDGES, NOT ONE</div><div style="font:400 12px/1.5 var(--sans)">A single "connect" button forces every relationship into a negotiation. Most scientific attention is one-directional — you read someone's work for years without meeting them — and pretending otherwise produces the inbox of requests that makes existing networks unusable.</div></div>
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:13px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WARM INTRODUCTIONS · C17</div><div style="font:400 12px/1.5 var(--sans)">Where you have no edge but a shared connection does, the profile offers <b>Ask J. Krieger for an introduction</b> — a request to your connection, never a message to the stranger. They forward it or they do not.</div></div>
+          <div style="border:1px solid var(--signal);background:#FFF8F5;padding:13px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#B33600;margin-bottom:8px">THE ONE THING THIS SCREEN MUST DO</div><div style="font:400 12px/1.5 var(--sans)">Make the grant of each action legible <i>before</i> it is taken. Every access complaint on a social platform starts with a user who did not know what a button gave away.</div></div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">C06 · C17 · D01 · A13 · A10</span><span style="margin-left:auto">a connection is never an access-control decision</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">3</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">FOLLOW NON-PERSON ENTITIES (C07)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">700 × 620 · four kinds, four different notification shapes</span>
+      </div>
+      <div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">FOLLOWING · NON-PERSON</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">32 of your 128 follows are not people</span>
+        </div>
+        <div style="padding:16px">
+          <div style="font:400 13px/1.55 var(--sans);color:var(--mute);margin-bottom:14px;max-width:74ch">Most of what a researcher needs to keep up with is not a person. Each entity type produces a different <i>kind</i> of event, so each gets its own notification shape rather than one generic "new activity".</div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <a href="SciCollab C2 - Method Cards.dc.html#s1" style="display:flex;gap:12px;border:1px solid var(--ink);background:var(--bg);padding:12px;text-decoration:none;color:var(--ink)" style-hover="border-color:#FF4D00">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">METHOD CARD</span><span style="font:500 12px/1.3 var(--mono)">MC-0288</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--ok)">FOLLOWING</span></div>
+                <div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Tells you about: new versions, new failure modes, forks that diverge from yours, and a reproduction that contradicts it.</div>
+              </div>
+            </a>
+            <a href="SciCollab C3 - Negative Results.dc.html#s4" style="display:flex;gap:12px;border:1px solid var(--ink);background:var(--bg);padding:12px;text-decoration:none;color:var(--ink)" style-hover="border-color:#FF4D00">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex:none;margin-top:2px"><rect x="3" y="6" width="18" height="13"/><path d="M7 6V4h10v2"/><circle cx="12" cy="12.5" r="3"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">INSTRUMENT MODEL</span><span style="font:500 12px/1.3 var(--mono)">BD FACSymphony A3</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--ok)">FOLLOWING</span></div>
+                <div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Tells you about: newly reported failure modes, confirmed workarounds, firmware changes that invalidate old gates. Across every institution, not just yours.</div>
+              </div>
+            </a>
+            <a href="SciCollab E2 - Dataset Detail.dc.html#s1" style="display:flex;gap:12px;border:1px solid var(--rule);background:var(--bg);padding:12px;text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex:none;margin-top:2px"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">DATASET</span><span style="font:500 12px/1.3 var(--mono)">DS-0904</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--ok)">FOLLOWING</span></div>
+                <div style="font:400 12px/1.45 var(--sans);color:var(--mute)">Tells you about: new versions, corrections, retraction of a linked paper, and anyone who reuses it. The reuse signal is the one people actually want.</div>
+              </div>
+            </a>
+            <div style="display:flex;gap:12px;border:1px solid var(--rule);background:var(--bg);padding:12px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">PREPRINT SERVER · FILTERED</span><span style="font:500 12px/1.3 var(--mono)">bioRxiv</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--ok)">FOLLOWING</span></div>
+                <div style="font:400 12px/1.45 var(--sans);color:var(--mute);margin-bottom:8px">Not the whole server — a saved query. Yours: <span style="font-family:var(--mono);color:#0D0D0D">crispr-knock-in AND (hek293t OR hek293)</span>, weekly digest.</div>
+                <div style="display:flex;gap:6px"><span style="padding:2px 6px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.3 var(--mono);color:var(--mute)">≈ 6 papers / week</span><span style="padding:2px 6px;border:1px solid var(--rule);border-radius:2px;font:400 9px/1.3 var(--mono);color:var(--mute)">digest, not per-item</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px;margin-top:14px;font:400 12px/1.5 var(--sans)">Volume control is per entity type, not global — you can want every failure mode on your instrument and only a weekly digest from a preprint server. Set in <a href="SciCollab G4 - Messaging.dc.html#s5">notification controls</a>.</div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">C07 · C05 · E14 · F13 · L11</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">4</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">RESEARCHERS YOU MAY KNOW (K09)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">660 × 620 · every suggestion states its evidence</span>
+      </div>
+      <div style="position:relative;width:660px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">SUGGESTIONS · 12</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">no opaque inference · every row names its source</span>
+        </div>
+        <div style="padding:16px">
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:12px">
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:9px">
+                <span style="position:relative;width:32px;height:32px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 11px/1 var(--mono);flex:none">MD<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+                <div style="flex:1;min-width:0"><div style="font:500 12px/1.3 var(--mono)">H. Devries</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">Sorbonne · membrane protein biochemistry</div></div>
+                <div style="display:flex;gap:6px;flex:none"><button style="height:26px;padding:0 10px;background:var(--ink);border:1px solid var(--ink);color:#F7F6F3;font:500 10px/1 var(--mono);cursor:pointer">Follow</button><button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 10px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D;color:#0D0D0D">Dismiss</button></div>
+              </div>
+              <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;gap:9px;align-items:flex-start">
+                <span style="font:500 9px/1.3 var(--mono);color:var(--signal);letter-spacing:.06em;flex:none;margin-top:1px">WHY</span>
+                <div style="font:400 12px/1.45 var(--sans)">Co-authored <i>Receptor abundance predicts lipid-mediated transfection efficiency</i> with <b>R. Nakamura</b>, who you follow.</div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px">
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:9px">
+                <span style="width:32px;height:32px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 11px/1 var(--mono);flex:none">JW</span>
+                <div style="flex:1;min-width:0"><div style="font:500 12px/1.3 var(--mono)">J. Weerasinghe</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">KU Leuven · Department of Neurosciences</div></div>
+                <div style="display:flex;gap:6px;flex:none"><button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Follow</button></div>
+              </div>
+              <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;gap:9px;align-items:flex-start"><span style="font:500 9px/1.3 var(--mono);color:var(--signal);letter-spacing:.06em;flex:none;margin-top:1px">WHY</span><div style="font:400 12px/1.45 var(--sans)">Same institution, and books the same <b>FACSymphony A3</b> you do.</div></div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px">
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:9px">
+                <span style="width:32px;height:32px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 11px/1 var(--mono);flex:none">LM</span>
+                <div style="flex:1;min-width:0"><div style="font:500 12px/1.3 var(--mono)">L. Marchetti</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">Milan · structural biology</div></div>
+                <div style="display:flex;gap:6px;flex:none"><button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Follow</button></div>
+              </div>
+              <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;gap:9px;align-items:flex-start"><span style="font:500 9px/1.3 var(--mono);color:var(--signal);letter-spacing:.06em;flex:none;margin-top:1px">WHY</span><div style="font:400 12px/1.45 var(--sans)">Cited your dataset <span style="font-family:var(--mono);color:#B33600">DS-1174</span> in a preprint last month.</div></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px">
+            <div style="border:1px solid var(--ink);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:8px">THE FIVE PERMITTED REASONS</div><div style="display:flex;flex-direction:column;gap:4px;font:400 11px/1.4 var(--mono);color:var(--mute)"><div>co-authorship, direct or one hop</div><div>same institution or department</div><div>cited your work, or you cited theirs</div><div>answered in a tag you are active in</div><div>shares an instrument or a method card</div></div></div>
+            <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--err);margin-bottom:8px">NEVER USED</div><div style="display:flex;flex-direction:column;gap:4px;font:400 11px/1.4 var(--mono);color:var(--mute)"><div>contact-book upload</div><div>e-mail address matching</div><div>profile views · who looked at you</div><div>inferred embeddings with no stated cause</div><div>seniority or citation count</div></div></div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px;font:400 12px/1.5 var(--sans)">If a suggestion cannot be explained in one sentence naming a real, checkable fact, it is not shown. Dismissing one removes that person <i>and</i> tells us the reason type is weak for you.</div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">K09 · C06 · C19 · A10 · L15</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">5</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">FELLOW-FINDER · PEOPLE SEARCH (C02)</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 780 · faceted: field, technique, instrument access, institution, availability</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">PUBLIC</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">only profile fields their owner made public are searchable · availability is opt-in</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font:400 11px/1.4 var(--mono);color:var(--mute)"><span>Network</span><span style="color:#C2BDB4">/</span><span style="color:#0D0D0D">Fellow-Finder</span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:280px minmax(0,1fr)">
+        <div style="border-right:1px solid var(--rule);background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">FIELD</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center;flex:none"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span><span style="flex:1">Cell biology</span><span style="color:var(--mute)">412</span></div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);flex:none"></span><span style="flex:1">Structural biology</span><span style="color:var(--mute)">208</span></div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);flex:none"></span><span style="flex:1">Neuroscience</span><span style="color:var(--mute)">331</span></div>
+              <div style="display:flex;gap:8px;align-items:center;color:var(--mute)"><span style="width:14px;height:14px;border:1px solid var(--rule);flex:none"></span><span style="flex:1">+ 22 more</span></div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:14px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">TECHNIQUE</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center;flex:none"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span><span style="flex:1">Cryo-EM</span><span style="color:var(--mute)">96</span></div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);flex:none"></span><span style="flex:1">Flow cytometry</span><span style="color:var(--mute)">288</span></div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);flex:none"></span><span style="flex:1">Nucleofection</span><span style="color:var(--mute)">74</span></div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:14px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">INSTRUMENT ACCESS</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center;flex:none"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span><span style="flex:1">Titan Krios G4</span><span style="color:var(--mute)">31</span></div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);flex:none"></span><span style="flex:1">Glacios 2</span><span style="color:var(--mute)">44</span></div>
+              <div style="font:400 10px/1.45 var(--sans);color:var(--mute);margin-top:4px">declared access, not ownership — a core facility user counts</div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:14px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">AVAILABILITY · OPT-IN</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--signal);background:var(--signal);display:flex;align-items:center;justify-content:center;flex:none"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span><span style="flex:1;color:#B33600">Open to collaborate</span><span style="color:var(--mute)">63</span></div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);flex:none"></span><span style="flex:1">Offers office hours</span><span style="color:var(--mute)">18</span></div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border:1px solid var(--ink);flex:none"></span><span style="flex:1">Available to mentor</span><span style="color:var(--mute)">27</span></div>
+              <div style="display:flex;gap:8px;align-items:center;color:var(--mute)"><span style="width:14px;height:14px;border:1px solid var(--rule);flex:none"></span><span style="flex:1">Heads down · excluded</span></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:11px;font:400 11px/1.45 var(--sans);color:var(--ink);margin-top:auto">Nobody appears under <b>availability</b> unless they set it themselves. "Heads down" people are excluded from results entirely, not shown greyed out — being visible-but-unavailable still generates messages.</div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="display:flex;gap:9px;align-items:center;margin-bottom:14px">
+            <div style="flex:1;display:flex;align-items:center;gap:9px;height:34px;padding:0 11px;border:1px solid var(--ink);background:var(--surface)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span style="font:400 12px/1 var(--mono);flex:1">cryo-EM membrane proteins</span></div>
+            <span style="font:400 11px/1 var(--mono);color:var(--mute)">31 people</span>
+            <a href="SciCollab G1 - Network and Discovery.dc.html#s6" style="height:34px;padding:0 13px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 11px/1 var(--mono);display:flex;align-items:center">Ask as a question instead →</a>
+          </div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;border-radius:2px;font:500 10px/1.2 var(--mono)">Cell biology<span style="cursor:pointer">×</span></span>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;border-radius:2px;font:500 10px/1.2 var(--mono)">Cryo-EM<span style="cursor:pointer">×</span></span>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;border-radius:2px;font:500 10px/1.2 var(--mono)">Titan Krios G4<span style="cursor:pointer">×</span></span>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--signal);background:var(--signal);color:#fff;border-radius:2px;font:500 10px/1.2 var(--mono)">Open to collaborate<span style="cursor:pointer">×</span></span>
+            <span style="display:inline-flex;align-items:center;padding:4px 8px;border:1px dashed var(--rule);color:var(--mute);border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer">+ filter</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute);border-bottom:1px solid var(--rule);cursor:pointer;align-self:center">save this search</span>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--surface)">
+            <div style="display:grid;grid-template-columns:44px minmax(0,1.5fr) minmax(0,1.2fr) 130px 128px;border-bottom:1px solid var(--ink);background:var(--bg)">
+              <div style="padding:8px 10px"></div>
+              <div style="padding:8px 10px;font:500 9px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute)">PERSON</div>
+              <div style="padding:8px 10px;font:500 9px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute)">EVIDENCE OF THE TECHNIQUE</div>
+              <div style="padding:8px 10px;font:500 9px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute)">AVAILABILITY</div>
+              <div style="padding:8px 10px;font:500 9px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute);text-align:right">REACH</div>
+            </div>
+            <a href="SciCollab G1 - Network and Discovery.dc.html#s6" style="display:grid;grid-template-columns:44px minmax(0,1.5fr) minmax(0,1.2fr) 130px 128px;border-bottom:1px solid #EBE8E2;align-items:center;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6">
+              <div style="padding:10px"><span style="position:relative;width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono)">HD<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span></div>
+              <div style="padding:10px"><div style="font:500 12px/1.3 var(--mono)">H. Devries</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">Sorbonne · membrane proteins</div></div>
+              <div style="padding:10px;font:400 11px/1.4 var(--sans);color:var(--mute)">7 method cards · 2 datasets · Krios G4 declared</div>
+              <div style="padding:10px"><span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.3 var(--mono);color:#B33600"><span style="width:6px;height:6px;background:var(--signal);border-radius:50%"></span>open to collaborate</span></div>
+              <div style="padding:10px;text-align:right"><span style="font:400 9px/1.3 var(--mono);color:var(--mute)">1 hop via R. Nakamura</span></div>
+            </a>
+            <a href="SciCollab G1 - Network and Discovery.dc.html#s6" style="display:grid;grid-template-columns:44px minmax(0,1.5fr) minmax(0,1.2fr) 130px 128px;border-bottom:1px solid #EBE8E2;align-items:center;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6">
+              <div style="padding:10px"><span style="width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono)">LM</span></div>
+              <div style="padding:10px"><div style="font:500 12px/1.3 var(--mono)">L. Marchetti</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">Milan · structural biology</div></div>
+              <div style="padding:10px;font:400 11px/1.4 var(--sans);color:var(--mute)">14 answers in <span style="font-family:var(--mono)">cryo-em</span> · 91% accepted</div>
+              <div style="padding:10px"><span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.3 var(--mono);color:var(--info)">office hours Thu</span></div>
+              <div style="padding:10px;text-align:right"><span style="font:400 9px/1.3 var(--mono);color:var(--mute)">no path · public profile</span></div>
+            </a>
+            <a href="SciCollab G1 - Network and Discovery.dc.html#s6" style="display:grid;grid-template-columns:44px minmax(0,1.5fr) minmax(0,1.2fr) 130px 128px;align-items:center;text-decoration:none;color:var(--ink)" style-hover="background:#FAF9F6">
+              <div style="padding:10px"><span style="width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono)">KI</span></div>
+              <div style="padding:10px"><div style="font:500 12px/1.3 var(--mono)">K. Ibrahim</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">EMBL Heidelberg · core facility</div></div>
+              <div style="padding:10px;font:400 11px/1.4 var(--sans);color:var(--mute)">runs the Krios service · 40 sessions logged</div>
+              <div style="padding:10px"><span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.3 var(--mono);color:#B33600"><span style="width:6px;height:6px;background:var(--signal);border-radius:50%"></span>open to collaborate</span></div>
+              <div style="padding:10px;text-align:right"><span style="font:400 9px/1.3 var(--mono);color:var(--mute)">2 hops</span></div>
+            </a>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px">
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">EVIDENCE, NOT SELF-DESCRIPTION</div><div style="font:400 12px/1.5 var(--sans)">The technique column shows what the person has actually produced — cards, datasets, accepted answers, logged sessions. Anyone can list cryo-EM in a bio; far fewer have seven method cards using it.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">REACH IS SHOWN, NOT RANKED ON</div><div style="font:400 12px/1.5 var(--sans)">Network distance is a column, never a sort key. The best person for the problem is frequently a stranger, and burying strangers is how a network becomes an old boys' club.</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">C02 · A10 · A11 · C17 · L01 · L06</span><span style="margin-left:auto">availability is opt-in · heads-down people are excluded, not greyed out</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">6</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">EXPERT FINDER RESULT (A10, A11)</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 620 · "who can run cryo-EM on membrane proteins, available now"</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">PUBLIC</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.2"/></svg>RETRIEVED · NOT VERIFIED</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">three candidates, each with a clickable source artifact and a route to a human</span>
+      </div>
+      <div style="padding:18px 20px">
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:14px;margin-bottom:16px">
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="font:500 10px/1.4 var(--mono);letter-spacing:.08em;color:var(--mute);flex:none;width:64px">ASKED</span>
+            <div style="flex:1"><div style="font:500 15px/1.35 var(--mono);margin-bottom:9px">Who can run cryo-EM on membrane proteins, and is available now?</div><div style="font:400 13px/1.55 var(--sans);color:var(--mute)">Three people match the technique with evidence and have set themselves available. Two are reachable through someone you already know. Nothing below is a recommendation — it is a shortlist with its workings shown.</div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:16px">
+          <div style="border:1px solid var(--ink);background:var(--surface);display:flex;flex-direction:column">
+            <div style="display:flex;gap:11px;align-items:center;padding:12px;border-bottom:1px solid var(--rule);background:var(--bg)">
+              <span style="position:relative;width:36px;height:36px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 12px/1 var(--mono);flex:none;background:var(--surface)">HD<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+              <div style="flex:1;min-width:0"><div style="font:500 13px/1.3 var(--mono)">H. Devries</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">Sorbonne · Paris</div></div>
+              <span style="display:inline-flex;align-items:center;gap:5px;font:400 9px/1 var(--mono);color:#B33600;flex:none"><span style="width:6px;height:6px;background:var(--signal);border-radius:50%;animation:scpulse 1.6s ease-in-out infinite"></span>available</span>
+            </div>
+            <div style="padding:12px;flex:1;display:flex;flex-direction:column;gap:11px">
+              <div>
+                <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">EVIDENCE · CLICK ANY</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <a href="SciCollab C2 - Method Cards.dc.html#s1" style="display:flex;gap:8px;align-items:center;border:1px solid var(--rule);background:var(--bg);padding:6px 8px;text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D"><span style="font:500 8px/1 var(--mono);color:var(--mute);width:44px;flex:none">METHOD</span><span style="font:400 10px/1.3 var(--mono);flex:1">MC-0611 · Krios grid prep</span></a>
+                  <a href="SciCollab E2 - Dataset Detail.dc.html#s1" style="display:flex;gap:8px;align-items:center;border:1px solid var(--rule);background:var(--bg);padding:6px 8px;text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D"><span style="font:500 8px/1 var(--mono);color:var(--mute);width:44px;flex:none">DATA</span><span style="font:400 10px/1.3 var(--mono);flex:1">2 public cryo-EM datasets</span></a>
+                  <a href="SciCollab D4 - Lab Operations.dc.html#s3" style="display:flex;gap:8px;align-items:center;border:1px solid var(--rule);background:var(--bg);padding:6px 8px;text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D"><span style="font:500 8px/1 var(--mono);color:var(--mute);width:44px;flex:none">ACCESS</span><span style="font:400 10px/1.3 var(--mono);flex:1">Titan Krios G4 · declared</span></a>
+                </div>
+              </div>
+              <div style="border:1px solid var(--ok);background:#F4FAF6;padding:9px"><div style="font:500 9px/1 var(--mono);letter-spacing:.08em;color:var(--ok);margin-bottom:5px">PATH TO A HUMAN</div><div style="font:400 11px/1.45 var(--sans)">One hop via <b>R. Nakamura</b>, who you follow.</div></div>
+              <div style="margin-top:auto;display:flex;flex-direction:column;gap:6px">
+                <a href="SciCollab G3 - Collaboration and Events.dc.html#s2" style="height:28px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 10px/1 var(--mono);display:flex;align-items:center;justify-content:center">Request a warm introduction</a>
+                <a href="SciCollab G4 - Messaging.dc.html#s1" style="height:26px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);display:flex;align-items:center;justify-content:center;color:var(--ink)" style-hover="background:var(--ink);color:#F7F6F3">Message directly</a>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--surface);display:flex;flex-direction:column">
+            <div style="display:flex;gap:11px;align-items:center;padding:12px;border-bottom:1px solid var(--rule);background:var(--bg)">
+              <span style="width:36px;height:36px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 12px/1 var(--mono);flex:none;background:var(--surface)">KI</span>
+              <div style="flex:1;min-width:0"><div style="font:500 13px/1.3 var(--mono)">K. Ibrahim</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">EMBL Heidelberg · core facility</div></div>
+              <span style="display:inline-flex;align-items:center;gap:5px;font:400 9px/1 var(--mono);color:#B33600;flex:none"><span style="width:6px;height:6px;background:var(--signal);border-radius:50%"></span>available</span>
+            </div>
+            <div style="padding:12px;flex:1;display:flex;flex-direction:column;gap:11px">
+              <div>
+                <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">EVIDENCE</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <a href="SciCollab D4 - Lab Operations.dc.html#s3" style="display:flex;gap:8px;align-items:center;border:1px solid var(--rule);background:var(--bg);padding:6px 8px;text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D"><span style="font:500 8px/1 var(--mono);color:var(--mute);width:44px;flex:none">SERVICE</span><span style="font:400 10px/1.3 var(--mono);flex:1">40 Krios sessions logged</span></a>
+                  <a href="SciCollab G2 - Communities.dc.html#s1" style="display:flex;gap:8px;align-items:center;border:1px solid var(--rule);background:var(--bg);padding:6px 8px;text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D"><span style="font:500 8px/1 var(--mono);color:var(--mute);width:44px;flex:none">LAB</span><span style="font:400 10px/1.3 var(--mono);flex:1">EMBL imaging core page</span></a>
+                </div>
+              </div>
+              <div style="border:1px solid var(--rule);background:var(--bg);padding:9px"><div style="font:500 9px/1 var(--mono);letter-spacing:.08em;color:var(--mute);margin-bottom:5px">PATH TO A HUMAN</div><div style="font:400 11px/1.45 var(--sans);color:var(--mute)">Two hops. Their facility takes external requests directly.</div></div>
+              <div style="margin-top:auto;display:flex;flex-direction:column;gap:6px">
+                <a href="SciCollab G3 - Collaboration and Events.dc.html#s1" style="height:28px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);display:flex;align-items:center;justify-content:center;color:var(--ink)" style-hover="background:var(--ink);color:#F7F6F3">Post a collaboration request</a>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--surface);display:flex;flex-direction:column">
+            <div style="display:flex;gap:11px;align-items:center;padding:12px;border-bottom:1px solid var(--rule);background:var(--bg)">
+              <span style="width:36px;height:36px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 12px/1 var(--mono);flex:none;background:var(--surface)">LM</span>
+              <div style="flex:1;min-width:0"><div style="font:500 13px/1.3 var(--mono)">L. Marchetti</div><div style="font:400 10px/1.3 var(--mono);color:var(--mute)">Milan</div></div>
+              <span style="display:inline-flex;align-items:center;gap:5px;font:400 9px/1 var(--mono);color:var(--info);flex:none">office hours</span>
+            </div>
+            <div style="padding:12px;flex:1;display:flex;flex-direction:column;gap:11px">
+              <div>
+                <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">EVIDENCE</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <a href="SciCollab C1 - Ask and Compose.dc.html#s4" style="display:flex;gap:8px;align-items:center;border:1px solid var(--rule);background:var(--bg);padding:6px 8px;text-decoration:none;color:var(--ink)" style-hover="border-color:#0D0D0D"><span style="font:500 8px/1 var(--mono);color:var(--mute);width:44px;flex:none">ANSWERS</span><span style="font:400 10px/1.3 var(--mono);flex:1">14 in cryo-em · 91% accepted</span></a>
+                </div>
+              </div>
+              <div style="border:1px solid var(--info);background:#F2F6FC;padding:9px"><div style="font:500 9px/1 var(--mono);letter-spacing:.08em;color:var(--info);margin-bottom:5px">BOOKABLE · C23</div><div style="font:400 11px/1.45 var(--sans)">Offers 20-minute office hours, Thursdays. Two slots left this week.</div></div>
+              <div style="margin-top:auto;display:flex;flex-direction:column;gap:6px">
+                <a href="SciCollab G3 - Collaboration and Events.dc.html#s2" style="height:28px;background:var(--ink);border:1px solid var(--ink);color:#F7F6F3;font:500 10px/1 var(--mono);display:flex;align-items:center;justify-content:center">Book a slot</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--signal);background:#FFF8F5;padding:14px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px">
+          <div><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#B33600;margin-bottom:9px">AI FOR RETRIEVAL, NOT AUTHORITY — APPLIED TO PEOPLE</div><div style="font:400 13px/1.55 var(--sans);max-width:92ch">The system does not say who is best. It says who has produced evidence of the technique, who has declared they are open to being asked, and how you can reach each of them. Ranking people by an inferred score is the single most damaging thing this product could do — it would make the platform an arbiter of scientific standing, and the field research was explicit that researchers do not want that.</div></div>
+          <div style="border-left:1px solid var(--signal);padding-left:20px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#B33600;margin-bottom:9px">WHAT IS ABSENT BY DESIGN</div><div style="display:flex;flex-direction:column;gap:5px;font:400 12px/1.5 var(--sans)"><div>No match percentage on a person.</div><div>No "top expert" badge.</div><div>No ordering by h-index or seniority.</div><div>No contact without a stated route.</div></div></div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">A10 · A11 · C02 · C17 · C23 · L15</span><span style="margin-left:auto">no person is ever scored</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

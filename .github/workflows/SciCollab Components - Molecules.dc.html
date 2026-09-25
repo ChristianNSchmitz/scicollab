@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; }
+  a { color:#B33600; text-decoration:none; border-bottom:1px solid currentColor; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+  input::placeholder, textarea::placeholder { color:#9A968E; }
+  @keyframes scspin { to { transform: rotate(360deg) } }
+  @keyframes scpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+  @keyframes scshimmer { 0%{background-position:-200px 0} 100%{background-position:400px 0} }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-family:var(--mono);padding:0 0 96px">
+
+  <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;height:56px;padding:0 24px;background:var(--bg);border-bottom:1px solid var(--ink)">
+    <a href="SciCollab Foundation.dc.html" style="display:flex;align-items:flex-end;border:0;text-decoration:none">
+      <span style="position:relative;font:700 16px/1 var(--mono);letter-spacing:-.03em;color:var(--ink)">scicollab<span style="position:absolute;left:0;bottom:-5px;width:11px;height:3px;background:var(--signal)"></span></span><span style="font:700 16px/1 var(--mono);color:var(--signal)">/</span>
+    </a>
+    <span style="width:1px;height:20px;background:var(--rule)"></span>
+    <span style="font:500 12px/1 var(--mono);letter-spacing:.1em">COMPONENTS · MOLECULES</span>
+    <a href="SciCollab Components - Atoms.dc.html" style="font:400 11px/1 var(--mono);border:0">← atoms</a>
+    <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">27 molecules · every state</span>
+  </div>
+
+  <div style="max-width:1400px;margin:0 auto;padding:0 24px">
+
+    <div style="padding:48px 0 32px;border-bottom:1px solid var(--rule)">
+      <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:20px">[ 002b ] FOUNDATION</div>
+      <h1 style="font:700 40px/1.2 var(--mono);margin:0 0 12px;letter-spacing:-.03em">Molecules.</h1>
+      <p style="font:400 15px/1.5 var(--sans);color:var(--mute);margin:0;max-width:66ch;text-wrap:pretty">Specimens carry real content, not lorem — a component that only looks right with three-word labels is not finished. Two of these carry hard rules: the visibility chip is permanent on every artifact surface, and no AI block ships without a clickable source and a route to a human.</p>
+    </div>
+
+    <section style="padding-top:40px;display:flex;flex-direction:column;gap:20px">
+
+      <div style="border:1px solid var(--ink);background:var(--surface)">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M01</span>
+          <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">VISIBILITY CHIP — THE ACCESS-CONTROL CUE</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">5 variants · persistent · never inside a settings modal</span>
+        </div>
+        <div style="padding:18px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:14px">
+            <div style="border:1px solid var(--rule);padding:14px">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">PRIVATE</span></span>
+              <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:10px">You only. Not indexed, not searchable by anyone else.</div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:14px">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2a6 6 0 0 1 12 0"/><path d="M16.2 5.3a3.2 3.2 0 0 1 0 5.4"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">LAB</span></span>
+              <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:10px">Krieger group · 11 members. The default for new work.</div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:14px">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--info);color:var(--info);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15"/><path d="M12 10h7a1 1 0 0 1 1 1v10"/><path d="M2.5 21h19"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">INSTITUTION</span></span>
+              <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:10px">Anyone with a verified KU Leuven account. Counts toward internal reuse.</div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:14px">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">PUBLIC</span></span>
+              <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:10px">Open web, indexed, citable. Irreversible once a DOI is minted.</div>
+            </div>
+            <div style="border:1px solid var(--flag);padding:14px;background:#FFFCEF">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid #8A7300;color:#6B5900;background:var(--flag);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">EMBARGOED</span></span>
+              <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D;margin-top:10px">Metadata public, files locked until <span style="font-family:var(--mono)">2027-03-01</span>. The only variant that carries a date.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule);flex-wrap:wrap">
+            <span style="font:400 10px/1 var(--mono);color:var(--mute)">states</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">LAB</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:#EFEDE8;border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em;cursor:pointer">LAB · hover</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em;outline:2px solid var(--signal);outline-offset:2px">LAB · focus</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--rule);color:#A9A49B;border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">LAB · locked by policy</span>
+            <span style="font:400 11px/1.4 var(--sans);color:var(--mute);flex:1;min-width:220px">Clicking opens the access editor inline. When institutional policy pins the value the chip greys and the tooltip names the policy.</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:20px">
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M02</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">METHOD CARD</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">compact + expanded · versioned · forkable</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">compact — feed, search results, right panel</div>
+              <div style="border:1px solid var(--rule);background:var(--bg);padding:12px" style-hover="border-color:#0D0D0D">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2M7.2 15.2h9.6"/></svg>
+                  <span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">METHOD CARD</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute);border:1px solid var(--rule);padding:2px 5px">v4</span>
+                  <span style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:3px 6px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1 var(--mono)">LAB</span>
+                </div>
+                <div style="font:500 14px/1.35 var(--mono);margin-bottom:8px">Lipofection of HEK293T at low passage</div>
+                <div style="display:flex;gap:14px;flex-wrap:wrap;font:400 11px/1.3 var(--mono);color:var(--mute)">
+                  <span>12 forks</span><span>8 reproductions</span><span style="color:var(--ok)">6 succeeded</span><span style="color:#B33600">2 failed</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">expanded — the object itself</div>
+              <div style="border:1px solid var(--ink);background:var(--surface)">
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--rule);background:var(--bg)">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 6px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1 var(--mono)">LAB</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute)">MC-0412</span>
+                  <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:3px 6px;border:1px solid #8A7300;background:#FFFBE6;border-radius:2px"><span style="width:6px;height:6px;background:var(--flag);border-radius:50%"></span><span style="font:500 10px/1 var(--mono);color:#6B5900">UNDER REVIEW</span></span>
+                </div>
+                <div style="padding:12px">
+                  <div style="font:500 16px/1.3 var(--mono);margin-bottom:4px">Lipofection of HEK293T at low passage</div>
+                  <div style="font:400 11px/1.4 var(--mono);color:var(--mute);margin-bottom:12px">A. Rivera · forked from MC-0288 (T. Okafor) · updated 2026-09-04</div>
+                  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:12px">
+                    <div style="background:var(--surface);padding:8px 10px"><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:4px">METHOD</div><div style="font:400 12px/1.3 var(--mono)">Lipofectamine 3000</div></div>
+                    <div style="background:var(--surface);padding:8px 10px"><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:4px">CELL LINE</div><div style="font:400 12px/1.3 var(--mono)">HEK293T · p&lt;12</div></div>
+                    <div style="background:var(--surface);padding:8px 10px"><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:4px">CONDITIONS</div><div style="font:400 12px/1.3 var(--mono)">37 °C · 5% CO₂ · 48 h</div></div>
+                    <div style="background:var(--surface);padding:8px 10px"><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:4px">OUTCOME</div><div style="font:400 12px/1.3 var(--mono);color:#B33600">38% ± 6 · below target</div></div>
+                  </div>
+                  <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:6px">FAILS UNDER</div>
+                  <div style="border-left:3px solid var(--signal);padding:8px 10px;background:var(--bg);font:400 13px/1.5 var(--sans);margin-bottom:12px">Passage above 18, or serum-free medium at transfection. Both were tried; both dropped efficiency below 5%. Recorded so nobody in this lab spends another week on it.</div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <button style="height:28px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Fork</button>
+                    <button style="height:28px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Reproduce</button>
+                    <button style="height:28px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 11px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D;color:#0D0D0D">Compare v3 → v4</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M03</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">ARTIFACT CARD</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">5 variants · one skeleton</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:10px;border:1px solid var(--rule);padding:11px;background:var(--bg)" style-hover="border-color:#0D0D0D">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" style="flex:none;margin-top:2px"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">DATASET</span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.2 var(--mono)">LAB</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">2.1 GB · CSV, FCS</span></div>
+                <div style="font:500 13px/1.35 var(--mono)">flow-cytometry_knockin_run14.zip</div>
+                <div style="font:400 11px/1.3 var(--mono);color:var(--mute);margin-top:4px">v3 · 2026-09-02 · checksum verified</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;border:1px solid var(--rule);padding:11px;background:var(--bg)" style-hover="border-color:#0D0D0D">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">CODE</span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.2 var(--mono)">PUBLIC</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">R · MIT</span></div>
+                <div style="font:500 13px/1.35 var(--mono)">gate-and-quantify.R</div>
+                <div style="font:400 11px/1.3 var(--mono);color:var(--mute);margin-top:4px">runs in 40 s · container pinned · last run passed</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;border:1px solid var(--rule);padding:11px;background:var(--bg)" style-hover="border-color:#0D0D0D">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2M7.2 15.2h9.6"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">PROTOCOL</span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.2 var(--mono)">LAB</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">14 steps</span></div>
+                <div style="font:500 13px/1.35 var(--mono)">Knock-in transfection · working version</div>
+                <div style="font:400 11px/1.3 var(--mono);color:var(--mute);margin-top:4px">derived from MC-0412 · 3 open comments</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;border:1px solid var(--rule);padding:11px;background:var(--bg)" style-hover="border-color:#0D0D0D">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">PAPER</span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.2 var(--mono)">PUBLIC</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">preprint</span></div>
+                <div style="font:500 13px/1.35 var(--mono)">Passage-dependent knock-in efficiency in HEK293T</div>
+                <div style="font:400 11px/1.3 var(--mono);color:var(--mute);margin-top:4px">10.1101/2026.08.14.612093 · 4 citations</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;border:1px solid var(--signal);padding:11px;background:var(--bg)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round" style="flex:none;margin-top:2px"><rect x="3" y="4" width="18" height="16"/><path d="m3 16 5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">FIGURE</span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 5px;border:1px solid var(--signal);color:#B33600;border-radius:2px;font:500 9px/1.2 var(--mono)">NEGATIVE RESULT</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">PNG · 300 dpi</span></div>
+                <div style="font:500 13px/1.35 var(--mono)">fig3_efficiency_vs_passage.png</div>
+                <div style="font:400 11px/1.3 var(--mono);color:var(--mute);margin-top:4px">cited by 2 method cards as evidence of failure</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;border:1px solid var(--rule);padding:11px;background:#FBFAF8;opacity:.6">
+              <span style="width:16px;height:16px;background:#E5E2DB;flex:none"></span>
+              <div style="flex:1"><div style="height:9px;width:38%;background:#E5E2DB;margin-bottom:7px"></div><div style="height:11px;width:70%;background:#E5E2DB"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M04 / M05</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">PERSON CARD · PROJECT CARD</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div style="border:1px solid var(--rule);padding:12px;background:var(--bg);display:flex;gap:12px" style-hover="border-color:#0D0D0D">
+              <span style="position:relative;width:44px;height:44px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 14px/1 var(--mono);background:var(--surface);flex:none">AR<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:3px;background:var(--ok)"></span></span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font:500 14px/1.3 var(--mono)">Alex Rivera</span><span style="font:400 10px/1 var(--mono);color:var(--ok)">ORCID ✓</span></div>
+                <div style="font:400 12px/1.4 var(--sans);color:var(--mute);margin-top:2px">PhD candidate · Krieger group, KU Leuven</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">CRISPR</span><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">flow cytometry</span><span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">HEK293T</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:none">
+                <button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Follow</button>
+                <span style="font:400 10px/1.3 var(--mono);color:var(--mute)">answers 42 · 89% accepted</span>
+              </div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:12px;background:var(--bg);display:flex;gap:12px;align-items:center">
+              <span style="width:44px;height:44px;border:1px solid var(--rule);background:#F0EDE8;flex:none"></span>
+              <div style="flex:1"><div style="font:500 13px/1.3 var(--mono);color:var(--mute)">T. Okafor</div><div style="font:400 11px/1.4 var(--sans);color:#A9A49B;margin-top:2px">unverified · no ORCID linked</div></div>
+              <button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 11px/1 var(--mono);cursor:pointer">Following</button>
+            </div>
+            <div style="border:1px solid var(--rule);padding:12px;background:var(--bg)" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 6px;border:1px solid var(--info);color:var(--info);border-radius:2px"><span style="width:6px;height:6px;background:var(--info);border-radius:50%"></span><span style="font:500 10px/1 var(--mono)">ONGOING</span></span>
+                <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 6px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1 var(--mono)">LAB</span>
+                <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">updated 4 h ago</span>
+              </div>
+              <div style="font:500 15px/1.3 var(--mono);margin-bottom:6px">Knock-in efficiency · HEK293T panel</div>
+              <div style="font:400 13px/1.5 var(--sans);color:var(--mute);margin-bottom:10px">Why efficiency collapses above passage 18, and whether the effect survives a medium swap.</div>
+              <div style="display:flex;gap:14px;font:400 11px/1.3 var(--mono);color:var(--mute);border-top:1px solid var(--rule);padding-top:9px"><span>7 datasets</span><span>3 methods</span><span>2 papers</span><span>14 discussions</span><span style="margin-left:auto;display:flex"><span style="width:20px;height:20px;border:1px solid var(--ink);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:9px">AR</span><span style="width:20px;height:20px;border:1px solid var(--ink);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:9px;margin-left:-1px">JK</span><span style="width:20px;height:20px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font-size:9px;margin-left:-1px">+4</span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M06</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">QUESTION CARD</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">answered · unresolved · asking for help</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="border:1px solid var(--rule);background:var(--bg);display:flex" style-hover="border-color:#0D0D0D">
+              <div style="width:76px;flex:none;border-right:1px solid var(--rule);display:flex;flex-direction:column">
+                <div style="padding:10px;text-align:center;border-bottom:1px solid var(--rule)"><div style="font:700 16px/1 var(--mono)">14</div><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-top:4px">SIGNAL</div></div>
+                <div style="padding:10px;text-align:center;background:var(--ok);color:#fff"><div style="font:700 16px/1 var(--mono)">3</div><div style="font:400 9px/1 var(--mono);margin-top:4px">ANSWERS</div></div>
+              </div>
+              <div style="flex:1;min-width:0;padding:11px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.3 var(--mono)">ACCEPTED ANSWER</span><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.3 var(--mono)">LAB</span></div>
+                <div style="font:500 14px/1.35 var(--mono);margin-bottom:6px">Knock-in efficiency drops from 41% to 4% above passage 18 — medium, cells or plasmid?</div>
+                <div style="font:400 13px/1.5 var(--sans);color:var(--mute);margin-bottom:9px">Same lot, same protocol, same operator. Attached: two flow runs, the gating script and the passage log.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                  <span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">3 artifacts</span>
+                  <span style="padding:3px 6px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">HEK293T</span>
+                  <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">A. Rivera · 6 h ago</span>
+                </div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--flag);background:#FFFCEF;display:flex">
+              <div style="width:76px;flex:none;border-right:1px solid var(--flag);display:flex;flex-direction:column">
+                <div style="padding:10px;text-align:center;border-bottom:1px solid var(--flag)"><div style="font:700 16px/1 var(--mono)">2</div><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-top:4px">SIGNAL</div></div>
+                <div style="padding:10px;text-align:center"><div style="font:700 16px/1 var(--mono);color:#6B5900">0</div><div style="font:400 9px/1 var(--mono);color:#6B5900;margin-top:4px">ANSWERS</div></div>
+              </div>
+              <div style="flex:1;min-width:0;padding:11px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;border-radius:2px;font:500 9px/1.3 var(--mono)">UNRESOLVED · 9 DAYS</span></div>
+                <div style="font:500 14px/1.35 var(--mono)">Does anyone have a Nextflow config that survives a SLURM upgrade mid-run?</div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--signal);background:var(--bg);display:flex">
+              <div style="width:76px;flex:none;border-right:1px solid var(--signal);display:flex;align-items:center;justify-content:center;padding:10px"><span style="width:10px;height:10px;background:var(--signal);border-radius:50%;animation:scpulse 1.6s ease-in-out infinite"></span></div>
+              <div style="flex:1;min-width:0;padding:11px">
+                <div style="font:500 10px/1 var(--mono);color:#B33600;letter-spacing:.08em;margin-bottom:6px">ASKING FOR HELP</div>
+                <div style="font:500 14px/1.35 var(--mono)">Blocked on this today — anyone free for 15 minutes on gating strategy?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M07–M11</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">REPUTATION · CREDIT · DOI · LICENCE · VERSION</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:9px">M07 reputation axis meter — four axes, never one number</div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:grid;grid-template-columns:104px 1fr 44px;gap:10px;align-items:center"><span style="font:400 11px/1 var(--mono)">Answers</span><span style="height:7px;border:1px solid var(--rule);background:var(--surface);display:block"><span style="display:block;height:100%;width:82%;background:var(--ink)"></span></span><span style="font:400 11px/1 var(--mono);text-align:right">82</span></div>
+                <div style="display:grid;grid-template-columns:104px 1fr 44px;gap:10px;align-items:center"><span style="font:400 11px/1 var(--mono)">Reproduction</span><span style="height:7px;border:1px solid var(--rule);background:var(--surface);display:block"><span style="display:block;height:100%;width:64%;background:var(--ink)"></span></span><span style="font:400 11px/1 var(--mono);text-align:right">64</span></div>
+                <div style="display:grid;grid-template-columns:104px 1fr 44px;gap:10px;align-items:center"><span style="font:400 11px/1 var(--mono);color:#B33600">Null results</span><span style="height:7px;border:1px solid var(--signal);background:var(--surface);display:block"><span style="display:block;height:100%;width:91%;background:var(--signal)"></span></span><span style="font:400 11px/1 var(--mono);text-align:right;color:#B33600">91</span></div>
+                <div style="display:grid;grid-template-columns:104px 1fr 44px;gap:10px;align-items:center"><span style="font:400 11px/1 var(--mono)">Mentorship</span><span style="height:7px;border:1px solid var(--rule);background:var(--surface);display:block"><span style="display:block;height:100%;width:37%;background:var(--ink)"></span></span><span style="font:400 11px/1 var(--mono);text-align:right">37</span></div>
+              </div>
+              <div style="font:400 11px/1.5 var(--sans);color:var(--mute);margin-top:9px">Null results is a scored axis. That is the whole point: the platform pays people for the failures they publish.</div>
+            </div>
+            <div style="border-top:1px solid var(--rule);padding-top:14px">
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:9px">M08 CRediT role chips · M09 DOI · M10 licence</div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+                <span style="padding:3px 7px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.3 var(--mono)">CONCEPTUALIZATION</span>
+                <span style="padding:3px 7px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.3 var(--mono)">INVESTIGATION</span>
+                <span style="padding:3px 7px;border:1px solid var(--rule);color:var(--mute);border-radius:2px;font:500 10px/1.3 var(--mono)">DATA CURATION</span>
+                <span style="padding:3px 7px;border:1px dashed var(--rule);color:var(--mute);border-radius:2px;font:500 10px/1.3 var(--mono)">+ claim role</span>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px">
+                <span style="display:inline-flex;align-items:stretch;border:1px solid var(--ink);border-radius:2px;overflow:hidden"><span style="padding:4px 8px;font:400 11px/1.2 var(--mono);background:var(--surface)">10.5281/zenodo.8241</span><span style="display:flex;align-items:center;padding:0 7px;border-left:1px solid var(--ink);cursor:pointer;background:var(--bg)" style-hover="background:#0D0D0D;color:#F7F6F3"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12"/><path d="M15 5H4a1 1 0 0 0-1 1v11"/></svg></span></span>
+                <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 10px/1.2 var(--mono)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg>COPIED</span>
+                <span style="padding:4px 8px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">CC-BY-4.0</span>
+                <span style="padding:4px 8px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono)">MIT</span>
+                <span style="padding:4px 8px;border:1px solid var(--err);color:var(--err);border-radius:2px;font:400 10px/1.2 var(--mono)">NO LICENCE SET</span>
+              </div>
+            </div>
+            <div style="border-top:1px solid var(--rule);padding-top:14px">
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:9px">M11 version selector — provenance is always one click away</div>
+              <div style="border:1px solid var(--ink);background:var(--surface);max-width:340px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 11px/1 var(--mono)">v4 · current</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8" stroke-linecap="round"><path d="m6 15 6-6 6 6"/></svg></div>
+                <div style="display:flex;gap:10px;padding:7px 10px;background:var(--ink);color:#F7F6F3"><span style="font:500 11px/1.3 var(--mono);width:26px">v4</span><span style="font:400 11px/1.3 var(--mono);flex:1">2026-09-04 · A. Rivera</span><span style="font:400 10px/1.3 var(--mono);opacity:.7">now</span></div>
+                <div style="display:flex;gap:10px;padding:7px 10px;border-bottom:1px solid #EBE8E2" style-hover="background:#EFEDE8"><span style="font:500 11px/1.3 var(--mono);width:26px">v3</span><span style="font:400 11px/1.3 var(--mono);flex:1">2026-08-21 · A. Rivera</span><span style="font:400 10px/1.3 var(--mono);color:var(--mute)">+2 steps</span></div>
+                <div style="display:flex;gap:10px;padding:7px 10px;border-bottom:1px solid #EBE8E2" style-hover="background:#EFEDE8"><span style="font:500 11px/1.3 var(--mono);width:26px">v2</span><span style="font:400 11px/1.3 var(--mono);flex:1">2026-07-30 · J. Krieger</span><span style="font:400 10px/1.3 var(--mono);color:var(--mute)">DOI</span></div>
+                <div style="display:flex;gap:10px;padding:7px 10px"><span style="font:500 11px/1.3 var(--mono);width:26px;color:var(--mute)">v1</span><span style="font:400 11px/1.3 var(--mono);flex:1;color:var(--mute)">2026-07-02 · forked from MC-0288</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="border:1px solid var(--rule);background:var(--surface)">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M12</span>
+          <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">FILE DROPZONE — REQUIREMENTS STATED BEFORE THE FILE PICKER</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">tester fix · "I need to know exactly what is expected"</span>
+        </div>
+        <div style="padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+          <div>
+            <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">idle — the contract is visible first</div>
+            <div style="border:1px dashed var(--ink);background:var(--bg);padding:18px" style-hover="background:#EFEDE8">
+              <div style="font:500 13px/1.3 var(--mono);margin-bottom:12px">Drop a flow-cytometry dataset</div>
+              <div style="display:grid;grid-template-columns:88px 1fr;gap:6px 10px;font:400 11px/1.4 var(--mono);margin-bottom:14px">
+                <span style="color:var(--mute)">ACCEPTS</span><span>.fcs · .csv · .zip (≤ 5 GB)</span>
+                <span style="color:var(--mute)">REQUIRED</span><span>instrument · date · cell line · passage · gating file</span>
+                <span style="color:var(--mute)">OPTIONAL</span><span>operator notes · related method card</span>
+                <span style="color:var(--mute)">ON UPLOAD</span><span>checksum, version v1, visibility inherits <b>LAB</b></span>
+              </div>
+              <button style="height:32px;padding:0 14px;background:transparent;border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Choose file</button>
+            </div>
+          </div>
+          <div>
+            <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">drag-over · uploading · rejected</div>
+            <div style="border:2px solid var(--signal);background:#FFF3EE;padding:14px;margin-bottom:10px;font:500 12px/1.3 var(--mono);color:#B33600">Release to upload · 1 file</div>
+            <div style="border:1px solid var(--ink);background:var(--surface);padding:12px;margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="font:400 11px/1.2 var(--mono)">run14_raw.fcs</span><span style="font:400 11px/1.2 var(--mono);color:var(--mute)">68% · 42 s left</span></div>
+              <div style="height:8px;border:1px solid var(--ink);background:var(--surface)"><div style="height:100%;width:68%;background:var(--ink)"></div></div>
+              <div style="display:flex;gap:8px;margin-top:9px"><span style="font:400 10px/1.2 var(--mono);color:var(--mute)">metadata 3 of 5 complete</span><span style="font:400 10px/1.2 var(--mono);color:#B33600;margin-left:auto;cursor:pointer">Cancel</span></div>
+            </div>
+            <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="1.8" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16.2h.01"/></svg><div><div style="font:500 12px/1.3 var(--mono);color:var(--err);margin-bottom:4px">notes.docx rejected</div><div style="font:400 12px/1.45 var(--sans);color:#0D0D0D">Not an accepted format for a dataset slot. Attach it to the discussion instead, or convert to CSV.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:20px">
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M13 / M14</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">COMMENT THREAD · REACTION BAR</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">always beside the artifact</span>
+          </div>
+          <div style="padding:16px">
+            <div style="border-left:2px solid var(--rule);padding-left:12px;display:flex;flex-direction:column;gap:14px">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="position:relative;width:22px;height:22px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono)">JK<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span><span style="font:500 12px/1 var(--mono)">J. Krieger</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">PI · 2026-09-04 09:12</span></div>
+                <div style="font:400 13px/1.5 var(--sans)">Check the plasmid prep before you blame passage number. We saw the same curve in 2024 and it was endotoxin.</div>
+                <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid var(--ink);border-radius:2px;font:400 10px/1.2 var(--mono);cursor:pointer;background:#EFEDE8">Useful · 6</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">Reproduced · 2</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid var(--rule);border-radius:2px;font:400 10px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">Disagree · 1</span>
+                  <span style="font:400 10px/1.2 var(--mono);color:var(--mute);margin-left:4px;cursor:pointer">Reply</span>
+                </div>
+              </div>
+              <div style="margin-left:22px;padding-left:12px;border-left:2px solid var(--rule)">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="width:22px;height:22px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono)">AR</span><span style="font:500 12px/1 var(--mono)">A. Rivera</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">10:02</span></div>
+                <div style="font:400 13px/1.5 var(--sans)">Endotoxin was 0.04 EU/µg on the last three preps — logged in <span style="font-family:var(--mono);border-bottom:1px solid var(--signal);color:#B33600">DS-1174</span>. Ruled out.</div>
+              </div>
+              <div style="opacity:.55"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="width:22px;height:22px;border:1px solid var(--rule);background:#F0EDE8"></span><span style="height:9px;width:80px;background:#E5E2DB"></span></div><div style="height:11px;width:90%;background:#E5E2DB;margin-bottom:5px"></div><div style="height:11px;width:55%;background:#E5E2DB"></div></div>
+            </div>
+            <div style="margin-top:14px;border:1px solid var(--rule);background:var(--bg);padding:10px" style-focus="border-color:#0D0D0D">
+              <div style="font:400 13px/1.5 var(--sans);color:#9A968E">Reply — attach a dataset, figure or method card to make this citable…</div>
+              <div style="display:flex;gap:8px;margin-top:10px;align-items:center;border-top:1px solid var(--rule);padding-top:9px">
+                <span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1 var(--mono);color:var(--mute);cursor:pointer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M21 11.5 12.5 20a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L10 17.9a1.7 1.7 0 0 1-2.4-2.4l8-8"/></svg>Attach</span>
+                <span style="font:400 10px/1 var(--mono);color:var(--mute);cursor:pointer">Cite artifact</span>
+                <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute);border:1px solid var(--rule);padding:3px 5px">⌘↵</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M15</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">NOTIFICATION ROW</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">unread · read · actionable · digest</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--rule)">
+            <div style="display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #EBE8E2;cursor:pointer" style-hover="background:#FAF9F6">
+              <span style="width:6px;height:6px;background:var(--signal);border-radius:50%;margin-top:6px;flex:none"></span>
+              <div style="flex:1"><div style="font:400 13px/1.45 var(--sans)"><b>T. Okafor</b> reproduced your method card <span style="font-family:var(--mono)">MC-0412</span> — and it failed at passage 22.</div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-top:5px">18 min ago · adds a negative result to your card</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #EBE8E2;cursor:pointer" style-hover="background:#FAF9F6">
+              <span style="width:6px;height:6px;background:var(--signal);border-radius:50%;margin-top:6px;flex:none"></span>
+              <div style="flex:1"><div style="font:400 13px/1.45 var(--sans)">Your answer was accepted on <b>“Gating strategy for low-efficiency knock-ins”</b>.</div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-top:5px">2 h ago</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #EBE8E2;align-items:flex-start">
+              <span style="width:6px;height:6px;border:1px solid var(--rule);border-radius:50%;margin-top:6px;flex:none"></span>
+              <div style="flex:1"><div style="font:400 13px/1.45 var(--sans);color:var(--mute)">Dr C. Laurent requested access to <span style="font-family:var(--mono)">DS-1174</span>.</div><div style="display:flex;gap:8px;margin-top:8px"><button style="height:26px;padding:0 10px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 11px/1 var(--mono);cursor:pointer">Grant · Lab</button><button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 11px/1 var(--mono);cursor:pointer">Decline</button></div></div>
+              <span style="font:400 10px/1 var(--mono);color:var(--mute)">yesterday</span>
+            </div>
+            <div style="display:flex;gap:10px;padding:11px 0">
+              <span style="width:6px;height:6px;border:1px solid var(--rule);border-radius:50%;margin-top:6px;flex:none"></span>
+              <div style="flex:1"><div style="font:400 13px/1.45 var(--sans);color:var(--mute)">Weekly digest — 3 methods in your field were forked, 1 null result matched your search.</div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-top:5px">Mon 08:00 · <span style="border-bottom:1px solid var(--rule);cursor:pointer">change cadence</span></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="border:1px solid var(--rule);background:var(--surface)">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M16</span>
+          <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">SEARCH RESULT ROW — ONE PER OBJECT TYPE</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">tester fix · federated across five types by default</span>
+        </div>
+        <div style="padding:16px">
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+            <span style="padding:4px 9px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer">ALL · 214</span>
+            <span style="padding:4px 9px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">PEOPLE · 12</span>
+            <span style="padding:4px 9px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">PROJECTS · 8</span>
+            <span style="padding:4px 9px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">DATASETS · 61</span>
+            <span style="padding:4px 9px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">METHOD CARDS · 34</span>
+            <span style="padding:4px 9px;border:1px solid var(--rule);border-radius:2px;font:500 11px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">DISCUSSIONS · 99</span>
+          </div>
+          <div style="border:1px solid var(--rule)">
+            <div style="display:flex;gap:12px;padding:11px 12px;border-bottom:1px solid #EBE8E2;align-items:center" style-hover="background:#FAF9F6">
+              <span style="width:60px;flex:none;font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">PERSON</span>
+              <span style="position:relative;width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);flex:none">TO<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+              <span style="font:500 13px/1.3 var(--mono);flex:none">T. Okafor</span>
+              <span style="font:400 12px/1.4 var(--sans);color:var(--mute);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Postdoc · transfection, HEK293T, 14 answers on <b style="color:#0D0D0D">passage effects</b></span>
+              <span style="font:400 10px/1 var(--mono);color:var(--mute);flex:none">same institution</span>
+            </div>
+            <div style="display:flex;gap:12px;padding:11px 12px;border-bottom:1px solid #EBE8E2;align-items:center" style-hover="background:#FAF9F6">
+              <span style="width:60px;flex:none;font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">PROJECT</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round" style="flex:none"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>
+              <span style="font:500 13px/1.3 var(--mono);flex:none">Knock-in efficiency · HEK293T panel</span>
+              <span style="font:400 12px/1.4 var(--sans);color:var(--mute);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">7 datasets · 3 methods · 14 discussions</span>
+              <span style="display:inline-flex;gap:5px;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.3 var(--mono);flex:none">LAB</span>
+            </div>
+            <div style="display:flex;gap:12px;padding:11px 12px;border-bottom:1px solid #EBE8E2;align-items:center" style-hover="background:#FAF9F6">
+              <span style="width:60px;flex:none;font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">DATASET</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" style="flex:none"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              <span style="font:500 13px/1.3 var(--mono);flex:none">flow-cytometry_knockin_run14.zip</span>
+              <span style="font:400 12px/1.4 var(--sans);color:var(--mute);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">2.1 GB · FCS, CSV · <b style="color:#0D0D0D">passage</b> logged per well</span>
+              <span style="display:inline-flex;gap:5px;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.3 var(--mono);flex:none">PUBLIC</span>
+            </div>
+            <div style="display:flex;gap:12px;padding:11px 12px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFF8F5" style-hover="background:#FFF3EE">
+              <span style="width:60px;flex:none;font:500 9px/1 var(--mono);letter-spacing:.1em;color:#B33600">METHOD</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2M7.2 15.2h9.6"/></svg>
+              <span style="font:500 13px/1.3 var(--mono);flex:none">Lipofection at low <b style="color:#B33600">passage</b> · v4</span>
+              <span style="font:400 12px/1.4 var(--sans);color:var(--mute);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fails above p18 — 2 reproductions confirm</span>
+              <span style="display:inline-flex;gap:5px;padding:2px 5px;border:1px solid var(--signal);color:#B33600;border-radius:2px;font:500 9px/1.3 var(--mono);flex:none">NEGATIVE RESULT</span>
+            </div>
+            <div style="display:flex;gap:12px;padding:11px 12px;align-items:center" style-hover="background:#FAF9F6">
+              <span style="width:60px;flex:none;font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">THREAD</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linejoin="round" style="flex:none"><path d="M20 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/></svg>
+              <span style="font:500 13px/1.3 var(--mono);flex:none">Efficiency drops above p18 — medium or cells?</span>
+              <span style="font:400 12px/1.4 var(--sans);color:var(--mute);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">3 answers · accepted 6 h ago</span>
+              <span style="display:inline-flex;gap:5px;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.3 var(--mono);flex:none">ANSWERED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M17</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">EMPTY STATE</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="border:1px dashed var(--rule);padding:22px;text-align:center">
+              <div style="font:400 14px/1.4 var(--mono);margin-bottom:8px">debug(research) <span style="color:var(--signal)">→</span> knowledge</div>
+              <div style="font:400 13px/1.5 var(--sans);color:var(--mute);margin-bottom:14px;max-width:36ch;margin-left:auto;margin-right:auto">No datasets in this project yet. The first upload sets the metadata schema for the rest.</div>
+              <button style="height:32px;padding:0 14px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 12px/1 var(--mono);cursor:pointer">Upload a dataset</button>
+            </div>
+            <div style="border:1px dashed var(--rule);padding:16px;text-align:center">
+              <div style="font:400 13px/1.5 var(--sans);color:var(--mute)">No results for <span style="font-family:var(--mono);color:#0D0D0D">“knockin passage 22”</span> in <b>Lab</b>.</div>
+              <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:6px">Widen to <span style="font-family:var(--mono);border-bottom:1px solid var(--signal);color:#B33600;cursor:pointer">Institution</span> · 14 matches</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M18 / M19</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">ERROR · SKELETON</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+            <div style="border:1px solid var(--err);background:#FCF3F2;padding:14px">
+              <div style="font:500 12px/1.3 var(--mono);color:var(--err);margin-bottom:6px">Could not reach the storage node</div>
+              <div style="font:400 13px/1.5 var(--sans);margin-bottom:10px">Your upload is safe and queued locally. Nothing has been lost.</div>
+              <div style="display:flex;gap:8px"><button style="height:28px;padding:0 10px;background:transparent;border:1px solid var(--err);color:var(--err);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:#B3261E;color:#fff">Retry</button><button style="height:28px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 11px/1 var(--mono);cursor:pointer">Copy error ID</button></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div style="font:400 10px/1 var(--mono);color:var(--mute)">skeleton — shape-accurate, never a spinner over a whole page</div>
+              <div style="height:11px;width:34%;background:linear-gradient(90deg,#EDEAE4 0px,#F5F3EF 80px,#EDEAE4 160px);background-size:400px 100%;animation:scshimmer 1.2s linear infinite"></div>
+              <div style="height:15px;width:78%;background:linear-gradient(90deg,#EDEAE4 0px,#F5F3EF 80px,#EDEAE4 160px);background-size:400px 100%;animation:scshimmer 1.2s linear infinite"></div>
+              <div style="height:11px;width:92%;background:linear-gradient(90deg,#EDEAE4 0px,#F5F3EF 80px,#EDEAE4 160px);background-size:400px 100%;animation:scshimmer 1.2s linear infinite"></div>
+              <div style="height:11px;width:60%;background:linear-gradient(90deg,#EDEAE4 0px,#F5F3EF 80px,#EDEAE4 160px);background-size:400px 100%;animation:scshimmer 1.2s linear infinite"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M20</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">TOAST</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">bottom-left · never covers the artifact</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="background:var(--ink);color:#F7F6F3;padding:11px 12px;display:flex;align-items:center;gap:10px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3DBB86" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m5 12.5 5 5 9-11"/></svg>
+              <span style="font:400 12px/1.3 var(--mono);flex:1">Version v5 saved · DOI queued</span>
+              <span style="font:500 11px/1 var(--mono);color:#FF5A14;cursor:pointer">Undo</span>
+            </div>
+            <div style="background:var(--ink);color:#F7F6F3;padding:11px 12px;display:flex;align-items:center;gap:10px">
+              <span style="width:12px;height:12px;border:1.5px solid #4A4A4A;border-top-color:#F7F6F3;border-radius:50%;animation:scspin .7s linear infinite;flex:none"></span>
+              <span style="font:400 12px/1.3 var(--mono);flex:1">Minting DOI…</span>
+            </div>
+            <div style="background:var(--ink);color:#F7F6F3;padding:11px 12px;display:flex;align-items:center;gap:10px;border-left:3px solid var(--flag)">
+              <span style="font:400 12px/1.3 var(--mono);flex:1">Visibility changed to <b>Institution</b> · 214 people can now see this</span>
+              <span style="font:500 11px/1 var(--mono);color:#FF5A14;cursor:pointer">Revert</span>
+            </div>
+            <div style="background:var(--ink);color:#F7F6F3;padding:11px 12px;display:flex;align-items:center;gap:10px;border-left:3px solid var(--err)">
+              <span style="font:400 12px/1.3 var(--mono);flex:1">Upload failed · run14_raw.fcs</span>
+              <span style="font:500 11px/1 var(--mono);color:#FF5A14;cursor:pointer">Retry</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:20px">
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M21</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">MODAL</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">only for irreversible acts</span>
+          </div>
+          <div style="padding:16px;background:#DEDBD5">
+            <div style="border:1px solid var(--ink);background:var(--surface);max-width:460px;margin:0 auto">
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+                <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">MAKE PUBLIC</span>
+                <span style="margin-left:auto;cursor:pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+              </div>
+              <div style="padding:16px">
+                <div style="font:400 14px/1.55 var(--sans);margin-bottom:14px">You are about to publish <span style="font-family:var(--mono)">DS-1174</span> to the open web and mint a DOI. <b>Public artifacts with a DOI cannot be made private again.</b></div>
+                <div style="border:1px solid var(--rule);background:var(--bg);padding:11px;display:flex;flex-direction:column;gap:7px;margin-bottom:14px">
+                  <div style="display:flex;justify-content:space-between"><span style="font:400 11px/1.3 var(--mono);color:var(--mute)">FILES</span><span style="font:400 11px/1.3 var(--mono)">14 · 2.1 GB</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="font:400 11px/1.3 var(--mono);color:var(--mute)">LICENCE</span><span style="font:400 11px/1.3 var(--mono)">CC-BY-4.0</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="font:400 11px/1.3 var(--mono);color:var(--mute)">CO-AUTHORS NOTIFIED</span><span style="font:400 11px/1.3 var(--mono)">6</span></div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px"><span style="width:16px;height:16px;border:1px solid var(--ink);flex:none"></span><span style="font:400 12px/1.4 var(--sans)">I confirm no personal or patient-identifiable data is included.</span></div>
+                <div style="display:flex;gap:8px;justify-content:flex-end">
+                  <button style="height:32px;padding:0 14px;background:transparent;border:1px solid transparent;font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:#EFEDE8;border-color:var(--rule)">Cancel</button>
+                  <button style="height:32px;padding:0 14px;background:#F0EDE8;border:1px solid var(--rule);color:#A9A49B;font:500 12px/1 var(--mono);cursor:not-allowed">Publish and mint DOI</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M22 / M23</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">SLIDE-OVER · COMMAND PALETTE</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+            <div style="position:relative;height:210px;border:1px solid var(--rule);background:var(--bg);overflow:hidden">
+              <div style="position:absolute;inset:0;background:rgba(13,13,13,.28)"></div>
+              <div style="position:absolute;top:0;right:0;bottom:0;width:280px;background:var(--surface);border-left:1px solid var(--ink);display:flex;flex-direction:column">
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">EDIT METADATA</span><span style="margin-left:auto;cursor:pointer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span></div>
+                <div style="padding:12px;display:flex;flex-direction:column;gap:10px">
+                  <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:5px">INSTRUMENT</div><div style="height:28px;border:1px solid var(--rule);background:var(--bg);display:flex;align-items:center;padding:0 8px;font:400 11px/1 var(--mono)">BD FACSymphony A3</div></div>
+                  <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:5px">PASSAGE</div><div style="height:28px;border:1px solid var(--rule);background:var(--bg);display:flex;align-items:center;padding:0 8px;font:400 11px/1 var(--mono)">22</div></div>
+                  <div><div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:5px">GATING FILE</div><div style="height:28px;border:1px dashed var(--rule);display:flex;align-items:center;padding:0 8px;font:400 11px/1 var(--mono);color:var(--mute)">required · not attached</div></div>
+                </div>
+                <div style="margin-top:auto;padding:12px;border-top:1px solid var(--rule);display:flex;gap:8px"><button style="height:28px;padding:0 12px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 11px/1 var(--mono);cursor:pointer">Save</button><button style="height:28px;padding:0 12px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 11px/1 var(--mono);cursor:pointer">Cancel</button></div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--ink);background:#0D0D0D;color:#F2F0EC">
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid #2E2C29">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8E8B85" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <span style="font:400 12px/1 var(--mono);flex:1">fork<span style="color:#FF5A14">|</span></span>
+                <span style="font:500 10px/1 var(--mono);color:#8E8B85;border:1px solid #2E2C29;padding:3px 5px">ESC</span>
+              </div>
+              <div style="padding:6px 0">
+                <div style="padding:7px 12px;font:400 9px/1 var(--mono);color:#6E6B66;letter-spacing:.1em">ACTIONS</div>
+                <div style="padding:7px 12px;display:flex;gap:10px;background:#1E1E1E"><span style="font:400 12px/1 var(--mono);flex:1">Fork method card MC-0412</span><span style="font:500 10px/1 var(--mono);color:#8E8B85">F</span></div>
+                <div style="padding:7px 12px;display:flex;gap:10px"><span style="font:400 12px/1 var(--mono);flex:1">Fork project into my workspace</span></div>
+                <div style="padding:7px 12px;font:400 9px/1 var(--mono);color:#6E6B66;letter-spacing:.1em">RECENT</div>
+                <div style="padding:7px 12px;display:flex;gap:10px"><span style="font:400 12px/1 var(--mono);flex:1;color:#B6B2AC">Forks of MC-0288 · 12</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="border:1px solid var(--rule);background:var(--surface)">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M24</span>
+          <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">DATA TABLE — SORT, FILTER, COLUMN CONTROL</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">the institutional console's workhorse</span>
+        </div>
+        <div style="padding:16px">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:8px;height:30px;padding:0 9px;border:1px solid var(--rule);background:var(--bg);min-width:200px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span style="font:400 11px/1 var(--mono);color:var(--mute)">Filter rows</span></div>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 9px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;font:500 11px/1 var(--mono);border-radius:2px">visibility: Lab<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span style="display:inline-flex;align-items:center;height:30px;padding:0 9px;border:1px dashed var(--rule);color:var(--mute);font:500 11px/1 var(--mono);border-radius:2px;cursor:pointer" style-hover="border-color:#0D0D0D;color:#0D0D0D">+ filter</span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 9px;border:1px solid var(--rule);font:500 11px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16"/><path d="M9 4v16M15 4v16"/></svg>Columns · 6 of 9</span>
+          </div>
+          <div style="border:1px solid var(--rule);overflow-x:auto">
+            <div style="display:grid;grid-template-columns:28px 1.6fr .9fr .8fr .7fr .8fr 90px;background:var(--bg);border-bottom:1px solid var(--ink);min-width:800px">
+              <div style="padding:8px 10px;display:flex;align-items:center"><span style="width:13px;height:13px;border:1px solid var(--ink)"></span></div>
+              <div style="padding:8px 10px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;display:flex;gap:5px;align-items:center;cursor:pointer">ARTIFACT<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="2.4" stroke-linecap="round"><path d="m6 15 6-6 6 6"/></svg></div>
+              <div style="padding:8px 10px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute);cursor:pointer">OWNER</div>
+              <div style="padding:8px 10px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute);cursor:pointer">VISIBILITY</div>
+              <div style="padding:8px 10px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute);cursor:pointer">STATUS</div>
+              <div style="padding:8px 10px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute);cursor:pointer">UPDATED</div>
+              <div style="padding:8px 10px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute);text-align:right">REUSE</div>
+            </div>
+            <div style="display:grid;grid-template-columns:28px 1.6fr .9fr .8fr .7fr .8fr 90px;border-bottom:1px solid #EBE8E2;min-width:800px;background:#FAF9F6">
+              <div style="padding:9px 10px;display:flex;align-items:center"><span style="width:13px;height:13px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 10px;font:400 12px/1.4 var(--mono)">flow-cytometry_knockin_run14.zip</div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);color:var(--mute)">A. Rivera</div>
+              <div style="padding:9px 10px"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.4 var(--mono)">LAB</span></div>
+              <div style="padding:9px 10px"><span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.4 var(--mono);color:var(--info)"><span style="width:6px;height:6px;background:var(--info);border-radius:50%"></span>Ongoing</span></div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);color:var(--mute)">2026-09-02</div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);text-align:right">14</div>
+            </div>
+            <div style="display:grid;grid-template-columns:28px 1.6fr .9fr .8fr .7fr .8fr 90px;border-bottom:1px solid #EBE8E2;min-width:800px" style-hover="background:#FAF9F6">
+              <div style="padding:9px 10px;display:flex;align-items:center"><span style="width:13px;height:13px;border:1px solid var(--ink)"></span></div>
+              <div style="padding:9px 10px;font:400 12px/1.4 var(--mono)">MC-0412 · Lipofection at low passage</div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);color:var(--mute)">A. Rivera</div>
+              <div style="padding:9px 10px"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.4 var(--mono)">LAB</span></div>
+              <div style="padding:9px 10px"><span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.4 var(--mono);color:#6B5900"><span style="width:6px;height:6px;background:var(--flag);border-radius:50%"></span>Under review</span></div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);color:var(--mute)">2026-09-04</div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);text-align:right">12</div>
+            </div>
+            <div style="display:grid;grid-template-columns:28px 1.6fr .9fr .8fr .7fr .8fr 90px;border-bottom:1px solid #EBE8E2;min-width:800px" style-hover="background:#FAF9F6">
+              <div style="padding:9px 10px;display:flex;align-items:center"><span style="width:13px;height:13px;border:1px solid var(--ink)"></span></div>
+              <div style="padding:9px 10px;font:400 12px/1.4 var(--mono)">fig3_efficiency_vs_passage.png</div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);color:var(--mute)">T. Okafor</div>
+              <div style="padding:9px 10px"><span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 9px/1.4 var(--mono)">PUBLIC</span></div>
+              <div style="padding:9px 10px"><span style="display:inline-flex;align-items:center;gap:5px;font:400 10px/1.4 var(--mono);color:#B33600"><span style="width:6px;height:6px;background:var(--signal);border-radius:50%"></span>Negative result</span></div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);color:var(--mute)">2026-08-28</div>
+              <div style="padding:9px 10px;font:400 11px/1.4 var(--mono);text-align:right">31</div>
+            </div>
+            <div style="display:grid;grid-template-columns:28px 1.6fr .9fr .8fr .7fr .8fr 90px;min-width:800px;opacity:.5">
+              <div style="padding:9px 10px"></div>
+              <div style="padding:9px 10px"><span style="display:block;height:11px;width:70%;background:#E5E2DB"></span></div>
+              <div style="padding:9px 10px"><span style="display:block;height:11px;width:60%;background:#E5E2DB"></span></div>
+              <div style="padding:9px 10px"><span style="display:block;height:11px;width:50%;background:#E5E2DB"></span></div>
+              <div style="padding:9px 10px"><span style="display:block;height:11px;width:60%;background:#E5E2DB"></span></div>
+              <div style="padding:9px 10px"><span style="display:block;height:11px;width:70%;background:#E5E2DB"></span></div>
+              <div style="padding:9px 10px"></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap">
+            <span style="font:400 11px/1 var(--mono);color:var(--mute)">1 selected</span>
+            <button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer">Change visibility</button>
+            <button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer">Export CSV</button>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:4px">
+              <span style="width:26px;height:26px;border:1px solid var(--rule);color:#C2BDB4;display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono)">‹</span>
+              <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:500 11px/1 var(--mono)">1</span>
+              <span style="width:26px;height:26px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">2</span>
+              <span style="width:26px;height:26px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">3</span>
+              <span style="padding:0 6px;font:400 11px/1 var(--mono);color:var(--mute)">…</span>
+              <span style="width:26px;height:26px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">9</span>
+              <span style="width:26px;height:26px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">›</span>
+              <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:8px">M27 · 214 rows</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:20px">
+
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M25 / M26</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">BREADCRUMB · TAB SET</span>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">breadcrumb — the project is always the second crumb</div>
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;font:400 11px/1.4 var(--mono)">
+                <span style="color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Krieger group</span><span style="color:#C2BDB4">/</span>
+                <span style="color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Knock-in efficiency</span><span style="color:#C2BDB4">/</span>
+                <span style="color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Data</span><span style="color:#C2BDB4">/</span>
+                <span style="color:#0D0D0D">run14.zip</span>
+                <span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 9px/1.4 var(--mono);margin-left:4px">LAB</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;font:400 11px/1.4 var(--mono);margin-top:9px;color:var(--mute)">
+                <span>Krieger group</span><span style="color:#C2BDB4">/</span><span style="border:1px solid var(--rule);padding:1px 5px;cursor:pointer">…</span><span style="color:#C2BDB4">/</span><span style="color:#0D0D0D">run14.zip</span>
+              </div>
+            </div>
+            <div>
+              <div style="font:400 10px/1 var(--mono);color:var(--mute);margin-bottom:8px">tab set — 2px signal underline, never a pill</div>
+              <div style="display:flex;gap:0;border-bottom:1px solid var(--rule)">
+                <span style="padding:9px 14px;font:500 12px/1 var(--mono);border-bottom:2px solid var(--signal);margin-bottom:-1px;cursor:pointer">Overview</span>
+                <span style="padding:9px 14px;font:400 12px/1 var(--mono);color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Data <span style="color:#C2BDB4">7</span></span>
+                <span style="padding:9px 14px;font:400 12px/1 var(--mono);color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Methods <span style="color:#C2BDB4">3</span></span>
+                <span style="padding:9px 14px;font:400 12px/1 var(--mono);color:var(--mute);cursor:pointer" style-hover="color:#0D0D0D">Discussions <span style="color:#C2BDB4">14</span></span>
+                <span style="padding:9px 14px;font:400 12px/1 var(--mono);color:#C2BDB4;cursor:not-allowed">Audit <span style="font-size:9px;border:1px solid #E5E2DB;padding:1px 4px;margin-left:2px">INSTITUTION</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--signal);background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <span style="font:500 10px/1 var(--mono);color:var(--signal);letter-spacing:.1em">M28</span>
+            <span style="font:500 12px/1 var(--mono);letter-spacing:.04em">AI RETRIEVAL BLOCK</span>
+            <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">added — the "AI for retrieval, not authority" rule needs a component</span>
+          </div>
+          <div style="padding:16px">
+            <div style="border:1px solid var(--ink);background:var(--bg)">
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 11px;border-bottom:1px solid var(--rule)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.2"/></svg>
+                <span style="font:500 10px/1 var(--mono);letter-spacing:.1em">RETRIEVED · NOT VERIFIED</span>
+                <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">3 sources</span>
+              </div>
+              <div style="padding:12px">
+                <div style="font:400 13px/1.55 var(--sans);margin-bottom:12px">Three prior cases in this institution report the same collapse above passage 18. Two attribute it to receptor loss, one to endotoxin in the plasmid prep. None of the three has been reproduced outside its own lab.</div>
+                <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+                  <div style="display:flex;gap:9px;align-items:center;border:1px solid var(--rule);background:var(--surface);padding:7px 9px;cursor:pointer" style-hover="border-color:#0D0D0D"><span style="font:500 9px/1 var(--mono);color:var(--mute);width:52px;flex:none">METHOD</span><span style="font:400 11px/1.3 var(--mono);flex:1">MC-0288 · v6 · T. Okafor</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">open →</span></div>
+                  <div style="display:flex;gap:9px;align-items:center;border:1px solid var(--rule);background:var(--surface);padding:7px 9px;cursor:pointer" style-hover="border-color:#0D0D0D"><span style="font:500 9px/1 var(--mono);color:var(--mute);width:52px;flex:none">THREAD</span><span style="font:400 11px/1.3 var(--mono);flex:1">Receptor loss at high passage · 9 answers</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">open →</span></div>
+                  <div style="display:flex;gap:9px;align-items:center;border:1px solid var(--rule);background:var(--surface);padding:7px 9px;cursor:pointer" style-hover="border-color:#0D0D0D"><span style="font:500 9px/1 var(--mono);color:var(--mute);width:52px;flex:none">DATASET</span><span style="font:400 11px/1.3 var(--mono);flex:1">DS-0904 · passage series, 2024</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">open →</span></div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;border-top:1px solid var(--rule);padding-top:11px;flex-wrap:wrap">
+                  <button style="height:28px;padding:0 11px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 11px/1 var(--mono);cursor:pointer">Ask T. Okafor to confirm</button>
+                  <button style="height:28px;padding:0 11px;background:transparent;border:1px solid var(--ink);font:500 11px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Post as a question</button>
+                  <span style="font:400 10px/1.4 var(--sans);color:var(--mute);flex:1;min-width:180px">No accept button. AI cannot resolve a thread; only a person can.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { tab: 0, paletteQ: '' };
+  renderVals() {
+    return {};
+  }
+}
+
+</script>
+</body>
+</html>

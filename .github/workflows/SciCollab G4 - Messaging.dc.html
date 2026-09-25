@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+  @keyframes scpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">BATCH G · BOARD 4 OF 5</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">Messaging, and the machinery that keeps it usable</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:86ch">Screens 16–20. A direct message from a stranger is the highest-leverage and highest-risk surface in the product. The reputation gate, the quarantine, the two-click block and the notification controls are one system: they decide whether an inbox is worth opening in year two.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab G3 - Collaboration and Events.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← G3 collaboration</a>
+      <a href="SciCollab G5 - Flow Ribbon.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">G5 flow ribbon →</a>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--signal);background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">16</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:#B33600">DIRECT MESSAGES · THE REPUTATION GATE (D01)</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 780 · gated and ungated, side by side</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">PRIVATE</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">the gate applies to unsolicited messages only · connections, co-authors and people you have answered are never gated</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+        <div style="border-right:1px solid var(--ink);padding:18px 20px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="height:24px;padding:0 10px;background:var(--flag);color:#0D0D0D;display:flex;align-items:center;font:500 10px/1 var(--mono);letter-spacing:.06em">STATE A · GATED</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">new account, 4 days old, 0 contributions</span></div>
+          <div style="border:1px solid var(--ink);background:var(--surface);margin-bottom:14px">
+            <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--rule);background:var(--bg)">
+              <span style="width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);flex:none">TO</span>
+              <div style="flex:1"><div style="font:500 12px/1.3 var(--mono)">T. Okafor</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">not connected · you have never interacted</div></div>
+            </div>
+            <div style="padding:13px">
+              <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px;margin-bottom:12px">
+                <div style="display:flex;gap:11px;align-items:flex-start">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8" stroke-linejoin="round" style="flex:none;margin-top:2px"><rect x="4" y="10.5" width="16" height="10.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+                  <div style="flex:1">
+                    <div style="font:500 13px/1.35 var(--mono);margin-bottom:7px">You cannot message strangers yet.</div>
+                    <div style="font:400 13px/1.55 var(--sans);color:#0D0D0D">New accounts cannot send unsolicited direct messages. This is not about you — it is the single measure that stops a research network filling with recruitment spam and predatory-journal solicitations, which is what happened to every network that skipped it.</div>
+                  </div>
+                </div>
+              </div>
+              <div style="border:1px solid var(--ink);background:var(--bg);padding:13px;margin-bottom:12px">
+                <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">THE PATH TO UNLOCKING · ANY ONE OF THESE</div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div>
+                    <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:5px"><span style="font:500 11px/1.3 var(--mono);flex:1">Post one answer, question or artifact</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">0 / 1</span></div>
+                    <div style="height:7px;border:1px solid var(--rule);background:var(--surface)"><span style="display:block;height:100%;width:0%;background:var(--ink)"></span></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:5px"><span style="font:500 11px/1.3 var(--mono);flex:1">Reach 15 reputation on any axis</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">0 / 15</span></div>
+                    <div style="height:7px;border:1px solid var(--rule);background:var(--surface)"><span style="display:block;height:100%;width:0%;background:var(--ink)"></span></div>
+                  </div>
+                  <div>
+                    <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:5px"><span style="font:500 11px/1.3 var(--mono);flex:1">Verify your institutional e-mail or ORCID</span><span style="font:400 10px/1 var(--mono);color:var(--ok)">fastest</span></div>
+                    <div style="height:7px;border:1px solid var(--ok);background:var(--surface)"><span style="display:block;height:100%;width:0%;background:var(--ok)"></span></div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:12px"><a href="SciCollab B1 - Onboarding.dc.html#s3" style="height:28px;padding:0 11px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 10px/1 var(--mono);display:flex;align-items:center">Verify with ORCID · 2 min</a><a href="SciCollab C1 - Ask and Compose.dc.html#s1" style="height:28px;padding:0 11px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);display:flex;align-items:center;color:var(--ink)" style-hover="background:var(--ink);color:#F7F6F3">Ask your first question</a></div>
+              </div>
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:12px">
+                <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">WHAT YOU CAN DO RIGHT NOW INSTEAD</div>
+                <div style="display:flex;flex-direction:column;gap:6px;font:400 12px/1.5 var(--sans)">
+                  <div style="display:flex;gap:8px"><span style="color:var(--signal);font-family:var(--mono);flex:none">→</span><span><a href="SciCollab C1 - Ask and Compose.dc.html#s1">Ask publicly</a> — usually faster than a DM, and others benefit</span></div>
+                  <div style="display:flex;gap:8px"><span style="color:var(--signal);font-family:var(--mono);flex:none">→</span><span><a href="SciCollab C1 - Ask and Compose.dc.html#s4">Comment on their answer</a> — replies to comments are never gated</span></div>
+                  <div style="display:flex;gap:8px"><span style="color:var(--signal);font-family:var(--mono);flex:none">→</span><span><a href="SciCollab G1 - Network and Discovery.dc.html#s2">Send a connection request</a> — 200 characters, and accepting opens the channel</span></div>
+                  <div style="display:flex;gap:8px"><span style="color:var(--signal);font-family:var(--mono);flex:none">→</span><span><a href="SciCollab G3 - Collaboration and Events.dc.html#s2">Book their office hours</a> if they offer them</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:12px;font:400 12px/1.5 var(--sans)">Stated in plain words, with a route out and a set of alternatives. A gate with no explanation reads as "you are not welcome"; the same gate with a path reads as "not yet".</div>
+        </div>
+        <div style="padding:18px 20px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="height:24px;padding:0 10px;background:var(--ok);color:#fff;display:flex;align-items:center;font:500 10px/1 var(--mono);letter-spacing:.06em">STATE B · UNGATED</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">A. Rivera · connected, 1,989 reputation</span></div>
+          <div style="border:1px solid var(--ink);background:var(--surface);display:flex;flex-direction:column;height:520px">
+            <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--rule);background:var(--bg);flex:none">
+              <span style="position:relative;width:28px;height:28px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 10px/1 var(--mono);flex:none">TO<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+              <div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><span style="font:500 12px/1.3 var(--mono)">T. Okafor</span><span style="display:inline-flex;padding:1px 5px;border:1px solid var(--ok);color:var(--ok);font:500 8px/1.4 var(--mono)">CONNECTED</span></div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">usually replies within 6 h · Brussels, same time zone</div></div>
+              <a href="SciCollab G4 - Messaging.dc.html#s4" style="width:26px;height:26px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;color:var(--mute);flex:none" style-hover="border-color:#0D0D0D;color:#0D0D0D"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></a>
+            </div>
+            <div style="flex:1;padding:13px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+              <div style="display:flex;gap:10px">
+                <span style="width:24px;height:24px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 8px/1 var(--mono);flex:none">TO</span>
+                <div style="flex:1;min-width:0"><div style="border:1px solid var(--rule);background:var(--bg);padding:10px;font:400 13px/1.55 var(--sans)">Saw your null result. We are about to do the same lot comparison — can I see the raw gating before we start?</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute);margin-top:4px">09:14</div></div>
+              </div>
+              <div style="display:flex;gap:10px;flex-direction:row-reverse">
+                <span style="position:relative;width:24px;height:24px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 8px/1 var(--mono);flex:none">AR<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end">
+                  <div style="border:1px solid var(--ink);background:var(--surface);padding:10px;font:400 13px/1.55 var(--sans);max-width:88%">Yes — sharing the dataset with you now. It is <b>Lab</b> visibility so this grants you read access as an individual, not to your whole group.</div>
+                  <a href="SciCollab E2 - Dataset Detail.dc.html#s1" style="display:flex;gap:9px;align-items:center;border:1px solid var(--ink);background:var(--bg);padding:8px 10px;margin-top:7px;text-decoration:none;color:var(--ink);max-width:88%" style-hover="border-color:#FF4D00">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex:none"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/></svg>
+                    <div style="flex:1;min-width:0"><div style="font:400 11px/1.3 var(--mono)">DS-1174 · run14–16.fcs</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">shared with T. Okafor · logged in the audit trail</div></div>
+                    <span style="display:inline-flex;padding:2px 5px;border:1px solid var(--ink);border-radius:2px;font:500 8px/1.3 var(--mono);flex:none">LAB</span>
+                  </a>
+                  <div style="font:400 9px/1.3 var(--mono);color:var(--mute);margin-top:4px">09:31 · read 09:32</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px">
+                <span style="width:24px;height:24px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 8px/1 var(--mono);flex:none">TO</span>
+                <div style="flex:1;min-width:0"><div style="border:1px solid var(--rule);background:var(--bg);padding:10px;font:400 13px/1.55 var(--sans)">Perfect. I will record our run against <a href="SciCollab C2 - Method Cards.dc.html#s1">MC-0288</a> either way — success or not.</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute);margin-top:4px">09:34</div></div>
+              </div>
+              <div style="margin-top:auto;border:1px solid var(--rule);background:var(--bg);padding:11px">
+                <div style="font:400 13px/1.5 var(--sans);color:#9A968E;margin-bottom:9px">Reply — attach an artifact, code or a figure…</div>
+                <div style="display:flex;gap:8px;align-items:center;border-top:1px solid var(--rule);padding-top:9px">
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute);cursor:pointer">Attach</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute);cursor:pointer">TeX</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute);cursor:pointer">Code</span>
+                  <span style="font:400 10px/1 var(--mono);color:var(--mute);cursor:pointer">Schedule send</span>
+                  <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute);border:1px solid var(--rule);padding:3px 5px">⌘↵</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px">
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">READ RECEIPTS · D13</div><div style="font:400 12px/1.5 var(--sans)">Reciprocal only. You see read state if and only if you show yours. Nobody is watched one-way.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">TIME ZONES · D09</div><div style="font:400 12px/1.5 var(--sans)">Sending at 02:00 their time warns you and offers to schedule. Small courtesy, large effect on cross-continental collaboration.</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">D01 · D09 · D13 · D14 · C06 · H12</span><span style="margin-left:auto">the gate always states its reason and its exit</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">17</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">MESSAGE REQUESTS · QUARANTINE (D05)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">660 × 600</span>
+      </div>
+      <div style="position:relative;width:660px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">MESSAGE REQUESTS</span>
+          <span style="display:inline-flex;padding:2px 6px;background:var(--ink);color:#F7F6F3;font:500 9px/1.4 var(--mono)">3</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">never counted in your unread badge</span>
+        </div>
+        <div style="padding:16px">
+          <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-bottom:14px">Messages from people you are not connected to land here, not in your inbox. Nothing in this list has notified you.</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:12px">
+              <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">
+                <span style="position:relative;width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono);flex:none">PA<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span>
+                <div style="flex:1;min-width:0"><div style="font:500 11px/1.3 var(--mono)">P. Aguirre</div><div style="font:400 9px/1.3 var(--mono);color:var(--ok)">ORCID verified · UCL · 61 answers</div></div>
+                <span style="display:inline-flex;padding:2px 6px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 8px/1.3 var(--mono);flex:none">LIKELY GENUINE</span>
+              </div>
+              <div style="font:400 12px/1.5 var(--sans);margin-bottom:9px">"We are replicating your passage-cliff result in HEK293. Could we compare gating strategies before we run it?"</div>
+              <div style="display:flex;gap:7px"><button style="height:26px;padding:0 10px;background:var(--ink);border:1px solid var(--ink);color:#F7F6F3;font:500 10px/1 var(--mono);cursor:pointer">Accept and reply</button><button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 10px/1 var(--mono);cursor:pointer">Ignore</button><a href="SciCollab G4 - Messaging.dc.html#s4" style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 10px/1 var(--mono);display:flex;align-items:center;margin-left:auto">Block</a></div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px">
+              <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">
+                <span style="width:26px;height:26px;border:1px dashed var(--rule);display:flex;align-items:center;justify-content:center;font:500 9px/1 var(--mono);color:var(--mute);flex:none">?</span>
+                <div style="flex:1;min-width:0"><div style="font:500 11px/1.3 var(--mono);color:var(--mute)">"Editorial Office"</div><div style="font:400 9px/1.3 var(--mono);color:#6B5900">unverified · account 2 days old · 41 identical messages sent</div></div>
+                <span style="display:inline-flex;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;border-radius:2px;font:500 8px/1.3 var(--mono);flex:none">BULK PATTERN</span>
+              </div>
+              <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-bottom:9px">"Dear Esteemed Researcher, we invite your valuable contribution to our upcoming special issue…"</div>
+              <div style="display:flex;gap:7px"><button style="height:26px;padding:0 10px;background:var(--err);border:1px solid var(--err);color:#fff;font:500 10px/1 var(--mono);cursor:pointer">Report as spam</button><button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 10px/1 var(--mono);cursor:pointer">Delete</button></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:8px">WHAT THE SIGNALS ARE</div><div style="font:400 11px/1.45 var(--sans)">Account age, ORCID verification, contribution history, and whether near-identical text went to many people. All checkable facts — no sentiment analysis, no tone policing.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">NOTHING IS AUTO-DELETED</div><div style="font:400 11px/1.45 var(--sans)">A false positive on a genuine collaboration request is far more costly than a spam message you scroll past. The system sorts; it never discards.</div></div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">D05 · D01 · D11 · N11</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">18</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">PROJECT CHANNEL · THREADS + TECHNICAL COMPOSER (D02, D03, D14)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">720 × 600</span>
+      </div>
+      <div style="position:relative;width:720px;border:2px solid var(--signal);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:2px solid var(--signal);background:var(--signal)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round" style="flex:none"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>
+          <span style="font:500 10px/1 var(--mono);letter-spacing:.08em;color:#fff">TIER 4 · PROJECT-PRIVATE · IN THE AUDIT TRAIL</span>
+          <a href="SciCollab D1 - Projects and ELN.dc.html#s2" style="margin-left:auto;font:400 10px/1 var(--mono);color:#fff">Knock-in efficiency →</a>
+        </div>
+        <div style="padding:16px">
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:13px">
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px">
+              <div style="display:flex;gap:9px;align-items:center;margin-bottom:7px"><span style="width:22px;height:22px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 8px/1 var(--mono);flex:none">JK</span><span style="font:500 11px/1 var(--mono)">J. Krieger</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">08:40</span></div>
+              <div style="font:400 13px/1.55 var(--sans);margin-bottom:9px">Before Thursday's nucleofection run — <span style="background:#EFEDE8;border:1px solid var(--rule);padding:1px 4px;font-family:var(--mono);font-size:11px">@A. Rivera</span> can you confirm the cell count formula we are using?</div>
+              <div style="border:1px solid var(--rule);background:var(--surface);padding:9px 10px;font:400 12px/1.5 var(--mono);margin-bottom:9px">N<sub>seed</sub> = 1.2 × 10⁵ × (V<sub>well</sub> / 0.5 mL) · viability ≥ 0.9</div>
+              <div style="display:flex;gap:7px;align-items:center"><span style="display:inline-flex;padding:3px 7px;border:1px solid var(--ink);background:#EFEDE8;border-radius:2px;font:400 9px/1.2 var(--mono);cursor:pointer">Useful · 2</span><span style="font:400 9px/1 var(--mono);color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">3 replies in thread</span></div>
+            </div>
+            <div style="border-left:2px solid var(--signal);margin-left:22px;padding-left:12px;display:flex;flex-direction:column;gap:9px">
+              <div><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px"><span style="font:500 11px/1 var(--mono)">A. Rivera</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">08:52</span></div><div style="font:400 12px/1.5 var(--sans)">Confirmed — it is in <a href="SciCollab C2 - Method Cards.dc.html#s1">MC-0533</a> step 2, and the ELN entry from Monday uses it.</div></div>
+              <div><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px"><span style="font:500 11px/1 var(--mono)">T. Okafor</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">09:03</span></div><div style="font:400 12px/1.5 var(--sans)">One caution: at 24-well scale the viability floor should be 0.92, not 0.9. Adding it as a comment on the card.</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:12px;margin-bottom:12px">
+            <div style="font:400 13px/1.5 var(--sans);color:#9A968E;margin-bottom:10px">Message the project · attach an artifact, drop code, write LaTeX…</div>
+            <div style="display:flex;gap:5px;align-items:center;border-top:1px solid var(--rule);padding-top:10px;flex-wrap:wrap">
+              <span style="height:24px;padding:0 8px;border:1px solid var(--rule);background:var(--surface);display:flex;align-items:center;font:500 9px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">TeX</span>
+              <span style="height:24px;padding:0 8px;border:1px solid var(--rule);background:var(--surface);display:flex;align-items:center;font:500 9px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">Code</span>
+              <span style="height:24px;padding:0 8px;border:1px solid var(--rule);background:var(--surface);display:flex;align-items:center;font:500 9px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">Table</span>
+              <span style="height:24px;padding:0 8px;border:1px solid var(--rule);background:var(--surface);display:flex;align-items:center;font:500 9px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">Molecule</span>
+              <span style="height:24px;padding:0 8px;border:1px solid var(--rule);background:var(--surface);display:flex;align-items:center;font:500 9px/1 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">Figure</span>
+              <span style="height:24px;padding:0 8px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;font:500 9px/1 var(--mono);cursor:pointer">Cite artifact</span>
+              <span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--mute)">D14 · same composer as answers and comments</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+            <div style="border:1px solid var(--signal);background:#FFF8F5;padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#B33600;margin-bottom:8px">THIS CHANNEL IS AUDITED</div><div style="font:400 12px/1.5 var(--sans)">Tier-4 conversations are part of the project record and appear in the <a href="SciCollab D2 - Governance.dc.html#s1">audit trail</a>. The orange chrome says so before anyone types — it is the difference between a chat and a lab notebook adjunct.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">MENTIONS ROUTE · D04</div><div style="font:400 12px/1.5 var(--sans)">An @mention notifies once and creates a task if the message contains an ask. <span style="font-family:var(--mono);font-size:11px">@project</span> reaches everyone and requires a reason field.</div></div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">D02 · D03 · D04 · D14 · D10 · G06 · G10</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--err);background:var(--err);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">19</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:var(--err)">BLOCK, MUTE, REPORT — TWO CLICKS FROM ANYWHERE (D11)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">700 × 620</span>
+      </div>
+      <div style="position:relative;width:700px;border:1px solid var(--err);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--err);background:#FCF3F2">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em;color:var(--err)">SAFETY ACTIONS</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">click 1 · the ⋯ on any person, message or post</span>
+        </div>
+        <div style="padding:16px">
+          <div style="display:grid;grid-template-columns:236px minmax(0,1fr);gap:16px;margin-bottom:14px">
+            <div style="border:1px solid var(--ink);background:var(--surface)">
+              <div style="padding:8px 11px;border-bottom:1px solid var(--rule);background:var(--bg);font:500 9px/1 var(--mono);letter-spacing:.08em;color:var(--mute)">CLICK 2 · THE MENU</div>
+              <div style="padding:5px 0">
+                <div style="padding:8px 11px;font:400 11px/1.3 var(--mono);cursor:pointer" style-hover="background:#EFEDE8">View profile</div>
+                <div style="padding:8px 11px;font:400 11px/1.3 var(--mono);cursor:pointer" style-hover="background:#EFEDE8">Copy link</div>
+                <div style="height:1px;background:var(--rule);margin:5px 0"></div>
+                <div style="padding:8px 11px;font:400 11px/1.3 var(--mono);cursor:pointer;display:flex;gap:8px;align-items:center" style-hover="background:#EFEDE8"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="flex:none"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m17 9 4 6M21 9l-4 6"/></svg>Mute</div>
+                <div style="padding:8px 11px;font:400 11px/1.3 var(--mono);cursor:pointer;display:flex;gap:8px;align-items:center;color:var(--err);background:#FCF3F2"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="flex:none"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>Block</div>
+                <div style="padding:8px 11px;font:400 11px/1.3 var(--mono);cursor:pointer;display:flex;gap:8px;align-items:center;color:var(--err)" style-hover="background:#FCF3F2"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 21V5l8 2 8-2v10l-8 2-8-2"/></svg>Report</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px"><span style="font:500 11px/1.3 var(--mono)">MUTE</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">silent, reversible, one-sided</span></div><div style="font:400 12px/1.5 var(--sans)">You stop seeing them. They can still see and answer your public work. Nothing is announced. For someone whose volume is tiring, not someone who is a problem.</div></div>
+              <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px"><div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px"><span style="font:500 11px/1.3 var(--mono);color:var(--err)">BLOCK</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">mutual, immediate, silent to them</span></div><div style="font:400 12px/1.5 var(--sans)">No messages, no comments on your artifacts, no connection requests, no visibility of your non-public work. They are not told. <b>Existing co-authorship and citations are untouched</b> — blocking is a communication boundary, never a rewriting of the record.</div></div>
+              <div style="border:1px solid var(--ink);background:var(--surface);padding:12px"><div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px"><span style="font:500 11px/1.3 var(--mono)">REPORT</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">goes to humans, with a stated route</span></div><div style="font:400 12px/1.5 var(--sans)">Six categories. Spam and harassment go to platform trust and safety. <b>Research misconduct goes to the institution's named integrity office</b>, not to community moderators — that is a formal process with legal weight and it does not belong in a volunteer queue.</div></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:8px">TWO CLICKS, EVERY SURFACE</div><div style="font:400 11px/1.45 var(--sans)">Person card, message header, comment, answer, community post, event thread. Same menu, same position. A safety control that has to be hunted for does not exist.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">RATE LIMITS</div><div style="font:400 11px/1.45 var(--sans)">Unsolicited messages: 5/day for a new account, 20/day established. Connection requests: 10/day. Applied silently — a spammer should not learn the threshold.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">AFTER YOU REPORT</div><div style="font:400 11px/1.45 var(--sans);color:var(--ink)">You are told what happened and when. A report that vanishes into silence teaches people not to report.</div></div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">D11 · D05 · N11 · N08 · C26</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">20</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">NOTIFICATION CENTRE · PER CATEGORY, PER CHANNEL (E14)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">700 × 620</span>
+      </div>
+      <div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">NOTIFICATIONS</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">Settings / Notifications</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--ink);margin-bottom:13px">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 58px 58px 58px 74px;border-bottom:1px solid var(--ink);background:var(--bg)">
+              <div style="padding:8px 11px;font:500 9px/1.2 var(--mono);letter-spacing:.08em;color:var(--mute)">CATEGORY</div>
+              <div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:center">IN APP</div>
+              <div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:center">EMAIL</div>
+              <div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:center">PUSH</div>
+              <div style="padding:8px 8px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:right">DIGEST</div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 58px 58px 58px 74px;border-bottom:1px solid #EBE8E2;align-items:center">
+              <div style="padding:9px 11px;font:400 11px/1.4 var(--mono)">Answer to my question</div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--mute);text-align:right">instant</div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 58px 58px 58px 74px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFF8F5">
+              <div style="padding:9px 11px;font:400 11px/1.4 var(--mono)">A method I follow gains a failure mode</div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--rule);background:#F0EDE8"></span></div>
+              <div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:#B33600;text-align:right">instant</div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 58px 58px 58px 74px;border-bottom:1px solid #EBE8E2;align-items:center">
+              <div style="padding:9px 11px;font:400 11px/1.4 var(--mono)">Someone reused my dataset</div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#F7F6F3" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--rule);background:#F0EDE8"></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--rule);background:#F0EDE8"></span></div>
+              <div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--mute);text-align:right">weekly</div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 58px 58px 58px 74px;border-bottom:1px solid #EBE8E2;align-items:center">
+              <div style="padding:9px 11px;font:400 11px/1.4 var(--mono)">Community activity in my tags</div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--rule);background:#F0EDE8"></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--rule);background:#F0EDE8"></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--rule);background:#F0EDE8"></span></div>
+              <div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--mute);text-align:right">weekly</div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 58px 58px 58px 74px;align-items:center;background:#FCF3F2">
+              <div style="padding:9px 11px;font:400 11px/1.4 var(--mono);color:var(--err)">Retraction affecting my work</div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--err);background:var(--err);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--err);background:var(--err);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 6px;display:flex;justify-content:center"><span style="width:14px;height:14px;border:1px solid var(--err);background:var(--err);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg></span></div>
+              <div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--err);text-align:right">cannot mute</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px">
+            <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--err);margin-bottom:8px">ONE CATEGORY CANNOT BE MUTED</div><div style="font:400 12px/1.5 var(--sans)"><a href="SciCollab F4 - Open Review.dc.html#s4">A retraction affecting work you cited or built on.</a> Everything else on this screen is yours to silence; that one is a correctness obligation, and it is the only exception in the whole product.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">QUIET HOURS</div><div style="font:400 12px/1.5 var(--sans)">Push is suppressed 19:00–08:00 local and all weekend by default. Opt in to be reachable, not out of being disturbed.</div></div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:12px;font:400 12px/1.5 var(--sans)"><b>Fourteen categories, four channels, one grid.</b> No "manage preferences" maze, no dark pattern where turning off e-mail turns on push. Defaults are conservative: three categories are instant, everything else is a weekly digest.</div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">E14 · C07 · D04 · J16 · A22</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

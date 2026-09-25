@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; }
+  a { color:#B33600; text-decoration:none; border-bottom:1px solid currentColor; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+  @keyframes scpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-family:var(--mono);padding:0 0 96px">
+
+  <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;height:56px;padding:0 24px;background:var(--bg);border-bottom:1px solid var(--ink)">
+    <a href="SciCollab Foundation.dc.html" style="display:flex;align-items:flex-end;gap:0;border:0;text-decoration:none">
+      <span style="position:relative;font:700 16px/1 var(--mono);letter-spacing:-.03em;color:var(--ink)">scicollab<span style="position:absolute;left:0;bottom:-5px;width:11px;height:3px;background:var(--signal)"></span></span><span style="font:700 16px/1 var(--mono);color:var(--signal)">/</span>
+    </a>
+    <span style="width:1px;height:20px;background:var(--rule)"></span>
+    <span style="font:500 12px/1 var(--mono);letter-spacing:.1em">DESIGN SYSTEM</span>
+    <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">v0.1 · 2026-09-09 · foundation batch 01</span>
+    <button onClick="{{ toggleTheme }}" style="font:500 11px/1 var(--mono);letter-spacing:.08em;padding:7px 12px;background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:0;cursor:pointer" style-hover="background:var(--ink);color:var(--bg)">{{ themeLabel }}</button>
+  </div>
+
+  <div style="max-width:1320px;margin:0 auto;padding:0 24px">
+
+    <div style="padding:56px 0 40px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:48px;align-items:end">
+      <div>
+        <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:20px">[ 001 ] FOUNDATION</div>
+        <h1 style="font:700 40px/1.2 var(--mono);margin:0 0 12px;letter-spacing:-.03em">Scientific terminal.</h1>
+        <p style="font:400 16px/1.5 var(--sans);color:var(--mute);margin:0;max-width:52ch;text-wrap:pretty">An instrument, not a social app. Precise, dense, unornamented, high-contrast. Every value below is a token; nothing in the product is drawn outside this sheet.</p>
+      </div>
+      <div style="border:1px solid var(--rule);background:var(--surface);padding:16px 18px">
+        <div style="font:500 11px/1 var(--mono);letter-spacing:.12em;color:var(--mute);margin-bottom:12px">RULES OF THE HOUSE</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font:400 12px/1.45 var(--sans)">
+          <div style="display:flex;gap:10px"><span style="color:var(--signal);font-family:var(--mono)">01</span><span>No gradients, no drop shadows, no soft rounded cards, no illustration.</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--signal);font-family:var(--mono)">02</span><span>Max three orange elements per screen. A fourth means the hierarchy is wrong.</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--signal);font-family:var(--mono)">03</span><span>Elevation is a border plus a background step. Never a shadow.</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--signal);font-family:var(--mono)">04</span><span>Whitespace is a cost. Dense by default.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <section style="padding:48px 0 0">
+      <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:24px">
+        <span style="font:500 11px/1 var(--mono);color:var(--signal);letter-spacing:.14em">[ 01 ]</span>
+        <h2 style="font:500 20px/1.2 var(--mono);margin:0;letter-spacing:-.01em">COLOUR — LIGHT</h2>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">10 tokens · default theme</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px">
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#F7F6F3;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--bg</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#F7F6F3</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">Page ground</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#FFFFFF;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--surface</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#FFFFFF</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">Cards, rows, panels</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#0D0D0D;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--ink</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#0D0D0D</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">Primary text, hard rules</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#6B6B6B;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--ink-mute</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#6B6B6B</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">Metadata, secondary</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#D6D3CD;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--rule</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#D6D3CD</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">1px borders, dividers</div></div>
+        </div>
+        <div style="border:1px solid var(--ink);background:var(--surface)">
+          <div style="height:64px;background:#FF4D00;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:var(--signal)">--signal</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#FF4D00</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">The single accent. Sparingly.</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#FFD400;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--flag</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#FFD400</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">Unresolved, needs attention</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#0B7A4B;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--ok</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#0B7A4B</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">Verified, published, passed</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#B3261E;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--err</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#B3261E</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">System error only. Never a null result.</div></div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface)">
+          <div style="height:64px;background:#1B4FA0;border-bottom:1px solid var(--rule)"></div>
+          <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono)">--info</div><div style="font:400 11px/1.3 var(--mono);color:var(--mute)">#1B4FA0</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute);margin-top:4px">Ongoing, informational</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:48px 0 0">
+      <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:24px">
+        <span style="font:500 11px/1 var(--mono);color:var(--signal);letter-spacing:.14em">[ 02 ]</span>
+        <h2 style="font:500 20px/1.2 var(--mono);margin:0;letter-spacing:-.01em">COLOUR — DARK</h2>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">same names, re-valued · lab and night-shift use</span>
+      </div>
+      <div style="background:#0D0D0D;border:1px solid #2E2C29;padding:16px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px">
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#0D0D0D;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--bg</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#0D0D0D</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#161616;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--surface</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#161616</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#F2F0EC;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--ink</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#F2F0EC</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#8E8B85;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--ink-mute</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#8E8B85</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#2E2C29;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--rule</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#2E2C29</div></div>
+          </div>
+          <div style="border:1px solid #F2F0EC;background:#161616">
+            <div style="height:64px;background:#FF5A14;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#FF5A14">--signal</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#FF5A14</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#FFD400;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--flag</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#FFD400</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#3DBB86;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--ok</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#3DBB86</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#F2685E;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--err</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#F2685E</div></div>
+          </div>
+          <div style="border:1px solid #2E2C29;background:#161616">
+            <div style="height:64px;background:#6FA0F0;border-bottom:1px solid #2E2C29"></div>
+            <div style="padding:9px 10px"><div style="font:500 12px/1.3 var(--mono);color:#F2F0EC">--info</div><div style="font:400 11px/1.3 var(--mono);color:#8E8B85">#6FA0F0</div></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;font:400 12px/1.5 var(--sans);color:#8E8B85">Dark is not an inversion. <span style="color:#F2F0EC">--signal</span> lifts to #FF5A14 and <span style="color:#F2F0EC">--ok / --err / --info</span> lighten to hold 4.5:1 against #0D0D0D. Hex values change; token names never do.</div>
+      </div>
+    </section>
+
+    <section style="padding:48px 0 0">
+      <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:24px">
+        <span style="font:500 11px/1 var(--mono);color:var(--signal);letter-spacing:.14em">[ 03 ]</span>
+        <h2 style="font:500 20px/1.2 var(--mono);margin:0;letter-spacing:-.01em">ARTIFACT STATUS</h2>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">one palette, used identically on every object type</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px">
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px">
+          <div style="display:inline-flex;align-items:center;gap:7px;border:1px solid #1B4FA0;padding:4px 8px"><span style="width:7px;height:7px;background:#1B4FA0;border-radius:50%"></span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em;color:#1B4FA0">ONGOING</span></div>
+          <div style="font:400 12px/1.45 var(--sans);color:var(--mute);margin-top:10px">Work in progress. Default for a new project or dataset.</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px">
+          <div style="display:inline-flex;align-items:center;gap:7px;border:1px solid #8A7300;padding:4px 8px"><span style="width:7px;height:7px;background:#FFD400;border-radius:50%"></span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em;color:#6B5900">UNDER REVIEW</span></div>
+          <div style="font:400 12px/1.45 var(--sans);color:var(--mute);margin-top:10px">Submitted for peer or internal validation. Awaiting a human.</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px">
+          <div style="display:inline-flex;align-items:center;gap:7px;border:1px solid #0B7A4B;padding:4px 8px"><span style="width:7px;height:7px;background:#0B7A4B;border-radius:50%"></span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em;color:#0B7A4B">PUBLISHED</span></div>
+          <div style="font:400 12px/1.45 var(--sans);color:var(--mute);margin-top:10px">Immutable version issued, DOI minted.</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px">
+          <div style="display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);padding:4px 8px"><span style="width:7px;height:7px;background:#6B6B6B;border-radius:50%"></span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em;color:#6B6B6B">CLOSED</span></div>
+          <div style="font:400 12px/1.45 var(--sans);color:var(--mute);margin-top:10px">Archived or superseded. Readable, not editable.</div>
+        </div>
+        <div style="border:1px solid var(--signal);background:var(--surface);padding:14px">
+          <div style="display:inline-flex;align-items:center;gap:7px;border:1px solid var(--signal);padding:4px 8px"><span style="width:7px;height:7px;background:#FF4D00;border-radius:50%"></span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em;color:#B33600">NEGATIVE RESULT</span></div>
+          <div style="font:400 12px/1.45 var(--sans);color:var(--mute);margin-top:10px">Orange, deliberately not red. A failure that reproduces is a contribution, and the palette must not call it an error.</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px">
+          <div style="display:inline-flex;align-items:center;gap:7px;border:1px solid var(--signal);padding:4px 8px"><span style="width:7px;height:7px;background:#FF4D00;border-radius:50%;animation:scpulse 1.6s ease-in-out infinite"></span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em;color:#B33600">ASKING FOR HELP</span></div>
+          <div style="font:400 12px/1.45 var(--sans);color:var(--mute);margin-top:10px">Pulsing dot. The only animated state in the system.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:48px 0 0">
+      <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:24px">
+        <span style="font:500 11px/1 var(--mono);color:var(--signal);letter-spacing:.14em">[ 04 ]</span>
+        <h2 style="font:500 20px/1.2 var(--mono);margin:0;letter-spacing:-.01em">TYPOGRAPHY</h2>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">two faces · 7 sizes · 1.2 / 1.5</span>
+      </div>
+
+      <div style="border:1px solid var(--flag);background:#FFFBE6;padding:14px 16px;margin-bottom:24px;display:flex;gap:14px;align-items:flex-start">
+        <span style="font:700 11px/1.6 var(--mono);letter-spacing:.1em;background:var(--flag);color:#0D0D0D;padding:3px 7px;white-space:nowrap">DEVIATION · CONFIRM</span>
+        <div style="font:400 13px/1.5 var(--sans);color:#0D0D0D;max-width:88ch;text-wrap:pretty">The v3 brand direction is monospace throughout. This system uses <b>Inter for long-form body text at 14px and above</b> — question bodies, answers, abstracts, protocol steps, descriptions — because pure monospace at body size is unreadable in dense scientific prose, where a single paragraph can run 400 words. All interface chrome stays JetBrains Mono. <b>Founders: confirm or reject.</b> Rejecting costs roughly 15% reading speed on long answers; accepting means the brand voice lives in the chrome, not the prose.</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-bottom:16px">
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font:500 12px/1 var(--mono);letter-spacing:.1em">JETBRAINS MONO</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">400 / 500 / 700</span></div>
+          <div style="font:500 28px/1.2 var(--mono);letter-spacing:-.02em">ABCDEFGHIJK</div>
+          <div style="font:400 28px/1.2 var(--mono);letter-spacing:-.02em">abcdefghijk 0123456789</div>
+          <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:12px;border-top:1px solid var(--rule);padding-top:10px">Navigation · labels · metadata · identifiers · DOIs · counts · code · table headers · buttons · chips · timestamps. Fixed advance width means a column of DOIs, versions or counts aligns without tabular figures.</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font:500 12px/1 var(--mono);letter-spacing:.1em">INTER</span><span style="font:400 11px/1 var(--mono);color:var(--mute)">400 / 500 / 600</span></div>
+          <div style="font:600 28px/1.2 var(--sans);letter-spacing:-.02em">ABCDEFGHIJK</div>
+          <div style="font:400 28px/1.2 var(--sans);letter-spacing:-.02em">abcdefghijk 0123456789</div>
+          <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:12px;border-top:1px solid var(--rule);padding-top:10px">Body text at 14px and above only: question bodies, answers, abstracts, protocol steps, descriptions. Never used for a number, a label or a button.</div>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--rule);background:var(--surface)">
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);gap:0;border-bottom:1px solid var(--ink);font:500 11px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">
+          <div style="padding:9px 12px;border-right:1px solid var(--rule)">SIZE</div>
+          <div style="padding:9px 12px;border-right:1px solid var(--rule)">ROLE</div>
+          <div style="padding:9px 12px">SPECIMEN</div>
+        </div>
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);border-bottom:1px solid var(--rule);align-items:center">
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">40 / 1.2</div>
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">display</div>
+          <div style="padding:10px 12px;font:700 40px/1.2 var(--mono);letter-spacing:-.03em">Science made easy</div>
+        </div>
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);border-bottom:1px solid var(--rule);align-items:center">
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">28 / 1.2</div>
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">page title</div>
+          <div style="padding:10px 12px;font:500 28px/1.2 var(--mono);letter-spacing:-.02em">CRISPR knock-in efficiency</div>
+        </div>
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);border-bottom:1px solid var(--rule);align-items:center">
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">20 / 1.2</div>
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">section</div>
+          <div style="padding:10px 12px;font:500 20px/1.2 var(--mono)">Method card · v4</div>
+        </div>
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);border-bottom:1px solid var(--rule);align-items:center">
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">16 / 1.5</div>
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">body lg</div>
+          <div style="padding:10px 12px;font:400 16px/1.5 var(--sans)">Transfection efficiency dropped below 4% in every replicate.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);border-bottom:1px solid var(--rule);align-items:center">
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">14 / 1.5</div>
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">body</div>
+          <div style="padding:10px 12px;font:400 14px/1.5 var(--sans)">The default reading size. Answers, abstracts and protocol steps set here.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);border-bottom:1px solid var(--rule);align-items:center">
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">12 / 1.4</div>
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">meta</div>
+          <div style="padding:10px 12px;font:400 12px/1.4 var(--mono)">2026-09-09 14:02 UTC · v4 · 12 forks · CC-BY-4.0</div>
+        </div>
+        <div style="display:grid;grid-template-columns:64px 92px minmax(0,1fr);align-items:center">
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">11 / 1.2</div>
+          <div style="padding:10px 12px;font:400 11px/1 var(--mono);color:var(--mute);border-right:1px solid var(--rule)">micro</div>
+          <div style="padding:10px 12px;font:500 11px/1.2 var(--mono);letter-spacing:.1em">CHIP · LABEL · COLUMN HEADER</div>
+        </div>
+      </div>
+      <div style="font:400 11px/1.5 var(--sans);color:var(--mute);margin-top:10px">11px is a floor, not a default — permitted only for uppercase mono labels with ≥0.08em tracking, never for prose. Below 11px nothing ships.</div>
+    </section>
+
+    <section style="padding:48px 0 0">
+      <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:24px">
+        <span style="font:500 11px/1 var(--mono);color:var(--signal);letter-spacing:.14em">[ 05 ]</span>
+        <h2 style="font:500 20px/1.2 var(--mono);margin:0;letter-spacing:-.01em">SPACING &amp; GEOMETRY</h2>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">8px grid · 1px rules · radius 0–2</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px">
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:18px">
+          <div style="font:500 12px/1 var(--mono);letter-spacing:.1em;margin-bottom:16px">SPACE SCALE</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:400 11px/1 var(--mono);color:var(--mute);width:56px">4 · half</span><span style="height:14px;width:4px;background:var(--signal)"></span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:400 11px/1 var(--mono);color:var(--mute);width:56px">8 · unit</span><span style="height:14px;width:8px;background:var(--ink)"></span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:400 11px/1 var(--mono);color:var(--mute);width:56px">16</span><span style="height:14px;width:16px;background:var(--ink)"></span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:400 11px/1 var(--mono);color:var(--mute);width:56px">24</span><span style="height:14px;width:24px;background:var(--ink)"></span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:400 11px/1 var(--mono);color:var(--mute);width:56px">32</span><span style="height:14px;width:32px;background:var(--ink)"></span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:400 11px/1 var(--mono);color:var(--mute);width:56px">48</span><span style="height:14px;width:48px;background:var(--ink)"></span></div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:400 11px/1 var(--mono);color:var(--mute);width:56px">64</span><span style="height:14px;width:64px;background:var(--ink)"></span></div>
+          </div>
+          <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:14px;border-top:1px solid var(--rule);padding-top:10px">4px exists only for the gap inside a chip and the offset of a focus ring. Everything else is a multiple of 8.</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:18px">
+          <div style="font:500 12px/1 var(--mono);letter-spacing:.1em;margin-bottom:16px">ELEVATION WITHOUT SHADOW</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:#F7F6F3;border:1px solid var(--rule);padding:10px 12px;font:400 11px/1.2 var(--mono);color:var(--mute)">E0 · ground #F7F6F3</div>
+            <div style="background:#FFFFFF;border:1px solid var(--rule);padding:10px 12px;font:400 11px/1.2 var(--mono)">E1 · surface #FFFFFF + 1px rule</div>
+            <div style="background:#FFFFFF;border:1px solid var(--ink);padding:10px 12px;font:400 11px/1.2 var(--mono)">E2 · surface + 1px ink (modal, popover)</div>
+            <div style="background:#0D0D0D;border:1px solid var(--ink);padding:10px 12px;font:400 11px/1.2 var(--mono);color:#F7F6F3">E3 · inverted (command palette, toast)</div>
+          </div>
+          <div style="font:400 12px/1.5 var(--sans);color:var(--mute);margin-top:14px;border-top:1px solid var(--rule);padding-top:10px">Four steps, no more. A darker border reads as "closer" faster than any blur.</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px"><div style="height:40px;border:1px solid var(--ink);border-radius:0;margin-bottom:10px"></div><div style="font:500 11px/1.3 var(--mono)">radius 0 — default</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">Panels, tables, inputs, buttons.</div></div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px"><div style="height:40px;border:1px solid var(--ink);border-radius:2px;margin-bottom:10px"></div><div style="font:500 11px/1.3 var(--mono)">radius 2 — maximum</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">Chips and badges only.</div></div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px"><div style="height:40px;border:1px solid var(--ink);border-radius:50%;width:40px;margin-bottom:10px"></div><div style="font:500 11px/1.3 var(--mono)">circle — exception</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">Status dots and avatars only.</div></div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:14px"><div style="height:40px;border:1px solid var(--rule);outline:2px solid var(--signal);outline-offset:2px;margin:2px 2px 12px"></div><div style="font:500 11px/1.3 var(--mono)">focus-visible</div><div style="font:400 11px/1.4 var(--sans);color:var(--mute)">2px --signal, 2px offset. Mandatory, WCAG 2.1 AA (S01).</div></div>
+      </div>
+    </section>
+
+    <section style="padding:48px 0 0">
+      <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:24px">
+        <span style="font:500 11px/1 var(--mono);color:var(--signal);letter-spacing:.14em">[ 06 ]</span>
+        <h2 style="font:500 20px/1.2 var(--mono);margin:0;letter-spacing:-.01em">WORDMARK</h2>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">lowercase · monospace · trailing slash</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+          <div style="display:flex;align-items:flex-end">
+            <span style="position:relative;font:700 32px/1 var(--mono);letter-spacing:-.03em">scicollab<span style="position:absolute;left:0;bottom:-8px;width:22px;height:5px;background:var(--signal)"></span></span><span style="font:700 32px/1 var(--mono);color:var(--signal)">/</span>
+          </div>
+          <div style="font:400 11px/1.5 var(--mono);color:var(--mute)">PRIMARY · on --bg or --surface</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:#0D0D0D;padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+          <div style="display:flex;align-items:flex-end">
+            <span style="position:relative;font:700 32px/1 var(--mono);letter-spacing:-.03em;color:#F2F0EC">scicollab<span style="position:absolute;left:0;bottom:-8px;width:22px;height:5px;background:#FF5A14"></span></span><span style="font:700 32px/1 var(--mono);color:#FF5A14">/</span>
+          </div>
+          <div style="font:400 11px/1.5 var(--mono);color:#8E8B85">INVERTED · dark theme, favicon field</div>
+        </div>
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+          <div style="position:relative;width:72px;height:72px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <span style="font:700 26px/1 var(--mono);letter-spacing:-.04em">sc<span style="color:var(--signal)">/</span></span>
+          </div>
+          <div style="font:400 11px/1.5 var(--mono);color:var(--mute)">ICON · 16–72px, app tile, avatar fallback</div>
+        </div>
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+          <div style="font:400 16px/1.4 var(--mono)">debug(research) <span style="color:var(--signal)">→</span> knowledge</div>
+          <div style="font:400 11px/1.5 var(--mono);color:var(--mute)">SIGNATURE LINE · marketing and empty states only. Never in product chrome.</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:16px">
+        <div style="border:1px solid var(--ok);background:var(--surface);padding:14px 16px">
+          <div style="font:500 11px/1 var(--mono);letter-spacing:.1em;color:var(--ok);margin-bottom:10px">DO</div>
+          <div style="font:400 12px/1.55 var(--sans);color:var(--ink)">Keep the slash. Keep it lowercase. Clearspace = the cap height of the <span style="font-family:var(--mono)">s</span> on all four sides. Minimum width 88px. The orange underscore sits under the first character only.</div>
+        </div>
+        <div style="border:1px solid var(--err);background:var(--surface);padding:14px 16px">
+          <div style="font:500 11px/1 var(--mono);letter-spacing:.1em;color:var(--err);margin-bottom:10px">DON'T</div>
+          <div style="font:400 12px/1.55 var(--sans);color:var(--ink)">No title case, no tracking changes, no outline or shadow, no second colour beyond the slash, never set in Inter, never on a photograph, never rotated or locked to a tagline as one asset.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:48px 0 0">
+      <div style="display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:24px">
+        <span style="font:500 11px/1 var(--mono);color:var(--signal);letter-spacing:.14em">[ 07 ]</span>
+        <h2 style="font:500 20px/1.2 var(--mono);margin:0;letter-spacing:-.01em">HARD RULES</h2>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute);margin-left:auto">enforced on every screen in every later batch</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0;border:1px solid var(--rule);background:var(--surface)">
+        <div style="padding:18px;border-right:1px solid var(--rule)">
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:8px;color:var(--signal)">VISIBILITY IS PERMANENT</div>
+          <div style="font:400 13px/1.5 var(--sans);color:var(--ink)">Every screen showing any artifact displays its visibility state as a persistent chip in the top-left of the main canvas — Private, Lab, Institution, Public, Embargoed. Never inside a settings modal.</div>
+        </div>
+        <div style="padding:18px;border-right:1px solid var(--rule)">
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:8px;color:var(--signal)">AI RETRIEVES, NEVER RULES</div>
+          <div style="font:400 13px/1.5 var(--sans);color:var(--ink)">No AI output ships without a visible, clickable source artifact and a path to human validation. AI surfaces and structures; the community validates.</div>
+        </div>
+        <div style="padding:18px">
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:8px;color:var(--signal)">DISCUSSION IS ADJACENT</div>
+          <div style="font:400 13px/1.5 var(--sans);color:var(--ink)">Discussion is never its own destination. It renders beside the artifact it is about, inside the project that contains both.</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const DARK = {'--bg':'#0D0D0D','--surface':'#161616','--ink':'#F2F0EC','--mute':'#8E8B85','--rule':'#2E2C29','--signal':'#FF5A14','--flag':'#FFD400','--ok':'#3DBB86','--err':'#F2685E','--info':'#6FA0F0'};
+const LIGHT = {'--bg':'#F7F6F3','--surface':'#FFFFFF','--ink':'#0D0D0D','--mute':'#6B6B6B','--rule':'#D6D3CD','--signal':'#FF4D00','--flag':'#FFD400','--ok':'#0B7A4B','--err':'#B3261E','--info':'#1B4FA0'};
+
+class Component extends DCLogic {
+  state = { dark: false };
+  rootRef = React.createRef();
+  apply(dark) {
+    const el = this.rootRef.current; if (!el) return;
+    const set = dark ? DARK : LIGHT;
+    for (const k in set) el.style.setProperty(k, set[k]);
+  }
+  renderVals() {
+    return {
+      rootRef: this.rootRef,
+      themeLabel: this.state.dark ? 'LIGHT ↩' : 'DARK ↪',
+      toggleTheme: () => this.setState(s => ({ dark: !s.dark }), () => this.apply(this.state.dark)),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

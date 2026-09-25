@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">BATCH J · BOARD 5 OF 5</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">Operations, the API, and 27 things that are not screens</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:88ch">Screens 24–26. Two real surfaces — the public status page and the developer reference — and then a spec-card board for every remaining backlog feature that genuinely has no user interface. <b>No screens were invented to inflate coverage.</b> Each card names the feature, what it does, why it has no UI, and the one place its effect becomes visible to a user, where such a place exists.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab J4 - Monetisation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← J4 monetisation</a>
+      <a href="SciCollab Feature Coverage Index.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">coverage index →</a>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">24</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">PUBLIC STATUS PAGE (T01)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">720 × 620 · separate infrastructure · no login</span>
+      </div>
+      <div style="position:relative;width:720px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">status.scicollab.org</span>
+          <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:400 10px/1 var(--mono);color:var(--ok)"><span style="width:7px;height:7px;background:var(--ok);border-radius:50%"></span>all systems operational</span>
+        </div>
+        <div style="padding:16px">
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--ink);margin-bottom:14px">
+            <div style="background:var(--surface);padding:12px"><div style="font:700 19px/1 var(--mono);color:var(--ok)">99.97%</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:5px">90-DAY UPTIME</div></div>
+            <div style="background:var(--surface);padding:12px"><div style="font:700 19px/1 var(--mono)">99.9%</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:5px">CONTRACTUAL SLA</div></div>
+            <div style="background:var(--surface);padding:12px"><div style="font:700 19px/1 var(--mono)">182 ms</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:5px">SEARCH p95 · T03</div></div>
+          </div>
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">COMPONENTS · 90 DAYS</div>
+          <div style="border:1px solid var(--rule);margin-bottom:14px">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 180px 68px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:9px 11px;font:400 11px/1.3 var(--mono)">Web application</div><div style="padding:9px 8px;display:flex;gap:1px"><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span></div><div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">100%</div></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 180px 68px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:9px 11px;font:400 11px/1.3 var(--mono)">API · <a href="SciCollab J5 - Operations.dc.html#s2">reference</a></div><div style="padding:9px 8px;display:flex;gap:1px"><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--flag)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span></div><div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--mute);text-align:right">99.94%</div></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 180px 68px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:9px 11px;font:400 11px/1.3 var(--mono)">Upload and storage</div><div style="padding:9px 8px;display:flex;gap:1px"><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span></div><div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">100%</div></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 180px 68px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:9px 11px;font:400 11px/1.3 var(--mono)">Compute jobs</div><div style="padding:9px 8px;display:flex;gap:1px"><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--err)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span></div><div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--mute);text-align:right">99.81%</div></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 180px 68px;align-items:center"><div style="padding:9px 11px;font:400 11px/1.3 var(--mono)">DOI minting · DataCite</div><div style="padding:9px 8px;display:flex;gap:1px"><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--flag)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span><span style="flex:1;height:16px;background:var(--ok)"></span></div><div style="padding:9px 8px;font:400 9px/1.3 var(--mono);color:var(--mute);text-align:right">99.9%</div></div>
+          </div>
+          <div style="border:1px solid var(--err);background:#FCF3F2;padding:13px;margin-bottom:13px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><span style="display:inline-flex;padding:2px 6px;border:1px solid var(--err);background:var(--err);color:#fff;font:500 8px/1.3 var(--mono)">RESOLVED</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">2026-08-14 · 41 min · compute jobs</span></div>
+            <div style="font:500 12px/1.35 var(--mono);margin-bottom:7px">Job queue stalled after a scheduler upgrade</div>
+            <div style="font:400 12px/1.5 var(--sans);margin-bottom:9px">Queued jobs did not start for 41 minutes. <b>No jobs were lost</b> and all ran to completion afterwards. Root cause: a migration held a lock longer than the health check tolerated.</div>
+            <div style="font:400 10px/1.4 var(--mono);color:var(--err)">full post-mortem published 2026-08-16 · what we changed, and what we did not</div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px;font:400 12px/1.5 var(--sans)"><b>Hosted separately from the platform</b>, on different infrastructure with a different DNS provider — a status page that goes down with the product is worse than none. Subscribe by email, RSS or webhook; no account needed.</div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">T01 · T03 · T05 · N19</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">26</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">DEVELOPER REFERENCE (O07, O08, O09)</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">660 × 620</span>
+      </div>
+      <div style="position:relative;width:660px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">developers.scicollab.org</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">OpenAPI 3.1 · v1</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--ink);background:#0D0D0D;color:#F2F0EC;padding:13px;margin-bottom:13px">
+            <div style="font:500 9px/1 var(--mono);letter-spacing:.1em;color:#6E8199;margin-bottom:10px">GET /v1/method-cards/MC-0288</div>
+            <div style="font:400 10px/1.6 var(--mono);color:#B6B2AC">{<br>&nbsp;&nbsp;<span style="color:#6FA0F0">"id"</span>: <span style="color:#3DBB86">"MC-0288"</span>,<br>&nbsp;&nbsp;<span style="color:#6FA0F0">"version"</span>: <span style="color:#3DBB86">7</span>,<br>&nbsp;&nbsp;<span style="color:#6FA0F0">"doi"</span>: <span style="color:#3DBB86">"10.5281/zenodo.7994"</span>,<br>&nbsp;&nbsp;<span style="color:#6FA0F0">"visibility"</span>: <span style="color:#3DBB86">"public"</span>,<br>&nbsp;&nbsp;<span style="color:#6FA0F0">"fails_under"</span>: [ … <span style="color:#8E8B85">3 conditions</span> ],<br>&nbsp;&nbsp;<span style="color:#6FA0F0">"reproductions"</span>: { <span style="color:#6FA0F0">"total"</span>: <span style="color:#3DBB86">8</span>, <span style="color:#6FA0F0">"failed"</span>: <span style="color:#3DBB86">2</span> }<br>}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-bottom:13px">
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:11px"><div style="font:500 10px/1 var(--mono);letter-spacing:.08em;margin-bottom:8px">SDKs · O07</div><div style="font:400 11px/1.5 var(--mono);color:var(--mute)">Python · R · JavaScript<br>CLI: <span style="color:#0D0D0D">scicollab push ./run14</span></div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:11px"><div style="font:500 10px/1 var(--mono);letter-spacing:.08em;margin-bottom:8px">WEBHOOKS · O09</div><div style="font:400 11px/1.5 var(--mono);color:var(--mute)">signed, retried 5×<br>replayable for 7 days</div></div>
+          </div>
+          <div style="border:1px solid var(--ok);background:#F4FAF6;padding:12px;margin-bottom:12px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--ok);margin-bottom:9px">THE API IS THE EXPORT GUARANTEE · T08</div>
+            <div style="font:400 12px/1.5 var(--sans)">Everything visible in the interface is reachable through the API, including bulk export of your entire tenant. There is no feature that exists only in the UI, and no "contact us for an export" path.</div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:12px;margin-bottom:12px">
+            <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:9px">DEPRECATION POLICY · T14</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D"><b>24 months' notice</b> on any breaking change, a <span style="font-family:var(--mono)">Sunset</span> header on every affected response, and the old version kept running throughout. Research code is written once and run for a decade — an API that breaks yearly cannot be built on.</div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px;font:400 12px/1.5 var(--sans)"><b>Rate limits are published</b>: 1,000 requests/hour authenticated, 100 anonymous, with the remaining count in every response header. Tokens are managed in <a href="SciCollab B2 - Identity and Profile.dc.html#s6">your settings</a> and every call appears in the <a href="SciCollab I3 - Confidential and Audit.dc.html#s3">audit log</a>.</div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">O07 · O08 · O09 · T02 · T08 · T14 · A21</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--info);background:var(--info);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">25</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:var(--info)">SPEC CARDS — 27 FEATURES WITH NO USER INTERFACE</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 wide · no screens invented · each card names where the effect surfaces</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--info);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="padding:16px 20px;border-bottom:1px solid var(--info);background:#F2F6FC;display:flex;gap:16px;align-items:flex-start">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B4FA0" stroke-width="1.7" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8.2v.01M12 11v5"/></svg>
+        <div style="flex:1"><div style="font:500 13px/1.35 var(--mono);margin-bottom:6px">These are not gaps. They are features whose correct design output is a specification, not a screen.</div><div style="font:400 13px/1.55 var(--sans);max-width:118ch">Drawing a dashboard for key rotation or a settings panel for penetration testing would inflate the coverage number and mislead anyone reading it. Each card below states the feature, what it does, why there is no interface, and — the useful column — <b>where a user would notice if it stopped working</b>.</div></div>
+      </div>
+      <div style="padding:18px 20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px">
+
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T12</span><span style="font:500 12px/1.2 var(--mono);flex:1">Encryption and key management</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">AES-256 at rest, TLS 1.3 in transit, envelope encryption with keys in an HSM, automatic rotation every 90 days. Per-tenant key separation; customer-managed keys available on the Institution tier.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>A key-management console for end users is an attack surface, not a feature. Rotation must not be skippable.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>One line in the <a href="SciCollab I1 - Console and Identity.dc.html#s1">evidence pack</a>, and the CMK option in the contract.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T11</span><span style="font:500 12px/1.2 var(--mono);flex:1">Independent penetration testing</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Annual third-party test plus a test before any major architectural change. Findings triaged to a fix SLA by severity; the summary letter is published.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>It is a procurement artifact and a process, not a product surface.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The summary letter in the <a href="SciCollab I1 - Console and Identity.dc.html#s1">evidence pack</a>. Camille's security office reads it; no user ever does.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">H25</span><span style="font:500 12px/1.2 var(--mono);flex:1">Backup and geographic replication</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Three copies across two EU regions, hourly incremental and daily full, 35-day point-in-time recovery, restore drills quarterly with the result recorded. RPO 1 hour, RTO 4 hours.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Self-service restore of a shared multi-tenant store is a data-loss incident waiting to happen. Versioning already gives users per-artifact recovery.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The <a href="SciCollab C2 - Method Cards.dc.html#s4">version selector</a> is the user-facing half of this. The rest is invisible unless it fails.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T02</span><span style="font:500 12px/1.2 var(--mono);flex:1">Rate limiting and abuse protection</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Per-account, per-IP and per-endpoint limits; progressive backoff; anomaly detection on bulk download and scraping patterns.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Publishing the thresholds to end users teaches an abuser where the line is. API limits <i>are</i> published, because a developer needs them.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>Message caps on <a href="SciCollab G4 - Messaging.dc.html#s1">DMs</a> and headers on the <a href="SciCollab J5 - Operations.dc.html#s2">API</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T05</span><span style="font:500 12px/1.2 var(--mono);flex:1">Observability</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Structured logs, distributed tracing, RED metrics per endpoint, alerting on SLO burn rate rather than on raw error counts.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Internal tooling. Exposing it would leak infrastructure detail and help nobody outside the on-call rota.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The latency figure and incident history on the <a href="SciCollab J5 - Operations.dc.html#s1">status page</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T03 · T04</span><span style="font:500 12px/1.2 var(--mono);flex:1">Latency targets and storage scalability</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Search p95 under 300 ms, feed under 500 ms, upload throughput at line rate. Object storage tiered hot/warm/cold with automatic migration by access pattern.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Targets are engineering commitments. Tiering must be invisible or it becomes a decision users are unqualified to make.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The p95 on the status page, and cold-tier retrieval time noted on <a href="SciCollab E4 - Access and Storage.dc.html#s2">the storage view</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T06 · T07</span><span style="font:500 12px/1.2 var(--mono);flex:1">Feature flags and sandbox</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Staged rollout by cohort with instant rollback. A persistent demo tenant with synthetic data, resettable, for evaluation and training.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Flags are operator tooling. <b>No A/B testing on scientific-record behaviour</b> — two researchers must never see different validation rules.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The sandbox is a URL handed out during a <a href="SciCollab J4 - Monetisation.dc.html#s3">pilot</a>; the flags never surface at all.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T09 · T08</span><span style="font:500 12px/1.2 var(--mono);flex:1">Open standards and export guarantee</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">RO-Crate, BagIt, DataCite, Crossref, ORCID, CRediT, OpenAPI, SCIM, SAML, OCSF. A commitment that every object type has a documented open serialisation.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>A commitment, not a control. It shapes every export button rather than having one of its own.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br><a href="SciCollab E4 - Access and Storage.dc.html#s4">Archival export</a> — the no-lock-in guarantee is this card made visible.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T10</span><span style="font:500 12px/1.2 var(--mono);flex:1">Responsible disclosure and bug bounty</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">security.txt, a PGP key, a 72-hour acknowledgement commitment, safe-harbour language, and a paid bounty scaled by severity.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Its audience is security researchers, who look for a text file at a well-known path, not a product page.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br><span style="font-family:var(--mono);font-size:11px">/.well-known/security.txt</span> and a line in the <a href="SciCollab I7 - Licence and Transparency.dc.html#s2">transparency report</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T13</span><span style="font:500 12px/1.2 var(--mono);flex:1">Internal unit economics</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Cost to serve per seat, per GB, per compute hour; gross margin by tier; the storage-growth curve against revenue.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>It is a board dashboard, not a product feature. Listed only because it appears in the backlog.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>Nowhere in the product. Indirectly, in <a href="SciCollab J4 - Monetisation.dc.html#s1">what the tiers cost</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">O10 · O11 · O16 · O17 · O19 · O21</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Integration connectors</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Slack and Teams, Overleaf, JupyterHub, cloud storage, calendar, and no-code automation. Each is an OAuth connection plus a mapping, configured once.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Six near-identical connect-and-authorise panels would be six mock screens saying the same thing. One integrations settings page covers all of them.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>Settings → Integrations, and then inside the tool the researcher already uses.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">O12 · O13 · O14 · O15 · O18 · O22</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Sync and migration connectors</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">GitHub/GitLab bidirectional sync, ORCID read-write, repository deposit, protocols.io, ELN migration importers, instrument vendor APIs.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>The three that matter most are already drawn where they belong — as steps in a flow, not as a connector page.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br><a href="SciCollab B1 - Onboarding.dc.html#s4">ORCID import</a>, <a href="SciCollab E4 - Access and Storage.dc.html#s3">external deposit</a>, <a href="SciCollab E5 - Code and Compute.dc.html#s1">repository browser</a>. ELN migration is a services engagement, not self-serve.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">O01 · O06 · O20</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Native apps, desktop sync, IdP role</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Native iOS and Android, a desktop sync client for large local datasets, and SciCollab acting as an identity provider to third-party tools.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO NEW UI BECAUSE</span><br>Native apps render the <a href="SciCollab J1 - Mobile.dc.html#s1">mobile screens already designed</a>. Desktop sync is a menu-bar agent. Acting as an IdP has no interface at all beyond a consent screen.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>J1 for mobile; a system tray icon; a standard OAuth consent dialog.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">P10 · P18 · P20</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Marketplace, partnerships, community edition</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Commission on contract-research introductions, conference partnership channel, and a self-hostable open-source edition.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI YET BECAUSE</span><br>Each is a business decision before it is a screen. A marketplace taking commission on research services needs a policy on conflicts of interest that does not exist yet.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NEEDS</span><br>A founder decision, then a design brief. Flagged rather than mocked.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);letter-spacing:.06em">L03 · L08 · L09 · L16</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">The four AI features held back</div>
+          <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D;margin-bottom:10px">Writing assistance, alt-text generation, content translation, meeting-transcript extraction.</div>
+          <div style="border-top:1px solid #E8DDB0;padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans);color:#0D0D0D">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">HELD BECAUSE</span><br>Each generates content that will be read as the researcher's own words. <b>L08 is the closest to shippable</b> — generated alt-text with mandatory human confirmation is defensible and directly serves S01.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">RECOMMENDATION</span><br>Ship L08 next batch with the same review gate as <a href="SciCollab H5 - AI.dc.html#s2">method extraction</a>. Hold the other three.</div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">SPEC CARDS</span><span style="color:#F2F0EC">T02–T14 · H25 · O01 O06 O10–O22 · P10 P18 P20 · L03 L08 L09 L16</span><span style="margin-left:auto">27 features · no screens invented</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

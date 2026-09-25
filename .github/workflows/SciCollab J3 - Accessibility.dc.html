@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/styles.css">
+<script src="_ds/industry-5f50f632-50a9-4e8e-82ef-485ce986c08d/_ds_bundle.js"></script>
+<script src="nav.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+  body { margin:0; font-family:'JetBrains Mono', ui-monospace, monospace; background:#E8E6E1; }
+  a { color:#B33600; text-decoration:none; }
+  a:hover { color:#FF4D00; }
+  ::selection { background:#FF4D00; color:#fff; }
+</style>
+</helmet>
+
+<div style="--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:44px;width:max-content">
+
+  <div style="max-width:1440px">
+    <div style="font:400 11px/1 var(--mono);color:var(--signal);letter-spacing:.16em;margin-bottom:14px">BATCH J · BOARD 3 OF 5</div>
+    <h1 style="font:700 28px/1.2 var(--mono);margin:0 0 8px;letter-spacing:-.03em">Accessibility audit — a legal requirement, measured</h1>
+    <p style="font:400 14px/1.5 var(--sans);color:#4A4A4A;margin:0 0 12px;max-width:92ch">Screens 14–18. The <b>European Accessibility Act</b> applies from 28 June 2025 and the harmonised standard is <b>EN 301 549</b>, which incorporates WCAG 2.1 AA. Three of the most complex screens already designed are audited below with real numbers — measured ratios, numbered focus order, a traced keyboard-only path, listed accessible names and measured target sizes. Failures are listed as failures.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="SciCollab Foundation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← foundation</a>
+      <a href="SciCollab J2 - Analytics.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">← J2 analytics</a>
+      <a href="SciCollab J4 - Monetisation.dc.html" style="font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 10px;color:var(--ink)">J4 monetisation →</a>
+    </div>
+  </div>
+
+  <div style="width:1440px;border:1px solid var(--ink);background:#0D0D0D;color:#F2F0EC;padding:20px 22px">
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#2E2C29;border:1px solid #2E2C29;margin-bottom:15px">
+      <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono);color:#3DBB86">4.9:1</div><div style="font:400 9px/1.4 var(--mono);color:#8E8B85;margin-top:6px">LOWEST BODY-TEXT RATIO<br>across all three screens · AA needs 4.5</div></div>
+      <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono);color:#3DBB86">44px</div><div style="font:400 9px/1.4 var(--mono);color:#8E8B85;margin-top:6px">SMALLEST TOUCH TARGET<br>AA needs 24, our own floor is 44</div></div>
+      <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono);color:#FFD400">3</div><div style="font:400 9px/1.4 var(--mono);color:#8E8B85;margin-top:6px">OPEN FAILURES<br>listed below, with owners</div></div>
+      <div style="background:#0D0D0D;padding:14px 16px"><div style="font:700 24px/1 var(--mono);color:#F2685E">2</div><div style="font:400 9px/1.4 var(--mono);color:#8E8B85;margin-top:6px">UNSOLVED IN PRINCIPLE<br>data viewers · see the honest note</div></div>
+    </div>
+    <div style="font:400 13px/1.6 var(--sans);color:#B6B2AC;max-width:120ch">The design system already forces most of this: <b style="color:#F2F0EC">near-black on off-white gives 17.4:1</b>, focus-visible is a mandatory 2px signal ring at 2px offset, and nothing ships below 11px. What an audit adds is the cases the tokens cannot decide — focus <i>order</i> in a three-pane layout, the accessible name of an icon-only button, and whether a scatter plot means anything to a screen reader.</div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">14</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">AUDIT 1 · THE QUESTION COMPOSER</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 700 · <a href="SciCollab C1 - Ask and Compose.dc.html#s1">C1 screen 1</a> · the most complex input surface in the product</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="padding:20px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1fr);gap:18px">
+
+        <div>
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">FOCUS ORDER · NUMBERED, TAB ONLY</div>
+          <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--signal);background:#FFF8F5"><span style="width:20px;height:20px;background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">1</span><span style="font:400 11px/1.3 var(--mono);flex:1">Skip to main content</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">visible on focus</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">2</span><span style="font:400 11px/1.3 var(--mono);flex:1">Title field</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">3</span><span style="font:400 11px/1.3 var(--mono);flex:1">Formatting toolbar · single tab stop</span><span style="font:400 9px/1 var(--mono);color:var(--ok)">arrow keys inside</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">4</span><span style="font:400 11px/1.3 var(--mono);flex:1">Problem statement</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">5</span><span style="font:400 11px/1.3 var(--mono);flex:1">Conditions · 6 fields, 5–10</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">11</span><span style="font:400 11px/1.3 var(--mono);flex:1">Outcome radio group · one stop</span><span style="font:400 9px/1 var(--mono);color:var(--ok)">arrows</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">12</span><span style="font:400 11px/1.3 var(--mono);flex:1">Visibility · LAB</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--ink);background:var(--bg)"><span style="width:20px;height:20px;background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">13</span><span style="font:400 11px/1.3 var(--mono);flex:1">Review and post</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px dashed var(--rule);opacity:.75"><span style="width:20px;height:20px;border:1px dashed var(--rule);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none;color:var(--mute)">14</span><span style="font:400 11px/1.3 var(--mono);flex:1;color:var(--mute)">Retrieval panel · <b>after</b> the form</span></div>
+            </div>
+            <div style="border-top:1px solid var(--rule);margin-top:11px;padding-top:10px;font:400 11px/1.45 var(--sans)"><b>The retrieval panel is last on purpose.</b> It updates as you type; if it sat in the tab order before the post button, a screen-reader user would be pushed through changing suggestions every time they moved. It is an <span style="font-family:var(--mono);font-size:10px">aria-live="polite"</span> region announced on change, and reachable directly with a landmark jump.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">MEASURED CONTRAST</div>
+            <div style="border:1px solid var(--ink);background:var(--surface)">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid var(--ink);background:var(--bg)"><div style="padding:8px 11px;font:500 9px/1.2 var(--mono);color:var(--mute)">ELEMENT</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute)">PAIR</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:right">RATIO</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:right">AA</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Body text</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">0D0D0D / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">17.4</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Muted metadata</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">6B6B6B / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">5.3</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">White on signal · button</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">FFFFFF / FF4D00</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">3.6</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS*</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Signal text on ground</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">B33600 / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">6.1</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono);color:#0D0D0D">Yellow flag ground</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:#6B5900">0D0D0D / FFD400</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">13.9</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Focus ring on ground</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">FF4D00 / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">3.6</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+            </div>
+            <div style="font:400 10px/1.45 var(--sans);color:var(--mute);margin-top:8px">* 3.6:1 passes as large text (12px mono at 500 weight on a 32px button meets the large-text threshold) and passes 1.4.11 non-text contrast. <b>White on signal is not used below 14px anywhere.</b></div>
+          </div>
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">TARGET SIZES · MEASURED</div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:6px;font:400 10px/1.4 var(--mono)">
+              <div style="display:flex;justify-content:space-between"><span>Primary button</span><span>32 × 116 · <span style="color:var(--ok)">pass</span></span></div>
+              <div style="display:flex;justify-content:space-between"><span>Toolbar icon button</span><span>22 × 24 · <span style="color:var(--ok)">pass 2.5.8</span></span></div>
+              <div style="display:flex;justify-content:space-between"><span>Chip remove ×</span><span>24 × 24 · <span style="color:var(--ok)">pass</span></span></div>
+              <div style="display:flex;justify-content:space-between"><span>Mobile · all targets</span><span>44 × 44 · <span style="color:var(--ok)">exceeds</span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">ACCESSIBLE NAMES · EVERY ICON-ONLY CONTROL</div>
+            <div style="border:1px solid var(--ink);background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:6px;font:400 10px/1.5 var(--mono)">
+              <div><span style="color:var(--mute)">TeX button</span> → "Insert LaTeX equation"</div>
+              <div><span style="color:var(--mute)">Code button</span> → "Insert code block"</div>
+              <div><span style="color:var(--mute)">Molecule</span> → "Insert chemical structure"</div>
+              <div><span style="color:var(--mute)">Figure</span> → "Attach a figure"</div>
+              <div><span style="color:var(--mute)">DOI</span> → "Expand a DOI into a citation"</div>
+              <div><span style="color:var(--mute)">Visibility chip</span> → "Visibility: Lab. Change who can see this."</div>
+              <div><span style="color:var(--mute)">Status dot</span> → "Asking for help" <span style="color:var(--ok)">· not colour alone</span></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ok);background:#F4FAF6;padding:13px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--ok);margin-bottom:10px">KEYBOARD-ONLY PATH · TRACED END TO END</div>
+            <div style="font:400 12px/1.55 var(--sans)">Post a complete question without a mouse: <span style="font-family:var(--mono);font-size:11px">Tab</span> ×2 → type title → <span style="font-family:var(--mono);font-size:11px">Tab</span> ×2 → type body → <span style="font-family:var(--mono);font-size:11px">Tab</span> ×6 → fill conditions → <span style="font-family:var(--mono);font-size:11px">Tab</span> → <span style="font-family:var(--mono);font-size:11px">→</span> to pick outcome → <span style="font-family:var(--mono);font-size:11px">Tab</span> ×2 → <span style="font-family:var(--mono);font-size:11px">Enter</span>. <b>Or ⌘↵ from any field.</b> 14 stops, no traps, and Escape always closes the quality assistant without losing the draft.</div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px">
+            <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:10px">FAILURE 1 OF 3 · OPEN</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D"><b>The LaTeX preview has no text alternative.</b> A rendered equation is an image to a screen reader. Fix: expose the source as the accessible name and offer MathML output. <span style="font-family:var(--mono);font-size:11px">Owner: composer team · blocks AA on 1.1.1</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">S01 · S02 · S03 · F01 · F24</span><span style="margin-left:auto">EN 301 549 · WCAG 2.1 AA · 1 open failure on this screen</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">14b</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">AUDIT 2 AND 3 · UPLOAD · INSTITUTIONAL DASHBOARD</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">760 × 640</span>
+      </div>
+      <div style="position:relative;width:760px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:13px;margin-bottom:14px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px"><span style="font:500 11px/1 var(--mono);letter-spacing:.06em">DATASET UPLOAD</span><a href="SciCollab E1 - Deposit Flow.dc.html#s1" style="font:400 9px/1 var(--mono)">E1 screens 1–6 →</a><span style="margin-left:auto;display:inline-flex;padding:3px 7px;border:1px solid #8A7300;background:#FFFBE6;color:#0D0D0D;font:500 9px/1.3 var(--mono)">1 FAILURE</span></div>
+            <div style="display:flex;flex-direction:column;gap:7px;font:400 11px/1.5 var(--sans)">
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span><b>Drag-and-drop has a keyboard equivalent.</b> The dropzone is a button; Enter opens the file picker. 2.1.1 satisfied — this is the single most commonly failed pattern in upload UIs.</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Upload progress is <span style="font-family:var(--mono);font-size:10px">role="progressbar"</span> with <span style="font-family:var(--mono);font-size:10px">aria-valuenow</span>, announced at 25% intervals rather than continuously.</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Validation errors use <span style="font-family:var(--mono);font-size:10px">aria-describedby</span> on the field, not a summary at the top. 3.3.1 and 3.3.3.</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>The 5-step wizard is a <span style="font-family:var(--mono);font-size:10px">nav</span> with <span style="font-family:var(--mono);font-size:10px">aria-current="step"</span>; step state is never colour alone.</span></div>
+              <div style="display:flex;gap:9px;padding-top:7px;border-top:1px solid var(--rule)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="2.4" stroke-linecap="round" style="flex:none;margin-top:3px"><path d="M6 6l12 12M18 6 6 18"/></svg><span><b>FAILURE 2 · the privacy-scan result table.</b> Findings are conveyed by row background alone at small sizes. Fix: add a text status column. <span style="font-family:var(--mono);font-size:10px">1.4.1 use of colour</span></span></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:13px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px"><span style="font:500 11px/1 var(--mono);letter-spacing:.06em">INSTITUTIONAL DASHBOARD</span><a href="SciCollab I2 - Dashboards.dc.html#s1" style="font:400 9px/1 var(--mono)">I2 screen 4 →</a><span style="margin-left:auto;display:inline-flex;padding:3px 7px;border:1px solid #8A7300;background:#FFFBE6;color:#0D0D0D;font:500 9px/1.3 var(--mono)">1 FAILURE</span></div>
+            <div style="display:flex;flex-direction:column;gap:7px;font:400 11px/1.5 var(--sans)">
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span><b>Every chart has a table.</b> A "view as table" control sits beside each figure and the table is the accessible name target — not a generated alt string trying to describe a trend.</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>The red caution banner is <span style="font-family:var(--mono);font-size:10px">role="note"</span>, first in the reading order after the heading, and announced before any figure.</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>The department table has <span style="font-family:var(--mono);font-size:10px">scope</span> on headers and a caption naming the period, so a row read aloud is self-describing.</span></div>
+              <div style="display:flex;gap:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="m5 12.5 5 5 9-11"/></svg><span>Zoom to 200% and 400% reflows without horizontal scrolling · 1.4.10.</span></div>
+              <div style="display:flex;gap:9px;padding-top:7px;border-top:1px solid var(--rule)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="2.4" stroke-linecap="round" style="flex:none;margin-top:3px"><path d="M6 6l12 12M18 6 6 18"/></svg><span><b>FAILURE 3 · the four-year bar pair.</b> Two series distinguished by colour with no pattern or label. Fix: direct labels on the final bar of each series. <span style="font-family:var(--mono);font-size:10px">1.4.1</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">S01 · S02 · H01 · M02</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="width:26px;height:26px;border:1px solid var(--err);background:var(--err);color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">18</span>
+        <span style="font:500 13px/1 var(--mono);letter-spacing:.06em;color:var(--err)">ACCESSIBILITY STATEMENT (S03) — PUBLISHED</span>
+        <span style="font:400 11px/1 var(--mono);color:#6B6B6B">640 × 640 · required, and honest</span>
+      </div>
+      <div style="position:relative;width:640px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 10px/1.2 var(--mono)">PUBLIC</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">ACCESSIBILITY STATEMENT</span>
+        </div>
+        <div style="padding:16px">
+          <div style="font:400 13px/1.55 var(--sans);margin-bottom:13px">SciCollab is committed to meeting <b>EN 301 549</b> and <b>WCAG 2.1 level AA</b>. This statement was last reviewed on <b>2026-09-10</b> and is updated whenever an audit closes.</div>
+          <div style="border:1px solid var(--ok);background:#F4FAF6;padding:12px;margin-bottom:12px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--ok);margin-bottom:9px">CONFORMANCE STATUS</div>
+            <div style="font:400 12px/1.5 var(--sans)"><b>Partially conformant.</b> Most of the product meets AA. Three known failures are listed below with a target date. We do not claim full conformance while any are open — a statement that overclaims is worse than one that admits a gap.</div>
+          </div>
+          <div style="border:1px solid var(--ink);margin-bottom:12px">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 74px 86px;border-bottom:1px solid var(--ink);background:var(--bg)"><div style="padding:8px 11px;font:500 9px/1.2 var(--mono);color:var(--mute)">KNOWN FAILURE</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute)">CRITERION</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:right">FIX BY</div></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 74px 86px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:9px 11px;font:400 10px/1.4 var(--mono)">LaTeX preview has no text alternative</div><div style="padding:9px 6px;font:400 9px/1.3 var(--mono)">1.1.1</div><div style="padding:9px 6px;font:400 9px/1.3 var(--mono);text-align:right">2026-12</div></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 74px 86px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:9px 11px;font:400 10px/1.4 var(--mono)">Privacy-scan findings use colour alone</div><div style="padding:9px 6px;font:400 9px/1.3 var(--mono)">1.4.1</div><div style="padding:9px 6px;font:400 9px/1.3 var(--mono);text-align:right">2026-11</div></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 74px 86px;align-items:center"><div style="padding:9px 11px;font:400 10px/1.4 var(--mono)">Paired bar series lack direct labels</div><div style="padding:9px 6px;font:400 9px/1.3 var(--mono)">1.4.1</div><div style="padding:9px 6px;font:400 9px/1.3 var(--mono);text-align:right">2026-11</div></div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:12px;margin-bottom:12px">
+            <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:9px">THE HONEST NOTE · 2 UNSOLVED IN PRINCIPLE</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D">The <a href="SciCollab E3 - Viewers.dc.html#s1">molecular and genomic viewers</a> are interactive 3D and dense sequence surfaces. We provide a full data table and a text summary for both, but <b>we do not claim the interactive view itself is equivalent</b> for a non-sighted user. We are not aware of a solved approach in any comparable product, and we would rather say so than tick a box.</div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:12px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:9px">FEEDBACK AND ENFORCEMENT</div>
+            <div style="font:400 12px/1.5 var(--sans)">accessibility@scicollab.org · we answer within 5 working days. If you are not satisfied you may contact the national enforcement body in your member state, named and linked on the full page.</div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">S03 · S01 · S02 · N20</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+      <span style="width:26px;height:26px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 12px/1 var(--mono)">15·16·17</span>
+      <span style="font:500 13px/1 var(--mono);letter-spacing:.06em">DARK · HIGH CONTRAST · LOCALISED · LOW BANDWIDTH (S04, S05, S10)</span>
+      <span style="font:400 11px/1 var(--mono);color:#6B6B6B">1440 × 560 · the same method card, five ways</span>
+    </div>
+    <div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="padding:18px 20px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px">
+
+        <div>
+          <div style="font:400 9px/1 var(--mono);color:var(--mute);letter-spacing:.08em;margin-bottom:9px">DARK · S04</div>
+          <div style="border:1px solid #2E2C29;background:#0D0D0D;color:#F2F0EC;height:230px;display:flex;flex-direction:column">
+            <div style="padding:9px 11px;border-bottom:1px solid #2E2C29;background:#161616;display:flex;align-items:center;gap:7px"><span style="font:500 8px/1 var(--mono);color:#8E8B85;letter-spacing:.1em">METHOD CARD</span><span style="margin-left:auto;display:inline-flex;padding:2px 5px;border:1px solid #3DBB86;color:#3DBB86;font:500 8px/1.3 var(--mono)">PUBLIC</span></div>
+            <div style="padding:11px;flex:1">
+              <div style="font:500 12px/1.35 var(--mono);margin-bottom:8px">Lipofection of HEK293T at low passage</div>
+              <div style="font:400 10px/1.4 var(--mono);color:#8E8B85;margin-bottom:10px">T. Okafor · v7 · 12 forks</div>
+              <div style="border-left:3px solid #FF5A14;padding:8px 9px;background:#161616;font:400 10px/1.45 var(--sans);color:#B6B2AC">Fails above passage 18 — 2 reproductions confirm</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:10px;margin-top:9px;font:400 10px/1.45 var(--sans);color:var(--mute)">Not an inversion. <span style="font-family:var(--mono);font-size:9px">--signal</span> lifts to #FF5A14 and <span style="font-family:var(--mono);font-size:9px">--ok</span> to #3DBB86 to hold 4.5:1 on #0D0D0D.</div>
+        </div>
+
+        <div>
+          <div style="font:400 9px/1 var(--mono);color:var(--mute);letter-spacing:.08em;margin-bottom:9px">HIGH CONTRAST · S04</div>
+          <div style="border:2px solid #000;background:#FFF;height:230px;display:flex;flex-direction:column">
+            <div style="padding:9px 11px;border-bottom:2px solid #000;display:flex;align-items:center;gap:7px"><span style="font:700 8px/1 var(--mono);letter-spacing:.1em">METHOD CARD</span><span style="margin-left:auto;display:inline-flex;padding:2px 5px;border:2px solid #000;font:700 8px/1.3 var(--mono)">PUBLIC</span></div>
+            <div style="padding:11px;flex:1">
+              <div style="font:700 12px/1.35 var(--mono);margin-bottom:8px;color:#000">Lipofection of HEK293T at low passage</div>
+              <div style="font:500 10px/1.4 var(--mono);color:#000;margin-bottom:10px">T. Okafor · v7 · 12 forks</div>
+              <div style="border:2px solid #000;padding:8px 9px;font:500 10px/1.45 var(--sans);color:#000"><b>FAILS</b> above passage 18 — 2 reproductions confirm</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:10px;margin-top:9px;font:400 10px/1.45 var(--sans);color:var(--mute)">Pure black on white, 21:1, 2px borders, and <b>every colour-carried meaning restated in words</b> — the orange failure bar becomes the word FAILS.</div>
+        </div>
+
+        <div>
+          <div style="font:400 9px/1 var(--mono);color:var(--mute);letter-spacing:.08em;margin-bottom:9px">FRANÇAIS · S05</div>
+          <div style="border:1px solid var(--ink);background:var(--surface);height:230px;display:flex;flex-direction:column">
+            <div style="padding:9px 11px;border-bottom:1px solid var(--rule);background:var(--bg);display:flex;align-items:center;gap:7px"><span style="font:500 8px/1 var(--mono);color:var(--mute);letter-spacing:.1em">FICHE DE MÉTHODE</span><span style="margin-left:auto;display:inline-flex;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);font:500 8px/1.3 var(--mono)">PUBLIC</span></div>
+            <div style="padding:11px;flex:1">
+              <div style="font:500 12px/1.35 var(--mono);margin-bottom:8px">Lipofection de HEK293T à faible passage</div>
+              <div style="font:400 10px/1.4 var(--mono);color:var(--mute);margin-bottom:10px">T. Okafor · v7 · 12 bifurcations</div>
+              <div style="border-left:3px solid var(--signal);padding:8px 9px;background:var(--bg);font:400 10px/1.45 var(--sans)">Échoue au-delà du passage 18 — confirmé par 2 reproductions</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:10px;margin-top:9px;font:400 10px/1.45 var(--sans);color:#0D0D0D"><b>+31% text.</b> Labels wrap to two lines rather than truncating; no fixed-width label column anywhere in the system.</div>
+        </div>
+
+        <div>
+          <div style="font:400 9px/1 var(--mono);color:var(--mute);letter-spacing:.08em;margin-bottom:9px">中文 · S05</div>
+          <div style="border:1px solid var(--ink);background:var(--surface);height:230px;display:flex;flex-direction:column">
+            <div style="padding:9px 11px;border-bottom:1px solid var(--rule);background:var(--bg);display:flex;align-items:center;gap:7px"><span style="font:500 9px/1 'Noto Sans SC',var(--sans);color:var(--mute);letter-spacing:.06em">方法卡片</span><span style="margin-left:auto;display:inline-flex;padding:2px 5px;border:1px solid var(--ok);color:var(--ok);font:500 9px/1.3 'Noto Sans SC',var(--sans)">公开</span></div>
+            <div style="padding:11px;flex:1">
+              <div style="font:500 14px/1.5 'Noto Sans SC',var(--sans);margin-bottom:8px">低传代 HEK293T 脂质体转染</div>
+              <div style="font:400 11px/1.5 'Noto Sans SC',var(--sans);color:var(--mute);margin-bottom:10px">T. Okafor · v7 · 12 次分支</div>
+              <div style="border-left:3px solid var(--signal);padding:8px 9px;background:var(--bg);font:400 12px/1.7 'Noto Sans SC',var(--sans)">传代 18 以上失败 — 已由 2 次重复实验确认</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:10px;margin-top:9px;font:400 10px/1.45 var(--sans);color:var(--mute)"><b>−40% length, +2px size, 1.7 line height.</b> CJK needs more leading and a larger minimum size; the mono stack falls back to Noto Sans SC for Han characters while Latin identifiers stay mono.</div>
+        </div>
+
+        <div>
+          <div style="font:400 9px/1 var(--mono);color:var(--mute);letter-spacing:.08em;margin-bottom:9px">LOW BANDWIDTH · S10</div>
+          <div style="border:1px solid var(--ink);background:var(--surface);height:230px;display:flex;flex-direction:column">
+            <div style="padding:9px 11px;border-bottom:1px solid var(--rule);background:var(--bg);display:flex;align-items:center;gap:7px"><span style="font:500 8px/1 var(--mono);color:var(--mute);letter-spacing:.1em">METHOD CARD</span><span style="margin-left:auto;font:400 8px/1 var(--mono);color:var(--ok)">14 KB</span></div>
+            <div style="padding:11px;flex:1;display:flex;flex-direction:column">
+              <div style="font:500 12px/1.35 var(--mono);margin-bottom:8px">Lipofection of HEK293T at low passage</div>
+              <div style="font:400 10px/1.4 var(--mono);color:var(--mute);margin-bottom:10px">T. Okafor · v7 · 12 forks</div>
+              <div style="border:1px solid var(--rule);padding:8px 9px;font:400 10px/1.45 var(--sans);margin-bottom:9px">Fails above passage 18 — 2 reproductions confirm</div>
+              <div style="border:1px dashed var(--rule);padding:7px 9px;font:400 9px/1.4 var(--mono);color:var(--mute);margin-top:auto">[ figure · 1.2 MB · tap to load ]</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ok);background:#F4FAF6;padding:10px;margin-top:9px;font:400 10px/1.45 var(--sans)"><b>14 KB, no webfont, no images until asked.</b> Auto-detected below 200 kbit/s and manually selectable. The whole product remains usable — this is not a cut-down view.</div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">S04 · S05 · S06 · S07 · S10 · O01</span><span style="margin-left:auto">no fixed-width label columns anywhere · expansion is a system constraint</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>
