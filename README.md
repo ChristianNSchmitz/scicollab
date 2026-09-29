@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SciCollab
 
-## Getting Started
+A rebuild of the platform against the September 2026 design boards.
 
-First, run the development server:
+Desktop at 1440px, as designed. The screens are not redrawn — they are lifted
+out of the boards and mounted, and the parts that carry live data are rebuilt
+in the same token system.
+
+---
+
+## If you are reading this in ChristianNSchmitz/scicollab
+
+This is a **review copy**. Three things worth knowing before you touch it:
+
+- **The live site does not build from here.** scicollab.net deploys from
+  `janmejaydash2002/scicollab-platform` under Janmejay's Vercel account.
+  Pushing to this branch changes nothing that is live.
+- **It shares one Supabase project with the live site.** Janmejay will send
+  you the values for `.env.local` separately — they are not in the repo.
+  Anything you create while testing appears on scicollab.net, so treat writes
+  as public.
+- **This branch proposes replacing the old app at the root.** That is a
+  proposal, not a decision. If you would rather it sat in a subdirectory
+  while the old prototype stays put, say so and it will be restructured.
+
+Live: <https://scicollab.net> · sign in with the demo account Janmejay sends you.
+
+---
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local     # fill in the values Janmejay sends you
+npm run dev                    # http://localhost:4400
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`SCICOLLAB_SEED_PASSWORD` is the password given to the seeded demo accounts.
+It is deliberately not in the repo: this code is mirrored into a public
+repository, and a literal password here would let anyone sign in to the
+deployed site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run `supabase/schema.sql` once in the Supabase SQL editor. It is safe to
+re-run, and it is written to work on a fresh project **or** on the project the
+previous prototype used — where a `profiles` table already exists with
+different columns, it adds what is missing rather than leaving the old shape
+in place.
 
-## Learn More
+Then turn **off** email confirmation in Authentication → Providers → Email,
+or the first sign-up cannot sign in.
 
-To learn more about Next.js, take a look at the following resources:
+## What is actually wired
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Area | State |
+|---|---|
+| Accounts, sessions, route protection | live |
+| Profile, six-axis record | live |
+| Method cards — create, read, fork, visibility, delete | live |
+| Questions and answers, accepting an answer | live |
+| Projects and the append-only notebook | live |
+| Direct messages, including the reputation gate | live |
+| Search across methods, questions, people, projects | live |
+| Data, Code, Write, Institution, Notifications, Help | designed, not wired |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A destination that is not wired says so on the screen and names the board it
+came from, so the gap stays visible instead of looking like a broken feature.
 
-## Deploy on Vercel
+## Layout
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Path | What it is |
+|---|---|
+| `app/(shell)/` | Everything inside the navigation shell — signed in only |
+| `app/boards/` | All 199 extracted artboards, browsable. A build aid |
+| `components/Screen.tsx` | Mounts an artboard, and rewrites labelled controls into links |
+| `components/ui.tsx` | The house kit: panels, outcome and visibility chips, fields |
+| `design/screens/` | Extracted artboards + `manifest.json` |
+| `scripts/extract-screens.mjs` | Re-extracts from the design boards |
+| `supabase/schema.sql` | The whole database |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To re-extract after the boards change:
+
+```bash
+node scripts/extract-screens.mjs ../scicollab/design/boards
+```
+
+## Decisions worth knowing
+
+**A null result is not an error.** `outcome` is `success | partial | negative`,
+and `negative` is styled in the signal colour, never in the error colour.
+`fails_under` is a first-class column, not a note.
+
+**Ownership is resolved on the server.** Every write takes the author from the
+session. A client-supplied id is ignored, so nothing can be written on another
+account's behalf. Row-level security enforces the same rule at the database.
+
+**Visibility is enforced, not decorative.** A private card is invisible to
+everyone but its author — in the policy, not just in the query.
+
+**Reputation is six axes and is never summed.** There is no single number
+anywhere that stands for a researcher. Board K5 question 9 argues that
+per-researcher metrics must never be obtainable by an institution; that
+constraint is why the numbers are kept separate here.
+
+**The messaging gate is real.** An unsolicited first message is held until you
+have contributed something — a card, a question or an answer. Anyone you have
+already exchanged messages with is never gated, and the block explains itself
+and offers a route out.
+
+## Still open
+
+The twelve questions on board K5 are unanswered, and four of them block real
+decisions here: the licence default for external contributions, whether
+ephemeral content belongs in a permanent record, pseudonymity, and whether an
+institution can ever obtain per-researcher metrics. The schema does not
+foreclose any of them.

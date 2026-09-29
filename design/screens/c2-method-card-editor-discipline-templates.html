@@ -1,0 +1,77 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">PRIVATE</span></span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">draft · publish sets the visibility</span>
+        <span style="margin-left:auto;font:400 11px/1 var(--mono);color:var(--mute)">Draft saved 4 s ago</span>
+      </div>
+      <div style="display:grid;grid-template-columns:300px minmax(0,1fr) 320px">
+        <div style="border-right:1px solid var(--rule);background:var(--surface);padding:16px">
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:14px">TEMPLATE · PICK ONCE, EDIT FOREVER</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="border:1px solid var(--signal);background:#FFF8F5;padding:11px;cursor:pointer">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4D00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M10 3v6.6L4.6 19a1.5 1.5 0 0 0 1.3 2.2h12.2a1.5 1.5 0 0 0 1.3-2.2L14 9.6V3"/><path d="M8.4 3h7.2"/></svg><span style="font:500 12px/1.2 var(--mono)">Wet lab</span><span style="margin-left:auto;font:500 9px/1 var(--mono);color:#B33600">SELECTED</span></div>
+              <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">Materials with lot and RRID · steps with wall-clock timings · critical-step flags · failure modes by cause</div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:11px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg><span style="font:500 12px/1.2 var(--mono)">Computational</span></div>
+              <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">Environment digest · input manifest with checksums · random seeds · expected runtime and hardware · re-run command</div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:11px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 3 4 6.4V12c0 4.6 3.2 7.9 8 9 4.8-1.1 8-4.4 8-9V6.4z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg><span style="font:500 12px/1.2 var(--mono)">Clinical</span></div>
+              <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">Inclusion and exclusion criteria · ethics approval reference · consent basis · de-identification step · adverse-event handling</div>
+            </div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:11px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/></svg><span style="font:500 12px/1.2 var(--mono)">Field</span></div>
+              <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">Site coordinates and permits · date and weather window · sampling design · chain of custody · what to do when conditions change</div>
+            </div>
+            <div style="border:1px dashed var(--rule);background:var(--surface);padding:11px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="font:500 12px/1.2 var(--mono);color:var(--mute);margin-bottom:5px">Blank</div>
+              <div style="font:400 11px/1.45 var(--sans);color:var(--mute)">Four required fields only: title, steps, expected outcome, fails under.</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:11px;margin-top:14px;font:400 11px/1.5 var(--sans);color:var(--ink)">Templates decide which fields are <b>required</b>, not which are allowed. Switching template later keeps everything you have written.</div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">WET LAB · 5 REQUIRED FIELDS</span><span style="margin-left:auto;font:400 10px/1 var(--mono);color:#6B5900">2 still empty</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="border:1px solid var(--ink);background:var(--surface);padding:10px 11px"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:6px">TITLE · required</div><div style="font:500 14px/1.35 var(--mono)">Nucleofection of late-passage HEK293T</div></div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+              <div style="border:1px solid var(--ink);background:var(--surface);padding:10px 11px"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:6px">MATERIALS · required · 4 entries</div><div style="font:400 11px/1.5 var(--mono)">Lonza SF Cell Line kit<br>Donor plasmid · 2 µg<br><span style="color:#6B5900">+ lot numbers missing on 2</span></div></div>
+              <div style="border:1px solid var(--ink);background:var(--surface);padding:10px 11px"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:6px">EQUIPMENT · required</div><div style="font:400 11px/1.5 var(--mono)">Lonza 4D-Nucleofector<br>BD FACSymphony A3</div></div>
+            </div>
+            <div style="border:1px solid var(--ink);background:var(--surface);padding:10px 11px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font:400 9px/1 var(--mono);color:var(--mute)">STEPS · required · 9</span><span style="margin-left:auto;display:flex;gap:5px"><span style="padding:2px 6px;border:1px solid var(--rule);font:500 9px/1.3 var(--mono);cursor:pointer">+ step</span><span style="padding:2px 6px;border:1px solid var(--rule);font:500 9px/1.3 var(--mono);cursor:pointer">+ critical flag</span><span style="padding:2px 6px;border:1px solid var(--rule);font:500 9px/1.3 var(--mono);cursor:pointer">+ timing</span></span></div><div style="display:flex;flex-direction:column;gap:5px;font:400 12px/1.5 var(--sans)"><div style="display:flex;gap:9px"><span style="font-family:var(--mono);color:var(--mute);flex:none">1</span><span>Thaw a vial at or below p8; for late-passage stocks continue to step 4b</span></div><div style="display:flex;gap:9px"><span style="font-family:var(--mono);color:var(--mute);flex:none">2</span><span>Seed 1.2 × 10⁵ cells per well…</span></div><div style="display:flex;gap:9px;color:var(--mute)"><span style="font-family:var(--mono);flex:none">…</span><span>7 more</span></div></div></div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+              <div style="border:1px solid var(--flag);background:#FFFBE6;padding:10px 11px"><div style="font:700 9px/1 var(--mono);margin-bottom:6px">EXPECTED OUTCOME · required · empty</div><div style="font:400 12px/1.45 var(--sans);color:#0D0D0D">Give a number and a spread. "It works" cannot be reproduced or contradicted.</div></div>
+              <div style="border:1px solid var(--flag);background:#FFFBE6;padding:10px 11px"><div style="font:700 9px/1 var(--mono);margin-bottom:6px">FAILS UNDER · required · empty</div><div style="font:400 12px/1.45 var(--sans);color:#0D0D0D">The field that makes this card worth more than a paper's methods section. At least one condition.</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="border-left:1px solid var(--rule);background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:12px">WHY THESE FIELDS</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font:400 12px/1.5 var(--sans)">
+              <div style="border-left:2px solid var(--signal);padding-left:10px"><b>Fails under</b> is required in every template. A card without it is a recipe; a card with it is knowledge.</div>
+              <div style="border-left:2px solid var(--rule);padding-left:10px"><b>Expected outcome</b> must be numeric with a spread, so a reproduction can agree or disagree rather than shrug.</div>
+              <div style="border-left:2px solid var(--rule);padding-left:10px"><b>Lot numbers</b> are optional to save, required to publish as Public. Half of all "it stopped working" cases are lot changes.</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:11px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">PUBLISH CHECK</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m5 12.5 5 5 9-11"/></svg><span>Title, materials, equipment, steps</span></div>
+              <div style="display:flex;gap:8px"><span style="width:12px;height:12px;border:1px solid #8A7300;background:var(--flag);flex:none;margin-top:1px"></span><span style="color:#6B5900">Expected outcome</span></div>
+              <div style="display:flex;gap:8px"><span style="width:12px;height:12px;border:1px solid #8A7300;background:var(--flag);flex:none;margin-top:1px"></span><span style="color:#6B5900">Fails under</span></div>
+              <div style="display:flex;gap:8px"><span style="width:12px;height:12px;border:1px solid var(--rule);flex:none;margin-top:1px"></span><span style="color:var(--mute)">Licence · needed for Public</span></div>
+            </div>
+          </div>
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+            <button style="height:32px;background:#F0EDE8;border:1px solid var(--rule);color:#A9A49B;font:500 12px/1 var(--mono);cursor:not-allowed">Publish · 2 fields missing</button>
+            <button style="height:32px;background:transparent;border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Save as a private draft</button>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">F11 · F16 · F17 · H03 · H04 · I09 · N03</span><span style="margin-left:auto">templates set what is required, never what is allowed</span>
+      </div>
+    </div>

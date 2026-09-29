@@ -1,0 +1,1992 @@
+[
+ {
+  "id": "b1-marketing-landing-page",
+  "num": "1",
+  "name": "MARKETING LANDING PAGE",
+  "dim": "1440 × 2320 · public, no session",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b1-sign-up-identity-provider-choice",
+  "num": "2",
+  "name": "SIGN-UP · IDENTITY PROVIDER CHOICE",
+  "dim": "1440 × 900",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b1-orcid-connect-amp-consent",
+  "num": "3",
+  "name": "ORCID CONNECT &amp; CONSENT",
+  "dim": "1440 × 900 · read and write scopes stated separately",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b1-publication-import",
+  "num": "4",
+  "name": "PUBLICATION IMPORT (R01)",
+  "dim": "1440 × 900 · the moment the product feels alive · empty / loading / error below",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b1-co-author-detection",
+  "num": "5",
+  "name": "CO-AUTHOR DETECTION (R03)",
+  "dim": "1440 × 900 · selective, capped, consented — no bulk blast",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b1-persona-fork",
+  "num": "6",
+  "name": "PERSONA FORK (R06)",
+  "dim": "1440 × 900 · four answers, four different next screens",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b1-onboarding-checklist-progressive-unlocks",
+  "num": "7",
+  "name": "ONBOARDING CHECKLIST (K03) · PROGRESSIVE UNLOCKS",
+  "dim": "full-page 1440 × 900 + sidebar variant 340 wide",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b1-sample-project-amp-template-gallery",
+  "num": "8",
+  "name": "SAMPLE PROJECT &amp; TEMPLATE GALLERY (R07, G25)",
+  "dim": "1440 × 900",
+  "width": 1440,
+  "board": "B1 - Onboarding",
+  "code": "B1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b2-public-profile-full-state",
+  "num": "9",
+  "name": "PUBLIC PROFILE — FULL STATE",
+  "dim": "1440 × 900 · viewed by someone else · loading and error below, empty is screen 10",
+  "width": 1440,
+  "board": "B2 - Identity and Profile",
+  "code": "B2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b2-public-profile-empty-day-one",
+  "num": "10",
+  "name": "PUBLIC PROFILE — EMPTY, DAY ONE",
+  "dim": "1440 × 900 · nothing imported, seen by a stranger",
+  "width": 1440,
+  "board": "B2 - Identity and Profile",
+  "code": "B2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b2-own-profile-edit-mode-with-per-field-privacy-matrix",
+  "num": "11",
+  "name": "OWN PROFILE · EDIT MODE WITH PER-FIELD PRIVACY MATRIX (A13)",
+  "dim": "1440 × 900 · every field carries its own visibility control, inline",
+  "width": 1440,
+  "board": "B2 - Identity and Profile",
+  "code": "B2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b2-profile-completeness-meter",
+  "num": "12",
+  "name": "PROFILE COMPLETENESS METER (A25)",
+  "dim": "1440 × 400 · component-scale artboard, three placements · noted deviation from 1440×900",
+  "width": 1440,
+  "board": "B2 - Identity and Profile",
+  "code": "B2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b2-cv-export",
+  "num": "13",
+  "name": "CV EXPORT (A14)",
+  "dim": "1440 × 560 · slide-over at real size · noted deviation from 1440×900",
+  "width": 1440,
+  "board": "B2 - Identity and Profile",
+  "code": "B2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b2-settings-sessions-tokens-deletion-amp-export-notifications",
+  "num": "14",
+  "name": "SETTINGS · SESSIONS · TOKENS · DELETION &amp; EXPORT · NOTIFICATIONS",
+  "dim": "1440 × 900 · four panels on one surface",
+  "width": 1440,
+  "board": "B2 - Identity and Profile",
+  "code": "B2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b2-delegated-access-pi-lab-manager",
+  "num": "15",
+  "name": "DELEGATED ACCESS (A18) · PI → LAB MANAGER",
+  "dim": "1440 × 900 · Dr Camille Laurent's view · audit trail visible on the same screen",
+  "width": 1440,
+  "board": "B2 - Identity and Profile",
+  "code": "B2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-personal-dashboard-six-axes-never-summed",
+  "num": "16",
+  "name": "PERSONAL DASHBOARD (B01) · SIX AXES, NEVER SUMMED",
+  "dim": "1440 × 900 · empty / loading / error below",
+  "width": 1440,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-contribution-heat-map",
+  "num": "17",
+  "name": "CONTRIBUTION HEAT MAP (B04)",
+  "dim": "1440 × 420 · opt-out visible on the component, not in settings",
+  "width": 1440,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-reputation-change-log",
+  "num": "18",
+  "name": "REPUTATION CHANGE LOG (B18)",
+  "dim": "1440 × 900 · every point, what produced it, and how to contest it",
+  "width": 1440,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-privilege-ladder",
+  "num": "19",
+  "name": "PRIVILEGE LADDER (B06)",
+  "dim": "1440 × 640 · canvas region only · noted deviation from 1440×900",
+  "width": 1440,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-badges-earned-and-locked",
+  "num": "20",
+  "name": "BADGES (B05) · EARNED AND LOCKED",
+  "dim": "1440 × 620 · canvas region only · every badge is a verifiable act",
+  "width": 1440,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-credit-ledger",
+  "num": "21",
+  "name": "CREDIT LEDGER",
+  "dim": "1440 × 900 · B09 review record · B10 CRediT · B11 citations · B13 reuse · B14 replication · B15 null-result score · states below",
+  "width": 1440,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-metric-visibility",
+  "num": "22",
+  "name": "METRIC VISIBILITY (B19)",
+  "dim": "700 × 620 · panel scale",
+  "width": 700,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "b3-research-year-in-review",
+  "num": "23",
+  "name": "RESEARCH YEAR IN REVIEW (B21)",
+  "dim": "700 × 900 · shareable card",
+  "width": 700,
+  "board": "B3 - Reputation and Credit",
+  "code": "B3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c1-ask-a-question-the-composer",
+  "num": "1",
+  "name": "ASK A QUESTION · THE COMPOSER (F01, F24, D14)",
+  "dim": "1440 × 900 · structured, not a text box",
+  "width": 1440,
+  "board": "C1 - Ask and Compose",
+  "code": "C1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c1-live-duplicate-amp-prior-case-detection",
+  "num": "2",
+  "name": "LIVE DUPLICATE &amp; PRIOR-CASE DETECTION (F04, L04, L15)",
+  "dim": "1440 × 660 · canvas region · a stronger match has arrived mid-typing",
+  "width": 1440,
+  "board": "C1 - Ask and Compose",
+  "code": "C1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c1-question-quality-assistant",
+  "num": "3",
+  "name": "QUESTION QUALITY ASSISTANT (F24)",
+  "dim": "700 × 620 · inline, before posting · panel scale",
+  "width": 700,
+  "board": "C1 - Ask and Compose",
+  "code": "C1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c1-unanswered-at-48-h-routing-bounty",
+  "num": "5",
+  "name": "UNANSWERED AT 48 h · ROUTING (F18) + BOUNTY (F03)",
+  "dim": "700 × 620 · panel scale",
+  "width": 700,
+  "board": "C1 - Ask and Compose",
+  "code": "C1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c1-question-detail-answered",
+  "num": "4",
+  "name": "QUESTION DETAIL — ANSWERED (F02, F08)",
+  "dim": "1440 × 900 · discussion adjacent to the artifact, never a separate destination",
+  "width": 1440,
+  "board": "C1 - Ask and Compose",
+  "code": "C1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c1-closed-as-duplicate",
+  "num": "6",
+  "name": "CLOSED AS DUPLICATE (F04, F05)",
+  "dim": "760 × 700 · designed to not lose the newcomer",
+  "width": 760,
+  "board": "C1 - Ask and Compose",
+  "code": "C1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c1-answer-method-card",
+  "num": "7",
+  "name": "ANSWER → METHOD CARD (F23)",
+  "dim": "600 × 700 · before / dialogue / after",
+  "width": 600,
+  "board": "C1 - Ask and Compose",
+  "code": "C1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c2-method-card-full-view",
+  "num": "8",
+  "name": "METHOD CARD — FULL VIEW (F11, F12)",
+  "dim": "1440 × 900 · discussion adjacent to the card, not behind a tab",
+  "width": 1440,
+  "board": "C2 - Method Cards",
+  "code": "C2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c2-fork-flow-lineage-drawn-not-implied",
+  "num": "9",
+  "name": "FORK FLOW · LINEAGE DRAWN, NOT IMPLIED",
+  "dim": "1440 × 640 · canvas region",
+  "width": 1440,
+  "board": "C2 - Method Cards",
+  "code": "C2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c2-method-card-editor-discipline-templates",
+  "num": "10",
+  "name": "METHOD CARD EDITOR · DISCIPLINE TEMPLATES",
+  "dim": "1440 × 700 · canvas region · named tester priority: \"improve method card templates\"",
+  "width": 1440,
+  "board": "C2 - Method Cards",
+  "code": "C2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c2-version-diff-v5-v6",
+  "num": "11",
+  "name": "VERSION DIFF · v5 → v6",
+  "dim": "1440 × 560 · canvas region",
+  "width": 1440,
+  "board": "C2 - Method Cards",
+  "code": "C2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c3-negative-result-post-flow",
+  "num": "12",
+  "name": "NEGATIVE RESULT — POST FLOW (F14)",
+  "dim": "1440 × 900 · hypothesis · method · conditions · what happened · what it rules out · confidence",
+  "width": 1440,
+  "board": "C3 - Negative Results",
+  "code": "C3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c3-negative-result-detail-with-the-reuse-counter",
+  "num": "13",
+  "name": "NEGATIVE RESULT — DETAIL, WITH THE REUSE COUNTER",
+  "dim": "1440 × 700 · canvas region",
+  "width": 1440,
+  "board": "C3 - Negative Results",
+  "code": "C3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c3-failure-taxonomy-browser",
+  "num": "14",
+  "name": "FAILURE TAXONOMY BROWSER (F15)",
+  "dim": "1440 × 620 · canvas region · six branches with volume",
+  "width": 1440,
+  "board": "C3 - Negative Results",
+  "code": "C3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c3-instrument-troubleshooting-hub",
+  "num": "15",
+  "name": "INSTRUMENT TROUBLESHOOTING HUB (F13)",
+  "dim": "700 × 680 · one hub per model",
+  "width": 700,
+  "board": "C3 - Negative Results",
+  "code": "C3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c3-reagent-amp-antibody-validation",
+  "num": "16",
+  "name": "REAGENT &amp; ANTIBODY VALIDATION (F16)",
+  "dim": "700 × 680 · lot numbers and RRIDs",
+  "width": 700,
+  "board": "C3 - Negative Results",
+  "code": "C3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c4-tag-browser-wikis-synonyms-ontology-mapping",
+  "num": "17",
+  "name": "TAG BROWSER · WIKIS, SYNONYMS, ONTOLOGY MAPPING (F09, F10)",
+  "dim": "1440 × 660 · canvas region",
+  "width": 1440,
+  "board": "C4 - Knowledge Layer",
+  "code": "C4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c4-literature-annotation-layer",
+  "num": "18",
+  "name": "LITERATURE ANNOTATION LAYER (F19)",
+  "dim": "1440 × 700 · canvas region · anchored to text ranges, not page coordinates",
+  "width": 1440,
+  "board": "C4 - Knowledge Layer",
+  "code": "C4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c4-reading-lists-amp-bookmarks",
+  "num": "19",
+  "name": "READING LISTS &amp; BOOKMARKS (F20, F21)",
+  "dim": "660 × 640",
+  "width": 660,
+  "board": "C4 - Knowledge Layer",
+  "code": "C4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "c4-community-review-queue",
+  "num": "20",
+  "name": "COMMUNITY REVIEW QUEUE (F07, N08)",
+  "dim": "700 × 640",
+  "width": 700,
+  "board": "C4 - Knowledge Layer",
+  "code": "C4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d1-projects-list",
+  "num": "1",
+  "name": "PROJECTS LIST (G02)",
+  "dim": "1440 × 700 · canvas region · all six status chips present",
+  "width": 1440,
+  "board": "D1 - Projects and ELN",
+  "code": "D1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d1-project-overview-the-hub",
+  "num": "2",
+  "name": "PROJECT OVERVIEW (G01) — THE HUB",
+  "dim": "1440 × 900 · artifacts left · activity centre · people, grant and ethics right",
+  "width": 1440,
+  "board": "D1 - Projects and ELN",
+  "code": "D1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d1-project-empty-just-created",
+  "num": "3",
+  "name": "PROJECT — EMPTY, JUST CREATED",
+  "dim": "700 × 560 · canvas region",
+  "width": 700,
+  "board": "D1 - Projects and ELN",
+  "code": "D1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d1-project-creation-discipline-templates",
+  "num": "4",
+  "name": "PROJECT CREATION · DISCIPLINE TEMPLATES (G25)",
+  "dim": "700 × 560",
+  "width": 700,
+  "board": "D1 - Projects and ELN",
+  "code": "D1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d1-electronic-lab-notebook-entry",
+  "num": "5",
+  "name": "ELECTRONIC LAB NOTEBOOK · ENTRY (G04)",
+  "dim": "1440 × 760 · canvas region · append-only, made visible",
+  "width": 1440,
+  "board": "D1 - Projects and ELN",
+  "code": "D1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d1-eln-day-view-notebook-index",
+  "num": "6",
+  "name": "ELN · DAY VIEW / NOTEBOOK INDEX",
+  "dim": "700 × 620",
+  "width": 700,
+  "board": "D1 - Projects and ELN",
+  "code": "D1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d1-entry-signing-amp-witness-countersign",
+  "num": "7",
+  "name": "ENTRY SIGNING &amp; WITNESS COUNTERSIGN (G05)",
+  "dim": "660 × 620 · J. Krieger's view",
+  "width": 660,
+  "board": "D1 - Projects and ELN",
+  "code": "D1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d2-audit-trail-designed-for-an-auditor",
+  "num": "8",
+  "name": "AUDIT TRAIL (G06) — DESIGNED FOR AN AUDITOR",
+  "dim": "1440 × 900 · immutable · exportable · answers a question rather than showing a log",
+  "width": 1440,
+  "board": "D2 - Governance",
+  "code": "D2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d2-grant-record",
+  "num": "15",
+  "name": "GRANT RECORD (G16)",
+  "dim": "700 × 620",
+  "width": 700,
+  "board": "D2 - Governance",
+  "code": "D2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d2-data-management-plan-builder",
+  "num": "16",
+  "name": "DATA MANAGEMENT PLAN BUILDER (G17)",
+  "dim": "700 × 620 · Horizon Europe / NIH DMSP compliant",
+  "width": 700,
+  "board": "D2 - Governance",
+  "code": "D2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d2-ethics-irb-record",
+  "num": "17",
+  "name": "ETHICS / IRB RECORD (G18)",
+  "dim": "680 × 560 · inherited by derived outputs",
+  "width": 680,
+  "board": "D2 - Governance",
+  "code": "D2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d2-hypothesis-register",
+  "num": "19",
+  "name": "HYPOTHESIS REGISTER (G20)",
+  "dim": "720 × 560",
+  "width": 720,
+  "board": "D2 - Governance",
+  "code": "D2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d2-pre-registration-with-time-stamped-freeze",
+  "num": "18",
+  "name": "PRE-REGISTRATION WITH TIME-STAMPED FREEZE (G19)",
+  "dim": "1440 × 620 · canvas region · before and after the freeze",
+  "width": 1440,
+  "board": "D2 - Governance",
+  "code": "D2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d3-experiment-issue-tracker",
+  "num": "9",
+  "name": "EXPERIMENT ISSUE TRACKER (G07)",
+  "dim": "1440 × 660 · canvas region · \"assay fails at step 4\" as a tracked, assignable item",
+  "width": 1440,
+  "board": "D3 - Workflow",
+  "code": "D3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d3-kanban-milestone-roadmap",
+  "num": "10",
+  "name": "KANBAN (G08) + MILESTONE ROADMAP (G09)",
+  "dim": "1440 × 660 · canvas region",
+  "width": 1440,
+  "board": "D3 - Workflow",
+  "code": "D3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d3-task-detail",
+  "num": "11",
+  "name": "TASK DETAIL (G10)",
+  "dim": "620 × 560",
+  "width": 620,
+  "board": "D3 - Workflow",
+  "code": "D3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d3-meeting-notes-with-linked-actions",
+  "num": "24",
+  "name": "MEETING NOTES WITH LINKED ACTIONS (G27)",
+  "dim": "740 × 560",
+  "width": 740,
+  "board": "D3 - Workflow",
+  "code": "D3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d4-lab-inventory",
+  "num": "12",
+  "name": "LAB INVENTORY (G11)",
+  "dim": "1440 × 640 · canvas region · reagents, samples, plasmids, cell lines · lots and expiry are the point",
+  "width": 1440,
+  "board": "D4 - Lab Operations",
+  "code": "D4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d4-freezer-map-barcode-sample-record",
+  "num": "13",
+  "name": "FREEZER MAP (G12) + BARCODE SAMPLE RECORD (G13)",
+  "dim": "1440 × 620 · canvas region",
+  "width": 1440,
+  "board": "D4 - Lab Operations",
+  "code": "D4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d4-equipment-booking",
+  "num": "14",
+  "name": "EQUIPMENT BOOKING (G14)",
+  "dim": "640 × 580",
+  "width": 640,
+  "board": "D4 - Lab Operations",
+  "code": "D4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d4-sop-library-with-training-sign-off-risk-assessment-amp-ghs",
+  "num": "20",
+  "name": "SOP LIBRARY WITH TRAINING SIGN-OFF (G21) + RISK ASSESSMENT &amp; GHS (G22)",
+  "dim": "760 × 580",
+  "width": 760,
+  "board": "D4 - Lab Operations",
+  "code": "D4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d5-departure-handover-pack-hero-screen",
+  "num": "22",
+  "name": "DEPARTURE HANDOVER PACK (G24) — HERO SCREEN",
+  "dim": "1440 × 900 · compiled automatically · Camille's answer to knowledge loss",
+  "width": 1440,
+  "board": "D5 - Continuity",
+  "code": "D5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d5-new-member-onboarding",
+  "num": "21",
+  "name": "NEW MEMBER ONBOARDING (G23)",
+  "dim": "640 × 600",
+  "width": 640,
+  "board": "D5 - Continuity",
+  "code": "D5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d5-cross-project-portfolio-pi",
+  "num": "23",
+  "name": "CROSS-PROJECT PORTFOLIO · PI (G26)",
+  "dim": "760 × 600",
+  "width": 760,
+  "board": "D5 - Continuity",
+  "code": "D5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "d5-field-work-offline-mode",
+  "num": "25",
+  "name": "FIELD-WORK OFFLINE MODE (G29)",
+  "dim": "390 × 844 mobile · offline indicator, queued items, sync conflict resolution",
+  "width": 390,
+  "board": "D5 - Continuity",
+  "code": "D5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e1-upload-step-1-the-contract-before-any-file-is-chosen",
+  "num": "1",
+  "name": "UPLOAD STEP 1 (H01) — THE CONTRACT, BEFORE ANY FILE IS CHOSEN",
+  "dim": "1440 × 900 · the tester fix",
+  "width": 1440,
+  "board": "E1 - Deposit Flow",
+  "code": "E1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e1-step-2-files",
+  "num": "2",
+  "name": "STEP 2 · FILES (H04, H14)",
+  "dim": "700 × 620 · resumable · checksum shown as it computes",
+  "width": 700,
+  "board": "E1 - Deposit Flow",
+  "code": "E1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e1-step-3-metadata-live-fair-score",
+  "num": "3",
+  "name": "STEP 3 · METADATA + LIVE FAIR SCORE (H05, H06)",
+  "dim": "700 × 620",
+  "width": 700,
+  "board": "E1 - Deposit Flow",
+  "code": "E1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e1-step-4-licence-embargo",
+  "num": "4",
+  "name": "STEP 4 · LICENCE (H07) + EMBARGO (H08)",
+  "dim": "700 × 620 · plain language, not licence names",
+  "width": 700,
+  "board": "E1 - Deposit Flow",
+  "code": "E1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e1-step-5-personal-data-scan",
+  "num": "5",
+  "name": "STEP 5 · PERSONAL-DATA SCAN (H11)",
+  "dim": "700 × 620 · quasi-identifiers flagged before anything goes public",
+  "width": 700,
+  "board": "E1 - Deposit Flow",
+  "code": "E1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e1-upload-confirmation-doi-minted-v1-0-visibility-set",
+  "num": "6",
+  "name": "UPLOAD CONFIRMATION — DOI MINTED, v1.0, VISIBILITY SET",
+  "dim": "1440 × 520 · canvas region",
+  "width": 1440,
+  "board": "E1 - Deposit Flow",
+  "code": "E1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e2-dataset-detail",
+  "num": "7",
+  "name": "DATASET DETAIL (H03, H16, H17)",
+  "dim": "1440 × 900 · preview, profile, codebook, versions, citation, reuse, discussion adjacent",
+  "width": 1440,
+  "board": "E2 - Dataset Detail",
+  "code": "E2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e2-version-history-and-diff",
+  "num": "8",
+  "name": "VERSION HISTORY AND DIFF (H03)",
+  "dim": "1440 × 600 · canvas region · every version keeps its own DOI",
+  "width": 1440,
+  "board": "E2 - Dataset Detail",
+  "code": "E2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e3-domain-viewers-five-shapes-of-data",
+  "num": "9",
+  "name": "DOMAIN VIEWERS (H18, H19) · FIVE SHAPES OF DATA",
+  "dim": "each 700 × 560 · shared chrome, different instrument",
+  "width": 1440,
+  "board": "E3 - Viewers",
+  "code": "E3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e3-data-visualisation-builder",
+  "num": "10",
+  "name": "DATA VISUALISATION BUILDER (H02)",
+  "dim": "1440 × 660 · canvas region · light BI over a hosted dataset",
+  "width": 1440,
+  "board": "E3 - Viewers",
+  "code": "E3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e4-controlled-access-both-sides-of-the-same-request",
+  "num": "11",
+  "name": "CONTROLLED ACCESS (H09, H10) — BOTH SIDES OF THE SAME REQUEST",
+  "dim": "1440 × 700 · requester left, data access committee right",
+  "width": 1440,
+  "board": "E4 - Access and Storage",
+  "code": "E4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e4-storage-and-cost",
+  "num": "12",
+  "name": "STORAGE AND COST (H13, H21)",
+  "dim": "700 × 600 · tiering, quota, projection",
+  "width": 700,
+  "board": "E4 - Access and Storage",
+  "code": "E4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e4-external-deposit",
+  "num": "13",
+  "name": "EXTERNAL DEPOSIT (H24)",
+  "dim": "700 × 600 · Zenodo, Dryad, HAL, GEO",
+  "width": 700,
+  "board": "E4 - Access and Storage",
+  "code": "E4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e4-archival-export-the-no-lock-in-guarantee",
+  "num": "14",
+  "name": "ARCHIVAL EXPORT (H23) — THE NO-LOCK-IN GUARANTEE",
+  "dim": "1440 × 560 · canvas region · BagIt / RO-Crate",
+  "width": 1440,
+  "board": "E4 - Access and Storage",
+  "code": "E4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-repository-browser",
+  "num": "15",
+  "name": "REPOSITORY BROWSER (I01, I02)",
+  "dim": "1440 × 820 · file tree, syntax highlighting, README",
+  "width": 1440,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-commit-history-and-branches",
+  "num": "16",
+  "name": "COMMIT HISTORY AND BRANCHES (I03)",
+  "dim": "700 × 560",
+  "width": 700,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-pull-request-with-inline-review",
+  "num": "17",
+  "name": "PULL REQUEST WITH INLINE REVIEW (I04, I05)",
+  "dim": "700 × 560",
+  "width": 700,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-notebook-rendering-and-diff",
+  "num": "18",
+  "name": "NOTEBOOK RENDERING AND DIFF (I07)",
+  "dim": "760 × 580 · outputs diffed, not just source",
+  "width": 760,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-one-click-reproducible-launch",
+  "num": "19",
+  "name": "ONE-CLICK REPRODUCIBLE LAUNCH (I08, I09)",
+  "dim": "640 × 580 · cost stated before it runs",
+  "width": 640,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-reproducibility-badge-and-the-run-behind-it",
+  "num": "20",
+  "name": "REPRODUCIBILITY BADGE (I17) — AND THE RUN BEHIND IT",
+  "dim": "760 × 580",
+  "width": 760,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-secrets-scanning-block",
+  "num": "22",
+  "name": "SECRETS SCANNING BLOCK (I15)",
+  "dim": "640 × 380",
+  "width": 640,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-software-citation-and-doi",
+  "num": "23",
+  "name": "SOFTWARE CITATION AND DOI (I13)",
+  "dim": "640 × 380",
+  "width": 640,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "e5-compute-queue-and-cost-tracking",
+  "num": "21",
+  "name": "COMPUTE QUEUE AND COST TRACKING (I11, I12, I18)",
+  "dim": "1440 × 560 · canvas region",
+  "width": 1440,
+  "board": "E5 - Code and Compute",
+  "code": "E5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f1-pre-publication-draft-workspace",
+  "num": "1",
+  "name": "PRE-PUBLICATION DRAFT WORKSPACE (J01)",
+  "dim": "1440 × 900 · write as you go, from the project's artifacts",
+  "width": 1440,
+  "board": "F1 - Drafting",
+  "code": "F1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f1-collaborative-manuscript-editor",
+  "num": "2",
+  "name": "COLLABORATIVE MANUSCRIPT EDITOR (J05, J06)",
+  "dim": "1440 × 820 · LaTeX and rich text · track changes · multiple cursors",
+  "width": 1440,
+  "board": "F1 - Drafting",
+  "code": "F1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f1-citation-autocomplete-and-reference-panel",
+  "num": "3",
+  "name": "CITATION AUTOCOMPLETE AND REFERENCE PANEL (J07, J08)",
+  "dim": "1440 × 620 · canvas region · Zotero sync visible",
+  "width": 1440,
+  "board": "F1 - Drafting",
+  "code": "F1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f2-internal-review-request-and-status",
+  "num": "4",
+  "name": "INTERNAL REVIEW REQUEST AND STATUS (J03)",
+  "dim": "700 × 620",
+  "width": 700,
+  "board": "F2 - Review",
+  "code": "F2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f2-in-situ-peer-challenge",
+  "num": "5",
+  "name": "IN-SITU PEER CHALLENGE (J02)",
+  "dim": "700 × 620 · invite peers to attack it before submission",
+  "width": 700,
+  "board": "F2 - Review",
+  "code": "F2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f2-integrity-checks-advisory-never-accusatory",
+  "num": "14",
+  "name": "INTEGRITY CHECKS (J17, J18, J19) — ADVISORY, NEVER ACCUSATORY",
+  "dim": "1440 × 660 · canvas region",
+  "width": 1440,
+  "board": "F2 - Review",
+  "code": "F2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f2-reporting-checklist-embedded-in-the-draft",
+  "num": "15",
+  "name": "REPORTING CHECKLIST EMBEDDED IN THE DRAFT (J20)",
+  "dim": "1440 × 560 · canvas region · CONSORT · PRISMA · ARRIVE · STROBE",
+  "width": 1440,
+  "board": "F2 - Review",
+  "code": "F2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f3-rights-check-at-upload-the-legal-gate",
+  "num": "6",
+  "name": "RIGHTS CHECK AT UPLOAD (J12, N05) — THE LEGAL GATE",
+  "dim": "1440 × 900 · three outcome states, all designed",
+  "width": 1440,
+  "board": "F3 - Rights and Publishing",
+  "code": "F3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f3-paper-detail-and-sharing",
+  "num": "7",
+  "name": "PAPER DETAIL AND SHARING (J04)",
+  "dim": "720 × 620 · the rights state is permanent chrome",
+  "width": 720,
+  "board": "F3 - Rights and Publishing",
+  "code": "F3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f3-preprint-posting",
+  "num": "8",
+  "name": "PREPRINT POSTING (J10)",
+  "dim": "680 × 620 · arXiv · bioRxiv · HAL · SSRN",
+  "width": 680,
+  "board": "F3 - Rights and Publishing",
+  "code": "F3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f3-version-of-record-linkage",
+  "num": "9",
+  "name": "VERSION-OF-RECORD LINKAGE (J11)",
+  "dim": "1440 × 520 · canvas region · one work, several manifestations",
+  "width": 1440,
+  "board": "F3 - Rights and Publishing",
+  "code": "F3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f4-open-peer-review",
+  "num": "10",
+  "name": "OPEN PEER REVIEW (J13)",
+  "dim": "760 × 640 · the review has its own DOI",
+  "width": 760,
+  "board": "F4 - Open Review",
+  "code": "F4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f4-reviewer-invitation-and-marketplace",
+  "num": "11",
+  "name": "REVIEWER INVITATION AND MARKETPLACE (J14)",
+  "dim": "640 × 640",
+  "width": 640,
+  "board": "F4 - Open Review",
+  "code": "F4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f4-post-publication-comment-author-right-of-reply",
+  "num": "12",
+  "name": "POST-PUBLICATION COMMENT · AUTHOR RIGHT OF REPLY (J15)",
+  "dim": "760 × 560",
+  "width": 760,
+  "board": "F4 - Open Review",
+  "code": "F4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f4-retraction-alert-and-reference-health",
+  "num": "13",
+  "name": "RETRACTION ALERT AND REFERENCE HEALTH (J16)",
+  "dim": "640 × 560",
+  "width": 640,
+  "board": "F4 - Open Review",
+  "code": "F4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f5-credit-statement-generator",
+  "num": "16",
+  "name": "CRediT STATEMENT GENERATOR (J21)",
+  "dim": "1440 × 700 · 14 roles · lead, equal, supporting · from roles already recorded",
+  "width": 1440,
+  "board": "F5 - Credit and Submission",
+  "code": "F5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f5-conflict-of-interest-and-funding",
+  "num": "17",
+  "name": "CONFLICT OF INTEREST AND FUNDING (J22, J23)",
+  "dim": "660 × 560",
+  "width": 660,
+  "board": "F5 - Credit and Submission",
+  "code": "F5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f5-plain-language-summary-and-graphical-abstract",
+  "num": "19",
+  "name": "PLAIN-LANGUAGE SUMMARY AND GRAPHICAL ABSTRACT (J24, J25)",
+  "dim": "740 × 560",
+  "width": 740,
+  "board": "F5 - Credit and Submission",
+  "code": "F5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "f5-submission-tracker-and-response-to-reviewers-workspace",
+  "num": "18",
+  "name": "SUBMISSION TRACKER (J28) AND RESPONSE-TO-REVIEWERS WORKSPACE (J29)",
+  "dim": "1440 × 620 · canvas region",
+  "width": 1440,
+  "board": "F5 - Credit and Submission",
+  "code": "F5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g1-network-home",
+  "num": "1",
+  "name": "NETWORK HOME (C05, C06, C07)",
+  "dim": "1440 × 900 · following, connections, suggestions",
+  "width": 1440,
+  "board": "G1 - Network and Discovery",
+  "code": "G1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g1-follow-vs-connect-the-dual-model-made-legible",
+  "num": "2",
+  "name": "FOLLOW vs CONNECT — THE DUAL MODEL, MADE LEGIBLE (C06)",
+  "dim": "1440 × 620 · one person card, two actions, every grant stated",
+  "width": 1440,
+  "board": "G1 - Network and Discovery",
+  "code": "G1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g1-follow-non-person-entities",
+  "num": "3",
+  "name": "FOLLOW NON-PERSON ENTITIES (C07)",
+  "dim": "700 × 620 · four kinds, four different notification shapes",
+  "width": 700,
+  "board": "G1 - Network and Discovery",
+  "code": "G1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g1-researchers-you-may-know",
+  "num": "4",
+  "name": "RESEARCHERS YOU MAY KNOW (K09)",
+  "dim": "660 × 620 · every suggestion states its evidence",
+  "width": 660,
+  "board": "G1 - Network and Discovery",
+  "code": "G1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g1-fellow-finder-people-search",
+  "num": "5",
+  "name": "FELLOW-FINDER · PEOPLE SEARCH (C02)",
+  "dim": "1440 × 780 · faceted: field, technique, instrument access, institution, availability",
+  "width": 1440,
+  "board": "G1 - Network and Discovery",
+  "code": "G1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g1-expert-finder-result",
+  "num": "6",
+  "name": "EXPERT FINDER RESULT (A10, A11)",
+  "dim": "1440 × 620 · \"who can run cryo-EM on membrane proteins, available now\"",
+  "width": 1440,
+  "board": "G1 - Network and Discovery",
+  "code": "G1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g2-lab-page",
+  "num": "7",
+  "name": "LAB PAGE (C08)",
+  "dim": "760 × 720 · members, outputs, equipment, open positions",
+  "width": 760,
+  "board": "G2 - Communities",
+  "code": "G2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g2-institution-page",
+  "num": "8",
+  "name": "INSTITUTION PAGE (C09)",
+  "dim": "640 × 720 · Camille's shop window",
+  "width": 640,
+  "board": "G2 - Communities",
+  "code": "G2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g2-community-directory-four-tiers-visually-distinct",
+  "num": "9",
+  "name": "COMMUNITY DIRECTORY — FOUR TIERS, VISUALLY DISTINCT (C01, C03)",
+  "dim": "1440 × 720 · the tier is legible before you read a word of the name",
+  "width": 1440,
+  "board": "G2 - Communities",
+  "code": "G2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g2-community-home-activity-badge-and-moderators",
+  "num": "10",
+  "name": "COMMUNITY HOME · ACTIVITY BADGE AND MODERATORS (C04, C24)",
+  "dim": "780 × 680",
+  "width": 780,
+  "board": "G2 - Communities",
+  "code": "G2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g2-early-career-researcher-space",
+  "num": "11",
+  "name": "EARLY-CAREER RESEARCHER SPACE (C21)",
+  "dim": "620 × 680 · no PIs, and it says so",
+  "width": 620,
+  "board": "G2 - Communities",
+  "code": "G2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g3-collaboration-request-board",
+  "num": "12",
+  "name": "COLLABORATION REQUEST BOARD (C12)",
+  "dim": "1440 × 760 · technique × organism × deadline, and what is offered back",
+  "width": 1440,
+  "board": "G3 - Collaboration and Events",
+  "code": "G3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g3-mentorship-matching-office-hours",
+  "num": "13",
+  "name": "MENTORSHIP MATCHING (C11) + OFFICE HOURS (C23)",
+  "dim": "720 × 680 · bounded commitments only",
+  "width": 720,
+  "board": "G3 - Collaboration and Events",
+  "code": "G3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g3-events-list-and-detail",
+  "num": "14",
+  "name": "EVENTS LIST AND DETAIL (C13, C22)",
+  "dim": "660 × 680 · RSVP and calendar export",
+  "width": 660,
+  "board": "G3 - Collaboration and Events",
+  "code": "G3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g3-conference-backchannel-and-poster-gallery",
+  "num": "15",
+  "name": "CONFERENCE BACKCHANNEL (C14) AND POSTER GALLERY (C15)",
+  "dim": "1440 × 640 · canvas region · the artifacts that outlive the conference",
+  "width": 1440,
+  "board": "G3 - Collaboration and Events",
+  "code": "G3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g4-direct-messages-the-reputation-gate",
+  "num": "16",
+  "name": "DIRECT MESSAGES · THE REPUTATION GATE (D01)",
+  "dim": "1440 × 780 · gated and ungated, side by side",
+  "width": 1440,
+  "board": "G4 - Messaging",
+  "code": "G4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g4-message-requests-quarantine",
+  "num": "17",
+  "name": "MESSAGE REQUESTS · QUARANTINE (D05)",
+  "dim": "660 × 600",
+  "width": 660,
+  "board": "G4 - Messaging",
+  "code": "G4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g4-project-channel-threads-technical-composer",
+  "num": "18",
+  "name": "PROJECT CHANNEL · THREADS + TECHNICAL COMPOSER (D02, D03, D14)",
+  "dim": "720 × 600",
+  "width": 720,
+  "board": "G4 - Messaging",
+  "code": "G4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g4-block-mute-report-two-clicks-from-anywhere",
+  "num": "19",
+  "name": "BLOCK, MUTE, REPORT — TWO CLICKS FROM ANYWHERE (D11)",
+  "dim": "700 × 620",
+  "width": 700,
+  "board": "G4 - Messaging",
+  "code": "G4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "g4-notification-centre-per-category-per-channel",
+  "num": "20",
+  "name": "NOTIFICATION CENTRE · PER CATEGORY, PER CHANNEL (E14)",
+  "dim": "700 × 620",
+  "width": 700,
+  "board": "G4 - Messaging",
+  "code": "G4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h1-home-feed",
+  "num": "1",
+  "name": "HOME FEED (E01, E19, E20)",
+  "dim": "1440 × 900 · six object types · toggle and explanation in the header",
+  "width": 1440,
+  "board": "H1 - Feed",
+  "code": "H1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h1-feed-item-variants-seven-object-types-one-skeleton",
+  "num": "2",
+  "name": "FEED ITEM VARIANTS — SEVEN OBJECT TYPES, ONE SKELETON",
+  "dim": "1440 × 620 · canvas region",
+  "width": 1440,
+  "board": "H1 - Feed",
+  "code": "H1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h1-why-am-i-seeing-this",
+  "num": "3",
+  "name": "\"WHY AM I SEEING THIS?\" (E18)",
+  "dim": "720 × 600 · expanded, with suppress controls",
+  "width": 720,
+  "board": "H1 - Feed",
+  "code": "H1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h1-chronological-and-cross-field",
+  "num": "4",
+  "name": "CHRONOLOGICAL (E19) AND CROSS-FIELD (E20)",
+  "dim": "640 × 600",
+  "width": 640,
+  "board": "H1 - Feed",
+  "code": "H1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h2-federated-search-results",
+  "num": "6",
+  "name": "FEDERATED SEARCH RESULTS (E04, E05, E06, E07, E17)",
+  "dim": "1440 × 900 · six types grouped · reproducibility facets on the left",
+  "width": 1440,
+  "board": "H2 - Search",
+  "code": "H2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h2-command-palette-k",
+  "num": "8",
+  "name": "COMMAND PALETTE ⌘K (E23)",
+  "dim": "640 × 540 · the power-user surface",
+  "width": 640,
+  "board": "H2 - Search",
+  "code": "H2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h2-saved-search-and-alerts",
+  "num": "9",
+  "name": "SAVED SEARCH AND ALERTS (E08)",
+  "dim": "700 × 540",
+  "width": 700,
+  "board": "H2 - Search",
+  "code": "H2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h2-weekly-digest-email",
+  "num": "10",
+  "name": "WEEKLY DIGEST EMAIL (E13)",
+  "dim": "600px email body · the only scheduled outbound message",
+  "width": 1440,
+  "board": "H2 - Search",
+  "code": "H2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h3-related-work-graph-and-co-authorship-network",
+  "num": "11",
+  "name": "RELATED-WORK GRAPH AND CO-AUTHORSHIP NETWORK (E10, E11)",
+  "dim": "1440 × 660 · edges are typed and labelled, never decorative",
+  "width": 1440,
+  "board": "H3 - Engagement",
+  "code": "H3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h3-trending-in-your-field",
+  "num": "12",
+  "name": "TRENDING IN YOUR FIELD (E12)",
+  "dim": "680 × 560 · trending by reuse, not by views",
+  "width": 680,
+  "board": "H3 - Engagement",
+  "code": "H3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h3-impact-notification-milestones",
+  "num": "14",
+  "name": "IMPACT NOTIFICATION (K13) + MILESTONES (K08, B22)",
+  "dim": "680 × 560 · institution level, never individual",
+  "width": 680,
+  "board": "H3 - Engagement",
+  "code": "H3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h3-the-two-dangerous-mechanics-streaks-and-leaderboards",
+  "num": "13·19",
+  "name": "THE TWO DANGEROUS MECHANICS — STREAKS (K01) AND LEADERBOARDS (K05)",
+  "dim": "1440 × 640 · both off by default, both arguing against themselves",
+  "width": 1440,
+  "board": "H3 - Engagement",
+  "code": "H3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h3-frequency-caps-and-quiet-hours",
+  "num": "20",
+  "name": "FREQUENCY CAPS AND QUIET HOURS (K23, K24)",
+  "dim": "660 × 520",
+  "width": 660,
+  "board": "H3 - Engagement",
+  "code": "H3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h3-share-card-embed-widget-and-year-in-review",
+  "num": "21·22",
+  "name": "SHARE CARD, EMBED WIDGET (K14, K15) AND YEAR IN REVIEW (K21, B21)",
+  "dim": "700 × 520",
+  "width": 700,
+  "board": "H3 - Engagement",
+  "code": "H3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h4-image-first-figure-feed",
+  "num": "16",
+  "name": "IMAGE-FIRST FIGURE FEED (K18)",
+  "dim": "1440 × 860 · dense grid · every image links its underlying data",
+  "width": 1440,
+  "board": "H4 - Visual and Ephemeral",
+  "code": "H4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h4-lab-story-composer-and-viewer",
+  "num": "17",
+  "name": "LAB STORY · COMPOSER AND VIEWER (K16)",
+  "dim": "760 × 640 · 24 hours · outside the citable record, and it says so",
+  "width": 760,
+  "board": "H4 - Visual and Ephemeral",
+  "code": "H4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h4-short-video-method-demo",
+  "num": "18",
+  "name": "SHORT VIDEO METHOD DEMO (K17)",
+  "dim": "620 × 640 · protocol link is mandatory",
+  "width": 620,
+  "board": "H4 - Visual and Ephemeral",
+  "code": "H4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h5-ai-assistant-panel-per-claim-sources",
+  "num": "23·24",
+  "name": "AI ASSISTANT PANEL + PER-CLAIM SOURCES (L01)",
+  "dim": "1440 × 900 · every sentence carries its source · never a bare answer",
+  "width": 1440,
+  "board": "H5 - AI",
+  "code": "H5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h5-method-extraction-draft-card",
+  "num": "25",
+  "name": "METHOD EXTRACTION → DRAFT CARD (L02)",
+  "dim": "760 × 660 · human review is mandatory before save",
+  "width": 760,
+  "board": "H5 - AI",
+  "code": "H5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h5-disclosure-and-auto-tagging",
+  "num": "26·28",
+  "name": "DISCLOSURE (L10, L13) AND AUTO-TAGGING (L05)",
+  "dim": "620 × 660",
+  "width": 620,
+  "board": "H5 - AI",
+  "code": "H5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h5-opt-out-of-ai-training-designed-to-be-found",
+  "num": "27",
+  "name": "OPT OUT OF AI TRAINING (L11) — DESIGNED TO BE FOUND",
+  "dim": "1440 × 620 · a trust feature, given the prominence of one",
+  "width": 1440,
+  "board": "H5 - AI",
+  "code": "H5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 72px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "h8-replication-challenges-on-the-method-card",
+  "num": "K07",
+  "name": "REPLICATION CHALLENGES — ON THE METHOD CARD",
+  "dim": "",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "h8-data-challenges-rebuilt-as-method-card-submissions",
+  "num": "K06",
+  "name": "DATA CHALLENGES — REBUILT AS METHOD-CARD SUBMISSIONS",
+  "dim": "1440 × 620 · new surface under Methods · the metric is one input of four",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "h8-micro-endorsements-earned-weighted-decaying",
+  "num": "K11",
+  "name": "MICRO-ENDORSEMENTS — EARNED, WEIGHTED, DECAYING",
+  "dim": "",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "h8-invites-credited-on-what-the-invitee-contributes",
+  "num": "K10",
+  "name": "INVITES — CREDITED ON WHAT THE INVITEE CONTRIBUTES",
+  "dim": "",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "h8-completeness-extended-to-datasets-and-projects",
+  "num": "K04",
+  "name": "COMPLETENESS — EXTENDED TO DATASETS AND PROJECTS",
+  "dim": "",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "h8-public-commitments-to-a-replication-not-a-date",
+  "num": "K20",
+  "name": "PUBLIC COMMITMENTS — TO A REPLICATION, NOT A DATE",
+  "dim": "",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "h8-smart-batching-the-user-owns-the-timing",
+  "num": "K12",
+  "name": "SMART BATCHING — THE USER OWNS THE TIMING",
+  "dim": "",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "h8-ethical-gamification-review-a-console-screen",
+  "num": "K22",
+  "name": "ETHICAL GAMIFICATION REVIEW — A CONSOLE SCREEN",
+  "dim": "",
+  "width": 1440,
+  "board": "H8 - Mechanics Implemented",
+  "code": "H8",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:48px;width:max-content"
+ },
+ {
+  "id": "i1-admin-console-home",
+  "num": "1",
+  "name": "ADMIN CONSOLE HOME (M01)",
+  "dim": "1440 × 900 · seats · roles · SSO · policy defaults",
+  "width": 1440,
+  "board": "I1 - Console and Identity",
+  "code": "I1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i1-sso-configuration",
+  "num": "2",
+  "name": "SSO CONFIGURATION (A03, M01)",
+  "dim": "760 × 640 · SAML · eduGAIN · test connection",
+  "width": 760,
+  "board": "I1 - Console and Identity",
+  "code": "I1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i1-scim-provisioning",
+  "num": "3",
+  "name": "SCIM PROVISIONING (M12)",
+  "dim": "640 × 640 · joiners · movers · leavers",
+  "width": 640,
+  "board": "I1 - Console and Identity",
+  "code": "I1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i1-pilot-dashboard-1-3-labs",
+  "num": "14",
+  "name": "PILOT DASHBOARD · 1–3 LABS (M01, R09)",
+  "dim": "1440 × 620 · the evaluation-stage screen · this is what renewal is decided on",
+  "width": 1440,
+  "board": "I1 - Console and Identity",
+  "code": "I1",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i2-institutional-output-dashboard",
+  "num": "4",
+  "name": "INSTITUTIONAL OUTPUT DASHBOARD (M02)",
+  "dim": "1440 × 860 · with the caution stated as chrome, not as a footnote",
+  "width": 1440,
+  "board": "I2 - Dashboards",
+  "code": "I2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i2-research-integrity-dashboard",
+  "num": "5",
+  "name": "RESEARCH INTEGRITY DASHBOARD (M03)",
+  "dim": "760 × 600 · signals, never verdicts",
+  "width": 760,
+  "board": "I2 - Dashboards",
+  "code": "I2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i2-funder-export-and-chargeback",
+  "num": "6·10",
+  "name": "FUNDER EXPORT (M04) AND CHARGEBACK (M06)",
+  "dim": "640 × 600",
+  "width": 640,
+  "board": "I2 - Dashboards",
+  "code": "I2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i3-confidential-mode-the-whole-chrome-changes",
+  "num": "7",
+  "name": "CONFIDENTIAL MODE (M07) — THE WHOLE CHROME CHANGES",
+  "dim": "1440 × 900 · standard tenant above, confidential tenant below · same screen, same user",
+  "width": 1440,
+  "board": "I3 - Confidential and Audit",
+  "code": "I3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i3-pre-disclosure-patentability-gate",
+  "num": "8",
+  "name": "PRE-DISCLOSURE PATENTABILITY GATE (M08, N21)",
+  "dim": "1440 × 640 · before the first public posting · type-to-confirm on the secondary action",
+  "width": 1440,
+  "board": "I3 - Confidential and Audit",
+  "code": "I3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i3-audit-log-with-siem-export",
+  "num": "9",
+  "name": "AUDIT LOG WITH SIEM EXPORT (M09)",
+  "dim": "780 × 620 · streaming, not just downloadable",
+  "width": 780,
+  "board": "I3 - Confidential and Audit",
+  "code": "I3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i3-invention-disclosure",
+  "num": "11",
+  "name": "INVENTION DISCLOSURE (M14)",
+  "dim": "620 × 620 · the path the gate points at",
+  "width": 620,
+  "board": "I3 - Confidential and Audit",
+  "code": "I3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i4-vendor-page-four-signals-not-one-label",
+  "num": "13",
+  "name": "VENDOR PAGE (M16) — FOUR SIGNALS, NOT ONE LABEL",
+  "dim": "1440 × 780 · community artifact on the left for comparison",
+  "width": 1440,
+  "board": "I4 - Commercial",
+  "code": "I4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i4-job-board",
+  "num": "12",
+  "name": "JOB BOARD (M17)",
+  "dim": "700 × 600 · salary is a required field",
+  "width": 700,
+  "board": "I4 - Commercial",
+  "code": "I4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i4-recruiter-talent-search-consent-gated",
+  "num": "12b",
+  "name": "RECRUITER TALENT SEARCH (M18) — CONSENT-GATED",
+  "dim": "640 × 600",
+  "width": 640,
+  "board": "I4 - Commercial",
+  "code": "I4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i5-data-subject-request-centre",
+  "num": "15",
+  "name": "DATA SUBJECT REQUEST CENTRE (N01)",
+  "dim": "1440 × 800 · six rights · statutory clock on every row",
+  "width": 1440,
+  "board": "I5 - Privacy and Data Rights",
+  "code": "I5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i5-privacy-centre",
+  "num": "16",
+  "name": "PRIVACY CENTRE (N02, M11)",
+  "dim": "720 × 620 · purposes · sub-processors · DPO",
+  "width": 720,
+  "board": "I5 - Privacy and Data Rights",
+  "code": "I5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i5-consent-and-terms-versioning",
+  "num": "17·18",
+  "name": "CONSENT (N03) AND TERMS VERSIONING (N04)",
+  "dim": "640 × 620",
+  "width": 640,
+  "board": "I5 - Privacy and Data Rights",
+  "code": "I5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i6-dsa-statement-of-reasons-and-appeal",
+  "num": "20",
+  "name": "DSA STATEMENT OF REASONS (N07) AND APPEAL (N09)",
+  "dim": "1440 × 700 · what the affected user receives, and what they can do about it",
+  "width": 1440,
+  "board": "I6 - Trust and Safety",
+  "code": "I6",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i6-moderation-queue-three-tiers-explicitly-separated",
+  "num": "21",
+  "name": "MODERATION QUEUE (N08) — THREE TIERS, EXPLICITLY SEPARATED",
+  "dim": "1440 × 640 · automated triage · community review · staff escalation",
+  "width": 1440,
+  "board": "I6 - Trust and Safety",
+  "code": "I6",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i6-code-of-conduct-and-enforcement-ladder",
+  "num": "22",
+  "name": "CODE OF CONDUCT AND ENFORCEMENT LADDER (N10)",
+  "dim": "700 × 560 · five rungs, published in advance",
+  "width": 700,
+  "board": "I6 - Trust and Safety",
+  "code": "I6",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i6-impersonation-orcid-resolves-it",
+  "num": "23",
+  "name": "IMPERSONATION (N11) — ORCID RESOLVES IT",
+  "dim": "660 × 560",
+  "width": 660,
+  "board": "I6 - Trust and Safety",
+  "code": "I6",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i7-licence-for-an-external-contribution",
+  "num": "24",
+  "name": "LICENCE FOR AN EXTERNAL CONTRIBUTION (N22)",
+  "dim": "1440 × 700 · OPEN DECISION · neither option is pre-selected",
+  "width": 1440,
+  "board": "I7 - Licence and Transparency",
+  "code": "I7",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i7-transparency-report-public-page",
+  "num": "25",
+  "name": "TRANSPARENCY REPORT (N20) — PUBLIC PAGE",
+  "dim": "720 × 620 · published twice a year, no login",
+  "width": 720,
+  "board": "I7 - Licence and Transparency",
+  "code": "I7",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "i7-hazard-data-and-liability",
+  "num": "26",
+  "name": "HAZARD DATA (N16) AND LIABILITY (N17)",
+  "dim": "660 × 620 · attached to the protocol, travels with every fork",
+  "width": 660,
+  "board": "I7 - Licence and Transparency",
+  "code": "I7",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j2-per-output-analytics-and-reader-aggregation",
+  "num": "8·9",
+  "name": "PER-OUTPUT ANALYTICS (Q01) AND READER AGGREGATION (Q02)",
+  "dim": "1440 × 760 · the privacy decision annotated on the screen",
+  "width": 1440,
+  "board": "J2 - Analytics",
+  "code": "J2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:44px;width:max-content"
+ },
+ {
+  "id": "j2-citation-alerts-and-data-reuse",
+  "num": "10·11",
+  "name": "CITATION ALERTS (Q03) AND DATA REUSE (Q08)",
+  "dim": "760 × 620 · with the citing context, not just the count",
+  "width": 760,
+  "board": "J2 - Analytics",
+  "code": "J2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:44px;width:max-content"
+ },
+ {
+  "id": "j2-project-health-and-quota",
+  "num": "12·13",
+  "name": "PROJECT HEALTH (Q05, Q06) AND QUOTA (Q10)",
+  "dim": "640 × 620",
+  "width": 640,
+  "board": "J2 - Analytics",
+  "code": "J2",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:44px;width:max-content"
+ },
+ {
+  "id": "j3-audit-1-the-question-composer",
+  "num": "14",
+  "name": "AUDIT 1 · THE QUESTION COMPOSER",
+  "dim": "",
+  "width": 1440,
+  "board": "J3 - Accessibility",
+  "code": "J3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:44px;width:max-content"
+ },
+ {
+  "id": "j3-audit-2-and-3-upload-institutional-dashboard",
+  "num": "14b",
+  "name": "AUDIT 2 AND 3 · UPLOAD · INSTITUTIONAL DASHBOARD",
+  "dim": "760 × 640",
+  "width": 760,
+  "board": "J3 - Accessibility",
+  "code": "J3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:44px;width:max-content"
+ },
+ {
+  "id": "j3-accessibility-statement-published",
+  "num": "18",
+  "name": "ACCESSIBILITY STATEMENT (S03) — PUBLISHED",
+  "dim": "640 × 640 · required, and honest",
+  "width": 640,
+  "board": "J3 - Accessibility",
+  "code": "J3",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:44px;width:max-content"
+ },
+ {
+  "id": "j4-pricing",
+  "num": "19",
+  "name": "PRICING (P01–P05)",
+  "dim": "1440 × 780 · four tiers · the benchmark shown, not hidden",
+  "width": 1440,
+  "board": "J4 - Monetisation",
+  "code": "J4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j4-hitting-the-quota",
+  "num": "20",
+  "name": "HITTING THE QUOTA (P06, P07)",
+  "dim": "700 × 560 · the upload keeps working",
+  "width": 700,
+  "board": "J4 - Monetisation",
+  "code": "J4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j4-institutional-quote-and-pilot-proposal",
+  "num": "21",
+  "name": "INSTITUTIONAL QUOTE AND PILOT PROPOSAL (P10, P11)",
+  "dim": "660 × 560",
+  "width": 660,
+  "board": "J4 - Monetisation",
+  "code": "J4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j4-referral-and-lmic-pricing",
+  "num": "22",
+  "name": "REFERRAL (P13) AND LMIC PRICING (P12)",
+  "dim": "640 × 520",
+  "width": 640,
+  "board": "J4 - Monetisation",
+  "code": "J4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j4-public-seo-page-the-acquisition-engine",
+  "num": "23",
+  "name": "PUBLIC SEO PAGE (P16) — THE ACQUISITION ENGINE",
+  "dim": "720 × 520 · what an anonymous visitor from Google sees",
+  "width": 720,
+  "board": "J4 - Monetisation",
+  "code": "J4",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j5-public-status-page",
+  "num": "24",
+  "name": "PUBLIC STATUS PAGE (T01)",
+  "dim": "720 × 620 · separate infrastructure · no login",
+  "width": 720,
+  "board": "J5 - Operations",
+  "code": "J5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j5-developer-reference",
+  "num": "26",
+  "name": "DEVELOPER REFERENCE (O07, O08, O09)",
+  "dim": "660 × 620",
+  "width": 660,
+  "board": "J5 - Operations",
+  "code": "J5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "j5-spec-cards-27-features-with-no-user-interface",
+  "num": "25",
+  "name": "SPEC CARDS — 27 FEATURES WITH NO USER INTERFACE",
+  "dim": "1440 wide · no screens invented · each card names where the effect surfaces",
+  "width": 1440,
+  "board": "J5 - Operations",
+  "code": "J5",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px 40px 88px;font-family:var(--mono);display:flex;flex-direction:column;gap:56px;width:max-content"
+ },
+ {
+  "id": "fn-834-breakpoint-rail-locks-to-56-icon-only-context-becomes-a-slid",
+  "num": "TABLET",
+  "name": "834 breakpoint · rail locks to 56 icon-only · context becomes a slide-over",
+  "dim": "",
+  "width": 1440,
+  "board": "Navigation Shell",
+  "code": "FN",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:40px;width:max-content"
+ },
+ {
+  "id": "fn-390-844-bottom-tabs",
+  "num": "MOBILE",
+  "name": "390 × 844 · bottom tabs",
+  "dim": "",
+  "width": 1440,
+  "board": "Navigation Shell",
+  "code": "FN",
+  "tokens": "--bg:#F7F6F3;--surface:#FFFFFF;--ink:#0D0D0D;--mute:#6B6B6B;--rule:#D6D3CD;--signal:#FF4D00;--flag:#FFD400;--ok:#0B7A4B;--err:#B3261E;--info:#1B4FA0;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,sans-serif;background:#E8E6E1;color:var(--ink);padding:40px;font-family:var(--mono);display:flex;flex-direction:column;gap:40px;width:max-content"
+ }
+]

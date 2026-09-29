@@ -1,44 +1,55 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/", "/login", "/onboarding"];
+/** Next 16 replaces middleware.ts with proxy.ts. Refreshes the Supabase
+ *  session cookie on every request and gates the authed routes. */
+/* The design boards are an internal review — pricing strategy, the refused
+   mechanics, the coverage audit and the open questions are all in there. They
+   stay open in development and require a session anywhere else. */
+const PUBLIC = ["/", "/login", "/signup", "/onboarding"];
+if (process.env.NODE_ENV !== "production" || process.env.SCICOLLAB_OPEN_BOARDS === "1") {
+  PUBLIC.push("/boards");
+}
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
-  // Local dev without real Supabase credentials (placeholder env):
-  // skip the auth gate entirely so the app remains browsable.
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  if (!supabaseUrl || supabaseUrl.includes("placeholder")) {
-    return response;
+  const { pathname } = request.nextUrl;
+  const isPublic = PUBLIC.some((p) => pathname === p || pathname.startsWith(p + "/"));
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  if (!url || url.includes("placeholder")) {
+    // Without a backend there is no session to check. In development that
+    // should not stand in the way; in production it must not fail open, or a
+    // misconfigured deploy silently publishes everything behind the gate.
+    if (process.env.NODE_ENV !== "production" || isPublic) return response;
+    const to = request.nextUrl.clone();
+    to.pathname = "/login";
+    return NextResponse.redirect(to);
   }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    url,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() { return request.cookies.getAll(); },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        getAll: () => request.cookies.getAll(),
+        setAll: (list) => {
+          list.forEach(({ name, value }) => request.cookies.set(name, value));
           response = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+          list.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
         },
       },
     }
   );
 
   const { data: { user } } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
-  const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
-
   if (!user && !isPublic) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+    const to = request.nextUrl.clone();
+    to.pathname = "/login";
+    to.searchParams.set("next", pathname);
+    return NextResponse.redirect(to);
   }
-
   return response;
 }
 

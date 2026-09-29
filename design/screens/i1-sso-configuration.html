@@ -1,0 +1,46 @@
+<div style="position:relative;width:760px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">IDENTITY AND SSO</span>
+          <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:400 10px/1 var(--mono);color:var(--ok)"><span style="width:7px;height:7px;background:var(--ok);border-radius:50%"></span>connected · 4 min ago</span>
+        </div>
+        <div style="padding:16px">
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px">
+            <div style="border:1px solid var(--ok);background:#F4FAF6;padding:11px"><div style="font:500 9px/1 var(--mono);color:var(--ok);letter-spacing:.08em;margin-bottom:6px">METHOD</div><div style="font:400 11px/1.3 var(--mono)">SAML 2.0</div></div>
+            <div style="border:1px solid var(--ok);background:#F4FAF6;padding:11px"><div style="font:500 9px/1 var(--mono);color:var(--ok);letter-spacing:.08em;margin-bottom:6px">FEDERATION</div><div style="font:400 11px/1.3 var(--mono)">eduGAIN via BELNET</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:11px"><div style="font:500 9px/1 var(--mono);color:var(--mute);letter-spacing:.08em;margin-bottom:6px">FALLBACK</div><div style="font:400 11px/1.3 var(--mono)"><a href="SciCollab B1 - Onboarding.dc.html#s2">ORCID</a> · permitted</div></div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:13px;margin-bottom:13px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">SERVICE PROVIDER METADATA · GIVE THIS TO YOUR IdP TEAM</div>
+            <div style="display:grid;grid-template-columns:104px minmax(0,1fr);gap:7px 11px;font:400 10px/1.4 var(--mono)">
+              <span style="color:var(--mute)">ENTITY ID</span><span style="word-break:break-all">https://scicollab.org/sp/kuleuven</span>
+              <span style="color:var(--mute)">ACS URL</span><span style="word-break:break-all">https://scicollab.org/sso/acs/kuleuven</span>
+              <span style="color:var(--mute)">NAMEID</span><span>persistent · eduPersonTargetedID</span>
+              <span style="color:var(--mute)">SIGNING</span><span>SHA-256 · cert expires 2028-03-14</span>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:11px"><span style="height:26px;padding:0 10px;border:1px solid var(--ink);display:flex;align-items:center;font:500 10px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Download SP metadata XML</span><span style="height:26px;padding:0 10px;border:1px solid var(--rule);color:var(--mute);display:flex;align-items:center;font:500 10px/1 var(--mono);cursor:pointer">Copy entity ID</span></div>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--surface);margin-bottom:13px">
+            <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--rule);background:var(--bg)"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em">ATTRIBUTE MAPPING</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--ok)">5 of 5 received in the last assertion</span></div>
+            <div style="padding:0">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 66px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono);color:var(--mute)">eduPersonPrincipalName</div><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">→ account identifier</div><div style="padding:8px 11px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">OK</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 66px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono);color:var(--mute)">eduPersonAffiliation</div><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">→ role and seat class</div><div style="padding:8px 11px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">OK</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 66px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono);color:var(--mute)">schacHomeOrganization</div><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">→ tenant binding</div><div style="padding:8px 11px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">OK</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 66px;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono);color:var(--mute)">ORCID · optional</div><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">→ verified marker</div><div style="padding:8px 11px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">OK</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ok);background:#F4FAF6;padding:13px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--ok)">TEST CONNECTION</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--mute)">last run 14:02 · 1.4 s</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m5 12.5 5 5 9-11"/></svg><span>Redirect to IdP · 210 ms</span></div>
+              <div style="display:flex;gap:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m5 12.5 5 5 9-11"/></svg><span>Assertion signature valid</span></div>
+              <div style="display:flex;gap:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m5 12.5 5 5 9-11"/></svg><span>All required attributes present</span></div>
+              <div style="display:flex;gap:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B7A4B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="m5 12.5 5 5 9-11"/></svg><span>Test user resolved to the correct tenant and role</span></div>
+            </div>
+            <div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-top:10px;padding-top:9px;border-top:1px solid #CFE3D6">Runs against a test account without touching live sessions, and the result is written to the audit log. IT will ask whether they can verify a config change without a maintenance window; they can.</div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">A03 · M01 · M12 · A22 · M09</span>
+        </div>
+      </div>

@@ -1,0 +1,74 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="padding:20px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1fr);gap:18px">
+
+        <div>
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">FOCUS ORDER · NUMBERED, TAB ONLY</div>
+          <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--signal);background:#FFF8F5"><span style="width:20px;height:20px;background:var(--signal);color:#fff;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">1</span><span style="font:400 11px/1.3 var(--mono);flex:1">Skip to main content</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">visible on focus</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">2</span><span style="font:400 11px/1.3 var(--mono);flex:1">Title field</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">3</span><span style="font:400 11px/1.3 var(--mono);flex:1">Formatting toolbar · single tab stop</span><span style="font:400 9px/1 var(--mono);color:var(--ok)">arrow keys inside</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">4</span><span style="font:400 11px/1.3 var(--mono);flex:1">Problem statement</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">5</span><span style="font:400 11px/1.3 var(--mono);flex:1">Conditions · 6 fields, 5–10</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">11</span><span style="font:400 11px/1.3 var(--mono);flex:1">Outcome radio group · one stop</span><span style="font:400 9px/1 var(--mono);color:var(--ok)">arrows</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule)"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">12</span><span style="font:400 11px/1.3 var(--mono);flex:1">Visibility · LAB</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--ink);background:var(--bg)"><span style="width:20px;height:20px;background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">13</span><span style="font:400 11px/1.3 var(--mono);flex:1">Review and post</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px dashed var(--rule);opacity:.75"><span style="width:20px;height:20px;border:1px dashed var(--rule);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none;color:var(--mute)">14</span><span style="font:400 11px/1.3 var(--mono);flex:1;color:var(--mute)">Retrieval panel · <b>after</b> the form</span></div>
+            </div>
+            <div style="border-top:1px solid var(--rule);margin-top:11px;padding-top:10px;font:400 11px/1.45 var(--sans)"><b>The retrieval panel is last on purpose.</b> It updates as you type; if it sat in the tab order before the post button, a screen-reader user would be pushed through changing suggestions every time they moved. It is an <span style="font-family:var(--mono);font-size:10px">aria-live="polite"</span> region announced on change, and reachable directly with a landmark jump.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">MEASURED CONTRAST</div>
+            <div style="border:1px solid var(--ink);background:var(--surface)">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid var(--ink);background:var(--bg)"><div style="padding:8px 11px;font:500 9px/1.2 var(--mono);color:var(--mute)">ELEMENT</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute)">PAIR</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:right">RATIO</div><div style="padding:8px 6px;font:500 9px/1.2 var(--mono);color:var(--mute);text-align:right">AA</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Body text</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">0D0D0D / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">17.4</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Muted metadata</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">6B6B6B / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">5.3</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">White on signal · button</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">FFFFFF / FF4D00</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">3.6</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS*</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Signal text on ground</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">B33600 / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">6.1</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono);color:#0D0D0D">Yellow flag ground</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:#6B5900">0D0D0D / FFD400</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">13.9</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 52px;align-items:center"><div style="padding:8px 11px;font:400 10px/1.3 var(--mono)">Focus ring on ground</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--mute)">FF4D00 / F7F6F3</div><div style="padding:8px 6px;font:500 10px/1.3 var(--mono);text-align:right">3.6</div><div style="padding:8px 6px;font:400 9px/1.3 var(--mono);color:var(--ok);text-align:right">PASS</div></div>
+            </div>
+            <div style="font:400 10px/1.45 var(--sans);color:var(--mute);margin-top:8px">* 3.6:1 passes as large text (12px mono at 500 weight on a 32px button meets the large-text threshold) and passes 1.4.11 non-text contrast. <b>White on signal is not used below 14px anywhere.</b></div>
+          </div>
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">TARGET SIZES · MEASURED</div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:6px;font:400 10px/1.4 var(--mono)">
+              <div style="display:flex;justify-content:space-between"><span>Primary button</span><span>32 × 116 · <span style="color:var(--ok)">pass</span></span></div>
+              <div style="display:flex;justify-content:space-between"><span>Toolbar icon button</span><span>22 × 24 · <span style="color:var(--ok)">pass 2.5.8</span></span></div>
+              <div style="display:flex;justify-content:space-between"><span>Chip remove ×</span><span>24 × 24 · <span style="color:var(--ok)">pass</span></span></div>
+              <div style="display:flex;justify-content:space-between"><span>Mobile · all targets</span><span>44 × 44 · <span style="color:var(--ok)">exceeds</span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">ACCESSIBLE NAMES · EVERY ICON-ONLY CONTROL</div>
+            <div style="border:1px solid var(--ink);background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:6px;font:400 10px/1.5 var(--mono)">
+              <div><span style="color:var(--mute)">TeX button</span> → "Insert LaTeX equation"</div>
+              <div><span style="color:var(--mute)">Code button</span> → "Insert code block"</div>
+              <div><span style="color:var(--mute)">Molecule</span> → "Insert chemical structure"</div>
+              <div><span style="color:var(--mute)">Figure</span> → "Attach a figure"</div>
+              <div><span style="color:var(--mute)">DOI</span> → "Expand a DOI into a citation"</div>
+              <div><span style="color:var(--mute)">Visibility chip</span> → "Visibility: Lab. Change who can see this."</div>
+              <div><span style="color:var(--mute)">Status dot</span> → "Asking for help" <span style="color:var(--ok)">· not colour alone</span></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ok);background:#F4FAF6;padding:13px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--ok);margin-bottom:10px">KEYBOARD-ONLY PATH · TRACED END TO END</div>
+            <div style="font:400 12px/1.55 var(--sans)">Post a complete question without a mouse: <span style="font-family:var(--mono);font-size:11px">Tab</span> ×2 → type title → <span style="font-family:var(--mono);font-size:11px">Tab</span> ×2 → type body → <span style="font-family:var(--mono);font-size:11px">Tab</span> ×6 → fill conditions → <span style="font-family:var(--mono);font-size:11px">Tab</span> → <span style="font-family:var(--mono);font-size:11px">→</span> to pick outcome → <span style="font-family:var(--mono);font-size:11px">Tab</span> ×2 → <span style="font-family:var(--mono);font-size:11px">Enter</span>. <b>Or ⌘↵ from any field.</b> 14 stops, no traps, and Escape always closes the quality assistant without losing the draft.</div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px">
+            <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:10px">FAILURE 1 OF 3 · OPEN</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D"><b>The LaTeX preview has no text alternative.</b> A rendered equation is an image to a screen reader. Fix: expose the source as the accessible name and offer MathML output. <span style="font-family:var(--mono);font-size:11px">Owner: composer team · blocks AA on 1.1.1</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">S01 · S02 · S03 · F01 · F24</span><span style="margin-left:auto">EN 301 549 · WCAG 2.1 AA · 1 open failure on this screen</span>
+      </div>
+    </div>

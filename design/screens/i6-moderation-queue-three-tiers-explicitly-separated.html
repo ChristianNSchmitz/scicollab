@@ -1,0 +1,81 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule);background:var(--surface)">
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">an item enters at the left and can only move right · nothing skips a tier upward without a log entry</span>
+      </div>
+      <div style="padding:20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0">
+
+        <div style="border:1px solid var(--rule);background:var(--surface);border-right:0">
+          <div style="padding:12px 14px;border-bottom:1px solid var(--rule);background:var(--bg)">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">1</span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em">AUTOMATED TRIAGE</span></div>
+            <div style="font:400 10px/1.4 var(--mono);color:var(--mute)">machine · sorts, never decides</div>
+          </div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:11px">
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:11px">
+              <div style="display:flex;justify-content:space-between;font:400 11px/1.4 var(--mono);margin-bottom:7px"><span>Items in the last 7 days</span><span style="font-weight:500">412</span></div>
+              <div style="display:flex;flex-direction:column;gap:5px;font:400 10px/1.4 var(--mono);color:var(--mute)">
+                <div style="display:flex;justify-content:space-between"><span>routed to tier 2</span><span>63</span></div>
+                <div style="display:flex;justify-content:space-between"><span>routed direct to tier 3</span><span style="color:var(--err)">9</span></div>
+                <div style="display:flex;justify-content:space-between"><span>closed as no action</span><span>340</span></div>
+              </div>
+            </div>
+            <div style="font:400 12px/1.5 var(--sans)"><b>What it does:</b> deduplicates reports, classifies the category, attaches the relevant policy text, and checks the reporter's history.</div>
+            <div style="border:1px solid var(--err);background:#FCF3F2;padding:11px">
+              <div style="font:500 9px/1 var(--mono);letter-spacing:.08em;color:var(--err);margin-bottom:7px">WHAT IT NEVER DOES</div>
+              <div style="font:400 11px/1.45 var(--sans)">Remove content, restrict an account, or close a report as unfounded. Every outcome that affects a person is made by a human, and the statement of reasons says which one.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--ink);background:var(--surface);border-right:0">
+          <div style="padding:12px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px"><span style="width:20px;height:20px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">2</span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em">COMMUNITY REVIEW</span></div>
+            <div style="font:400 10px/1.4 var(--mono);color:var(--mute)">volunteers · scientific judgement only</div>
+          </div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:11px">
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:11px">
+              <div style="font:500 9px/1 var(--mono);letter-spacing:.08em;color:var(--mute);margin-bottom:8px">WHAT VOLUNTEERS SEE</div>
+              <div style="display:flex;flex-direction:column;gap:5px;font:400 11px/1.4 var(--mono)">
+                <div>Duplicate protocol proposals</div>
+                <div>Metadata quality and tag merges</div>
+                <div>Off-topic posts in a community</div>
+                <div>Suggested edits to method cards</div>
+              </div>
+            </div>
+            <div style="font:400 12px/1.5 var(--sans)">Three approvals to act. Reviewers are <a href="SciCollab G2 - Communities.dc.html#s3">elected</a>, rotate on twelve-month terms, and are capped at <b>20 reviews a day</b> — the workbook's mitigation for moderator burnout, enforced rather than advised.</div>
+            <div style="border:1px solid var(--flag);background:#FFFBE6;padding:11px">
+              <div style="font:700 9px/1 var(--mono);letter-spacing:.08em;margin-bottom:7px">NEVER IN THIS TIER</div>
+              <div style="font:400 11px/1.45 var(--sans);color:#0D0D0D">Harassment, safety, personal data, research misconduct, legal notices. Asking a volunteer postdoc to adjudicate a harassment report is unfair to them and to the reporter.</div>
+            </div>
+            <a href="SciCollab C4 - Knowledge Layer.dc.html#s4" style="font:400 10px/1 var(--mono);margin-top:auto">see the reviewer's own screen →</a>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--err);background:var(--surface)">
+          <div style="padding:12px 14px;border-bottom:1px solid var(--err);background:#FCF3F2">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px"><span style="width:20px;height:20px;border:1px solid var(--err);background:var(--err);color:#fff;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">3</span><span style="font:500 11px/1 var(--mono);letter-spacing:.06em;color:var(--err)">STAFF ESCALATION</span></div>
+            <div style="font:400 10px/1.4 var(--mono);color:var(--mute)">trained, named, accountable</div>
+          </div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:11px">
+            <div style="border:1px solid var(--err);background:#FCF3F2;padding:11px">
+              <div style="font:500 9px/1 var(--mono);letter-spacing:.08em;color:var(--err);margin-bottom:8px">ALWAYS TIER 3</div>
+              <div style="display:flex;flex-direction:column;gap:5px;font:400 11px/1.4 var(--mono);color:#0D0D0D">
+                <div>Harassment and threats</div>
+                <div>Personal or patient-identifiable data</div>
+                <div>Legal notices and takedowns</div>
+                <div>Impersonation · N11</div>
+                <div>Biosecurity and dual-use · N13, N14</div>
+              </div>
+            </div>
+            <div style="font:400 12px/1.5 var(--sans)"><b>Research misconduct is routed differently again</b> — to the institution's named integrity office, not to us. It is a formal process with legal weight and it does not belong to a platform.</div>
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:11px">
+              <div style="font:500 9px/1 var(--mono);letter-spacing:.08em;margin-bottom:7px">EVERY TIER-3 DECISION</div>
+              <div style="font:400 11px/1.45 var(--sans)">Is signed, produces a <a href="SciCollab I6 - Trust and Safety.dc.html#s1">statement of reasons</a> within 24 hours, is appealable, and is counted in the <a href="SciCollab I7 - Licence and Transparency.dc.html#s2">transparency report</a>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">N08 · N07 · N10 · N11 · N13 · N14 · M03</span><span style="margin-left:auto">automation sorts · humans decide</span>
+      </div>
+    </div>

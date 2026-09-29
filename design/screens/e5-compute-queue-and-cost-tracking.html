@@ -1,0 +1,89 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--info);color:var(--info);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">INSTITUTION</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">VSC Tier-2 cluster · 3 running · 2 queued · every job charged to a named grant</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font:400 11px/1.4 var(--mono);color:var(--mute)"><span>Compute</span><span style="color:#C2BDB4">/</span><span style="color:#0D0D0D">Queue</span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 360px">
+        <div style="padding:16px 18px;border-right:1px solid var(--rule)">
+          <div style="border:1px solid var(--ink);background:var(--surface);margin-bottom:14px">
+            <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 118px 118px 108px 96px;border-bottom:1px solid var(--ink);background:var(--bg)">
+              <div style="padding:8px 11px;font:500 9px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">JOB</div>
+              <div style="padding:8px 11px;font:500 9px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">WHAT</div>
+              <div style="padding:8px 11px;font:500 9px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">RESOURCE</div>
+              <div style="padding:8px 11px;font:500 9px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">STATE</div>
+              <div style="padding:8px 11px;font:500 9px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">ELAPSED / ETA</div>
+              <div style="padding:8px 11px;font:500 9px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute);text-align:right">COST</div>
+            </div>
+            <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 118px 118px 108px 96px;border-bottom:1px solid #EBE8E2;align-items:center">
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">J-4471</div>
+              <div style="padding:10px 11px"><div style="font:400 11px/1.4 var(--mono);margin-bottom:3px">Passage model · full bootstrap</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">A. Rivera · gate-and-quantify v1.4.0</div></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">16 vCPU · 64 GB</div>
+              <div style="padding:10px 11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--info);color:var(--info);font:500 9px/1.4 var(--mono)"><span style="width:5px;height:5px;background:var(--info);border-radius:50%;animation:scpulse 1.6s ease-in-out infinite"></span>RUNNING</span></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">18 m / ~26 m</div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono);text-align:right">€1.20</div>
+            </div>
+            <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 118px 118px 108px 96px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF">
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">J-4472</div>
+              <div style="padding:10px 11px"><div style="font:400 11px/1.4 var(--mono);margin-bottom:3px">Segmentation training · 40 epochs</div><div style="font:400 9px/1.3 var(--mono);color:#6B5900">H. Devries · est. €31.40 · <b>approved by the PI</b></div></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">1× A100 · 40 GB</div>
+              <div style="padding:10px 11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;font:500 9px/1.4 var(--mono)">QUEUED · 2nd</span></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono);color:#6B5900">starts in ~40 m</div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono);text-align:right;color:#6B5900">€31.40 est</div>
+            </div>
+            <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 118px 118px 108px 96px;border-bottom:1px solid #EBE8E2;align-items:center">
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">J-4468</div>
+              <div style="padding:10px 11px"><div style="font:400 11px/1.4 var(--mono);margin-bottom:3px">Reproducibility re-run · RR-0442</div><div style="font:400 9px/1.3 var(--mono);color:var(--mute)">automated · clean container</div></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">4 vCPU · 16 GB</div>
+              <div style="padding:10px 11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--ok);color:var(--ok);font:500 9px/1.4 var(--mono)">DONE</span></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono);color:var(--mute)">8 m 41 s</div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono);text-align:right">€0.13</div>
+            </div>
+            <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 118px 118px 108px 96px;align-items:center;background:#FCF3F2">
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">J-4463</div>
+              <div style="padding:10px 11px"><div style="font:400 11px/1.4 var(--mono);margin-bottom:3px">Segmentation training · first attempt</div><div style="font:400 9px/1.3 var(--sans);color:var(--err)">stopped at 4× the estimate · €41.60 of a €10 estimate · not silently continued</div></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono)">1× A100</div>
+              <div style="padding:10px 11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--err);color:var(--err);font:500 9px/1.4 var(--mono)">CAPPED</span></div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono);color:var(--mute)">2 h 14 m</div>
+              <div style="padding:10px 11px;font:400 10px/1.4 var(--mono);text-align:right;color:var(--err)">€41.60</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
+            <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--err);margin-bottom:8px">THE CAP IS THE POINT</div><div style="font:400 12px/1.5 var(--sans)">J-4463 was stopped at four times its estimate, having produced a partial checkpoint that was kept. A runaway GPU job on a fixed-budget grant is a real harm, and the default is to stop and ask rather than to finish and invoice.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHO APPROVES WHAT</div><div style="font:400 12px/1.5 var(--sans)">Under €5, anyone in the project. Over €5, the PI is asked once with the estimate and the reason. The threshold is set by the institution, not by us.</div></div>
+          </div>
+        </div>
+        <div style="padding:16px;background:var(--surface);display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">COMPUTE SPEND · FWO G0A2124N</div>
+            <div style="border:1px solid var(--ink);background:var(--bg);padding:13px">
+              <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:9px"><span style="font:700 24px/1 var(--mono)">€1,284</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">of €4,000 allocated</span></div>
+              <div style="height:9px;border:1px solid var(--ink);background:var(--surface);margin-bottom:9px"><span style="display:block;height:100%;width:32%;background:var(--ink)"></span></div>
+              <div style="display:flex;flex-direction:column;gap:5px;font:400 10px/1.4 var(--mono);color:var(--mute)">
+                <div style="display:flex;justify-content:space-between"><span>GPU jobs</span><span style="color:#0D0D0D">€982 · 76%</span></div>
+                <div style="display:flex;justify-content:space-between"><span>CPU jobs</span><span style="color:#0D0D0D">€241</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Reproducibility re-runs</span><span style="color:#0D0D0D">€61</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:12px">
+            <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:8px">PROJECTION</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D">At the current rate the compute allocation runs out in <b>14 months</b>, three months before the grant ends. The segmentation work is 76% of it — worth a conversation before it becomes an emergency.</div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">WHERE JOBS RUN</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:9px"><span style="flex:1">VSC Tier-2 · institutional</span><span style="color:var(--ok)">connected</span></div>
+              <div style="display:flex;gap:9px"><span style="flex:1">Managed cloud · EU-west</span><span style="color:var(--ok)">connected</span></div>
+              <div style="display:flex;gap:9px;color:var(--mute)"><span style="flex:1">SLURM at Karolinska</span><span>via collaborator</span></div>
+            </div>
+            <div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-top:9px;padding-top:9px;border-top:1px solid var(--rule)">The same launch spec runs on any of them. Where a job lands is a scheduling and cost decision, not a rewrite.</div>
+          </div>
+          <div style="margin-top:auto;font:400 11px/1.45 var(--sans);color:var(--mute);border-top:1px solid var(--rule);padding-top:12px">Every job records the code version, the data version and the environment digest — so a number in a paper can be traced to the exact job that produced it, and that job can be run again.</div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">I11 · I12 · I18 · I08 · I09 · I10 · G16</span><span style="margin-left:auto">estimate before, cap during, attribution after</span>
+      </div>
+    </div>

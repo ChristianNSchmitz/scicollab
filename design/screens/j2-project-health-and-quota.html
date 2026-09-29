@@ -1,0 +1,47 @@
+<div style="position:relative;width:640px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono)">LAB</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">PROJECT HEALTH</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--err);background:#FCF3F2;padding:12px;margin-bottom:13px">
+            <div style="display:flex;gap:11px;align-items:flex-start">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="1.7" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16.2h.01"/></svg>
+              <div style="font:400 12px/1.5 var(--sans)"><b>Not a performance-evaluation tool.</b> This shows where a project is thin, not who is contributing least. There is no per-person score, no ranking, and the CRediT breakdown below describes <i>kinds of work</i> — a project where one person holds every role is the warning, not the person.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:13px">
+            <div style="background:var(--surface);padding:11px"><div style="font:700 17px/1 var(--mono);color:var(--ok)">94%</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">DATA WITH METADATA</div></div>
+            <div style="background:var(--surface);padding:11px"><div style="font:700 17px/1 var(--mono);color:#6B5900">61%</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">METHODS WITH FAILURE MODES</div></div>
+            <div style="background:var(--surface);padding:11px"><div style="font:700 17px/1 var(--mono)">11 d</div><div style="font:400 8px/1.3 var(--mono);color:var(--mute);margin-top:4px">MEDIAN TIME TO ANSWER</div></div>
+          </div>
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">CONTRIBUTION BY CRediT ROLE · Q06</div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:12px;margin-bottom:13px">
+            <div style="display:flex;flex-direction:column;gap:7px;font:400 10px/1.4 var(--mono)">
+              <div style="display:flex;gap:9px;align-items:center"><span style="width:104px;flex:none">Investigation</span><span style="flex:1;height:14px;display:flex;gap:2px"><span style="flex:5;background:#4A4843"></span><span style="flex:3;background:#8E8B85"></span><span style="flex:1;background:#C2BDB4"></span></span></div>
+              <div style="display:flex;gap:9px;align-items:center"><span style="width:104px;flex:none">Data curation</span><span style="flex:1;height:14px;display:flex;gap:2px"><span style="flex:8;background:#4A4843"></span><span style="flex:1;background:#C2BDB4"></span></span></div>
+              <div style="display:flex;gap:9px;align-items:center"><span style="width:104px;flex:none">Methodology</span><span style="flex:1;height:14px;display:flex;gap:2px"><span style="flex:2;background:#4A4843"></span><span style="flex:6;background:#8E8B85"></span></span></div>
+              <div style="display:flex;gap:9px;align-items:center"><span style="width:104px;flex:none;color:#B33600">Writing</span><span style="flex:1;height:14px;display:flex;gap:2px"><span style="flex:9;background:var(--signal)"></span></span></div>
+            </div>
+            <div style="font:400 11px/1.45 var(--sans);color:var(--ink);margin-top:11px;padding-top:9px;border-top:1px solid var(--rule)"><b>The orange bar is the signal.</b> One person is doing all the writing. That is a project risk — a bus factor of one on the output — and it is the kind of thing this screen exists to show. It is not a statement about anyone's effort.</div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:13px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:11px">STORAGE AND COMPUTE · Q10</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font:400 11px/1.3 var(--mono);margin-bottom:5px"><span>Storage</span><span><b>1.9 TB</b> of 5 TB</span></div>
+                <span style="display:block;height:9px;border:1px solid var(--ink);background:var(--bg)"><span style="display:block;height:100%;width:38%;background:var(--ink)"></span></span>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font:400 11px/1.3 var(--mono);margin-bottom:5px"><span>Compute this month</span><span style="color:#6B5900"><b>412</b> of 500 core-hours</span></div>
+                <span style="display:block;height:9px;border:1px solid #8A7300;background:var(--bg)"><span style="display:block;height:100%;width:82%;background:var(--flag)"></span></span>
+              </div>
+            </div>
+            <div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-top:11px">Attributed to the <a href="SciCollab I2 - Dashboards.dc.html#s3">grant's cost centre</a>, not to individuals. At 90% the PI is told once; nothing is ever deleted for exceeding a quota.</div>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">Q05 · Q06 · Q07 · Q10 · M06 · B10</span>
+        </div>
+      </div>

@@ -1,0 +1,152 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--info);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="padding:16px 20px;border-bottom:1px solid var(--info);background:#F2F6FC;display:flex;gap:16px;align-items:flex-start">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B4FA0" stroke-width="1.7" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8.2v.01M12 11v5"/></svg>
+        <div style="flex:1"><div style="font:500 13px/1.35 var(--mono);margin-bottom:6px">These are not gaps. They are features whose correct design output is a specification, not a screen.</div><div style="font:400 13px/1.55 var(--sans);max-width:118ch">Drawing a dashboard for key rotation or a settings panel for penetration testing would inflate the coverage number and mislead anyone reading it. Each card below states the feature, what it does, why there is no interface, and — the useful column — <b>where a user would notice if it stopped working</b>.</div></div>
+      </div>
+      <div style="padding:18px 20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px">
+
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T12</span><span style="font:500 12px/1.2 var(--mono);flex:1">Encryption and key management</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">AES-256 at rest, TLS 1.3 in transit, envelope encryption with keys in an HSM, automatic rotation every 90 days. Per-tenant key separation; customer-managed keys available on the Institution tier.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>A key-management console for end users is an attack surface, not a feature. Rotation must not be skippable.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>One line in the <a href="SciCollab I1 - Console and Identity.dc.html#s1">evidence pack</a>, and the CMK option in the contract.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T11</span><span style="font:500 12px/1.2 var(--mono);flex:1">Independent penetration testing</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Annual third-party test plus a test before any major architectural change. Findings triaged to a fix SLA by severity; the summary letter is published.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>It is a procurement artifact and a process, not a product surface.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The summary letter in the <a href="SciCollab I1 - Console and Identity.dc.html#s1">evidence pack</a>. Camille's security office reads it; no user ever does.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">H25</span><span style="font:500 12px/1.2 var(--mono);flex:1">Backup and geographic replication</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Three copies across two EU regions, hourly incremental and daily full, 35-day point-in-time recovery, restore drills quarterly with the result recorded. RPO 1 hour, RTO 4 hours.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Self-service restore of a shared multi-tenant store is a data-loss incident waiting to happen. Versioning already gives users per-artifact recovery.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The <a href="SciCollab C2 - Method Cards.dc.html#s4">version selector</a> is the user-facing half of this. The rest is invisible unless it fails.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T02</span><span style="font:500 12px/1.2 var(--mono);flex:1">Rate limiting and abuse protection</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Per-account, per-IP and per-endpoint limits; progressive backoff; anomaly detection on bulk download and scraping patterns.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Publishing the thresholds to end users teaches an abuser where the line is. API limits <i>are</i> published, because a developer needs them.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>Message caps on <a href="SciCollab G4 - Messaging.dc.html#s1">DMs</a> and headers on the <a href="SciCollab J5 - Operations.dc.html#s2">API</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T05</span><span style="font:500 12px/1.2 var(--mono);flex:1">Observability</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Structured logs, distributed tracing, RED metrics per endpoint, alerting on SLO burn rate rather than on raw error counts.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Internal tooling. Exposing it would leak infrastructure detail and help nobody outside the on-call rota.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The latency figure and incident history on the <a href="SciCollab J5 - Operations.dc.html#s1">status page</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T03 · T04</span><span style="font:500 12px/1.2 var(--mono);flex:1">Latency targets and storage scalability</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Search p95 under 300 ms, feed under 500 ms, upload throughput at line rate. Object storage tiered hot/warm/cold with automatic migration by access pattern.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Targets are engineering commitments. Tiering must be invisible or it becomes a decision users are unqualified to make.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The p95 on the status page, and cold-tier retrieval time noted on <a href="SciCollab E4 - Access and Storage.dc.html#s2">the storage view</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T06 · T07</span><span style="font:500 12px/1.2 var(--mono);flex:1">Feature flags and sandbox</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Staged rollout by cohort with instant rollback. A persistent demo tenant with synthetic data, resettable, for evaluation and training.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Flags are operator tooling. <b>No A/B testing on scientific-record behaviour</b> — two researchers must never see different validation rules.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>The sandbox is a URL handed out during a <a href="SciCollab J4 - Monetisation.dc.html#s3">pilot</a>; the flags never surface at all.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T09 · T08</span><span style="font:500 12px/1.2 var(--mono);flex:1">Open standards and export guarantee</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">RO-Crate, BagIt, DataCite, Crossref, ORCID, CRediT, OpenAPI, SCIM, SAML, OCSF. A commitment that every object type has a documented open serialisation.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>A commitment, not a control. It shapes every export button rather than having one of its own.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br><a href="SciCollab E4 - Access and Storage.dc.html#s4">Archival export</a> — the no-lock-in guarantee is this card made visible.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T10</span><span style="font:500 12px/1.2 var(--mono);flex:1">Responsible disclosure and bug bounty</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">security.txt, a PGP key, a 72-hour acknowledgement commitment, safe-harbour language, and a paid bounty scaled by severity.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Its audience is security researchers, who look for a text file at a well-known path, not a product page.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br><span style="font-family:var(--mono);font-size:11px">/.well-known/security.txt</span> and a line in the <a href="SciCollab I7 - Licence and Transparency.dc.html#s2">transparency report</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">T13</span><span style="font:500 12px/1.2 var(--mono);flex:1">Internal unit economics</span></div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Cost to serve per seat, per GB, per compute hour; gross margin by tier; the storage-growth curve against revenue.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>It is a board dashboard, not a product feature. Listed only because it appears in the backlog.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>Nowhere in the product. Indirectly, in <a href="SciCollab J4 - Monetisation.dc.html#s1">what the tiers cost</a>.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">O10 · O11 · O16 · O17 · O19 · O21</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Integration connectors</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Slack and Teams, Overleaf, JupyterHub, cloud storage, calendar, and no-code automation. Each is an OAuth connection plus a mapping, configured once.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>Six near-identical connect-and-authorise panels would be six mock screens saying the same thing. One integrations settings page covers all of them.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>Settings → Integrations, and then inside the tool the researcher already uses.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">O12 · O13 · O14 · O15 · O18 · O22</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Sync and migration connectors</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">GitHub/GitLab bidirectional sync, ORCID read-write, repository deposit, protocols.io, ELN migration importers, instrument vendor APIs.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI BECAUSE</span><br>The three that matter most are already drawn where they belong — as steps in a flow, not as a connector page.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br><a href="SciCollab B1 - Onboarding.dc.html#s4">ORCID import</a>, <a href="SciCollab E4 - Access and Storage.dc.html#s3">external deposit</a>, <a href="SciCollab E5 - Code and Compute.dc.html#s1">repository browser</a>. ELN migration is a services engagement, not self-serve.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">O01 · O06 · O20</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Native apps, desktop sync, IdP role</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Native iOS and Android, a desktop sync client for large local datasets, and SciCollab acting as an identity provider to third-party tools.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO NEW UI BECAUSE</span><br>Native apps render the <a href="SciCollab J1 - Mobile.dc.html#s1">mobile screens already designed</a>. Desktop sync is a menu-bar agent. Acting as an IdP has no interface at all beyond a consent screen.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">SURFACES AT</span><br>J1 for mobile; a system tray icon; a standard OAuth consent dialog.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--rule);background:var(--surface);padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);color:var(--info);letter-spacing:.06em">P10 · P18 · P20</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">Marketplace, partnerships, community edition</div>
+          <div style="font:400 12px/1.5 var(--sans);margin-bottom:10px">Commission on contract-research introductions, conference partnership channel, and a self-hostable open-source edition.</div>
+          <div style="border-top:1px solid var(--rule);padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans)">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NO UI YET BECAUSE</span><br>Each is a business decision before it is a screen. A marketplace taking commission on research services needs a policy on conflicts of interest that does not exist yet.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">NEEDS</span><br>A founder decision, then a design brief. Flagged rather than mocked.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:500 10px/1 var(--mono);letter-spacing:.06em">L03 · L08 · L09 · L16</span></div>
+          <div style="font:500 12px/1.2 var(--mono);margin-bottom:9px">The four AI features held back</div>
+          <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D;margin-bottom:10px">Writing assistance, alt-text generation, content translation, meeting-transcript extraction.</div>
+          <div style="border-top:1px solid #E8DDB0;padding-top:9px;display:flex;flex-direction:column;gap:6px;font:400 11px/1.45 var(--sans);color:#0D0D0D">
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">HELD BECAUSE</span><br>Each generates content that will be read as the researcher's own words. <b>L08 is the closest to shippable</b> — generated alt-text with mandatory human confirmation is defensible and directly serves S01.</div>
+            <div><span style="font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.06em">RECOMMENDATION</span><br>Ship L08 next batch with the same review gate as <a href="SciCollab H5 - AI.dc.html#s2">method extraction</a>. Hold the other three.</div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">SPEC CARDS</span><span style="color:#F2F0EC">T02–T14 · H25 · O01 O06 O10–O22 · P10 P18 P20 · L03 L08 L09 L16</span><span style="margin-left:auto">27 features · no screens invented</span>
+      </div>
+    </div>

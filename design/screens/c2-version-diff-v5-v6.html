@@ -1,0 +1,46 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">PUBLIC</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">MC-0288 · both versions keep their own DOI, so a citation of v5 still resolves to v5</span>
+        <div style="margin-left:auto;display:flex;gap:7px;align-items:center">
+          <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 9px;border:1px solid var(--ink);background:var(--surface);font:500 10px/1 var(--mono);cursor:pointer">v5<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          <span style="font:400 10px/1 var(--mono);color:var(--mute)">→</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 9px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;font:500 10px/1 var(--mono);cursor:pointer">v6<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>
+        </div>
+      </div>
+      <div style="padding:16px 18px">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+          <div style="display:flex;gap:9px;align-items:center"><span style="width:11px;height:11px;background:#EEF7F1;border:1px solid var(--ok)"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">added</span></div>
+          <div style="display:flex;gap:9px;align-items:center"><span style="width:11px;height:11px;background:#FCF3F2;border:1px solid var(--err)"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">removed</span></div>
+          <div style="display:flex;gap:9px;align-items:center"><span style="width:11px;height:11px;background:#FFFBE6;border:1px solid var(--flag)"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">changed in place</span></div>
+          <span style="margin-left:auto;font:400 11px/1 var(--mono);color:var(--mute)">1 step edited · 1 failure mode added · expected outcome unchanged · 4 fields untouched</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border:1px solid var(--ink);background:var(--surface)">
+          <div style="border-right:1px solid var(--ink)">
+            <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 11px/1 var(--mono)">v5</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">2026-06-02 · T. Okafor</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--mute)">doi …/zenodo.7712</span></div>
+            <div style="padding:0">
+              <div style="padding:10px 12px;border-bottom:1px solid #EBE8E2"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:5px">STEP 3</div><div style="font:400 12px/1.5 var(--sans);background:#FFFBE6;padding:7px 8px">Dilute 2.5 µg donor plasmid in 25 µL Opti-MEM. Serum-free.</div></div>
+              <div style="padding:10px 12px;border-bottom:1px solid #EBE8E2"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:5px">FAILURE MODES · 2</div><div style="display:flex;flex-direction:column;gap:5px;font:400 12px/1.45 var(--sans)"><div>Passage above 18 — efficiency falls to 4 ± 1%</div><div>Serum-free medium through incubation — below 5%</div></div></div>
+              <div style="padding:10px 12px"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:5px">EQUIPMENT</div><div style="font:400 12px/1.45 var(--sans)">BD FACSymphony A3</div></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--ink);background:var(--bg)"><span style="font:500 11px/1 var(--mono)">v6</span><span style="font:400 10px/1 var(--mono);color:var(--mute)">2026-08-19 · T. Okafor + M. Lindqvist</span><span style="margin-left:auto;font:400 9px/1 var(--mono);color:var(--mute)">doi …/zenodo.7994</span></div>
+            <div style="padding:0">
+              <div style="padding:10px 12px;border-bottom:1px solid #EBE8E2"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:5px">STEP 3</div><div style="font:400 12px/1.5 var(--sans);background:#FFFBE6;padding:7px 8px">Dilute 2.5 µg donor plasmid in 25 µL Opti-MEM. <b>Serum-free at this step only</b> — carrying serum-free through incubation is the most common way to break this.</div></div>
+              <div style="padding:10px 12px;border-bottom:1px solid #EBE8E2"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:5px">FAILURE MODES · 3</div><div style="display:flex;flex-direction:column;gap:5px;font:400 12px/1.45 var(--sans)"><div>Passage above 18 — efficiency falls to 4 ± 1%</div><div>Serum-free medium through incubation — below 5%</div><div style="background:#EEF7F1;padding:7px 8px">CO₂ drift below 4.5% mimics the passage effect. Log it before blaming the cells.</div></div></div>
+              <div style="padding:10px 12px"><div style="font:400 9px/1 var(--mono);color:var(--mute);margin-bottom:5px">EQUIPMENT</div><div style="font:400 12px/1.45 var(--sans)">BD FACSymphony A3</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px">
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHY v6 EXISTS</div><div style="font:400 12px/1.5 var(--sans)">A. Rivera's comment on step 3, and M. Lindqvist's two-month CO₂ misattribution. Both are linked from the version note, so the reason survives the people.</div></div>
+          <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHO IS TOLD</div><div style="font:400 12px/1.5 var(--sans)">The 12 forks are notified once, with this diff. Nothing is pushed into anyone's card — they decide whether the CO₂ mode applies to them.</div></div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:12px"><div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:8px">WHAT A DIFF CANNOT DO</div><div style="font:400 12px/1.5 var(--sans);color:#0D0D0D">It cannot retract v5. Anyone who cited v5 cited that text, and it keeps resolving. Corrections move forward only.</div></div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">F11 · F12 · F08 · H07 · J20</span><span style="margin-left:auto">every version keeps its own DOI</span>
+      </div>
+    </div>

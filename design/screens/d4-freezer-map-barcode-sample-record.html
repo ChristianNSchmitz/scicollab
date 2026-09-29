@@ -1,0 +1,66 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px;font:500 11px/1 var(--mono);letter-spacing:.08em">LAB</span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">Freezer 1 · −80 °C · rack 3 · box 3-C · <b style="color:#6B5900">last physically audited 2026-08-14</b></span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font:400 11px/1.4 var(--mono);color:var(--mute)"><span>Lab</span><span style="color:#C2BDB4">/</span><span>Storage</span><span style="color:#C2BDB4">/</span><span style="color:#0D0D0D">Freezer 1</span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 400px">
+        <div style="padding:18px 20px;border-right:1px solid var(--rule)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+            <span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">BOX 3-C · 10 × 10 · 81 OCCUPIED</span>
+            <span style="margin-left:auto;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:12px;height:12px;border:1px solid var(--rule);background:var(--surface)"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">empty</span></span>
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:12px;height:12px;border:1px solid #3B3935;background:#4A4843"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">occupied</span></span>
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:12px;height:12px;border:1px solid #E04400;background:#FF4D00"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">this project</span></span>
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:12px;height:12px;border:1px solid #8A7300;background:#FFD400"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">disputed</span></span>
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:12px;height:12px;border:1px dashed var(--rule);background:#EFEDE8"></span><span style="font:400 10px/1 var(--mono);color:var(--mute)">reserved</span></span>
+            </span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-bottom:14px">
+            <sc-for list="{{ cells }}" as="c" hint-placeholder-count="100">
+              <span style="aspect-ratio:1;border:1px solid {{ c.bd }};background:{{ c.bg }};cursor:pointer"></span>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
+            <div style="border:1px solid var(--flag);background:#FFFBE6;padding:12px"><div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:8px">THE MAP IS A CLAIM, NOT A TRUTH</div><div style="font:400 12px/1.5 var(--sans);color:#0D0D0D">It shows the date it was last checked against the actual freezer, and marks three positions as <b>disputed</b> where the record and a recent scan disagree. A storage map nobody has verified is worse than no map, because people stop opening the drawer.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">RESERVED POSITIONS</div><div style="font:400 12px/1.5 var(--sans)">Six positions are held for the p8 banking task. Reserving is part of the task checklist, so twenty vials never arrive at a full box at 6pm on a Friday.</div></div>
+          </div>
+        </div>
+        <div style="padding:18px;display:flex;flex-direction:column;gap:13px">
+          <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">POSITION 3-C-42 · SCANNED</div>
+          <div style="border:1px solid var(--ink);background:var(--surface);padding:13px">
+            <div style="display:flex;gap:13px;align-items:flex-start;margin-bottom:12px">
+              <div style="width:72px;height:72px;border:1px solid var(--ink);background:var(--surface);display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:1px;padding:5px;flex:none">
+                <span style="background:#0D0D0D"></span><span></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span></span><span></span><span style="background:#0D0D0D"></span>
+                <span></span><span style="background:#0D0D0D"></span><span></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span></span>
+                <span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span></span><span></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span>
+                <span></span><span></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span></span><span></span>
+                <span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span></span><span></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span>
+                <span></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span></span><span style="background:#0D0D0D"></span><span></span>
+                <span style="background:#0D0D0D"></span><span></span><span></span><span style="background:#0D0D0D"></span><span style="background:#0D0D0D"></span><span></span><span style="background:#0D0D0D"></span>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font:500 13px/1.35 var(--mono);margin-bottom:6px">PLX-0091</div>
+                <div style="font:400 10px/1.55 var(--mono);color:var(--mute)">HEK293T · p22 · aliquot 3 of 6<br>frozen 2026-08-28 by A. Rivera<br>1 mL · 2 × 10⁶ cells/mL · 10% DMSO</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px;font:400 11px/1.4 var(--mono);border-top:1px solid var(--rule);padding-top:11px">
+              <div style="display:flex;gap:9px"><span style="color:var(--mute);width:62px;flex:none">LINE</span><span style="flex:1">CVCL_0063 · STR verified</span></div>
+              <div style="display:flex;gap:9px"><span style="color:var(--mute);width:62px;flex:none">PARENT</span><span style="flex:1;color:#B33600">INV-0092 · p8 master bank</span></div>
+              <div style="display:flex;gap:9px"><span style="color:var(--mute);width:62px;flex:none">USED IN</span><span style="flex:1;color:#B33600">entry #64 · MC-0533 v1</span></div>
+              <div style="display:flex;gap:9px"><span style="color:var(--mute);width:62px;flex:none">THAWS</span><span style="flex:1">1 · 2026-09-08 by A. Rivera</span></div>
+              <div style="display:flex;gap:9px"><span style="color:var(--mute);width:62px;flex:none">MYCO</span><span style="flex:1;color:var(--ok)">clear · 2026-09-08</span></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px;font:400 12px/1.5 var(--sans)">Scanning the QR on a bench phone opens this record and offers exactly one action: <b>log a thaw</b>. One action, one tap — that is the only reason a storage map stays honest past month three.</div>
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+            <button style="height:32px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 11px/1 var(--mono);cursor:pointer">Log a thaw</button>
+            <div style="display:flex;gap:8px"><button style="flex:1;height:28px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);cursor:pointer">Print QR labels</button><button style="flex:1;height:28px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);cursor:pointer">Move position</button></div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">G12 · G13 · G11 · G30 · G04 · O03</span><span style="margin-left:auto">disputed positions are shown, not silently resolved</span>
+      </div>
+    </div>

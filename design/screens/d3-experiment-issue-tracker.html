@@ -1,0 +1,98 @@
+<div style="position:relative;width:1440px;background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);background:var(--surface);border-radius:2px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2a6 6 0 0 1 12 0"/></svg><span style="font:500 11px/1 var(--mono);letter-spacing:.08em">LAB</span></span>
+        <span style="font:400 11px/1 var(--mono);color:var(--mute)">4 open · 1 blocked · an issue is about a cause, not a chore</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font:400 11px/1.4 var(--mono);color:var(--mute)"><span>Knock-in efficiency</span><span style="color:#C2BDB4">/</span><span style="color:#0D0D0D">Issues</span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 430px">
+        <div style="padding:16px 18px;border-right:1px solid var(--rule)">
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <span style="padding:4px 9px;border:1px solid var(--ink);background:var(--ink);color:#F7F6F3;border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer">OPEN · 4</span>
+            <span style="padding:4px 9px;border:1px solid #8A7300;background:#FFFBE6;color:#0D0D0D;border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer">BLOCKED · 1</span>
+            <span style="padding:4px 9px;border:1px solid var(--rule);border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer" style-hover="border-color:#0D0D0D">RESOLVED · 12</span>
+            <span style="padding:4px 9px;border:1px solid var(--signal);color:#B33600;border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer">CLOSED AS NULL RESULT · 3</span>
+            <button style="margin-left:auto;height:28px;padding:0 11px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 10px/1 var(--mono);cursor:pointer">+ New issue</button>
+          </div>
+          <div style="border:1px solid var(--ink);background:var(--surface)">
+            <div style="display:grid;grid-template-columns:60px minmax(0,1fr) 116px 116px 86px;border-bottom:1px solid var(--ink);background:var(--bg)">
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">ID</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">ISSUE · ANCHORED TO</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">ASSIGNED</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">STATE</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute);text-align:right">AGE</div>
+            </div>
+            <div style="display:grid;grid-template-columns:60px minmax(0,1fr) 116px 116px 86px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF">
+              <div style="padding:11px;font:500 11px/1.4 var(--mono)">#41</div>
+              <div style="padding:11px"><div style="font:500 13px/1.4 var(--mono);margin-bottom:4px">Assay fails at step 4 — complexes precipitate before addition</div><div style="font:400 10px/1.4 var(--mono);color:var(--mute)">MC-0288 v6 · step 4 · 3 occurrences in 5 runs</div></div>
+              <div style="padding:11px;display:flex;gap:6px;align-items:center"><span style="width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 8px/1 var(--mono);flex:none">HD</span><span style="font:400 10px/1.3 var(--mono)">H. Devries</span></div>
+              <div style="padding:11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;border-radius:2px;font:500 9px/1.4 var(--mono)">BLOCKED</span></div>
+              <div style="padding:11px;font:400 10px/1.4 var(--mono);color:var(--mute);text-align:right">6 days</div>
+            </div>
+            <div style="display:grid;grid-template-columns:60px minmax(0,1fr) 116px 116px 86px;border-bottom:1px solid #EBE8E2;align-items:center" style-hover="background:#FAF9F6">
+              <div style="padding:11px;font:500 11px/1.4 var(--mono)">#40</div>
+              <div style="padding:11px"><div style="font:500 13px/1.4 var(--mono);margin-bottom:4px">Gate boundary drifts between operators by ~4%</div><div style="font:400 10px/1.4 var(--mono);color:var(--mute)">gate-and-quantify.R · analysis step</div></div>
+              <div style="padding:11px;display:flex;gap:6px;align-items:center"><span style="position:relative;width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font:500 8px/1 var(--mono);flex:none">AR<span style="position:absolute;left:-1px;right:-1px;bottom:-1px;height:2px;background:var(--ok)"></span></span><span style="font:400 10px/1.3 var(--mono)">A. Rivera</span></div>
+              <div style="padding:11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--info);color:var(--info);border-radius:2px;font:500 9px/1.4 var(--mono)">INVESTIGATING</span></div>
+              <div style="padding:11px;font:400 10px/1.4 var(--mono);color:var(--mute);text-align:right">12 days</div>
+            </div>
+            <div style="display:grid;grid-template-columns:60px minmax(0,1fr) 116px 116px 86px;border-bottom:1px solid #EBE8E2;align-items:center" style-hover="background:#FAF9F6">
+              <div style="padding:11px;font:500 11px/1.4 var(--mono)">#39</div>
+              <div style="padding:11px"><div style="font:500 13px/1.4 var(--mono);margin-bottom:4px">4D-Nucleofector unavailable for 3 weeks</div><div style="font:400 10px/1.4 var(--mono);color:var(--mute)">equipment · blocks MC-0533 replicates 2 and 3</div></div>
+              <div style="padding:11px;display:flex;gap:6px;align-items:center"><span style="width:20px;height:20px;border:1px dashed var(--rule);flex:none"></span><span style="font:400 10px/1.3 var(--mono);color:var(--mute)">unassigned</span></div>
+              <div style="padding:11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--rule);color:var(--mute);border-radius:2px;font:500 9px/1.4 var(--mono)">OPEN</span></div>
+              <div style="padding:11px;font:400 10px/1.4 var(--mono);color:var(--mute);text-align:right">2 days</div>
+            </div>
+            <div style="display:grid;grid-template-columns:60px minmax(0,1fr) 116px 116px 86px;align-items:center;background:#FFF8F5">
+              <div style="padding:11px;font:500 11px/1.4 var(--mono);color:var(--mute)">#31</div>
+              <div style="padding:11px"><div style="font:500 13px/1.4 var(--mono);margin-bottom:4px;color:var(--mute)">Lot change does not restore efficiency above p18</div><div style="font:400 10px/1.4 var(--mono);color:#B33600">closed → published as NR-0118 · the resolution was a finding</div></div>
+              <div style="padding:11px;display:flex;gap:6px;align-items:center"><span style="width:20px;height:20px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font:500 8px/1 var(--mono);color:var(--mute);flex:none">AR</span><span style="font:400 10px/1.3 var(--mono);color:var(--mute)">A. Rivera</span></div>
+              <div style="padding:11px"><span style="display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid var(--signal);color:#B33600;border-radius:2px;font:500 9px/1.4 var(--mono)">CLOSED · NULL</span></div>
+              <div style="padding:11px;font:400 10px/1.4 var(--mono);color:var(--mute);text-align:right">closed 7 d</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px">
+            <div style="border:1px solid var(--signal);background:#FFF8F5;padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:#B33600;margin-bottom:8px">HOW AN ISSUE CLOSES</div><div style="font:400 12px/1.5 var(--sans)">Four outcomes only: <b>fixed</b> (a method-card version), <b>explained</b> (an accepted answer), <b>published as a null result</b>, or <b>abandoned with a stated reason</b>. There is no "won't fix" and no silent close.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--surface);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHY NOT JUST TASKS</div><div style="font:400 12px/1.5 var(--sans)">A task is something a person owes. An issue is something the lab does not yet understand. Conflating them gives you a to-do list and no record of what was learned.</div></div>
+          </div>
+        </div>
+        <div style="padding:16px;background:var(--surface);display:flex;flex-direction:column;gap:13px">
+          <div style="display:flex;align-items:center;gap:9px"><span style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute)">#41 · DETAIL</span><span style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:2px 6px;border:1px solid #8A7300;background:#FFFBE6;color:#0D0D0D;font:500 9px/1.4 var(--mono)">BLOCKED 4 OF 6 DAYS</span></div>
+          <div style="font:500 15px/1.35 var(--mono)">Assay fails at step 4 — complexes precipitate before addition</div>
+          <div style="border:1px solid var(--ink);background:var(--bg);padding:11px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">ANCHORED TO</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font:400 11px/1.4 var(--mono)">
+              <div style="display:flex;gap:8px"><span style="color:var(--mute);width:62px;flex:none">METHOD</span><span style="flex:1;color:#B33600">MC-0288 v6 · step 4</span></div>
+              <div style="display:flex;gap:8px"><span style="color:var(--mute);width:62px;flex:none">ENTRIES</span><span style="flex:1;color:#B33600">#57 · #59 · #60</span></div>
+              <div style="display:flex;gap:8px"><span style="color:var(--mute);width:62px;flex:none">REAGENT</span><span style="flex:1;color:#B33600">lot L3K-2288 · flagged on the RRID page</span></div>
+              <div style="display:flex;gap:8px"><span style="color:var(--mute);width:62px;flex:none">BLOCKS</span><span style="flex:1;color:#B33600">2 board tasks · deliverable D2</span></div>
+            </div>
+            <div style="font:400 11px/1.45 var(--sans);color:var(--mute);margin-top:9px;padding-top:8px;border-top:1px solid var(--rule)">An issue always points at a step of a protocol, never at a person. Anchoring is what lets the next lab find it.</div>
+          </div>
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:11px">
+            <div style="font:700 10px/1 var(--mono);letter-spacing:.1em;margin-bottom:8px">BLOCKED BY · NAMED AND DATED</div>
+            <div style="font:400 12px/1.5 var(--sans);color:#0D0D0D;margin-bottom:9px">Waiting on the vendor's response about lot L3K-2288 since 2026-09-04. The blocker is a record with an owner, so it cannot quietly become the status quo.</div>
+            <div style="display:flex;gap:7px"><button style="height:26px;padding:0 10px;background:var(--ink);border:1px solid var(--ink);color:#F7F6F3;font:500 10px/1 var(--mono);cursor:pointer">Escalate to lab manager</button><button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--rule);color:var(--mute);font:500 10px/1 var(--mono);cursor:pointer">Unblock</button></div>
+          </div>
+          <div style="flex:1">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:10px">THREAD · 4</div>
+            <div style="border-left:2px solid var(--rule);padding-left:11px;display:flex;flex-direction:column;gap:10px">
+              <div><div style="display:flex;gap:8px;align-items:center;margin-bottom:3px"><span style="font:500 11px/1 var(--mono)">H. Devries</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">2 days ago</span></div><div style="font:400 12px/1.5 var(--sans)">Repeated with lot 2251 and it formed cleanly. Strongly suggests the lot, not the step.</div></div>
+              <div><div style="display:flex;gap:8px;align-items:center;margin-bottom:3px"><span style="font:500 11px/1 var(--mono)">A. Rivera</span><span style="font:400 9px/1 var(--mono);color:var(--mute)">2 days ago</span></div><div style="font:400 12px/1.5 var(--sans)">Six validation reports on this lot already exist. Linked them.</div></div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:11px">
+            <div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:9px">RESOLVE AS</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Method-card fix</span>
+              <span style="padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Explained</span>
+              <span style="padding:4px 8px;border:1px solid var(--signal);color:#B33600;border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer">Null result</span>
+              <span style="padding:4px 8px;border:1px solid var(--rule);color:var(--mute);border-radius:2px;font:500 10px/1.2 var(--mono);cursor:pointer">Abandoned + reason</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+        <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">G07 · G08 · G10 · F13 · F16 · F14</span><span style="margin-left:auto">anchored to a protocol step, never to a person</span>
+      </div>
+    </div>

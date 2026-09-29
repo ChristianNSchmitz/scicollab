@@ -1,57 +1,29 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "@/components/ThemeProvider";
-import AuthSync from "@/components/AuthSync";
-import { ToastProvider } from "@/lib/toast";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
-  title: "SciCollab — Science Made Easy",
+  title: "SciCollab",
   description:
-    "Where scientists debug their research together. A collaborative platform for live and unpublished raw science — every experiment, successful or not, becomes a building block for the next breakthrough.",
-  keywords: ["science", "research", "collaboration", "peer review", "methodology", "negative results"],
+    "A failed experiment nobody wrote down gets repeated. SciCollab keeps the data, the code, the conditions and the argument in one place — including the runs that didn't work.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      {/* Inline script: apply .dark before first paint to prevent flash */}
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-            try {
-              var t = localStorage.getItem('scicollab_theme');
-              var d = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              if (t === 'dark' || (!t && d)) document.documentElement.classList.add('dark');
-            } catch(e){}
-          })();
-        `}} />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap"
+        />
+        {/* Apply the stored theme before first paint so the page never flashes. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
       </head>
-      <body className="min-h-full flex flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">
-        <ThemeProvider>
-          <ToastProvider>
-            <AuthSync />
-            {children}
-          </ToastProvider>
-        </ThemeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

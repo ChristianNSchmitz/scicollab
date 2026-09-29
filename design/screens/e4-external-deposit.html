@@ -1,0 +1,47 @@
+<div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ok);color:var(--ok);border-radius:2px;font:500 10px/1.2 var(--mono)">PUBLIC</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">DEPOSIT DS-1174 v2.1 ELSEWHERE</span>
+        </div>
+        <div style="padding:16px">
+          <div style="font:400 13px/1.55 var(--sans);color:var(--mute);margin-bottom:14px;max-width:74ch">Your funder, your journal and your field each have a repository they recognise. Depositing there should not mean re-typing the metadata you already entered.</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+            <div style="border:1px solid var(--ok);background:var(--bg);padding:12px">
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:8px">
+                <span style="width:30px;height:30px;border:1px solid var(--ink);background:var(--surface);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">ZEN</span>
+                <div style="flex:1"><div style="font:500 12px/1.3 var(--mono)">Zenodo</div><div style="font:400 10px/1.4 var(--mono);color:var(--mute)">general purpose · CERN-hosted · accepted by the FWO</div></div>
+                <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid var(--ok);color:var(--ok);font:500 9px/1.3 var(--mono);flex:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg>DEPOSITED</span>
+              </div>
+              <div style="font:400 10px/1.4 var(--mono);color:var(--mute);border-top:1px solid var(--rule);padding-top:8px">10.5281/zenodo.8241 · pushed 2026-03-01 · <b style="color:#0D0D0D">the same DOI</b>, because we mint through DataCite via Zenodo rather than duplicating the record</div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:12px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:8px">
+                <span style="width:30px;height:30px;border:1px solid var(--ink);background:var(--surface);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">DRY</span>
+                <div style="flex:1"><div style="font:500 12px/1.3 var(--mono)">Dryad</div><div style="font:400 10px/1.4 var(--mono);color:var(--mute)">curated · required by several journals in this field</div></div>
+                <button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);cursor:pointer;flex:none" style-hover="background:var(--ink);color:#F7F6F3">Deposit</button>
+              </div>
+              <div style="font:400 10px/1.4 var(--mono);color:var(--mute);border-top:1px solid var(--rule);padding-top:8px">metadata maps cleanly · Dryad will run its own curation pass, typically 5 working days</div>
+            </div>
+            <div style="border:1px solid var(--rule);padding:12px;cursor:pointer" style-hover="border-color:#0D0D0D">
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:8px">
+                <span style="width:30px;height:30px;border:1px solid var(--ink);background:var(--surface);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">HAL</span>
+                <div style="flex:1"><div style="font:500 12px/1.3 var(--mono)">HAL</div><div style="font:400 10px/1.4 var(--mono);color:var(--mute)">French national archive · for your co-authors at Sorbonne</div></div>
+                <button style="height:26px;padding:0 10px;background:transparent;border:1px solid var(--ink);font:500 10px/1 var(--mono);cursor:pointer;flex:none" style-hover="background:var(--ink);color:#F7F6F3">Deposit</button>
+              </div>
+            </div>
+            <div style="border:1px solid var(--flag);background:#FFFBE6;padding:12px">
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:8px">
+                <span style="width:30px;height:30px;border:1px solid #8A7300;background:var(--surface);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--mono);flex:none">GEO</span>
+                <div style="flex:1"><div style="font:500 12px/1.3 var(--mono)">NCBI GEO</div><div style="font:400 10px/1.4 var(--mono);color:#6B5900">domain-specific · expression data only</div></div>
+                <span style="display:inline-flex;padding:3px 7px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;font:500 9px/1.3 var(--mono);flex:none">NEEDS 4 FIELDS</span>
+              </div>
+              <div style="font:400 11px/1.45 var(--sans);color:#0D0D0D;border-top:1px solid var(--flag);padding-top:8px">GEO requires platform ID, sample characteristics, library strategy and a processed matrix. We can map three of those; the fourth needs you. <b>Stated before you click</b>, not after the submission bounces.</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);background:var(--bg);padding:12px;font:400 12px/1.5 var(--sans)">Deposits are <b>copies with a stated relationship</b>, not exports that cut the cord. Each one records "isIdenticalTo" or "isDerivedFrom" in both directions, so a reader landing on the Dryad record finds its way back here and vice versa.</div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H24 · H03 · H05 · H23 · J20</span>
+        </div>
+      </div>

@@ -1,253 +1,85 @@
-@import "tailwindcss";
-
-/* ─── Enable class-based dark mode ───────────────────────────
-   Tailwind v4: dark: utilities apply when .dark is on an ancestor.
-   ─────────────────────────────────────────────────────────── */
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* ─── Light theme tokens ────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────────────
+   SciCollab — design tokens
+   Lifted verbatim from board [ 001 ] FOUNDATION · Design System v0.1.
+   Token names never change between themes; only their values do.
+   ───────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --surface:    #ffffff;
-  --surface-2:  #f1f5f9;
-  --border:     #e2e8f0;
-  --border-2:   #f1f5f9;
-  --muted:      #64748b;
-  --primary:    #2563eb;
-  --primary-dk: #1d4ed8;
-  --success:    #059669;
-  --warning:    #d97706;
+  --bg:      #F7F6F3;  /* page ground                    */
+  --surface: #FFFFFF;  /* cards, rows, panels            */
+  --ink:     #0D0D0D;  /* primary text, hard rules       */
+  --mute:    #6B6B6B;  /* metadata, secondary            */
+  --rule:    #D6D3CD;  /* 1px borders, dividers          */
+  --signal:  #FF4D00;  /* the single accent. sparingly.  */
+  --flag:    #FFD400;  /* unresolved, needs attention    */
+  --ok:      #0B7A4B;  /* verified, published, passed    */
+  --err:     #B3261E;  /* system error only              */
+  --info:    #1B4FA0;  /* ongoing, informational         */
+  --canvas:  #E8E6E1;  /* the surround outside a screen  */
+  --link:    #B33600;
+
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* shell geometry — board [ 003 ] navigation shell */
+  --top: 56px;
+  --rail: 232px;
+  --rail-collapsed: 56px;
+  --context: 320px;
+  --content-max: 1080px;
 }
 
-/* ─── Dark theme tokens ─────────────────────────────────────── */
-:root.dark {
-  --background: #0f172a;   /* slate-900 */
-  --foreground: #f1f5f9;   /* slate-100 */
-  --surface:    #1e293b;   /* slate-800 */
-  --surface-2:  #293548;   /* between slate-800/700 */
-  --border:     #334155;   /* slate-700 */
-  --border-2:   #1e293b;   /* slate-800 */
-  --muted:      #94a3b8;   /* slate-400 */
+/* Dark is a re-valuation, not an inversion: --signal lifts and the semantic
+   colours lighten to hold 4.5:1 against #0D0D0D. */
+[data-theme="dark"] {
+  --bg:      #0D0D0D;
+  --surface: #161616;
+  --ink:     #F2F0EC;
+  --mute:    #8E8B85;
+  --rule:    #2E2C29;
+  --signal:  #FF5A14;
+  --flag:    #FFD400;
+  --ok:      #3DBB86;
+  --err:     #F2685E;
+  --info:    #6FA0F0;
+  --canvas:  #000000;
+  --link:    #FF7A45;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+*, *::before, *::after { box-sizing: border-box; }
+
+html { background: var(--canvas); }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  margin: 0;
+  font-family: var(--mono);
+  background: var(--canvas);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* ─── Dark mode surface overrides ───────────────────────────────
-   Map the most common Tailwind slate/white patterns used across
-   all pages to their dark equivalents — no need to touch each file.
-   ─────────────────────────────────────────────────────────────── */
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--signal); }
+::selection { background: var(--signal); color: #fff; }
 
-/* Page backgrounds */
-.dark .bg-slate-50 { background-color: var(--background) !important; }
-.dark .bg-white    { background-color: var(--surface) !important; }
-.dark .bg-slate-100 { background-color: var(--surface-2) !important; }
+input, textarea, select, button { font: inherit; color: inherit; }
+input::placeholder, textarea::placeholder { color: #9A968E; }
 
-/* Borders */
-.dark .border-slate-200 { border-color: var(--border) !important; }
-.dark .border-slate-100 { border-color: var(--border-2) !important; }
-.dark .border-slate-300 { border-color: #475569 !important; }   /* slate-600 */
-.dark .divide-slate-100 > * + * { border-color: var(--border-2) !important; }
-.dark .divide-slate-200 > * + * { border-color: var(--border) !important; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
 
-/* Text */
-.dark .text-slate-900 { color: #f8fafc !important; }   /* slate-50  */
-.dark .text-slate-800 { color: #f1f5f9 !important; }   /* slate-100 */
-.dark .text-slate-700 { color: #e2e8f0 !important; }   /* slate-200 */
-.dark .text-slate-600 { color: #cbd5e1 !important; }   /* slate-300 */
-.dark .text-slate-500 { color: #94a3b8 !important; }   /* slate-400 */
-.dark .text-slate-400 { color: #64748b !important; }   /* slate-500 */
+/* Animations the extracted screens reference by name. */
+@keyframes scpulse   { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+@keyframes scspin    { to { transform: rotate(360deg) } }
+@keyframes scshimmer { 0% { background-position: -200px 0 } 100% { background-position: 400px 0 } }
+@keyframes sccaret   { 0%,49% { opacity: 1 } 50%,100% { opacity: 0 } }
+@keyframes scslide   { 0% { transform: translateX(-100%) } 100% { transform: translateX(400%) } }
 
-/* Form inputs */
-.dark input,
-.dark textarea,
-.dark select {
-  background-color: var(--surface) !important;
-  color: var(--foreground) !important;
-  border-color: var(--border) !important;
+/* Commercial content carries a hatched ground so it can never be mistaken
+   for a community artifact — board I4. */
+.comm { background-image: repeating-linear-gradient(45deg, #FFFBE6 0 8px, #FFF6D0 8px 16px); }
+
+/* Canvas crop marks on an extracted artboard are decoration only. */
+.corner { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
-.dark input::placeholder,
-.dark textarea::placeholder { color: #475569 !important; }
-
-/* Hover backgrounds */
-.dark .hover\:bg-slate-50:hover { background-color: var(--surface-2) !important; }
-.dark .hover\:bg-slate-100:hover { background-color: #293548 !important; }
-
-/* Pre / code blocks */
-.dark pre { background-color: var(--surface-2) !important; color: #e2e8f0 !important; }
-.dark code { background-color: var(--surface-2) !important; }
-
-/* Scrollbar */
-.dark ::-webkit-scrollbar-track { background: #1e293b; }
-.dark ::-webkit-scrollbar-thumb { background: #475569; }
-
-/* ─── Nav bar – always floating above dark surfaces ──────────── */
-.dark nav {
-  background-color: var(--surface) !important;
-  border-bottom-color: var(--border) !important;
-}
-
-/* ─── Focus rings ────────────────────────────────────────────── */
-.dark *:focus-visible {
-  outline-color: #3b82f6;
-}
-
-/* ─── Coloured tinted card backgrounds (notifications, badges, tags) ─
-   Replace the light -50 pastels with dark tinted surfaces so cards
-   remain visually distinct without blowing out contrast.
-   ─────────────────────────────────────────────────────────────────── */
-.dark .bg-blue-50     { background-color: #172554 !important; }   /* blue-950  */
-.dark .bg-indigo-50   { background-color: #1e1b4b !important; }   /* indigo-950 */
-.dark .bg-purple-50   { background-color: #2e1065 !important; }   /* purple-950 */
-.dark .bg-amber-50    { background-color: #451a03 !important; }   /* amber-950  */
-.dark .bg-yellow-50   { background-color: #422006 !important; }   /* yellow-950 */
-.dark .bg-emerald-50  { background-color: #022c22 !important; }   /* emerald-950 */
-.dark .bg-green-50    { background-color: #052e16 !important; }   /* green-950  */
-.dark .bg-teal-50     { background-color: #042f2e !important; }   /* teal-950   */
-.dark .bg-red-50      { background-color: #450a0a !important; }   /* red-950    */
-.dark .bg-rose-50     { background-color: #4c0519 !important; }   /* rose-950   */
-.dark .bg-orange-50   { background-color: #431407 !important; }   /* orange-950 */
-
-/* Coloured borders – darken to mid-range so they show on dark surfaces */
-.dark .border-blue-200    { border-color: #1d4ed8 !important; }   /* blue-700   */
-.dark .border-blue-100    { border-color: #1e3a5f !important; }
-.dark .border-indigo-200  { border-color: #4338ca !important; }   /* indigo-700 */
-.dark .border-purple-200  { border-color: #7e22ce !important; }   /* purple-700 */
-.dark .border-amber-200   { border-color: #b45309 !important; }   /* amber-700  */
-.dark .border-yellow-200  { border-color: #a16207 !important; }   /* yellow-700 */
-.dark .border-emerald-200 { border-color: #047857 !important; }   /* emerald-700 */
-.dark .border-green-200   { border-color: #15803d !important; }   /* green-700  */
-.dark .border-teal-200    { border-color: #0f766e !important; }   /* teal-700   */
-.dark .border-red-200     { border-color: #b91c1c !important; }   /* red-700    */
-.dark .border-rose-200    { border-color: #be123c !important; }   /* rose-700   */
-
-/* Coloured text – shift darker variants to lighter ones for legibility */
-.dark .text-blue-700    { color: #93c5fd !important; }   /* blue-300   */
-.dark .text-blue-600    { color: #60a5fa !important; }   /* blue-400   */
-.dark .text-indigo-700  { color: #a5b4fc !important; }   /* indigo-300 */
-.dark .text-indigo-600  { color: #818cf8 !important; }   /* indigo-400 */
-.dark .text-purple-700  { color: #d8b4fe !important; }   /* purple-300 */
-.dark .text-purple-600  { color: #c084fc !important; }   /* purple-400 */
-.dark .text-amber-700   { color: #fcd34d !important; }   /* amber-300  */
-.dark .text-amber-600   { color: #fbbf24 !important; }   /* amber-400  */
-.dark .text-yellow-700  { color: #fde047 !important; }   /* yellow-300 */
-.dark .text-emerald-700 { color: #6ee7b7 !important; }   /* emerald-300 */
-.dark .text-emerald-600 { color: #34d399 !important; }   /* emerald-400 */
-.dark .text-green-700   { color: #86efac !important; }   /* green-300  */
-.dark .text-green-600   { color: #4ade80 !important; }   /* green-400  */
-.dark .text-teal-700    { color: #5eead4 !important; }   /* teal-300   */
-.dark .text-red-700     { color: #fca5a5 !important; }   /* red-300    */
-.dark .text-red-600     { color: #f87171 !important; }   /* red-400    */
-.dark .text-rose-700    { color: #fda4af !important; }   /* rose-300   */
-.dark .text-orange-700  { color: #fdba74 !important; }   /* orange-300 */
-
-/* Coloured hover states */
-.dark .hover\:bg-blue-100:hover   { background-color: #1e3a8a !important; }
-.dark .hover\:bg-emerald-50:hover { background-color: #064e3b !important; }
-
-/* ─── Gradient banners – lighten in dark mode ────────────────── */
-.dark .from-blue-600 { --tw-gradient-from: #1d4ed8 !important; }
-.dark .to-indigo-600 { --tw-gradient-to:   #4338ca !important; }
-.dark .to-blue-700   { --tw-gradient-to:   #1e40af !important; }
-
-/* ─── Gradient backgrounds for hero / page sections ────────────
-   Without these, from-slate-50 and to-white stay light in dark
-   mode while text is inverted to near-white → invisible text.
-   ─────────────────────────────────────────────────────────────── */
-.dark .from-slate-50 { --tw-gradient-from: #0f172a !important; }
-.dark .from-white    { --tw-gradient-from: #1e293b !important; }
-.dark .to-white      { --tw-gradient-to:   #1e293b !important; }
-.dark .to-blue-50    { --tw-gradient-to:   #172554 !important; }
-.dark .to-slate-50   { --tw-gradient-to:   #0f172a !important; }
-
-/* ─── Smooth scrolling ───────────────────────────────────────── */
-html { scroll-behavior: smooth; }
-
-/* ─── Custom scrollbar ───────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track  { background: #f1f5f9; }
-::-webkit-scrollbar-thumb  { background: #cbd5e1; border-radius: 3px; }
-
-/* ─── Misc ───────────────────────────────────────────────────── */
-.step-connector { transition: background-color 0.4s ease; }
-.expertise-tag:hover { transform: scale(1.02); transition: transform 0.15s ease; }
-
-/* ─── Dark theme transition ──────────────────────────────────── */
-*, *::before, *::after {
-  transition-property: background-color, border-color, color;
-  transition-duration: 150ms;
-  transition-timing-function: ease;
-}
-/* Don't transition transforms / shadows / opacity (breaks animations) */
-.animate-spin, [class*="animate-"] {
-  transition: none !important;
-}
-
-@keyframes slide-in {
-  from { transform: translateY(10px) scale(0.96); }
-  to   { transform: translateY(0)    scale(1); }
-}
-.animate-slide-in {
-  /* opacity not animated — avoids interaction with the * transition rule */
-  animation: slide-in 0.15s ease-out both;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* ─── Force light mode on specific pages ────────────────────────
-   color-scheme: only light tells the browser (and Chrome's auto
-   dark-mode feature) to never invert colors inside this element.
-   Combine with hardcoded hex inline styles to also block our own
-   .dark !important overrides.
-   ─────────────────────────────────────────────────────────────── */
-.force-light {
-  color-scheme: only light;
-}
-/* Reset inherited dark-body text color inside forced-light regions */
-.dark .force-light { color: #0f172a; }
-
-/* Undo every .dark override for descendants of .force-light —
-   including the element carrying .force-light itself */
-.dark .force-light.bg-white,
-.dark .force-light .bg-white    { background-color: #ffffff !important; }
-.dark .force-light.bg-slate-50,
-.dark .force-light .bg-slate-50 { background-color: #f8fafc !important; }
-.dark .force-light .text-slate-900 { color: #0f172a !important; }
-.dark .force-light .text-slate-800 { color: #1e293b !important; }
-.dark .force-light .text-slate-700 { color: #334155 !important; }
-.dark .force-light .text-slate-600 { color: #475569 !important; }
-.dark .force-light .text-slate-500 { color: #64748b !important; }
-.dark .force-light .text-slate-400 { color: #94a3b8 !important; }
-.dark .force-light .border-slate-200 { border-color: #e2e8f0 !important; }
-.dark .force-light .border-slate-100 { border-color: #f1f5f9 !important; }
-.dark .force-light input,
-.dark .force-light textarea,
-.dark .force-light select {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #e2e8f0 !important;
-}
-.dark .force-light input::placeholder,
-.dark .force-light textarea::placeholder { color: #94a3b8 !important; }
-.dark .force-light .text-blue-600 { color: #2563eb !important; }
-.dark .force-light .text-blue-700 { color: #1d4ed8 !important; }
-.dark .force-light .bg-blue-50    { background-color: #eff6ff !important; }

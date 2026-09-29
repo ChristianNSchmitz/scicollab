@@ -1,0 +1,50 @@
+<div style="position:relative;width:700px;border:1px solid var(--ink);background:var(--surface)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--ink);background:var(--bg)">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--ink);border-radius:2px;font:500 10px/1.2 var(--mono)">LAB</span>
+          <span style="font:500 11px/1 var(--mono);letter-spacing:.08em">STEP 5 OF 5 · PRIVACY CHECK</span>
+          <span style="margin-left:auto;font:400 10px/1 var(--mono);color:var(--mute)">scan finished in 11 s</span>
+        </div>
+        <div style="padding:16px">
+          <div style="border:1px solid var(--flag);background:#FFFBE6;padding:13px;margin-bottom:14px">
+            <div style="display:flex;gap:11px;align-items:flex-start">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8" stroke-linecap="round" style="flex:none;margin-top:1px"><path d="M12 4v11M12 19h.01"/></svg>
+              <div style="flex:1"><div style="font:500 14px/1.3 var(--mono);margin-bottom:6px">No direct identifiers. Two quasi-identifiers to confirm.</div><div style="font:400 13px/1.5 var(--sans);color:#0D0D0D">Nothing here is necessarily wrong. Quasi-identifiers are fields that are harmless alone and identifying in combination — you know your data, we do not, so this is a question rather than a verdict.</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--ink);margin-bottom:14px">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;border-bottom:1px solid var(--ink);background:var(--bg)">
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">FIELD FOUND</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute)">CLASS</div>
+              <div style="padding:8px 11px;font:500 10px/1.2 var(--mono);letter-spacing:.1em;color:var(--mute);text-align:right">ACTION</div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF">
+              <div style="padding:11px"><div style="font:400 12px/1.4 var(--mono);margin-bottom:3px">operator_initials</div><div style="font:400 10px/1.4 var(--sans);color:#6B5900">column 4 of passage_log.csv · 3 distinct values</div></div>
+              <div style="padding:11px"><span style="display:inline-flex;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;font:500 9px/1.4 var(--mono)">QUASI-ID</span></div>
+              <div style="padding:11px;text-align:right"><span style="font:400 10px/1.3 var(--mono);color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">pseudonymise</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;border-bottom:1px solid #EBE8E2;align-items:center;background:#FFFCEF">
+              <div style="padding:11px"><div style="font:400 12px/1.4 var(--mono);margin-bottom:3px">acquisition_timestamp</div><div style="font:400 10px/1.4 var(--sans);color:#6B5900">second-level precision · combined with a public rota this can identify who ran it</div></div>
+              <div style="padding:11px"><span style="display:inline-flex;padding:2px 6px;border:1px solid #8A7300;background:var(--flag);color:#0D0D0D;font:500 9px/1.4 var(--mono)">QUASI-ID</span></div>
+              <div style="padding:11px;text-align:right"><span style="font:400 10px/1.3 var(--mono);color:#B33600;border-bottom:1px solid currentColor;cursor:pointer">round to day</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;align-items:center">
+              <div style="padding:11px"><div style="font:400 12px/1.4 var(--mono);margin-bottom:3px">No names, e-mails, IDs, dates of birth or free-text notes</div><div style="font:400 10px/1.4 var(--sans);color:var(--mute)">checked across 3 files, 41 columns and the FCS headers</div></div>
+              <div style="padding:11px"><span style="display:inline-flex;padding:2px 6px;border:1px solid var(--ok);color:var(--ok);font:500 9px/1.4 var(--mono)">CLEAR</span></div>
+              <div style="padding:11px;text-align:right;font:400 10px/1.3 var(--mono);color:var(--mute)">—</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px">
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">WHAT PSEUDONYMISE DOES</div><div style="font:400 12px/1.5 var(--sans)">Replaces values with stable tokens (<span style="font-family:var(--mono)">OP-1, OP-2</span>) in the published copy. The lab copy keeps the originals, and the mapping is stored with the project — so within your lab nothing is lost.</div></div>
+            <div style="border:1px solid var(--rule);background:var(--bg);padding:12px"><div style="font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--mute);margin-bottom:8px">IF YOU DISAGREE</div><div style="font:400 12px/1.5 var(--sans)">Mark either field as "not identifying in this context" with one line of reasoning. The reasoning is recorded on the dataset, so the decision is attributable rather than silent.</div></div>
+          </div>
+          <div style="display:flex;gap:9px;align-items:center">
+            <button style="height:32px;padding:0 14px;background:var(--signal);border:1px solid var(--signal);color:#fff;font:500 12px/1 var(--mono);cursor:pointer">Apply both and finish</button>
+            <button style="height:32px;padding:0 13px;background:transparent;border:1px solid var(--ink);font:500 12px/1 var(--mono);cursor:pointer" style-hover="background:var(--ink);color:#F7F6F3">Neither is identifying</button>
+            <span style="margin-left:auto;font:400 10px/1.4 var(--mono);color:var(--mute)">scan runs again before any change to Public</span>
+          </div>
+        </div>
+        <div style="height:30px;display:flex;align-items:center;gap:10px;padding:0 16px;background:var(--ink);color:#8E8B85;font:400 10px/1 var(--mono);letter-spacing:.08em">
+          <span style="color:#FF5A14">COVERAGE</span><span style="color:#F2F0EC">H11 · H09 · H07 · N02 · N04</span>
+        </div>
+      </div>

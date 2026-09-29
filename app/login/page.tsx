@@ -1,126 +1,96 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
-import { ensureDemoUser } from "@/app/actions/auth";
-import { loginUser, registerUser } from "@/lib/mock-db";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
-const DEMO_EMAIL = "b00834203@essec.edu";
-const DEMO_PASSWORD = "Admin@123";
-
-export default function LoginPage() {
+function Form() {
   const router = useRouter();
-  const [email, setEmail]       = useState("");
+  const next = useSearchParams().get("next") ?? "/home";
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPw, setShowPw]     = useState(false);
-  const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
-  // The standing demo account must always exist — create it if missing
-  // (only meaningful when Supabase is configured)
-  useEffect(() => { if (isSupabaseConfigured()) ensureDemoUser().catch(() => {}); }, []);
-
-  function fillDemo() {
-    setEmail(DEMO_EMAIL);
-    setPassword(DEMO_PASSWORD);
-    setError("");
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    if (!email.trim() || !password) { setError("Please enter your email and password."); return; }
-    setLoading(true);
-
-    // Local dev / demo: no real Supabase backend — authenticate against the
-    // local mock-db so login works offline.
-    if (!isSupabaseConfigured()) {
-      const addr = email.trim();
-      const existing = loginUser(addr, password);
-      if (!existing) {
-        // Auto-provision a local account for this email
-        const namePart = addr.split("@")[0].replace(/[._]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-        registerUser(addr, password, namePart || "Researcher");
-      }
-      router.replace("/dashboard");
+    setBusy(true);
+    const { error } = await createClient().auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setBusy(false);
+    if (error) {
+      setError("That email and password do not match an account.");
       return;
     }
-
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    setLoading(false);
-    if (authError) {
-      setError("Invalid email or password. New here? Create an account below.");
-      return;
-    }
-    router.replace("/dashboard");
+    router.push(next);
+    router.refresh();
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4 force-light" style={{ colorScheme: "only light" }}>
-      <Link href="/" className="text-2xl font-bold text-blue-600 mb-8">SciCollab</Link>
+    <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <label style={label}>
+        <span style={labelText}>Email</span>
+        <input
+          type="email" autoComplete="email" required value={email}
+          onChange={(e) => { setEmail(e.target.value); setError(""); }}
+          style={input} placeholder="a.rivera@institution.edu"
+        />
+      </label>
 
-      <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
-        <h1 className="text-xl font-bold text-slate-900 mb-1">Sign in to SciCollab</h1>
-        <p className="text-sm text-slate-500 mb-6">Welcome back — your research awaits.</p>
+      <label style={label}>
+        <span style={labelText}>Password</span>
+        <input
+          type="password" autoComplete="current-password" required value={password}
+          onChange={(e) => { setPassword(e.target.value); setError(""); }}
+          style={input} placeholder="••••••••"
+        />
+      </label>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
-            <input
-              type="email"
-              autoComplete="email"
-              placeholder="alex.chen@mit.edu"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); setError(""); }}
-              className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition-colors"
-            />
-          </div>
+      {error && (
+        <p style={{ font: "400 11px/1.5 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "8px 10px", margin: 0 }}>
+          {error}
+        </p>
+      )}
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
-            <div className="relative">
-              <input
-                type={showPw ? "text" : "password"}
-                autoComplete="current-password"
-                placeholder="Your password"
-                value={password}
-                onChange={(e) => { setPassword(e.target.value); setError(""); }}
-                className="w-full border border-slate-200 rounded-lg px-3 py-2.5 pr-10 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition-colors"
-              />
-              <button type="button" onClick={() => setShowPw((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
-                {showPw ? "Hide" : "Show"}
-              </button>
-            </div>
-          </div>
+      <button type="submit" disabled={busy} style={primary}>
+        {busy ? "Signing in…" : "Sign in"}
+      </button>
+    </form>
+  );
+}
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-sm text-red-700">{error}</div>
-          )}
+export default function LoginPage() {
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--canvas)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ width: 460, background: "var(--surface)", border: "1px solid var(--ink)", padding: 32 }}>
+        <Link href="/" style={{ display: "inline-flex", alignItems: "flex-end", marginBottom: 26, color: "var(--ink)" }}>
+          <span style={{ position: "relative", font: "700 18px/1 var(--mono)", letterSpacing: "-.03em" }}>
+            scicollab
+            <span style={{ position: "absolute", left: 0, bottom: -5, width: 12, height: 3, background: "var(--signal)" }} />
+          </span>
+          <span style={{ font: "700 18px/1 var(--mono)", color: "var(--signal)" }}>/</span>
+        </Link>
 
-          <button type="submit" disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-            {loading ? (
-              <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />Signing in…</>
-            ) : "Sign in"}
-          </button>
-        </form>
+        <h1 style={{ font: "700 20px/1.2 var(--mono)", margin: "0 0 6px", letterSpacing: "-.02em" }}>Sign in</h1>
+        <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 22px" }}>
+          Institutional SSO and ORCID are designed on board B1 and are not connected yet — email and password for now.
+        </p>
 
-        <button type="button" onClick={fillDemo}
-          className="w-full mt-3 border border-slate-200 text-slate-600 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-50 hover:border-slate-300 transition-colors">
-          🎓 Use demo account
-        </button>
+        <Suspense fallback={null}><Form /></Suspense>
 
-        <div className="mt-6 pt-6 border-t border-slate-100 text-center">
-          <p className="text-sm text-slate-500">
-            New to SciCollab?{" "}
-            <Link href="/onboarding" className="text-blue-600 font-medium hover:underline">Create your account →</Link>
-          </p>
-        </div>
+        <p style={{ font: "400 11px/1.6 var(--mono)", color: "var(--mute)", marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--rule)" }}>
+          No account? <Link href="/signup" style={{ color: "var(--link)" }}>Create one</Link>
+        </p>
       </div>
     </div>
   );
 }
+
+const label: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 6 };
+const labelText: React.CSSProperties = { font: "500 10px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)" };
+const input: React.CSSProperties = { height: 38, padding: "0 10px", border: "1px solid var(--rule)", background: "var(--bg)", font: "400 13px/1 var(--mono)", color: "var(--ink)" };
+const primary: React.CSSProperties = { height: 42, background: "var(--signal)", color: "#fff", border: "1px solid var(--signal)", font: "500 13px/1 var(--mono)", cursor: "pointer", marginTop: 4 };
