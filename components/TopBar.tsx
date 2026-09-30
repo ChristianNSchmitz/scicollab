@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { demoSignOut, backendConfigured } from "@/app/actions/demo-auth";
 
 /* Top bar — board [ 003 ]: 56px, wordmark in a 200px well, search to 660px
    with its ⌘K hint, Create, notifications, avatar with a presence dot. */
@@ -40,7 +41,8 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
   }
 
   async function signOut() {
-    await createClient().auth.signOut();
+    if (await backendConfigured()) await createClient().auth.signOut();
+    else await demoSignOut();
     router.push("/");
     router.refresh();
   }

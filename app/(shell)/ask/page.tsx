@@ -45,7 +45,9 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
                 {cards && cards.length > 0 ? (
                   <select name="method_card_id" defaultValue={card ?? ""} style={{ ...field, height: 38 }}>
                     <option value="">No card attached</option>
-                    {cards.map((c) => <option key={c.id} value={c.id}>{c.code} — {c.title}</option>)}
+                    {cards.map((c: { id: string; code: string; title: string }) => (
+                      <option key={c.id} value={c.id}>{c.code} — {c.title}</option>
+                    ))}
                   </select>
                 ) : (
                   <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>

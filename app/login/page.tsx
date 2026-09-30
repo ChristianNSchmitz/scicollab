@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { demoSignIn, backendConfigured } from "@/app/actions/demo-auth";
 
 function Form() {
   const router = useRouter();
@@ -17,6 +18,16 @@ function Form() {
     e.preventDefault();
     setError("");
     setBusy(true);
+    // With no Supabase project configured the app runs off the demo store.
+    if (!(await backendConfigured())) {
+      const res = await demoSignIn(email.trim(), password);
+      setBusy(false);
+      if (!res.ok) { setError(res.error); return; }
+      router.push(next);
+      router.refresh();
+      return;
+    }
+
     const { error } = await createClient().auth.signInWithPassword({
       email: email.trim(),
       password,

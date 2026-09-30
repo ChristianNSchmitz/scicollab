@@ -15,10 +15,10 @@ This is a **review copy**. Three things worth knowing before you touch it:
 - **The live site does not build from here.** scicollab.net deploys from
   `janmejaydash2002/scicollab-platform` under Janmejay's Vercel account.
   Pushing to this branch changes nothing that is live.
-- **It shares one Supabase project with the live site.** Janmejay will send
-  you the values for `.env.local` separately — they are not in the repo.
-  Anything you create while testing appears on scicollab.net, so treat writes
-  as public.
+- **You do not need credentials to run it.** `npm install && npm run dev` is
+  enough; it falls back to a seeded in-memory store. Ask for the `.env.local`
+  values only if you want to work against the real database — and note that
+  it is the same project the live site uses, so writes there are public.
 - **This branch proposes replacing the old app at the root.** That is a
   proposal, not a decision. If you would rather it sat in a subdirectory
   while the old prototype stays put, say so and it will be restructured.
@@ -31,9 +31,17 @@ Live: <https://scicollab.net> · sign in with the demo account Janmejay sends yo
 
 ```bash
 npm install
-cp .env.example .env.local     # fill in the values Janmejay sends you
-npm run dev                    # http://localhost:4400
+npm run dev     # http://localhost:4400
 ```
+
+**No credentials needed.** With no Supabase project configured the app runs
+off an in-memory store seeded with example content, and sign-in, sign-up and
+every write work normally. Use `demo@scicollab.test` / `reproduce`, or create
+an account — the invite code is not required in this mode. Everything resets
+when the server restarts.
+
+To run against the real database instead, `cp .env.example .env.local` and
+fill in the values Janmejay sends you.
 
 `SCICOLLAB_SEED_PASSWORD` is the password given to the seeded demo accounts.
 It is deliberately not in the repo: this code is mirrored into a public

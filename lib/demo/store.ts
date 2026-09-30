@@ -61,11 +61,12 @@ const ago = (days: number, hours = 0) =>
 export const ME = "u-rivera";
 
 const profiles: Profile[] = [
-  { id: ME, display_name: "Alex Rivera", institution: "KU Leuven", role_title: "Postdoctoral researcher", field: "Cell biology", orcid: "0000-0002-1825-0097", techniques: ["transfection", "flow cytometry", "qPCR"] },
-  { id: "u-okafor", display_name: "T. Okafor", institution: "Crick Institute", role_title: "Group leader", field: "Molecular biology", orcid: "0000-0001-5109-3700", techniques: ["lipofection", "CRISPR", "imaging"] },
-  { id: "u-lindqvist", display_name: "M. Lindqvist", institution: "Karolinska", role_title: "Research engineer", field: "Cell biology", orcid: null, techniques: ["flow cytometry", "automation"] },
-  { id: "u-bhatt", display_name: "S. Bhatt", institution: "IISc Bangalore", role_title: "PhD student", field: "Biochemistry", orcid: null, techniques: ["western blot", "transfection"] },
-  { id: "u-laurent", display_name: "Dr Camille Laurent", institution: "INSERM", role_title: "Head of research operations", field: "Research governance", orcid: null, techniques: [] },
+  { id: ME, display_name: "Alex Rivera (example)", institution: "Example Lab · demo data", role_title: "Postdoctoral researcher", field: "Cell biology", orcid: "0000-0002-1825-0097", techniques: ["transfection", "flow cytometry", "qPCR"] },
+  { id: "u-okafor", display_name: "T. Okafor (example)", institution: "Example Institute · demo data", role_title: "Group leader", field: "Molecular biology", orcid: "0000-0001-5109-3700", techniques: ["lipofection", "CRISPR", "imaging"] },
+  { id: "u-lindqvist", display_name: "M. Lindqvist (example)", institution: "Example Lab · demo data", role_title: "Research engineer", field: "Cell biology", orcid: null, techniques: ["flow cytometry", "automation"] },
+  { id: "u-bhatt", display_name: "S. Bhatt (example)", institution: "Example University · demo data", role_title: "PhD student", field: "Biochemistry", orcid: null, techniques: ["western blot", "transfection"] },
+  { id: "u-newcomer", display_name: "J. Newcomer (example)", institution: "Unaffiliated · demo data", role_title: "PhD student", field: "Cell biology", orcid: null, techniques: [] },
+  { id: "u-laurent", display_name: "Dr Camille Laurent (example)", institution: "Example Agency · demo data", role_title: "Head of research operations", field: "Research governance", orcid: null, techniques: [] },
 ];
 
 const cards: Card[] = [
@@ -180,6 +181,64 @@ const messages: Message[] = [
   { id: "m-2", sender_id: ME, recipient_id: "u-okafor", body: "Yes — here is the card. It is Lab visibility, so this grants you read access as an individual, not to your whole group.", method_card_id: "c-0412", read_at: ago(9), created_at: ago(9, 1) },
   { id: "m-3", sender_id: "u-okafor", recipient_id: ME, body: "Perfect. I will record our run against it either way, including if it disagrees with yours.", method_card_id: null, read_at: null, created_at: ago(8) },
 ];
+
+
+/* Seeded sign-ins. The password is shared and deliberately guessable: this
+   store has no real data in it and exists so the app runs without a backend. */
+const DEMO_PASSWORD_VALUE = DEMO_PASSWORD;
+const credentials = new Map<string, string>([
+  ["demo@scicollab.test", DEMO_PASSWORD_VALUE],
+  ["okafor@scicollab.test", DEMO_PASSWORD_VALUE],
+  ["lindqvist@scicollab.test", DEMO_PASSWORD_VALUE],
+  ["bhatt@scicollab.test", DEMO_PASSWORD_VALUE],
+  ["newcomer@scicollab.test", DEMO_PASSWORD_VALUE],
+]);
+const emailToId = new Map<string, string>([
+  ["demo@scicollab.test", ME],
+  ["okafor@scicollab.test", "u-okafor"],
+  ["lindqvist@scicollab.test", "u-lindqvist"],
+  ["bhatt@scicollab.test", "u-bhatt"],
+  ["newcomer@scicollab.test", "u-newcomer"],
+]);
+
+
+/* ── raw table access ─────────────────────────────────────────────────────
+   The demo client shim queries these by name, exactly as PostgREST would.
+   They are live references: writes through the shim mutate them in place. */
+export const tables: Record<string, Record<string, unknown>[]> = {
+  profiles,
+  method_cards: cards,
+  questions,
+  answers,
+  projects,
+  project_members: members,
+  eln_entries: entries,
+  messages,
+  datasets: [],
+} as unknown as Record<string, Record<string, unknown>[]>;
+
+/** Everyone seeded shares one password; a demo account is not a secret. */
+export function authenticate(email: string, password: string): string | null {
+  const known = credentials.get(email.trim().toLowerCase());
+  return known && known === password ? emailToId.get(email.trim().toLowerCase())! : null;
+}
+
+/** Sign-up in demo mode: a real profile, held in memory until restart. */
+export function register(email: string, password: string, display_name: string, institution: string): string {
+  const addr = email.trim().toLowerCase();
+  const id = `u-${Math.random().toString(36).slice(2, 9)}`;
+  profiles.push({
+    id, display_name: display_name || addr.split("@")[0], institution,
+    role_title: "", field: "", orcid: null, techniques: [],
+  });
+  credentials.set(addr, password);
+  emailToId.set(addr, id);
+  return id;
+}
+
+export function emailTaken(email: string): boolean {
+  return credentials.has(email.trim().toLowerCase());
+}
 
 // ── accessors ────────────────────────────────────────────────────────────
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));

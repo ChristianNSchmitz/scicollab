@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { createAccount } from "@/app/actions/signup";
+import { demoSignUp, backendConfigured } from "@/app/actions/demo-auth";
 
 /** Account creation. Board B1 screens 2–3 put ORCID and institutional SSO
  *  first; neither is connected, so the provider choice is shown as designed
@@ -24,6 +25,15 @@ export default function SignupPage() {
     setError("");
     if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
     setBusy(true);
+
+    if (!(await backendConfigured())) {
+      const res = await demoSignUp(email.trim(), password, name.trim(), institution.trim());
+      setBusy(false);
+      if (!res.ok) { setError(res.error); return; }
+      router.push("/home");
+      router.refresh();
+      return;
+    }
 
     // Creation happens server-side so the invite code cannot be bypassed.
     const form = new FormData();
@@ -93,7 +103,7 @@ export default function SignupPage() {
 
           <label style={label}>
             <span style={labelText}>Invite code</span>
-            <input required value={invite} onChange={(e) => { setInvite(e.target.value); setError(""); }} style={input} placeholder="This build is invite-only" />
+            <input value={invite} onChange={(e) => { setInvite(e.target.value); setError(""); }} style={input} placeholder="This build is invite-only" />
           </label>
 
           {error && (
