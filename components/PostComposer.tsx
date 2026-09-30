@@ -1,0 +1,138 @@
+"use client";
+
+import { useActionState, useState } from "react";
+import { createPost, type PostState } from "@/app/actions/posts";
+import { INTENTS, type Intent } from "@/lib/taxonomy";
+import { Panel, PanelHead, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
+
+type Room = { id: string; name: string };
+type Card = { id: string; code: string; title: string };
+
+/**
+ * The composer form.
+ *
+ * A client component so a rejected post says why on the form rather than
+ * hitting an error boundary, and so the collaboration fields only appear when
+ * they are relevant. The rules are still enforced in the action — this is the
+ * courtesy layer, not the guard.
+ */
+export default function PostComposer({
+  rooms, cards, defaultRoom, defaultIntent, defaultCard,
+}: {
+  rooms: Room[]; cards: Card[];
+  defaultRoom?: string; defaultIntent?: string; defaultCard?: string;
+}) {
+  const [state, action, pending] = useActionState<PostState, FormData>(createPost, null);
+  const [intent, setIntent] = useState<Intent>(
+    (INTENTS.find((i) => i.id === defaultIntent)?.id ?? "result") as Intent
+  );
+  const spec = INTENTS.find((i) => i.id === intent)!;
+
+  return (
+    <form action={action} style={{ maxWidth: 820 }}>
+      <Panel style={{ marginBottom: 12 }}>
+        <PanelHead>What kind of post is this?</PanelHead>
+        <div style={{ padding: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          {INTENTS.map((i) => (
+            <label
+              key={i.id}
+              style={{
+                border: `1px solid ${intent === i.id ? "var(--ink)" : "var(--rule)"}`,
+                padding: "11px 12px", cursor: "pointer",
+                background: intent === i.id ? "var(--surface)" : "var(--bg)",
+              }}
+            >
+              <input
+                type="radio" name="intent" value={i.id} required
+                checked={intent === i.id}
+                onChange={() => setIntent(i.id)}
+                style={{ marginRight: 8 }}
+              />
+              <span style={{ font: mono(12.5, 500) }}>{i.label}</span>
+              <span style={{ display: "block", font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 5 }}>{i.hint}</span>
+              {i.needsArtifact && (
+                <span style={{ display: "inline-block", font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--signal)", marginTop: 7 }}>
+                  NEEDS A METHOD CARD
+                </span>
+              )}
+            </label>
+          ))}
+        </div>
+      </Panel>
+
+      <Panel style={{ marginBottom: 12 }}>
+        <PanelHead>The post</PanelHead>
+        <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 13 }}>
+          <div>
+            <label style={fieldLabel} htmlFor="room_id">Room</label>
+            <select id="room_id" name="room_id" required defaultValue={defaultRoom ?? ""} style={{ ...field, height: 38 }}>
+              <option value="" disabled>Choose a room you have joined</option>
+              {rooms.map((r) => <option key={r.id} value={r.id}>#{r.id} — {r.name}</option>)}
+            </select>
+            {rooms.length === 0 && (
+              <p style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--signal)", margin: "6px 0 0" }}>
+                You have not joined any rooms yet. Join some first and this list fills up.
+              </p>
+            )}
+          </div>
+          <div>
+            <label style={fieldLabel} htmlFor="title">Title</label>
+            <input id="title" name="title" required style={field} placeholder="Say the finding or the problem in one line" />
+          </div>
+          <div>
+            <label style={fieldLabel} htmlFor="body">Detail</label>
+            <textarea id="body" name="body" rows={6} style={field} placeholder="What you did, what you saw, and what you want from the room." />
+          </div>
+          <div>
+            <label style={fieldLabel} htmlFor="method_card_id">
+              Method card {spec.needsArtifact && <span style={{ color: "var(--signal)" }}>· required for this kind of post</span>}
+            </label>
+            <select id="method_card_id" name="method_card_id" defaultValue={defaultCard ?? ""} style={{ ...field, height: 38 }}>
+              <option value="">No card attached</option>
+              {cards.map((c) => <option key={c.id} value={c.id}>{c.code} — {c.title}</option>)}
+            </select>
+            {cards.length === 0 && spec.needsArtifact && (
+              <p style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--signal)", margin: "6px 0 0" }}>
+                You have no method cards yet — record one first, or choose a general question.
+              </p>
+            )}
+          </div>
+        </div>
+      </Panel>
+
+      {intent === "collab" && (
+        <Panel style={{ marginBottom: 12 }}>
+          <PanelHead>What you need, and what you offer</PanelHead>
+          <div style={{ padding: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div>
+              <label style={fieldLabel} htmlFor="technique">Technique needed</label>
+              <input id="technique" name="technique" style={field} placeholder="Lipofection" />
+            </div>
+            <div>
+              <label style={fieldLabel} htmlFor="organism">Organism or system</label>
+              <input id="organism" name="organism" style={field} placeholder="HEK293T" />
+            </div>
+            <div>
+              <label style={fieldLabel} htmlFor="deadline">By when</label>
+              <input id="deadline" name="deadline" type="date" style={field} />
+            </div>
+            <div>
+              <label style={fieldLabel} htmlFor="offer">What you offer back</label>
+              <input id="offer" name="offer" style={field} placeholder="Co-authorship, reagents covered" />
+            </div>
+          </div>
+        </Panel>
+      )}
+
+      {state?.error && (
+        <p style={{ font: "400 12px/1.6 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "10px 12px", margin: "0 0 12px" }}>
+          {state.error}
+        </p>
+      )}
+
+      <button type="submit" disabled={pending} style={{ ...btnPrimary, height: 42 }}>
+        {pending ? "Posting…" : "Post to the room"}
+      </button>
+    </form>
+  );
+}

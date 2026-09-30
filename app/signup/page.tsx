@@ -30,7 +30,7 @@ export default function SignupPage() {
       const res = await demoSignUp(email.trim(), password, name.trim(), institution.trim());
       setBusy(false);
       if (!res.ok) { setError(res.error); return; }
-      router.push("/home");
+      router.push("/welcome");
       router.refresh();
       return;
     }
@@ -52,7 +52,7 @@ export default function SignupPage() {
     setBusy(false);
     if (signInError) { setError("Account created. Please sign in."); return; }
 
-    router.push("/home");
+    router.push("/welcome");
     router.refresh();
   }
 

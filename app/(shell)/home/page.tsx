@@ -1,136 +1,169 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Page, Panel, PanelHead, Empty, Outcome, Tag, Visibility, btn, btnPrimary, mono } from "@/components/ui";
+import { Page, Panel, PanelHead, Empty, Outcome, Tag, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
+import { ROOMS, roomById, housesOfRoom, INTENTS, intentById } from "@/lib/taxonomy";
 
 export const dynamic = "force-dynamic";
 
-/** Home feed — board H1. Six object types share one skeleton; the two that
- *  carry live data today are method cards and questions. */
-export default async function Home() {
+const INTENT_COLOUR: Record<string, string> = {
+  result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal)",
+};
+
+/**
+ * The feed — posts from the rooms you have joined.
+ *
+ * Filters are intent and room rather than a ranking algorithm, because the
+ * useful question here is "who is stuck on what" and "who needs a
+ * collaborator", not "what is popular".
+ */
+export default async function Home({
+  searchParams,
+}: { searchParams: Promise<{ intent?: string; room?: string }> }) {
+  const { intent, room } = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const [{ data: cards }, { data: questions }, { count: myCards }] = await Promise.all([
-    supabase
-      .from("method_cards")
-      .select("id, code, version, title, outcome, outcome_detail, fails_under, tags, visibility, system, reproductions, created_at, author_id, forked_from")
-      .order("created_at", { ascending: false })
-      .limit(20),
-    supabase
-      .from("questions")
-      .select("id, title, body, tags, created_at, author_id")
-      .order("created_at", { ascending: false })
-      .limit(20),
-    supabase
-      .from("method_cards")
-      .select("id", { count: "exact", head: true })
-      .eq("author_id", user!.id),
+  const { data: mine } = await supabase
+    .from("user_rooms").select("room_id").eq("user_id", user!.id);
+  const myRooms = (mine ?? []).map((r: { room_id: string }) => r.room_id);
+
+  // A new account with no rooms gets the picker, never an empty page.
+  if (myRooms.length === 0) redirect("/welcome");
+
+  let q = supabase
+    .from("posts")
+    .select("id, author_id, room_id, intent, title, body, method_card_id, technique, organism, deadline, offer, created_at")
+    .in("room_id", room ? [room] : myRooms)
+    .order("created_at", { ascending: false })
+    .limit(40);
+  if (intent) q = q.eq("intent", intent);
+  const { data: posts } = await q;
+
+  const authorIds = [...new Set((posts ?? []).map((p: any) => p.author_id))];
+  const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
+  const [{ data: people }, { data: cards }] = await Promise.all([
+    authorIds.length ? supabase.from("profiles").select("id, display_name, institution").in("id", authorIds) : Promise.resolve({ data: [] as any[] }),
+    cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
   ]);
+  const who = (id: string) => (people ?? []).find((p: any) => p.id === id);
+  const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
 
-  const authorIds = [...new Set([...(cards ?? []).map(c => c.author_id), ...(questions ?? []).map(q => q.author_id)])];
-  const { data: people } = authorIds.length
-    ? await supabase.from("profiles").select("id, display_name, institution").in("id", authorIds)
-    : { data: [] as { id: string; display_name: string; institution: string }[] };
-  const nameOf = (id: string) => people?.find(p => p.id === id)?.display_name || "Someone";
-  const instOf = (id: string) => people?.find(p => p.id === id)?.institution || "";
+  const qs = (patch: Record<string, string | undefined>) => {
+    const sp = new URLSearchParams();
+    const merged = { intent, room, ...patch };
+    Object.entries(merged).forEach(([k, v]) => { if (v) sp.set(k, v); });
+    const s = sp.toString();
+    return s ? `/home?${s}` : "/home";
+  };
 
-  type Item =
-    | { kind: "card"; at: string; c: NonNullable<typeof cards>[number] }
-    | { kind: "question"; at: string; q: NonNullable<typeof questions>[number] };
-
-  const feed: Item[] = [
-    ...(cards ?? []).map((c) => ({ kind: "card" as const, at: c.created_at, c })),
-    ...(questions ?? []).map((q) => ({ kind: "question" as const, at: q.created_at, q })),
-  ].sort((a, b) => +new Date(b.at) - +new Date(a.at));
+  const pill = (active: boolean): React.CSSProperties => ({
+    font: mono(11, 500), padding: "5px 10px", border: "1px solid var(--rule)",
+    background: active ? "var(--ink)" : "transparent",
+    color: active ? "var(--bg)" : "var(--ink)", textDecoration: "none", whiteSpace: "nowrap",
+  });
 
   return (
     <Page
-      title="Home"
-      lede="Ranked by recency for now. The controls that keep a feed honest — why am I seeing this, chronological, cross-field injection — are designed on board H1 and are not wired yet."
-      actions={<Link href="/methods/new" style={btnPrimary}>Record a method</Link>}
+      title="Feed"
+      lede="Posts from the rooms you have joined. Every post states what it is, and the two that carry evidence carry a method card."
+      actions={<Link href="/post" style={btnPrimary}>New post</Link>}
     >
-      <div className="sc-two-col">
+      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {feed.length === 0 && (
+          {/* Filters sit directly under the composer entry, as designed. */}
+          <Panel style={{ padding: 12 }}>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", marginBottom: 9 }}>
+              <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginRight: 4 }}>KIND</span>
+              <Link href={qs({ intent: undefined })} style={pill(!intent)}>All</Link>
+              {INTENTS.map((i) => (
+                <Link key={i.id} href={qs({ intent: i.id })} style={pill(intent === i.id)}>{i.label}</Link>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginRight: 4 }}>ROOM</span>
+              <Link href={qs({ room: undefined })} style={pill(!room)}>All yours</Link>
+              {myRooms.map((r) => (
+                <Link key={r} href={qs({ room: r })} style={pill(room === r)}>#{r}</Link>
+              ))}
+            </div>
+          </Panel>
+
+          {(posts?.length ?? 0) === 0 && (
             <Panel>
               <Empty>
-                Nothing here yet. The feed fills from real method cards and questions —{" "}
-                <Link href="/methods/new" style={{ color: "var(--link)" }}>record the run that did not work</Link>.
+                Nothing here yet. <Link href="/post" style={{ color: "var(--link)" }}>Post something</Link>, or{" "}
+                <Link href="/rooms" style={{ color: "var(--link)" }}>join more rooms</Link>.
               </Empty>
             </Panel>
           )}
 
-          {feed.map((item) =>
-            item.kind === "card" ? (
-              <Panel key={`c-${item.c.id}`}>
-                <div style={{ padding: "12px 14px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)" }}>
-                  <Outcome value={item.c.outcome} />
-                  <span style={{ font: mono(11), color: "var(--mute)" }}>{item.c.code} · v{item.c.version}</span>
-                  {item.c.forked_from && <Tag>fork</Tag>}
-                  <span style={{ marginLeft: "auto", font: mono(11), color: "var(--mute)" }}>
-                    {item.c.reproductions} reproductions · {timeAgo(item.c.created_at)}
+          {(posts ?? []).map((p: any) => {
+            const card = cardOf(p.method_card_id);
+            const author = who(p.author_id);
+            const spec = intentById(p.intent);
+            return (
+              <Panel key={p.id}>
+                <div style={{ padding: "11px 14px", display: "flex", alignItems: "center", gap: 9, borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
+                  <span style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: INTENT_COLOUR[p.intent], border: `1px solid ${INTENT_COLOUR[p.intent]}`, padding: "3px 7px" }}>
+                    {(spec?.label ?? p.intent).toUpperCase()}
                   </span>
-                  <Visibility value={item.c.visibility} />
+                  <Link href={`/home?room=${p.room_id}`} style={{ font: mono(11, 500), color: "var(--ink)" }}>#{p.room_id}</Link>
+                  <span style={{ font: mono(10.5), color: "var(--mute)" }}>
+                    {housesOfRoom(p.room_id).length > 1 ? `shared across ${housesOfRoom(p.room_id).length} houses` : roomById(p.room_id)?.name}
+                  </span>
+                  <span style={{ marginLeft: "auto", font: mono(10.5), color: "var(--mute)" }}>{timeAgo(p.created_at)}</span>
                 </div>
-                <div style={{ padding: "14px" }}>
-                  <Link href={`/methods/${item.c.id}`} style={{ font: mono(15, 700, 1.35), color: "var(--ink)", textDecoration: "none" }}>
-                    {item.c.title}
-                  </Link>
-                  <div style={{ font: mono(11), color: "var(--mute)", marginTop: 5 }}>
-                    {nameOf(item.c.author_id)}{instOf(item.c.author_id) ? ` · ${instOf(item.c.author_id)}` : ""}
-                    {item.c.system ? ` · ${item.c.system}` : ""}
-                  </div>
-                  {item.c.outcome_detail && (
-                    <p style={{ font: "400 12.5px/1.65 var(--sans)", color: "var(--ink)", margin: "10px 0 0" }}>{item.c.outcome_detail}</p>
-                  )}
-                  {item.c.fails_under && (
-                    <div style={{ marginTop: 10, borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "9px 12px" }}>
-                      <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 4 }}>FAILS UNDER</div>
-                      <p style={{ font: "400 12px/1.6 var(--sans)", margin: 0 }}>{item.c.fails_under}</p>
-                    </div>
-                  )}
-                  {item.c.tags?.length > 0 && (
-                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 11 }}>
-                      {item.c.tags.map((t: string) => <Tag key={t}>{t}</Tag>)}
-                    </div>
-                  )}
-                </div>
-              </Panel>
-            ) : (
-              <Panel key={`q-${item.q.id}`}>
-                <div style={{ padding: "12px 14px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)" }}>
-                  <span style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--info)", border: "1px solid var(--info)", padding: "3px 7px" }}>QUESTION</span>
-                  <span style={{ marginLeft: "auto", font: mono(11), color: "var(--mute)" }}>{timeAgo(item.q.created_at)}</span>
-                </div>
+
                 <div style={{ padding: 14 }}>
-                  <Link href={`/questions/${item.q.id}`} style={{ font: mono(15, 700, 1.35), color: "var(--ink)", textDecoration: "none" }}>
-                    {item.q.title}
-                  </Link>
-                  <div style={{ font: mono(11), color: "var(--mute)", marginTop: 5 }}>{nameOf(item.q.author_id)}</div>
-                  {item.q.body && <p style={{ font: "400 12.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{item.q.body.slice(0, 260)}</p>}
+                  <Link href={`/posts/${p.id}`} style={{ font: mono(15, 700, 1.35), color: "var(--ink)", textDecoration: "none" }}>{p.title}</Link>
+                  <div style={{ font: mono(11), color: "var(--mute)", marginTop: 5 }}>
+                    {author?.display_name ?? "Someone"}{author?.institution ? ` · ${author.institution}` : ""}
+                  </div>
+                  {p.body && <p style={{ font: "400 12.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{p.body.slice(0, 280)}</p>}
+
+                  {card && (
+                    <Link href={`/methods/${card.id}`} style={{ display: "block", marginTop: 11, border: "1px solid var(--rule)", background: "var(--bg)", padding: "10px 12px", color: "var(--ink)" }}>
+                      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                        <Outcome value={card.outcome} />
+                        <span style={{ font: mono(10.5), color: "var(--mute)" }}>{card.code}</span>
+                      </div>
+                      <div style={{ font: mono(12.5, 500), marginTop: 6 }}>{card.title}</div>
+                    </Link>
+                  )}
+
+                  {p.intent === "collab" && (p.technique || p.offer || p.deadline) && (
+                    <div style={{ marginTop: 11, border: "1px solid var(--signal)", padding: "10px 12px" }}>
+                      <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 6 }}>WHAT IS NEEDED</div>
+                      <div style={{ font: mono(11.5, 400, 1.7) }}>
+                        {p.technique && <div>technique · {p.technique}</div>}
+                        {p.organism && <div>system · {p.organism}</div>}
+                        {p.deadline && <div>by · {p.deadline}</div>}
+                        {p.offer && <div>offered back · {p.offer}</div>}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Panel>
-            )
-          )}
+            );
+          })}
         </div>
 
         <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
-            <PanelHead>Your record</PanelHead>
-            <div style={{ padding: 14, font: mono(12, 400, 1.7) }}>
-              <div><b style={{ font: mono(20, 700) }}>{myCards ?? 0}</b></div>
-              <div style={{ color: "var(--mute)" }}>method cards recorded</div>
-              <Link href="/methods" style={{ ...btn, marginTop: 12, width: "100%", justifyContent: "center" }}>Open your methods</Link>
+            <PanelHead>Your rooms · {myRooms.length}</PanelHead>
+            <div style={{ padding: 14, display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {myRooms.map((r) => <Tag key={r}>#{r}</Tag>)}
             </div>
           </Panel>
           <Panel>
-            <PanelHead>Ask with the data attached</PanelHead>
+            <PanelHead>Rooms you have not joined</PanelHead>
             <div style={{ padding: 14 }}>
-              <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 12px" }}>
-                A question carries the card that produced it, so peers see real conditions instead of a paraphrase.
-              </p>
-              <Link href="/ask" style={{ ...btn, width: "100%", justifyContent: "center" }}>Ask a question</Link>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }}>
+                {ROOMS.filter((r) => !myRooms.includes(r.id)).slice(0, 8).map((r) => <Tag key={r.id}>#{r.id}</Tag>)}
+              </div>
+              <Link href="/rooms" style={{ ...btn, width: "100%", justifyContent: "center" }}>Browse all rooms</Link>
             </div>
           </Panel>
         </aside>

@@ -52,6 +52,18 @@ export type Message = {
   method_card_id: string | null; read_at: string | null; created_at: string;
 };
 
+
+export type UserRoom = { user_id: string; room_id: string; joined_at: string };
+
+export type Post = {
+  id: string; author_id: string; room_id: string;
+  intent: "result" | "data_question" | "general" | "collab";
+  title: string; body: string;
+  method_card_id: string | null; project_id: string | null;
+  technique: string; organism: string; deadline: string | null; offer: string;
+  created_at: string;
+};
+
 export const DEMO_EMAIL = "demo@scicollab.test";
 export const DEMO_PASSWORD = "reproduce";
 
@@ -202,20 +214,7 @@ const emailToId = new Map<string, string>([
 ]);
 
 
-/* ── raw table access ─────────────────────────────────────────────────────
-   The demo client shim queries these by name, exactly as PostgREST would.
-   They are live references: writes through the shim mutate them in place. */
-export const tables: Record<string, Record<string, unknown>[]> = {
-  profiles,
-  method_cards: cards,
-  questions,
-  answers,
-  projects,
-  project_members: members,
-  eln_entries: entries,
-  messages,
-  datasets: [],
-} as unknown as Record<string, Record<string, unknown>[]>;
+
 
 /** Everyone seeded shares one password; a demo account is not a secret. */
 export function authenticate(email: string, password: string): string | null {
@@ -239,6 +238,74 @@ export function register(email: string, password: string, display_name: string, 
 export function emailTaken(email: string): boolean {
   return credentials.has(email.trim().toLowerCase());
 }
+
+
+const user_rooms: UserRoom[] = [
+  { user_id: ME, room_id: "western-blot",     joined_at: ago(40) },
+  { user_id: ME, room_id: "transfection",     joined_at: ago(40) },
+  { user_id: ME, room_id: "negative-results", joined_at: ago(40) },
+  { user_id: ME, room_id: "cell-culture",     joined_at: ago(20) },
+  { user_id: "u-okafor",    room_id: "transfection",     joined_at: ago(60) },
+  { user_id: "u-okafor",    room_id: "negative-results", joined_at: ago(60) },
+  { user_id: "u-bhatt",     room_id: "western-blot",     joined_at: ago(30) },
+  { user_id: "u-lindqvist", room_id: "instruments",      joined_at: ago(25) },
+];
+
+const posts: Post[] = [
+  {
+    id: "p-1", author_id: ME, room_id: "negative-results", intent: "result",
+    title: "Transfection efficiency falls off a cliff above passage 18, not a slope",
+    body: "Posting the negative result rather than sitting on it. Three biological replicates, two reagent lots. The shape matters: it is not gradual, which is why people keep blaming the reagent.",
+    method_card_id: "c-0412", project_id: null,
+    technique: "", organism: "", deadline: null, offer: "", created_at: ago(11),
+  },
+  {
+    id: "p-2", author_id: ME, room_id: "cell-culture", intent: "data_question",
+    title: "Is my CO₂ drift big enough to explain a 30% efficiency loss?",
+    body: "Bay 3 under-reads by 0.6%. I can see it affecting things but I cannot tell if it accounts for the whole loss or only part of it. Card has the logging run.",
+    method_card_id: "c-0602", project_id: null,
+    technique: "", organism: "", deadline: null, offer: "", created_at: ago(2),
+  },
+  {
+    id: "p-3", author_id: "u-bhatt", room_id: "western-blot", intent: "data_question",
+    title: "High-MW bands gone at 20% methanol — how far down can I go?",
+    body: "Everything below 100 kDa is clean. Standard advice is to drop the methanol but nobody records what it costs at the low end.",
+    method_card_id: "c-0517", project_id: null,
+    technique: "", organism: "", deadline: null, offer: "", created_at: ago(4),
+  },
+  {
+    id: "p-4", author_id: "u-okafor", room_id: "transfection", intent: "collab",
+    title: "Looking for a second lab to run the passage comparison independently",
+    body: "We have the protocol and the analysis; what we do not have is an independent replication. Happy to co-author, and happy for the null result if that is what comes out.",
+    method_card_id: "c-0288", project_id: null,
+    technique: "Lipofection", organism: "HEK293T", deadline: ago(-45).slice(0, 10), offer: "Co-authorship, reagents covered, analysis shared",
+    created_at: ago(6),
+  },
+  {
+    id: "p-5", author_id: "u-lindqvist", room_id: "grants-careers", intent: "general",
+    title: "Has anyone moved from a research-engineer post into a staff-scientist track?",
+    body: "Asking for the practical version rather than the official one — what actually counted when you applied.",
+    method_card_id: null, project_id: null,
+    technique: "", organism: "", deadline: null, offer: "", created_at: ago(8),
+  },
+];
+
+/* ── raw table access ─────────────────────────────────────────────────────
+   The demo client shim queries these by name, exactly as PostgREST would.
+   They are live references: writes through the shim mutate them in place. */
+export const tables: Record<string, Record<string, unknown>[]> = {
+  profiles,
+  method_cards: cards,
+  questions,
+  answers,
+  projects,
+  project_members: members,
+  eln_entries: entries,
+  messages,
+  datasets: [],
+  user_rooms,
+  posts,
+} as unknown as Record<string, Record<string, unknown>[]>;
 
 // ── accessors ────────────────────────────────────────────────────────────
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));

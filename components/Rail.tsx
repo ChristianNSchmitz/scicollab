@@ -12,6 +12,7 @@ type Item = { href: string; label: string; d: string };
 
 export const PRIMARY: Item[] = [
   { href: "/home",      label: "Home",     d: "M3 9.8 12 3l9 6.8V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z" },
+  { href: "/rooms",     label: "Rooms",    d: "M4 21V9l8-6 8 6v12h-6v-7H10v7zM9 4.5h6" },
   { href: "/ask",       label: "Ask",      d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" },
   { href: "/methods",   label: "Methods",  d: "M9 3v6l-5 9a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3l-5-9V3M8 3h8M7.5 14h9" },
   { href: "/projects",  label: "Projects", d: "M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" },
