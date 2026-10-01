@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, Empty, Tag, btn, mono } from "@/components/ui";
+import { nameGuide, unnameGuide } from "@/app/actions/record";
+import { ensureRecordTables } from "@/lib/record/demo-seed";
 
 export const dynamic = "force-dynamic";
 
 /** Network — board G1. Reachability is a designed property, so every row
  *  offers the action that is actually open to you. */
 export default async function Network() {
+  ensureRecordTables();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: people } = await supabase
@@ -14,6 +17,9 @@ export default async function Network() {
     .select("id, display_name, institution, role_title, field, techniques")
     .neq("id", user!.id)
     .order("display_name");
+  // Mentoring credit is given by the person who was helped, so you name your guides here.
+  const { data: guides } = await supabase.from("mentorships").select("mentor_id").eq("mentee_id", user!.id);
+  const isGuide = new Set((guides ?? []).map((g) => g.mentor_id));
 
   return (
     <Page title="Network" lede="Everyone on this instance. Follow and connect are designed on board G1 as a dual model; messaging is live.">
@@ -36,6 +42,15 @@ export default async function Network() {
                 </div>
               )}
             </div>
+            {isGuide.has(p.id) ? (
+              <form action={unnameGuide.bind(null, p.id)}>
+                <button type="submit" style={{ ...btn, borderColor: "var(--ok)", color: "var(--ok)" }} title="Remove the credit you gave">Your guide ✓</button>
+              </form>
+            ) : (
+              <form action={nameGuide.bind(null, p.id)}>
+                <button type="submit" style={btn} title="Credit this person for helping you. Only the two of you see it.">Name as guide</button>
+              </form>
+            )}
             <Link href={`/messages/${p.id}`} style={btn}>Message</Link>
           </div>
         ))}

@@ -7,12 +7,14 @@ import { useState } from "react";
  * flatten every other measure against the baseline. Square marks and ink, per
  * board [ 001 ]; the current week is still filling, so it is drawn in mute.
  */
-export default function WeeklyBars({ values, weekStarts, unit }: {
+export default function WeeklyBars({ values, weekStarts, unit, max: sharedMax }: {
   values: number[]; weekStarts: string[]; unit: string;
+  /** Pass the same max to two charts to put them on one scale on purpose. */
+  max?: number;
 }) {
   const [hover, setHover] = useState<number | null>(null);
   const W = 300, H = 56, gap = 2;
-  const max = Math.max(1, ...values);
+  const max = Math.max(1, sharedMax ?? 0, ...values);
   const bw = (W - gap * (values.length - 1)) / values.length;
   const fmt = (iso: string) =>
     new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short" });

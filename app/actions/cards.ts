@@ -78,13 +78,6 @@ export async function forkCard(id: string) {
   redirect(`/methods/${data.id}`);
 }
 
-export async function markReproduced(id: string) {
-  const { supabase } = await me();
-  const { data } = await supabase.from("method_cards").select("reproductions").eq("id", id).single();
-  await supabase.from("method_cards").update({ reproductions: (data?.reproductions ?? 0) + 1 }).eq("id", id);
-  revalidatePath(`/methods/${id}`);
-}
-
 export async function setVisibility(id: string, visibility: "private" | "lab" | "public") {
   const { supabase } = await me();
   const { error } = await supabase.from("method_cards").update({ visibility }).eq("id", id);

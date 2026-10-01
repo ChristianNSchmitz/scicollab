@@ -9,8 +9,17 @@ import { tables, ME } from "@/lib/demo/store";
  */
 const ago = (days: number) => new Date(Date.now() - days * 864e5).toISOString();
 
+/** The record's own tables, registered with the demo store on first use. */
+export function ensureRecordTables() {
+  if (isConfigured()) return;
+  for (const t of ["reproductions", "reviews", "mentorships", "card_reads"]) {
+    if (!tables[t]) tables[t] = [];
+  }
+}
+
 export function ensureRecordSeed() {
   if (isConfigured()) return;
+  ensureRecordTables();
   const cards = tables.method_cards as any[];
   if (cards.some((c) => c.id === "c-0355")) return;
 
@@ -87,4 +96,59 @@ export function ensureRecordSeed() {
       accepted: false, created_at: ago(8),
     },
   );
+
+  (tables.reproductions as any[]).push(
+    { id: "r-1", card_id: "c-0412", user_id: "u-okafor",    outcome: "held",   note: "Cliff between p16 and p20 in our hands too.", created_at: ago(5) },
+    { id: "r-2", card_id: "c-0602", user_id: "u-lindqvist", outcome: "held",   note: "Same method on bays 1 and 2.",                   created_at: ago(1) },
+    { id: "r-3", card_id: "c-0355", user_id: "u-bhatt",     outcome: "failed", note: "Got 9% serum-free at p6, so not every passage.", created_at: ago(17) },
+    { id: "r-4", card_id: "c-0288", user_id: ME,            outcome: "held",   note: "41% at p10, matches.",                           created_at: ago(24) },
+    { id: "r-5", card_id: "c-0517", user_id: ME,            outcome: "failed", note: "Our 150 kDa band came through at 20% MeOH.",     created_at: ago(3) },
+  );
+
+  (tables.reviews as any[]).push(
+    { id: "v-1", card_id: "c-0517", reviewer_id: ME,         verdict: "unclear", body: "Which membrane? PVDF and nitrocellulose behave differently here.", created_at: ago(6) },
+    { id: "v-2", card_id: "c-0288", reviewer_id: ME,         verdict: "clear",   body: "Ran from the card alone without questions.",                       created_at: ago(23) },
+    { id: "v-3", card_id: "c-0412", reviewer_id: "u-okafor", verdict: "clear",   body: "Reproducible from the card as written.",                           created_at: ago(4) },
+  );
+
+  (tables.mentorships as any[]).push(
+    { id: "g-1", mentor_id: ME, mentee_id: "u-newcomer", note: "Walked me through recording my first card.", created_at: ago(3) },
+    { id: "g-2", mentor_id: ME, mentee_id: "u-bhatt",    note: "Transfer conditions for high-MW blots.",     created_at: ago(20) },
+  );
+
+  // Reads on the demo researcher's shared cards. Deterministic, so the
+  // numbers do not change between reloads; keys are opaque, like the real ones.
+  const institutions = [
+    "Example Institute · demo data", "Example University · demo data", "Example Agency · demo data",
+    "Example Hospital · demo data", "Example College · demo data", "",
+  ];
+  const vias = ["search", "a question", "another card", "home feed", "a message", "direct"];
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const reads = tables.card_reads as any[];
+  for (const [card, base] of [["c-0412", 9], ["c-0355", 4], ["c-0602", 5], ["c-0391", 2]] as const) {
+    const born = cards.find((c) => c.id === card)!.created_at;
+    for (let w = 0; w < 12; w++) {
+      const week = weekOf(new Date(Date.now() - w * 7 * 864e5));
+      if (week < weekOf(new Date(born))) continue;
+      const n = Math.round(base * (0.4 + rnd() * 1.2) * (card === "c-0412" && w === 1 ? 2.2 : 1));
+      for (let r = 0; r < n; r++) {
+        reads.push({
+          card_id: card, week,
+          institution: institutions[Math.floor(rnd() * rnd() * institutions.length)],
+          via: vias[Math.floor(rnd() * rnd() * vias.length)],
+          reader_key: `demo-${card}-${w}-${r}`,
+        });
+      }
+    }
+  }
+}
+
+/** ISO date of the Monday starting d's week. */
+export function weekOf(d: Date): string {
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  x.setDate(x.getDate() - ((x.getDay() + 6) % 7));
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${x.getFullYear()}-${p(x.getMonth() + 1)}-${p(x.getDate())}`;
 }

@@ -304,3 +304,186 @@ begin new.updated_at = now(); return new; end $$;
 drop trigger if exists method_cards_touch on public.method_cards;
 create trigger method_cards_touch before update on public.method_cards
   for each row execute function public.touch_updated_at();
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Research record — reproductions, reviews, mentoring and reads.
+-- Every count on /you/record is a count of these rows. Nothing is weighted.
+-- ─────────────────────────────────────────────────────────────────────────
+
+-- ── reproductions: dated, and only by someone who is not the author ──────
+create table if not exists public.reproductions (
+  id         uuid primary key default gen_random_uuid(),
+  card_id    uuid not null references public.method_cards on delete cascade,
+  user_id    uuid not null references auth.users on delete cascade,
+  outcome    text not null check (outcome in ('held', 'failed')),  -- a failed repeat is a finding too
+  note       text not null default '',
+  created_at timestamptz not null default now()
+);
+create index if not exists reproductions_card_idx on public.reproductions (card_id, created_at desc);
+create index if not exists reproductions_user_idx on public.reproductions (user_id, created_at desc);
+
+-- ── reviews of a method card ─────────────────────────────────────────────
+create table if not exists public.reviews (
+  id          uuid primary key default gen_random_uuid(),
+  card_id     uuid not null references public.method_cards on delete cascade,
+  reviewer_id uuid not null references auth.users on delete cascade,
+  verdict     text not null check (verdict in ('clear', 'unclear', 'incomplete', 'does_not_hold')),
+  body        text not null default '',
+  created_at  timestamptz not null default now(),
+  unique (card_id, reviewer_id)
+);
+create index if not exists reviews_reviewer_idx on public.reviews (reviewer_id, created_at desc);
+
+-- ── mentoring: recorded by the person who was helped, never self-claimed ──
+create table if not exists public.mentorships (
+  id         uuid primary key default gen_random_uuid(),
+  mentor_id  uuid not null references auth.users on delete cascade,
+  mentee_id  uuid not null references auth.users on delete cascade,
+  note       text not null default '',
+  created_at timestamptz not null default now(),
+  unique (mentor_id, mentee_id),
+  check (mentor_id <> mentee_id)
+);
+
+-- ── reads (board J2): reader identity never stored ───────────────────────
+-- A read is kept as a week, the reader's institution, where they came from,
+-- and a keyed hash that only deduplicates the same reader within one week.
+-- The key lives in a schema PostgREST does not expose. Nobody, the card's
+-- author included, can select these rows; the author sees aggregates only,
+-- and an institution only once three distinct readers from it are counted.
+create schema if not exists private;
+create table if not exists private.settings (key text primary key, value text not null);
+-- Core functions only (no pgcrypto), so search paths never decide whether it works.
+insert into private.settings (key, value)
+  values ('read_key', replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''))
+  on conflict (key) do nothing;
+
+create table if not exists public.card_reads (
+  card_id     uuid not null references public.method_cards on delete cascade,
+  week        date not null,
+  institution text not null default '',
+  via         text not null default 'direct',
+  reader_key  text not null,
+  primary key (card_id, week, reader_key)
+);
+
+-- ── row-level security ───────────────────────────────────────────────────
+alter table public.reproductions enable row level security;
+alter table public.reviews       enable row level security;
+alter table public.mentorships   enable row level security;
+alter table public.card_reads    enable row level security;   -- and no select policy at all
+
+drop policy if exists repro_read   on public.reproductions;
+drop policy if exists repro_write  on public.reproductions;
+drop policy if exists reviews_read  on public.reviews;
+drop policy if exists reviews_write on public.reviews;
+drop policy if exists mentor_read   on public.mentorships;
+drop policy if exists mentor_write  on public.mentorships;
+drop policy if exists mentor_delete on public.mentorships;
+
+-- Readable wherever the card itself is readable (the card's own policy applies in the subquery).
+create policy repro_read on public.reproductions for select to authenticated
+  using (exists (select 1 from public.method_cards c where c.id = card_id));
+create policy repro_write on public.reproductions for insert to authenticated
+  with check (user_id = auth.uid()
+    and exists (select 1 from public.method_cards c where c.id = card_id and c.author_id <> auth.uid()));
+
+create policy reviews_read on public.reviews for select to authenticated
+  using (exists (select 1 from public.method_cards c where c.id = card_id));
+create policy reviews_write on public.reviews for insert to authenticated
+  with check (reviewer_id = auth.uid()
+    and exists (select 1 from public.method_cards c where c.id = card_id and c.author_id <> auth.uid()));
+
+-- Only the two people involved can see a mentorship.
+create policy mentor_read on public.mentorships for select to authenticated
+  using (mentor_id = auth.uid() or mentee_id = auth.uid());
+create policy mentor_write on public.mentorships for insert to authenticated
+  with check (mentee_id = auth.uid());
+create policy mentor_delete on public.mentorships for delete to authenticated
+  using (mentee_id = auth.uid());
+
+-- The card counter follows the rows, so an author can no longer raise it.
+create or replace function public.count_reproduction()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  perform set_config('scicollab.counting', 'on', true);
+  update public.method_cards set reproductions = reproductions + 1 where id = new.card_id;
+  perform set_config('scicollab.counting', 'off', true);
+  return new;
+end $$;
+
+-- The author may edit their card, but not its reproduction count: only the
+-- trigger above moves it.
+create or replace function public.guard_reproduction_count()
+returns trigger language plpgsql as $$
+begin
+  if new.reproductions is distinct from old.reproductions
+     and coalesce(current_setting('scicollab.counting', true), 'off') <> 'on' then
+    new.reproductions := old.reproductions;
+  end if;
+  return new;
+end $$;
+drop trigger if exists method_cards_guard_count on public.method_cards;
+create trigger method_cards_guard_count before update on public.method_cards
+  for each row execute function public.guard_reproduction_count();
+drop trigger if exists reproductions_count on public.reproductions;
+create trigger reproductions_count after insert on public.reproductions
+  for each row execute function public.count_reproduction();
+
+-- Record a read. The caller is identified only to derive the weekly key.
+create or replace function public.record_card_read(p_card uuid, p_via text)
+returns void language plpgsql security definer set search_path = public, private as $$
+declare
+  v_week date := date_trunc('week', now())::date;
+begin
+  if auth.uid() is null then return; end if;
+  -- the author's own visits are not reads; a private card has no readers
+  if not exists (select 1 from method_cards c
+                 where c.id = p_card and c.author_id <> auth.uid() and c.visibility <> 'private') then
+    return;
+  end if;
+  insert into card_reads (card_id, week, institution, via, reader_key)
+  values (
+    p_card, v_week,
+    coalesce((select institution from profiles where id = auth.uid()), ''),
+    left(coalesce(p_via, 'direct'), 32),
+    -- keyed hash: the secret is prefixed, so without it the key cannot be recomputed
+    encode(sha256(convert_to((select value from private.settings where key = 'read_key')
+                             || ':' || auth.uid()::text || ':' || p_card::text || ':' || v_week::text, 'UTF8')), 'hex')
+  )
+  on conflict do nothing;
+end $$;
+
+-- Aggregates for the card's author only, with the three-reader threshold.
+create or replace function public.card_read_stats(p_card uuid)
+returns json language plpgsql security definer set search_path = public as $$
+declare
+  result json;
+begin
+  if not exists (select 1 from method_cards where id = p_card and author_id = auth.uid()) then
+    return null;
+  end if;
+  select json_build_object(
+    'weekly', coalesce((select json_agg(json_build_object('week', week, 'readers', n) order by week)
+                        from (select week, count(*) n from card_reads where card_id = p_card group by week) w), '[]'::json),
+    'via', coalesce((select json_agg(json_build_object('via', via, 'readers', n) order by n desc)
+                     from (select via, count(*) n from card_reads where card_id = p_card group by via) v), '[]'::json),
+    -- The reader key changes weekly, so distinct readers are only provably
+    -- distinct people within one week: the threshold is applied per week.
+    'institutions', coalesce((select json_agg(json_build_object('institution', institution, 'readers', n) order by n desc)
+                              from (select institution, sum(n) n from
+                                      (select institution, week, count(*) n from card_reads
+                                       where card_id = p_card and institution <> ''
+                                       group by institution, week having count(*) >= 3) iw
+                                    group by institution) i), '[]'::json),
+    'below_threshold', (select coalesce(sum(n), 0) from
+                          (select count(*) n from card_reads where card_id = p_card
+                           group by institution, week having institution = '' or count(*) < 3) s)
+  ) into result;
+  return result;
+end $$;
+
+revoke all on function public.record_card_read(uuid, text) from public, anon;
+revoke all on function public.card_read_stats(uuid) from public, anon;
+grant execute on function public.record_card_read(uuid, text) to authenticated;
+grant execute on function public.card_read_stats(uuid) to authenticated;

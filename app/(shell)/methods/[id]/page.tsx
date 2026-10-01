@@ -1,7 +1,11 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { forkCard, markReproduced, setVisibility, deleteCard } from "@/app/actions/cards";
+import { forkCard, setVisibility, deleteCard } from "@/app/actions/cards";
+import CardRecordPanels from "@/components/record/CardRecordPanels";
+import { ensureRecordSeed } from "@/lib/record/demo-seed";
+import { recordCardRead, viaFrom } from "@/lib/record/reads";
 import { Page, Panel, PanelHead, Outcome, Tag, Visibility, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 
@@ -11,6 +15,7 @@ export const dynamic = "force-dynamic";
  *  card rather than behind a tab, and lineage is drawn rather than implied. */
 export default async function MethodCard({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  ensureRecordSeed();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -26,6 +31,8 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
   ]);
 
   const isOwner = card.author_id === user!.id;
+  // Counted as a read only for someone else on a shared card; who it was is not kept.
+  await recordCardRead(supabase, card.id, user!.id, viaFrom((await headers()).get("referer")));
 
   return (
     <Page
@@ -36,9 +43,7 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
           <form action={forkCard.bind(null, card.id)}>
             <button type="submit" style={btn}>Fork protocol</button>
           </form>
-          <form action={markReproduced.bind(null, card.id)}>
-            <button type="submit" style={btn} title="Record that you ran this and it held">I reproduced this</button>
-          </form>
+          {isOwner && <Link href={`/you/record/cards/${card.id}`} style={btn}>Analytics</Link>}
         </div>
       }
     >
@@ -132,6 +137,8 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
               </div>
             </Panel>
           )}
+
+          <CardRecordPanels supabase={supabase} cardId={card.id} isOwner={isOwner} userId={user!.id} />
 
           <Panel>
             <PanelHead>Ask about this card</PanelHead>
