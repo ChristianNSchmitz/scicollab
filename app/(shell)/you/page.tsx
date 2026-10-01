@@ -150,16 +150,17 @@ function Headline({ biblio, recs, recent, recCards }: {
 
   return (
     <Panel style={{ marginBottom: 16 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))" }}>
-        {cells.map((c, i) => (
-          <div key={c.label} style={{ padding: "16px 16px 14px", borderLeft: i ? "1px solid var(--rule)" : undefined }}>
+      {/* dividers come from the 1px gap, so they stay right when the cells wrap */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))", gap: 1, background: "var(--rule)", borderBottom: "1px solid var(--rule)" }}>
+        {cells.map((c) => (
+          <div key={c.label} style={{ padding: "16px 16px 14px", background: "var(--surface)" }}>
             <div style={{ font: mono(34, 700), letterSpacing: "-.03em" }}>{c.value}</div>
             <div style={{ font: mono(11, 500), marginTop: 6 }}>{c.label}</div>
             <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{c.sub}</div>
           </div>
         ))}
       </div>
-      <div style={{ padding: "9px 16px", borderTop: "1px solid var(--rule)", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+      <div style={{ padding: "9px 16px", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
         {ok ? (
           <>
             Citations and h-index from <a href={ok.url} target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a>
