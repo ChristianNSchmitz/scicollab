@@ -3,13 +3,14 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { tables } from "@/lib/demo/store";
 import { ensureRecordTables } from "@/lib/record/demo-seed";
 
+import { readAuthor, lastRuns, canWrite } from "@/lib/openalex/store";
+import { DEMO_ORCID, normaliseOrcid } from "@/lib/openalex/sync";
+
 /**
- * Citations and h-index, from OpenAlex by the researcher's ORCID.
- *
- * Nothing is computed here: both numbers are OpenAlex's own, cached for a
- * day, and shown with their source and date so they can be checked. If there
- * is no ORCID, or OpenAlex cannot be reached, the page says so instead of
- * showing a zero that would look like a fact.
+ * Citations and h-index, as last synced from OpenAlex (lib/openalex/sync.ts,
+ * every 12 hours). Nothing is computed here: the numbers are OpenAlex's own,
+ * shown with the time of the sync. Until a first sync has succeeded the page
+ * says why, instead of showing a zero that would look like a fact.
  */
 
 export type Bibliometrics =
@@ -21,20 +22,18 @@ export type Bibliometrics =
     }
   | { state: "no-orcid" }
   | { state: "invalid-orcid"; orcid: string }
+  | { state: "pending"; orcid: string }
   | { state: "not-found"; orcid: string }
-  | { state: "unreachable"; orcid: string };
+  | { state: "unreachable"; orcid: string; message?: string };
 
-const ORCID = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/;
-
-/** The demo persona's ORCID is ORCID's own public test record, not a person. */
-const DEMO_ORCID = "0000-0002-1825-0097";
 /** Example citations per year for the demo persona, oldest first, ending this year (sum 411 of 412). */
 const DEMO_PER_YEAR = [2, 6, 14, 21, 30, 38, 47, 58, 66, 72, 57];
 
-export async function bibliometricsFor(orcidRaw: string | null | undefined): Promise<Bibliometrics> {
-  const orcid = (orcidRaw ?? "").trim().replace(/^https?:\/\/orcid\.org\//, "");
-  if (!orcid) return { state: "no-orcid" };
-  if (!ORCID.test(orcid)) return { state: "invalid-orcid", orcid };
+export async function bibliometricsFor(userId: string, orcidRaw: string | null | undefined): Promise<Bibliometrics> {
+  const raw = (orcidRaw ?? "").trim();
+  if (!raw) return { state: "no-orcid" };
+  const orcid = normaliseOrcid(raw);
+  if (!orcid) return { state: "invalid-orcid", orcid: raw };
 
   const year = new Date().getFullYear();
   if (!isConfigured() && orcid === DEMO_ORCID) {
@@ -45,28 +44,23 @@ export async function bibliometricsFor(orcidRaw: string | null | undefined): Pro
     };
   }
 
-  const key = process.env.OPENALEX_API_KEY;
-  const url = `https://api.openalex.org/authors/orcid:${orcid}${key ? `?api_key=${encodeURIComponent(key)}` : ""}`;
-  try {
-    const res = await fetch(url, { next: { revalidate: 86400 }, signal: AbortSignal.timeout(5000) });
-    if (res.status === 404) return { state: "not-found", orcid };
-    if (!res.ok) return { state: "unreachable", orcid };
-    const a = await res.json();
-    const thisYear = (a.counts_by_year ?? []).find((c: any) => c.year === year)?.cited_by_count ?? 0;
+  const can = canWrite();
+  if (!can.ok) return { state: "unreachable", orcid, message: can.reason };
+
+  const a = await readAuthor(userId);
+  if (a && a.orcid === orcid) {
     return {
       state: "ok",
-      citations: a.cited_by_count ?? 0,
-      hIndex: a.summary_stats?.h_index ?? 0,
-      works: a.works_count ?? 0,
-      citationsThisYear: thisYear,
-      year,
-      updated: a.updated_date ?? "",
-      url: `https://openalex.org/${String(a.id ?? "").split("/").pop()}`,
-      countsByYear: (a.counts_by_year ?? []).map((c: any) => ({ year: c.year, cited_by_count: c.cited_by_count ?? 0 })),
+      citations: a.cited_by_count, hIndex: a.h_index, works: a.works_count,
+      citationsThisYear: a.counts_by_year.find((c) => c.year === year)?.cited_by_count ?? 0,
+      year, updated: a.synced_at, url: `https://openalex.org/${a.openalex_id}`,
+      countsByYear: a.counts_by_year.map((c) => ({ year: c.year, cited_by_count: c.cited_by_count })),
     };
-  } catch {
-    return { state: "unreachable", orcid };
   }
+  const [run] = await lastRuns(userId, 1);
+  if (!run || run.status === "running" || run.status === "ok") return { state: "pending", orcid };
+  if (run.status === "not-found") return { state: "not-found", orcid };
+  return { state: "unreachable", orcid, message: run.error ?? undefined };
 }
 
 // ── citation history ──────────────────────────────────────────────────────
@@ -79,19 +73,6 @@ type Client = SupabaseClient<any, "public", any>;
 export type Snapshot = { day: string; citations: number };
 
 const isoDay = (d: Date) => d.toISOString().slice(0, 10);
-
-export async function saveSnapshot(supabase: Client, userId: string, b: Bibliometrics) {
-  if (b.state !== "ok" || b.example) return;
-  const row = { user_id: userId, day: isoDay(new Date()), citations: b.citations, h_index: b.hIndex };
-  if (isConfigured()) {
-    await supabase.from("citation_snapshots").upsert(row, { onConflict: "user_id,day" });
-    return;
-  }
-  ensureRecordTables();
-  const rows = tables.citation_snapshots as any[];
-  const i = rows.findIndex((r) => r.user_id === userId && r.day === row.day);
-  if (i >= 0) rows[i] = row; else rows.push(row);
-}
 
 export async function loadSnapshots(supabase: Client, userId: string, b: Bibliometrics): Promise<Snapshot[]> {
   if (b.state !== "ok") return [];

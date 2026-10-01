@@ -6,7 +6,8 @@ import { NextResponse, type NextRequest } from "next/server";
 /* The design boards are an internal review — pricing strategy, the refused
    mechanics, the coverage audit and the open questions are all in there. They
    stay open in development and require a session anywhere else. */
-const PUBLIC = ["/", "/login", "/signup", "/onboarding"];
+// /api/cron checks its own secret; it has no session to offer.
+const PUBLIC = ["/", "/login", "/signup", "/onboarding", "/api/cron"];
 if (process.env.NODE_ENV !== "production" || process.env.SCICOLLAB_OPEN_BOARDS === "1") {
   PUBLIC.push("/boards");
 }

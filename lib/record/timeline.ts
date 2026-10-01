@@ -91,7 +91,11 @@ export function buildTimeline(range: Range, events: Event[], b: Bibliometrics, s
           + (since ? `SciCollab has recorded your total daily since ${since}.` : "SciCollab starts recording your total daily from today.");
     }
   } else if (b.state === "unreachable") {
-    citationsNote = "OpenAlex could not be reached, so citations are not plotted.";
+    citationsNote = "OpenAlex could not be reached, so citations are not plotted yet.";
+  } else if (b.state === "pending") {
+    citationsNote = "The first sync with OpenAlex is running; citations appear once it finishes.";
+  } else if (b.state === "not-found") {
+    citationsNote = "OpenAlex has no record for your ORCID, so there are no citations to plot.";
   }
 
   const fmt = (d: Date) =>

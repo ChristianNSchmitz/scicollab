@@ -526,3 +526,67 @@ drop policy if exists snap_update on public.citation_snapshots;
 create policy snap_read   on public.citation_snapshots for select to authenticated using (user_id = auth.uid());
 create policy snap_write  on public.citation_snapshots for insert to authenticated with check (user_id = auth.uid());
 create policy snap_update on public.citation_snapshots for update to authenticated using (user_id = auth.uid());
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- OpenAlex sync. Every 12 hours (cron, plus a check on visit) the server
+-- fetches each researcher's author record and all their works by ORCID.
+-- Written only by the server with the service role; each researcher can read
+-- their own rows and nobody else's.
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists public.openalex_authors (
+  user_id        uuid primary key references auth.users on delete cascade,
+  orcid          text not null,
+  openalex_id    text not null,
+  display_name   text not null default '',
+  works_count    int  not null default 0,
+  cited_by_count int  not null default 0,
+  h_index        int  not null default 0,
+  i10_index      int  not null default 0,
+  counts_by_year jsonb not null default '[]',
+  source_updated timestamptz,
+  synced_at      timestamptz not null default now()
+);
+
+create table if not exists public.publications (
+  user_id          uuid not null references auth.users on delete cascade,
+  openalex_id      text not null,
+  doi              text,
+  title            text not null default '',
+  year             int,
+  pub_date         date,
+  venue            text not null default '',
+  type             text not null default '',
+  cited_by_count   int  not null default 0,
+  prev_cited_by_count int not null default 0,   -- value at the previous sync, for "+n since"
+  first_seen_at    timestamptz not null default now(),
+  updated_at       timestamptz not null default now(),
+  primary key (user_id, openalex_id)
+);
+create index if not exists publications_user_year_idx on public.publications (user_id, year desc);
+
+create table if not exists public.sync_runs (
+  id              uuid primary key default gen_random_uuid(),
+  user_id         uuid not null references auth.users on delete cascade,
+  started_at      timestamptz not null default now(),
+  finished_at     timestamptz,
+  trigger         text not null default 'schedule',  -- schedule | visit | manual
+  status          text not null default 'running',   -- ok | error | rate-limited | not-found
+  initial         boolean not null default false,
+  new_works       int not null default 0,
+  removed_works   int not null default 0,
+  citations_delta int not null default 0,
+  changes         jsonb not null default '[]',        -- [{openalex_id, title, delta | new}]
+  error           text
+);
+create index if not exists sync_runs_user_idx on public.sync_runs (user_id, started_at desc);
+
+alter table public.openalex_authors enable row level security;
+alter table public.publications     enable row level security;
+alter table public.sync_runs        enable row level security;
+drop policy if exists oa_read   on public.openalex_authors;
+drop policy if exists pubs_read on public.publications;
+drop policy if exists runs_read on public.sync_runs;
+create policy oa_read   on public.openalex_authors for select to authenticated using (user_id = auth.uid());
+create policy pubs_read on public.publications     for select to authenticated using (user_id = auth.uid());
+create policy runs_read on public.sync_runs        for select to authenticated using (user_id = auth.uid());
+-- no insert/update/delete policies: only the service role writes these

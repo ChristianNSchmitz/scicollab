@@ -75,6 +75,24 @@ or the first sign-up cannot sign in.
 A destination that is not wired says so on the screen and names the board it
 came from, so the gap stays visible instead of looking like a broken feature.
 
+## OpenAlex sync
+
+Each researcher's author record and publications are synced from OpenAlex by
+the ORCID in their profile, every 12 hours: by Vercel Cron in production
+(`vercel.json` → `/api/cron/openalex`), by a timer in `instrumentation.ts`
+on any long-running server (including `npm run dev`), and as a fallback when
+the person opens their You page. "Sync now" is limited to once per 10 minutes.
+
+| Variable | Needed for |
+|---|---|
+| `SUPABASE_SERVICE_ROLE_KEY` | Writing synced data. Researchers cannot write it themselves. |
+| `CRON_SECRET` | The cron route. Without it the route refuses every request. |
+| `OPENALEX_API_KEY` | Optional. OpenAlex's free daily allowance is small (1,000 requests at the time of writing); a sync costs one request plus one per 200 works. |
+| `SCICOLLAB_SYNC_INTERVAL_HOURS` | Optional, default 12. |
+
+Vercel's Hobby plan runs crons at most once a day; there the visit fallback
+covers the second update.
+
 ## Layout
 
 | Path | What it is |
