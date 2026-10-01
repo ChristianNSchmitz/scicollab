@@ -10,9 +10,9 @@ import type { Event } from "@/lib/record/metrics";
 
 export type Range = "weeks" | "months" | "years";
 export const RANGES: { key: Range; label: string; points: number }[] = [
-  { key: "weeks",  label: "Weeks",  points: 12 },
-  { key: "months", label: "Months", points: 12 },
-  { key: "years",  label: "Years",  points: 10 },
+  { key: "weeks",  label: "Weeks",  points: 104 },  // two years
+  { key: "months", label: "Months", points: 60 },   // five years
+  { key: "years",  label: "Years",  points: 10 },   // ten years
 ];
 
 export type Timeline = {
@@ -65,18 +65,30 @@ export function buildTimeline(range: Range, events: Event[], b: Bibliometrics, s
       });
       citationsNote = `Totals at each year end, from OpenAlex's citations per year${b.example ? " (example values)" : ""}.`;
     } else {
+      // Daily snapshots where they exist. Before the first one, a month that
+      // closes a year still gets OpenAlex's exact year-end total, so a long
+      // monthly range has real anchor points instead of a blank.
+      const first = Math.min(...b.countsByYear.map((c) => c.year), b.year);
+      const since = snapshots[0]?.day;
       citations = ends.map((end) => {
         const day = end.toISOString().slice(0, 10);
-        let v: number | null = null;
-        for (const s of snapshots) if (s.day <= day) v = s.citations;
-        return v;
+        if (since && since <= day) {
+          let v: number | null = null;
+          for (const s of snapshots) if (s.day <= day) v = s.citations;
+          return v;
+        }
+        const y = end.getFullYear();
+        if (range === "months" && end.getMonth() === 11 && y >= first) {
+          return b.citations - b.countsByYear.filter((c) => c.year > y).reduce((n, c) => n + c.cited_by_count, 0);
+        }
+        return null;
       });
-      const since = snapshots[0]?.day;
       citationsNote = b.example
         ? "Example values for the demo account."
-        : since
-          ? `OpenAlex reports citations per year only, so SciCollab records your total once a day; the line starts on ${since}.`
-          : "OpenAlex reports citations per year only; SciCollab starts recording your total today.";
+        : (range === "months"
+            ? "Before daily tracking, the line joins OpenAlex's year-end totals (each December); "
+            : "OpenAlex reports citations per year only, so ")
+          + (since ? `SciCollab has recorded your total daily since ${since}.` : "SciCollab starts recording your total daily from today.");
     }
   } else if (b.state === "unreachable") {
     citationsNote = "OpenAlex could not be reached, so citations are not plotted.";
@@ -85,12 +97,12 @@ export function buildTimeline(range: Range, events: Event[], b: Bibliometrics, s
   const fmt = (d: Date) =>
     range === "years" ? String(d.getFullYear())
     : range === "months" ? `${MONTHS[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`
-    : `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+    : `${MONTHS[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`;
   const monday = (d: Date) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
   const labels = ends.map((d) => (range === "weeks" ? fmt(monday(d)) : fmt(d)));
   const tips = ends.map((d, i) => {
     const last = i === ends.length - 1;
-    if (range === "weeks") return last ? "This week, so far" : `Week of ${fmt(monday(d))}`;
+    if (range === "weeks") { const m = monday(d); return last ? "This week, so far" : `Week of ${m.getDate()} ${MONTHS[m.getMonth()]} ${m.getFullYear()}`; }
     if (range === "months") return last ? `${MONTHS[d.getMonth()]} ${d.getFullYear()}, so far` : `End of ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
     return last ? `${d.getFullYear()}, so far` : `End of ${d.getFullYear()}`;
   });

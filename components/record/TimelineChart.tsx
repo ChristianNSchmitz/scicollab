@@ -30,7 +30,9 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
   const at = hover ?? n - 1;
 
   // Labels thin out on narrow widths so they never collide.
-  const every = Math.max(1, Math.ceil((n * 46) / Math.max(1, w - L - R)));
+  const every = Math.max(1, Math.ceil((n * 66) / Math.max(1, w - L - R)));
+  const roomy = w - L - R >= 130;  // on a very narrow chart only the latest period is labelled
+  const showTick = (i: number) => i === n - 1 || (roomy && i % every === 0 && n - 1 - i >= every * 0.8);
 
   function scale(values: (number | null)[]) {
     const v = values.filter((x): x is number => x !== null);
@@ -41,15 +43,19 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
     return { lo: Math.max(0, Math.floor(lo - pad)), hi: Math.ceil(hi + pad) };
   }
 
+  // Running totals only rise, so known points are joined across gaps; the
+  // markers show where the actual values are.
   function path(values: (number | null)[], y: (v: number) => number) {
-    let d = "", pen = false;
+    let d = "";
     values.forEach((v, i) => {
-      if (v === null) { pen = false; return; }
-      d += `${pen ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`;
-      pen = true;
+      if (v === null) return;
+      d += `${d ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`;
     });
     return d;
   }
+  const dense = n > 24;
+  /** A real point that sits between gaps (a year-end anchor) keeps its marker. */
+  const sparse = (vals: (number | null)[], i: number) => vals[i] !== null && (vals[i - 1] ?? null) === null && (vals[i + 1] ?? null) === null;  // on long ranges, mark only sparse real points, the hovered one and the latest
 
   const readout = rows.map((r) => {
     const v = r.values[at];
@@ -88,8 +94,8 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
                   <text x={L - 8} y={y0 + 4} textAnchor="end" style={{ font: "400 10px var(--mono)" }} fill="var(--mute)">{s.hi.toLocaleString("en-GB")}</text>
                   <text x={L - 8} y={y0 + rowH} textAnchor="end" style={{ font: "400 10px var(--mono)" }} fill="var(--mute)">{s.lo.toLocaleString("en-GB")}</text>
                   <path d={path(r.values, y)} fill="none" stroke="var(--ink)" strokeWidth={2} strokeLinejoin="round" />
-                  {r.values.map((v, i) => v === null ? null : (
-                    <circle key={i} cx={x(i)} cy={y(v)} r={i === at ? 5 : 3.5}
+                  {r.values.map((v, i) => v === null || (dense && i !== at && i !== n - 1 && !(sparse(r.values, i))) ? null : (
+                    <circle key={i} cx={x(i)} cy={y(v)} r={i === at ? 5 : dense ? 3 : 3.5}
                             fill={i === n - 1 ? "var(--surface)" : "var(--ink)"} stroke={i === n - 1 ? "var(--ink)" : "var(--surface)"} strokeWidth={2} />
                   ))}
                 </>
@@ -103,7 +109,7 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
         {/* crosshair spans every row */}
         <line x1={x(at)} x2={x(at)} y1={top} y2={H - axisH} stroke="var(--ink)" strokeOpacity={hover === null ? 0 : 0.35} />
 
-        {labels.map((l, i) => (i % every === 0 || i === n - 1) && (
+        {labels.map((l, i) => showTick(i) && (
           <text key={i} x={x(i)} y={H - 6} textAnchor={i === 0 ? "start" : i === n - 1 ? "end" : "middle"}
                 style={{ font: "400 10px var(--mono)" }} fill={i === at && hover !== null ? "var(--ink)" : "var(--mute)"}>{l}</text>
         ))}

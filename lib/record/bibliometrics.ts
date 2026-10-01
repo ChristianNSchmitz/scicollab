@@ -104,7 +104,7 @@ export async function loadSnapshots(supabase: Client, userId: string, b: Bibliom
 function demoSnapshots(b: Extract<Bibliometrics, { state: "ok" }>): Snapshot[] {
   const out: Snapshot[] = [];
   const now = new Date();
-  for (let w = 110; w >= 0; w--) {
+  for (let w = 5 * 53 + 4; w >= 0; w--) {   // a little over five years
     const d = new Date(now.getTime() - w * 7 * 864e5);
     out.push({ day: isoDay(d), citations: cumulativeAt(b, d) });
   }
