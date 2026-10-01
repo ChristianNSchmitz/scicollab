@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, Empty, mono } from "@/components/ui";
-import { timeAgo } from "@/lib/format";
+import { timeAgo, initialsOf } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +40,7 @@ export default async function Messages() {
           return (
             <Link key={id} href={`/messages/${id}`} style={{ display: "flex", gap: 12, alignItems: "center", padding: "13px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
               <span style={{ width: 34, height: 34, border: "1px solid var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", font: mono(11, 500), background: "var(--bg)", flex: "none" }}>
-                {(who?.display_name || "?").slice(0, 2).toUpperCase()}
+                {initialsOf(who?.display_name ?? "")}
               </span>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ font: mono(13, 500) }}>{who?.display_name ?? "Researcher"}</div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, Empty, Tag, btn, mono } from "@/components/ui";
+import { initialsOf } from "@/lib/format";
 import { nameGuide, unnameGuide } from "@/app/actions/record";
 import { ensureRecordTables } from "@/lib/record/demo-seed";
 
@@ -29,7 +30,7 @@ export default async function Network() {
         ) : people!.map((p) => (
           <div key={p.id} style={{ padding: "13px 14px", borderBottom: "1px solid var(--rule)", display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ width: 34, height: 34, border: "1px solid var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", font: mono(11, 500), background: "var(--bg)", flex: "none" }}>
-              {(p.display_name || "?").slice(0, 2).toUpperCase()}
+              {initialsOf(p.display_name)}
             </span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ font: mono(13, 500) }}>{p.display_name || "Researcher"}</div>

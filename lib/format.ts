@@ -1,11 +1,15 @@
-/** Two-letter initials from a display name, falling back to an email local part. */
+/**
+ * The avatar letter: the first letter of the first name. Parenthetical notes
+ * such as "(example)" and academic titles are skipped, so "Dr Camille
+ * Laurent (example)" gives "C". Falls back to an email's local part.
+ */
+const TITLES = /^(dr|prof|professor|mr|mrs|ms|mx|sir|dame|pd|priv\.?-?doz)\.?$/i;
 export function initialsOf(name: string): string {
-  const clean = (name || "").trim();
-  if (!clean) return "··";
+  const clean = (name || "").replace(/\([^)]*\)/g, " ").trim();
   const base = clean.includes("@") ? clean.split("@")[0].replace(/[._-]+/g, " ") : clean;
-  const parts = base.split(/\s+/).filter(Boolean);
-  if (parts.length > 1) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  return base.slice(0, 2).toUpperCase();
+  const first = base.split(/\s+/).find((w) => w && !TITLES.test(w));
+  const letter = first?.match(/\p{L}/u)?.[0];
+  return letter ? letter.toUpperCase() : "·";
 }
 
 /** "4 h ago" / "3 d ago" — the terse form the boards use. */
