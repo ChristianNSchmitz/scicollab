@@ -508,3 +508,21 @@ create policy recs_write on public.recommendations for insert to authenticated
     and exists (select 1 from public.method_cards c where c.id = card_id and c.author_id <> auth.uid()));
 create policy recs_delete on public.recommendations for delete to authenticated
   using (user_id = auth.uid());
+
+-- ── citation history: one snapshot of the OpenAlex total per user per day ─
+-- OpenAlex reports citations per year only; these give weekly and monthly
+-- history from the day tracking starts. Private to the user.
+create table if not exists public.citation_snapshots (
+  user_id   uuid not null references auth.users on delete cascade,
+  day       date not null,
+  citations int  not null,
+  h_index   int  not null,
+  primary key (user_id, day)
+);
+alter table public.citation_snapshots enable row level security;
+drop policy if exists snap_read   on public.citation_snapshots;
+drop policy if exists snap_write  on public.citation_snapshots;
+drop policy if exists snap_update on public.citation_snapshots;
+create policy snap_read   on public.citation_snapshots for select to authenticated using (user_id = auth.uid());
+create policy snap_write  on public.citation_snapshots for insert to authenticated with check (user_id = auth.uid());
+create policy snap_update on public.citation_snapshots for update to authenticated using (user_id = auth.uid());

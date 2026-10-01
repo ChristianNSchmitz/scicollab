@@ -2,7 +2,10 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, Visibility, btn, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
-import { bibliometricsFor, type Bibliometrics } from "@/lib/record/bibliometrics";
+import { bibliometricsFor, saveSnapshot, loadSnapshots, type Bibliometrics } from "@/lib/record/bibliometrics";
+import { loadRecord } from "@/lib/record/metrics";
+import { buildTimeline, RANGES, type Range, type Timeline } from "@/lib/record/timeline";
+import TimelineChart from "@/components/record/TimelineChart";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 
 export const dynamic = "force-dynamic";
@@ -10,8 +13,10 @@ export const dynamic = "force-dynamic";
 /** Your record — board B3 screen 16. Six axes, never summed. Citations,
  *  h-index and recommendations sit above them as three separate numbers,
  *  each with its source; nothing on this page combines them. */
-export default async function You() {
+export default async function You({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
   ensureRecordSeed();
+  const { range: rangeParam } = await searchParams;
+  const range: Range = RANGES.some((r) => r.key === rangeParam) ? (rangeParam as Range) : "months";
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -30,6 +35,14 @@ export default async function You() {
       : Promise.resolve({ data: [] as any[] }),
     bibliometricsFor(profile?.orcid),
   ]);
+  // One snapshot a day builds the weekly and monthly citation history.
+  await saveSnapshot(supabase, user!.id, biblio);
+  const [snapshots, record] = await Promise.all([
+    loadSnapshots(supabase, user!.id, biblio),
+    loadRecord(supabase, user!.id, 12),
+  ]);
+  const timeline = buildTimeline(range, record.events, biblio, snapshots);
+
   const recent = (recs ?? []).filter((r) => Date.now() - +new Date(r.created_at) < 28 * 864e5).length;
   const recCards = new Set((recs ?? []).map((r) => r.card_id)).size;
 
@@ -50,19 +63,21 @@ export default async function You() {
       title={profile?.display_name || "Your record"}
       lede={[profile?.role_title, profile?.institution, profile?.field].filter(Boolean).join(" · ") || "Add an institution and field in Settings."}
       actions={
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
           <Link href="/you/record" style={btn}>Your record →</Link>
           <Link href="/settings" style={btn}>Edit profile</Link>
         </div>
       }
     >
       <Headline biblio={biblio} recs={recs?.length ?? 0} recent={recent} recCards={recCards} />
+      <OverTime timeline={timeline} />
 
       <Panel style={{ marginBottom: 16 }}>
         <PanelHead>Six axes · never summed</PanelHead>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
-          {axes.map(([label, value], i) => (
-            <div key={label} style={{ padding: 16, borderRight: i % 3 === 2 ? undefined : "1px solid var(--rule)", borderTop: i > 2 ? "1px solid var(--rule)" : undefined }}>
+        {/* dividers come from the 1px gap, so any column count draws them right */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: 1, background: "var(--rule)" }}>
+          {axes.map(([label, value]) => (
+            <div key={label} style={{ padding: 16, background: "var(--surface)" }}>
               <div style={{ font: mono(26, 700), letterSpacing: "-.02em" }}>{value}</div>
               <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 5 }}>{label}</div>
             </div>
@@ -78,10 +93,10 @@ export default async function You() {
         {(cards?.length ?? 0) === 0 ? (
           <Empty>Nothing recorded yet. <Link href="/methods/new" style={{ color: "var(--link)" }}>Record the first</Link>.</Empty>
         ) : cards!.map((c) => (
-          <Link key={c.id} href={`/methods/${c.id}`} style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
+          <Link key={c.id} href={`/methods/${c.id}`} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "12px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
             <Outcome value={c.outcome} />
             <span style={{ font: mono(11), color: "var(--mute)" }}>{c.code}</span>
-            <span style={{ font: mono(13, 500), flex: 1, minWidth: 0 }}>{c.title}</span>
+            <span style={{ font: mono(13, 500), flex: "1 1 220px", minWidth: 0 }}>{c.title}</span>
             <span style={{ font: mono(10.5), color: "var(--mute)" }}>{timeAgo(c.created_at)}</span>
             <Visibility value={c.visibility} />
           </Link>
@@ -130,6 +145,48 @@ function Headline({ biblio, recs, recent, recCards }: {
           </>
         ) : null}
         Recommendations are counted on SciCollab, from people other than you. The three numbers are shown separately and never combined.
+      </div>
+    </Panel>
+  );
+}
+
+/** Citations and your involvement, as running totals over the chosen range. */
+function OverTime({ timeline: t }: { timeline: Timeline }) {
+  const delta = (v: (number | null)[]) => {
+    const xs = v.filter((x): x is number => x !== null);
+    return xs.length > 1 ? xs[xs.length - 1] - xs[0] : null;
+  };
+  const dc = delta(t.citations), di = delta(t.involvement);
+  return (
+    <Panel style={{ marginBottom: 16 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "8px 14px", borderBottom: "1px solid var(--rule)" }}>
+        <span style={{ font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", flex: 1 }}>
+          Over time · running totals
+        </span>
+        <div style={{ display: "flex", flexWrap: "wrap", border: "1px solid var(--rule)" }} role="group" aria-label="Time range">
+          {RANGES.map((r) => (
+            <Link key={r.key} href={r.key === "months" ? "/you" : `/you?range=${r.key}`} scroll={false}
+                  aria-current={r.key === t.range ? "true" : undefined}
+                  style={{ padding: "5px 10px", font: mono(11, 500), textDecoration: "none",
+                           background: r.key === t.range ? "var(--ink)" : "transparent",
+                           color: r.key === t.range ? "var(--bg)" : "var(--ink)" }}>
+              {r.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div style={{ padding: "12px 14px 10px" }}>
+        <TimelineChart
+          labels={t.labels} tips={t.tips}
+          rows={[
+            { title: "Citations", unit: "citations", values: t.citations },
+            { title: "Involvement", unit: "contributions", values: t.involvement },
+          ]}
+        />
+      </div>
+      <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+        {dc !== null && <>Citations +{dc.toLocaleString("en-GB")} and involvement +{di} over this range. </>}
+        {t.citationsNote} Involvement counts everything you contributed: cards, null results, repeats, questions, answers, reviews and mentoring; what others did with your work is in <Link href="/you/record" style={{ color: "var(--link)" }}>Your record</Link>. Each line has its own scale.
       </div>
     </Panel>
   );

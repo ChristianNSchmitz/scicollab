@@ -12,7 +12,7 @@ const ago = (days: number) => new Date(Date.now() - days * 864e5).toISOString();
 /** The record's own tables, registered with the demo store on first use. */
 export function ensureRecordTables() {
   if (isConfigured()) return;
-  for (const t of ["reproductions", "reviews", "mentorships", "card_reads", "recommendations"]) {
+  for (const t of ["reproductions", "reviews", "mentorships", "card_reads", "recommendations", "citation_snapshots"]) {
     if (!tables[t]) tables[t] = [];
   }
 }
