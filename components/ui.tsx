@@ -14,8 +14,8 @@ export function Page({ title, lede, actions, children }: {
   return (
     <div style={{ padding: "24px 16px 64px" }}>
       <div style={{ maxWidth: "var(--content-max)", margin: "0 auto" }}>
-        <header style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
-          <div style={{ flex: 1, minWidth: 0 }}>
+        <header style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 16, marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
+          <div style={{ flex: "1 1 260px", minWidth: 0 }}>
             <h1 style={{ font: mono(19, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{title}</h1>
             {lede && <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "7px 0 0", maxWidth: "72ch" }}>{lede}</p>}
           </div>

@@ -83,3 +83,46 @@ input::placeholder, textarea::placeholder { color: #9A968E; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Responsive shell. Desktop is the board-[ 003 ] layout unchanged; a tablet
+   collapses the rail to icons; a phone swaps the rail for a bottom tab bar
+   and stacks the two-column pages. Rules that override inline styles carry
+   !important for that reason only.
+   ───────────────────────────────────────────────────────────────────────── */
+.sc-two-col { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+.sc-pair    { display: grid; grid-template-columns: 1fr 1fr; }
+.sc-tabbar, .sc-sheet, .sc-top-create-short, .sc-demo-short { display: none; }
+
+@media (max-width: 1100px) {
+  .sc-rail { width: var(--rail-collapsed) !important; }
+  .sc-rail-label, .sc-rail-collapse { display: none !important; }
+}
+
+@media (max-width: 900px) {
+  .sc-two-col { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .sc-rail { display: none !important; }
+  .sc-main { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+
+  .sc-top { gap: 6px !important; padding: 0 10px !important; }
+  .sc-top-wordmark { width: auto !important; margin-right: auto; }
+  .sc-top-search { flex: 0 0 auto !important; width: 38px; height: 38px !important; justify-content: center; border: 0 !important; background: transparent !important; padding: 0 !important; }
+  .sc-top-search-text, .sc-top-kbd, .sc-top-theme, .sc-top-create-long { display: none !important; }
+  .sc-top-create-short { display: inline; }
+  .sc-top-create { padding: 9px 12px !important; }
+
+  .sc-demo-long { display: none; }
+  .sc-demo-short { display: inline; }
+
+  .sc-pair { grid-template-columns: 1fr; }
+
+  .sc-tabbar {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--surface); border-top: 1px solid var(--ink);
+  }
+  .sc-sheet { display: block; }
+}

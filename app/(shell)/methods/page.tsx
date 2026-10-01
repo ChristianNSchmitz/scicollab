@@ -39,7 +39,7 @@ function Section({ title, cards, empty }: { title: string; cards: any[]; empty: 
       <Panel>
         {cards.length === 0 ? <Empty>{empty}</Empty> : cards.map((c) => (
           <Link key={c.id} href={`/methods/${c.id}`} style={{ display: "block", padding: "13px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 6 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 9, marginBottom: 6 }}>
               <Outcome value={c.outcome} />
               <span style={{ font: mono(11), color: "var(--mute)" }}>{c.code} · v{c.version}</span>
               {c.forked_from && <Tag>fork</Tag>}

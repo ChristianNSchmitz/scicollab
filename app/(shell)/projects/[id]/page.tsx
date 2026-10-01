@@ -27,7 +27,7 @@ export default async function Project({ params }: { params: Promise<{ id: string
 
   return (
     <Page title={p.title} lede={p.summary || undefined}>
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
+      <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
             <PanelHead>Notebook — append only</PanelHead>

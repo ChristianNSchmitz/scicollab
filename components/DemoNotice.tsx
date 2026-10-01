@@ -21,10 +21,11 @@ export default function DemoNotice() {
       }}
     >
       <span style={{ fontWeight: 700, letterSpacing: ".08em" }}>PREVIEW BUILD</span>
-      <span style={{ fontWeight: 400 }}>
+      <span className="sc-demo-long" style={{ fontWeight: 400 }}>
         Everything here is example data. The researchers, results and institutions are invented —
         nothing on this site is a real finding.
       </span>
+      <span className="sc-demo-short" style={{ fontWeight: 400 }}>Example data, not real findings.</span>
     </div>
   );
 }

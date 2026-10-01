@@ -7,7 +7,7 @@ export default function NewMethod() {
   return (
     <Page title="Record a method" lede="Everything here is what a peer needs to reproduce the run, or to know not to try it.">
       <form action={createCard}>
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
+        <div className="sc-two-col">
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <Panel>
               <PanelHead>The method</PanelHead>
@@ -20,7 +20,7 @@ export default function NewMethod() {
                   <label style={fieldLabel} htmlFor="method">Method</label>
                   <textarea id="method" name="method" rows={4} style={field} placeholder="Lipofectamine 3000, 48 h expression, DMEM + 10% FBS…" />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div className="sc-pair" style={{ gap: 12 }}>
                   <div>
                     <label style={fieldLabel} htmlFor="system">System — cell line, organism, model</label>
                     <input id="system" name="system" style={field} placeholder="HEK293T · p<12" />

@@ -21,7 +21,7 @@ export default async function Settings() {
               <label style={fieldLabel} htmlFor="display_name">Display name</label>
               <input id="display_name" name="display_name" defaultValue={p?.display_name ?? ""} style={field} />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="sc-pair" style={{ gap: 12 }}>
               <div>
                 <label style={fieldLabel} htmlFor="institution">Institution</label>
                 <input id="institution" name="institution" defaultValue={p?.institution ?? ""} style={field} />
@@ -31,7 +31,7 @@ export default async function Settings() {
                 <input id="role_title" name="role_title" defaultValue={p?.role_title ?? ""} style={field} placeholder="Postdoctoral researcher" />
               </div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="sc-pair" style={{ gap: 12 }}>
               <div>
                 <label style={fieldLabel} htmlFor="field">Field</label>
                 <input id="field" name="field" defaultValue={p?.field ?? ""} style={field} placeholder="Cell biology" />

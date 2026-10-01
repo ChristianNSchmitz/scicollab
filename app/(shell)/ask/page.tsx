@@ -19,7 +19,7 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
   return (
     <Page title="Ask a question" lede="Attach the run it came from. Peers answer conditions, not paraphrases.">
       <form action={askQuestion}>
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
+        <div className="sc-two-col">
           <Panel>
             <PanelHead>The question</PanelHead>
             <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 13 }}>

@@ -50,7 +50,7 @@ export default async function Home() {
       lede="Ranked by recency for now. The controls that keep a feed honest — why am I seeing this, chronological, cross-field injection — are designed on board H1 and are not wired yet."
       actions={<Link href="/methods/new" style={btnPrimary}>Record a method</Link>}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
+      <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {feed.length === 0 && (
             <Panel>
@@ -64,7 +64,7 @@ export default async function Home() {
           {feed.map((item) =>
             item.kind === "card" ? (
               <Panel key={`c-${item.c.id}`}>
-                <div style={{ padding: "12px 14px", display: "flex", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)" }}>
+                <div style={{ padding: "12px 14px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)" }}>
                   <Outcome value={item.c.outcome} />
                   <span style={{ font: mono(11), color: "var(--mute)" }}>{item.c.code} · v{item.c.version}</span>
                   {item.c.forked_from && <Tag>fork</Tag>}
@@ -99,7 +99,7 @@ export default async function Home() {
               </Panel>
             ) : (
               <Panel key={`q-${item.q.id}`}>
-                <div style={{ padding: "12px 14px", display: "flex", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)" }}>
+                <div style={{ padding: "12px 14px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)" }}>
                   <span style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--info)", border: "1px solid var(--info)", padding: "3px 7px" }}>QUESTION</span>
                   <span style={{ marginLeft: "auto", font: mono(11), color: "var(--mute)" }}>{timeAgo(item.q.created_at)}</span>
                 </div>

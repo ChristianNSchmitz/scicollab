@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import DemoNotice from "@/components/DemoNotice";
 import Rail from "@/components/Rail";
 import TopBar from "@/components/TopBar";
+import TabBar from "@/components/TabBar";
 import { createClient } from "@/lib/supabase/server";
 import { initialsOf } from "@/lib/format";
 
@@ -30,10 +31,11 @@ export default async function ShellLayout({ children }: { children: React.ReactN
       <TopBar initials={initialsOf(name)} name={name} />
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
         <Rail />
-        <main style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)" }}>
+        <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)" }}>
           {children}
         </main>
       </div>
+      <TabBar />
     </div>
   );
 }

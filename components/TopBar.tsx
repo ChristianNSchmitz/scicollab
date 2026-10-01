@@ -58,6 +58,7 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
 
   return (
     <header
+      className="sc-top"
       style={{
         height: "var(--top)",
         flex: "none",
@@ -69,7 +70,7 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
         borderBottom: "1px solid var(--ink)",
       }}
     >
-      <Link href="/home" style={{ display: "flex", alignItems: "flex-end", width: 200, textDecoration: "none", color: "var(--ink)" }}>
+      <Link href="/home" className="sc-top-wordmark" style={{ display: "flex", alignItems: "flex-end", width: 200, textDecoration: "none", color: "var(--ink)" }}>
         <span style={{ position: "relative", font: "700 16px/1 var(--mono)", letterSpacing: "-.03em" }}>
           scicollab
           <span style={{ position: "absolute", left: 0, bottom: -5, width: 11, height: 3, background: "var(--signal)" }} />
@@ -79,6 +80,8 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
 
       <Link
         href="/search"
+        className="sc-top-search"
+        aria-label="Search"
         style={{
           flex: 1, maxWidth: 660, display: "flex", alignItems: "center", gap: 10,
           height: 34, padding: "0 10px", border: "1px solid var(--rule)",
@@ -88,17 +91,18 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" strokeWidth="1.5" strokeLinecap="round">
           <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
         </svg>
-        <span style={{ font: "400 12px/1 var(--mono)", color: "var(--mute)", flex: 1 }}>
+        <span className="sc-top-search-text" style={{ font: "400 12px/1 var(--mono)", color: "var(--mute)", flex: 1 }}>
           Search people, projects, datasets, methods, discussions
         </span>
-        <span style={{ font: "500 10px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
+        <span className="sc-top-kbd" style={{ font: "500 10px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
       </Link>
 
-      <Link href="/methods/new" style={{ ...ghost, borderColor: "var(--ink)", background: "var(--ink)", color: "var(--bg)", textDecoration: "none" }}>
-        Create
+      <Link href="/methods/new" className="sc-top-create" aria-label="Create" style={{ ...ghost, borderColor: "var(--ink)", background: "var(--ink)", color: "var(--bg)", textDecoration: "none" }}>
+        <span className="sc-top-create-long">Create</span>
+        <span className="sc-top-create-short" aria-hidden="true">+</span>
       </Link>
 
-      <button onClick={toggleTheme} style={ghost} aria-label="Toggle theme" title="Toggle theme">
+      <button onClick={toggleTheme} className="sc-top-theme" style={ghost} aria-label="Toggle theme" title="Toggle theme">
         {dark ? "light" : "dark"}
       </button>
 

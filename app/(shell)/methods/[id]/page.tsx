@@ -59,10 +59,10 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
         </div>
       }
     >
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
+      <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
-            <div style={{ padding: "12px 14px", display: "flex", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)", background: "var(--bg)" }}>
+            <div style={{ padding: "12px 14px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, borderBottom: "1px solid var(--rule)", background: "var(--bg)" }}>
               <Outcome value={card.outcome} />
               <span style={{ font: mono(11), color: "var(--mute)" }}>{card.code} · v{card.version}</span>
               <span style={{ font: mono(11), color: "var(--mute)" }}>· {timeAgo(card.created_at)}</span>
@@ -81,7 +81,7 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
             </div>
 
             <Field label="Method" value={card.method} />
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderBottom: "1px solid var(--rule)" }}>
+            <div className="sc-pair" style={{ borderBottom: "1px solid var(--rule)" }}>
               <Cell label="System" value={card.system} />
               <Cell label="Conditions" value={card.conditions} borderLeft />
             </div>
