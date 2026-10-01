@@ -34,7 +34,12 @@ export default async function You() {
     <Page
       title={profile?.display_name || "Your record"}
       lede={[profile?.role_title, profile?.institution, profile?.field].filter(Boolean).join(" · ") || "Add an institution and field in Settings."}
-      actions={<Link href="/settings" style={btn}>Edit profile</Link>}
+      actions={
+        <div style={{ display: "flex", gap: 8 }}>
+          <Link href="/you/record" style={btn}>Your record →</Link>
+          <Link href="/settings" style={btn}>Edit profile</Link>
+        </div>
+      }
     >
       <Panel style={{ marginBottom: 16 }}>
         <PanelHead>Six axes · never summed</PanelHead>
