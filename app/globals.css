@@ -126,3 +126,7 @@ input::placeholder, textarea::placeholder { color: #9A968E; }
   }
   .sc-sheet { display: block; }
 }
+
+/* Three headline numbers: three across, or one per row on a narrow phone; never 2 + 1. */
+.sc-three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); }
+@media (max-width: 560px) { .sc-three { grid-template-columns: minmax(0, 1fr); } }

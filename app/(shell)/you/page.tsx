@@ -151,7 +151,7 @@ function Headline({ biblio, recs, recent, recCards }: {
   return (
     <Panel style={{ marginBottom: 16 }}>
       {/* dividers come from the 1px gap, so they stay right when the cells wrap */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))", gap: 1, background: "var(--rule)", borderBottom: "1px solid var(--rule)" }}>
+      <div className="sc-three" style={{ borderBottom: "1px solid var(--rule)" }}>
         {cells.map((c) => (
           <div key={c.label} style={{ padding: "16px 16px 14px", background: "var(--surface)" }}>
             <div style={{ font: mono(34, 700), letterSpacing: "-.03em" }}>{c.value}</div>
