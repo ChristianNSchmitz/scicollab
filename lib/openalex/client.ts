@@ -7,6 +7,13 @@
  * Every call has a timeout; a 429 is reported as rate limiting, not an error.
  */
 
+/**
+ * Careful with counts_by_year. On a WORK it is the citations that work
+ * received in each year. On an AUTHOR, OpenAlex currently groups citations by
+ * the publication year of the cited works (its entries sum to the author's
+ * total), which is not a history of citations over time. The sync therefore
+ * builds the per-year history by adding up the works' own counts_by_year.
+ */
 export type OAAuthor = {
   id: string;                 // short form, e.g. A5023888391
   display_name: string;
@@ -27,6 +34,8 @@ export type OAWork = {
   venue: string;
   type: string;
   cited_by_count: number;
+  /** Citations this work received in each year (OpenAlex covers roughly the last 14 years). */
+  received: { year: number; cited_by_count: number }[];
 };
 
 export class OpenAlexError extends Error {
@@ -83,7 +92,7 @@ export async function fetchWorks(authorId: string): Promise<OAWork[]> {
   while (cursor && out.length < MAX_WORKS) {
     const page: any = await get("/works", {
       filter: `author.id:${authorId}`,
-      select: "id,doi,display_name,publication_year,publication_date,cited_by_count,type,primary_location",
+      select: "id,doi,display_name,publication_year,publication_date,cited_by_count,type,primary_location,counts_by_year",
       sort: "publication_date:desc",
       per_page: "200",
       cursor,
@@ -98,6 +107,7 @@ export async function fetchWorks(authorId: string): Promise<OAWork[]> {
         venue: w.primary_location?.source?.display_name ?? "",
         type: w.type ?? "",
         cited_by_count: w.cited_by_count ?? 0,
+        received: (w.counts_by_year ?? []).map((c: any) => ({ year: c.year, cited_by_count: c.cited_by_count ?? 0 })),
       });
     }
     cursor = (page.results?.length ?? 0) > 0 ? page.meta?.next_cursor ?? null : null;

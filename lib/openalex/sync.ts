@@ -55,6 +55,18 @@ async function doSync(userId: string, orcidRaw: string | null | undefined, trigg
 
     const author = await fetchAuthor(orcid);
     const works = await fetchWorks(author.id);
+    // Citations received per calendar year, summed over the works (see client.ts).
+    const byYear = new Map<number, { cited_by_count: number; works_count: number }>();
+    for (const w of works) {
+      for (const r of w.received) {
+        const e = byYear.get(r.year) ?? { cited_by_count: 0, works_count: 0 };
+        e.cited_by_count += r.cited_by_count; byYear.set(r.year, e);
+      }
+      if (w.year) { const e = byYear.get(w.year) ?? { cited_by_count: 0, works_count: 0 }; e.works_count++; byYear.set(w.year, e); }
+    }
+    author.counts_by_year = [...byYear].map(([year, e]) => ({ year, ...e }))
+      .filter((e) => e.cited_by_count > 0 || works.some((w) => w.received.some((r) => r.year === e.year)))
+      .sort((a, b) => a.year - b.year);
 
     const before = new Map(previous.map((p) => [p.openalex_id, p]));
     const newWorks = works.filter((w) => !before.has(w.id));
