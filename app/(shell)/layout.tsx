@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import ChatDock from "@/components/ChatDock";
 import DemoNotice from "@/components/DemoNotice";
 import Rail from "@/components/Rail";
 import TopBar from "@/components/TopBar";
@@ -36,6 +37,10 @@ export default async function ShellLayout({ children }: { children: React.ReactN
         </main>
       </div>
       <TabBar />
+      {/* Docked chat — every screen, per the communication deck. On a phone
+          the bottom tabs own that corner, so the dock hides itself there and
+          Messages in the tab bar is the way in. */}
+      <ChatDock />
     </div>
   );
 }
