@@ -2,12 +2,16 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, Visibility, btn, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
+import { bibliometricsFor, type Bibliometrics } from "@/lib/record/bibliometrics";
+import { ensureRecordSeed } from "@/lib/record/demo-seed";
 
 export const dynamic = "force-dynamic";
 
-/** Your record — board B3 screen 16. Six axes, never summed: there is no
- *  single number anywhere on this page that stands for a researcher. */
+/** Your record — board B3 screen 16. Six axes, never summed. Citations,
+ *  h-index and recommendations sit above them as three separate numbers,
+ *  each with its source; nothing on this page combines them. */
 export default async function You() {
+  ensureRecordSeed();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -17,6 +21,17 @@ export default async function You() {
     supabase.from("questions").select("id", { count: "exact", head: true }).eq("author_id", user!.id),
     supabase.from("answers").select("id", { count: "exact", head: true }).eq("author_id", user!.id),
   ]);
+
+  // Recommendations: other people endorsing your method cards.
+  const cardIds = (cards ?? []).map((c) => c.id);
+  const [{ data: recs }, biblio] = await Promise.all([
+    cardIds.length
+      ? supabase.from("recommendations").select("card_id, created_at").in("card_id", cardIds).neq("user_id", user!.id)
+      : Promise.resolve({ data: [] as any[] }),
+    bibliometricsFor(profile?.orcid),
+  ]);
+  const recent = (recs ?? []).filter((r) => Date.now() - +new Date(r.created_at) < 28 * 864e5).length;
+  const recCards = new Set((recs ?? []).map((r) => r.card_id)).size;
 
   const nulls = (cards ?? []).filter((c) => c.outcome === "negative").length;
   const reproductions = (cards ?? []).reduce((n, c) => n + (c.reproductions ?? 0), 0);
@@ -41,6 +56,8 @@ export default async function You() {
         </div>
       }
     >
+      <Headline biblio={biblio} recs={recs?.length ?? 0} recent={recent} recCards={recCards} />
+
       <Panel style={{ marginBottom: 16 }}>
         <PanelHead>Six axes · never summed</PanelHead>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
@@ -71,5 +88,49 @@ export default async function You() {
         ))}
       </Panel>
     </Page>
+  );
+}
+
+/** Three numbers, three sources, never combined. */
+function Headline({ biblio, recs, recent, recCards }: {
+  biblio: Bibliometrics; recs: number; recent: number; recCards: number;
+}) {
+  const ok = biblio.state === "ok" ? biblio : null;
+  const missing =
+    biblio.state === "no-orcid" ? <>Add your ORCID in <Link href="/settings" style={{ color: "var(--link)" }}>Settings</Link> to show these.</> :
+    biblio.state === "invalid-orcid" ? <>“{biblio.orcid}” is not an ORCID iD. <Link href="/settings" style={{ color: "var(--link)" }}>Fix it in Settings</Link>.</> :
+    biblio.state === "not-found" ? <>OpenAlex has no author for ORCID {biblio.orcid} yet.</> :
+    biblio.state === "unreachable" ? <>OpenAlex could not be reached. Try again later.</> : null;
+
+  const cells: { value: string | number; label: string; sub: React.ReactNode }[] = [
+    { value: ok ? ok.citations.toLocaleString("en-GB") : "—", label: "Citations",
+      sub: ok ? `+${ok.citationsThisYear} in ${ok.year} · ${ok.works} works` : missing },
+    { value: ok ? ok.hIndex : "—", label: "h-index",
+      sub: ok ? `${ok.hIndex} works cited at least ${ok.hIndex} times` : missing },
+    { value: recs, label: "Recommendations",
+      sub: recs ? `+${recent} in 4 weeks · on ${recCards} of your cards` : <>None yet. Others can recommend your shared cards.</> },
+  ];
+
+  return (
+    <Panel style={{ marginBottom: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))" }}>
+        {cells.map((c, i) => (
+          <div key={c.label} style={{ padding: "16px 16px 14px", borderLeft: i ? "1px solid var(--rule)" : undefined }}>
+            <div style={{ font: mono(34, 700), letterSpacing: "-.03em" }}>{c.value}</div>
+            <div style={{ font: mono(11, 500), marginTop: 6 }}>{c.label}</div>
+            <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{c.sub}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding: "9px 16px", borderTop: "1px solid var(--rule)", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+        {ok ? (
+          <>
+            Citations and h-index from <a href={ok.url} target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a>
+            {ok.example ? " · example values for the demo account" : ok.updated ? `, updated ${ok.updated.slice(0, 10)}` : ""}.{" "}
+          </>
+        ) : null}
+        Recommendations are counted on SciCollab, from people other than you. The three numbers are shown separately and never combined.
+      </div>
+    </Panel>
   );
 }

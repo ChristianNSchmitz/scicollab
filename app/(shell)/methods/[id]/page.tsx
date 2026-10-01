@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { forkCard, setVisibility, deleteCard } from "@/app/actions/cards";
 import CardRecordPanels from "@/components/record/CardRecordPanels";
+import { toggleRecommendation } from "@/app/actions/record";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import { recordCardRead, viaFrom } from "@/lib/record/reads";
 import { Page, Panel, PanelHead, Outcome, Tag, Visibility, btn, btnPrimary, mono } from "@/components/ui";
@@ -29,6 +30,8 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
       : Promise.resolve({ data: null }),
     supabase.from("method_cards").select("id, code, title, outcome, author_id").eq("forked_from", card.id),
   ]);
+  const { data: recs } = await supabase.from("recommendations").select("user_id").eq("card_id", card.id);
+  const recommended = (recs ?? []).some((r) => r.user_id === user!.id);
 
   const isOwner = card.author_id === user!.id;
   // Counted as a read only for someone else on a shared card; who it was is not kept.
@@ -43,7 +46,16 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
           <form action={forkCard.bind(null, card.id)}>
             <button type="submit" style={btn}>Fork protocol</button>
           </form>
-          {isOwner && <Link href={`/you/record/cards/${card.id}`} style={btn}>Analytics</Link>}
+          {isOwner ? (
+            <Link href={`/you/record/cards/${card.id}`} style={btn}>Analytics</Link>
+          ) : (
+            <form action={toggleRecommendation.bind(null, card.id)}>
+              <button type="submit" style={recommended ? { ...btn, background: "var(--ink)", color: "var(--bg)" } : btn}
+                      aria-pressed={recommended} title={recommended ? "Take your recommendation back" : "Recommend this card to others"}>
+                {recommended ? "Recommended ✓" : "Recommend"}
+              </button>
+            </form>
+          )}
         </div>
       }
     >
@@ -55,7 +67,7 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
               <span style={{ font: mono(11), color: "var(--mute)" }}>{card.code} · v{card.version}</span>
               <span style={{ font: mono(11), color: "var(--mute)" }}>· {timeAgo(card.created_at)}</span>
               <span style={{ marginLeft: "auto", font: mono(11), color: "var(--mute)" }}>
-                {forks?.length ?? 0} forks · {card.reproductions} reproductions
+                {forks?.length ?? 0} forks · {card.reproductions} reproductions · {recs?.length ?? 0} recommendations
               </span>
               <Visibility value={card.visibility} />
             </div>

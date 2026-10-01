@@ -12,7 +12,7 @@ const ago = (days: number) => new Date(Date.now() - days * 864e5).toISOString();
 /** The record's own tables, registered with the demo store on first use. */
 export function ensureRecordTables() {
   if (isConfigured()) return;
-  for (const t of ["reproductions", "reviews", "mentorships", "card_reads"]) {
+  for (const t of ["reproductions", "reviews", "mentorships", "card_reads", "recommendations"]) {
     if (!tables[t]) tables[t] = [];
   }
 }
@@ -109,6 +109,17 @@ export function ensureRecordSeed() {
     { id: "v-1", card_id: "c-0517", reviewer_id: ME,         verdict: "unclear", body: "Which membrane? PVDF and nitrocellulose behave differently here.", created_at: ago(6) },
     { id: "v-2", card_id: "c-0288", reviewer_id: ME,         verdict: "clear",   body: "Ran from the card alone without questions.",                       created_at: ago(23) },
     { id: "v-3", card_id: "c-0412", reviewer_id: "u-okafor", verdict: "clear",   body: "Reproducible from the card as written.",                           created_at: ago(4) },
+  );
+
+  (tables.recommendations as any[]).push(
+    { card_id: "c-0412", user_id: "u-okafor",    created_at: ago(5) },
+    { card_id: "c-0412", user_id: "u-lindqvist", created_at: ago(9) },
+    { card_id: "c-0412", user_id: "u-bhatt",     created_at: ago(10) },
+    { card_id: "c-0355", user_id: "u-okafor",    created_at: ago(40) },
+    { card_id: "c-0602", user_id: "u-lindqvist", created_at: ago(1) },
+    { card_id: "c-0602", user_id: "u-newcomer",  created_at: ago(4) },
+    { card_id: "c-0391", user_id: "u-lindqvist", created_at: ago(20) },
+    { card_id: "c-0288", user_id: ME,            created_at: ago(24) },
   );
 
   (tables.mentorships as any[]).push(

@@ -487,3 +487,24 @@ revoke all on function public.record_card_read(uuid, text) from public, anon;
 revoke all on function public.card_read_stats(uuid) from public, anon;
 grant execute on function public.record_card_read(uuid, text) to authenticated;
 grant execute on function public.card_read_stats(uuid) to authenticated;
+
+-- ── recommendations: someone else endorses a method card ─────────────────
+create table if not exists public.recommendations (
+  card_id    uuid not null references public.method_cards on delete cascade,
+  user_id    uuid not null references auth.users on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (card_id, user_id)
+);
+create index if not exists recommendations_user_idx on public.recommendations (user_id);
+
+alter table public.recommendations enable row level security;
+drop policy if exists recs_read   on public.recommendations;
+drop policy if exists recs_write  on public.recommendations;
+drop policy if exists recs_delete on public.recommendations;
+create policy recs_read on public.recommendations for select to authenticated
+  using (exists (select 1 from public.method_cards c where c.id = card_id));
+create policy recs_write on public.recommendations for insert to authenticated
+  with check (user_id = auth.uid()
+    and exists (select 1 from public.method_cards c where c.id = card_id and c.author_id <> auth.uid()));
+create policy recs_delete on public.recommendations for delete to authenticated
+  using (user_id = auth.uid());

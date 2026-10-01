@@ -76,3 +76,18 @@ export async function unnameGuide(mentorId: string) {
   await supabase.from("mentorships").delete().eq("mentor_id", mentorId).eq("mentee_id", user.id);
   revalidatePath("/network");
 }
+
+/** Recommend someone else's card, or take the recommendation back. */
+export async function toggleRecommendation(cardId: string) {
+  const { supabase, user } = await me();
+  await notMine(supabase, cardId, user.id);
+  const { count } = await supabase.from("recommendations").select("card_id", { count: "exact", head: true })
+    .eq("card_id", cardId).eq("user_id", user.id);
+  if ((count ?? 0) > 0) {
+    await supabase.from("recommendations").delete().eq("card_id", cardId).eq("user_id", user.id);
+  } else {
+    const { error } = await supabase.from("recommendations").insert({ card_id: cardId, user_id: user.id });
+    if (error) throw new Error(error.message);
+  }
+  revalidatePath(`/methods/${cardId}`);
+}
