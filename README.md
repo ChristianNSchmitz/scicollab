@@ -1,6 +1,6 @@
 # SciCollab
 
-A rebuild of the platform against the September 2026 design boards.
+A rebuild of the platform against the September 2026 design boards
 
 Desktop at 1440px, as designed. The screens are not redrawn — they are lifted
 out of the boards and mounted, and the parts that carry live data are rebuilt
