@@ -27,6 +27,17 @@ const mono = (size: number, weight = 400, lh = 1.4) =>
 const POLL_MS = 8000;
 
 export default function ChatDock() {
+  // On a phone the bottom tab bar owns this corner, and a floating panel over
+  // it is unusable. Messages in the tab bar is the way in there instead.
+  const [phone, setPhone] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const apply = () => setPhone(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
   const [open, setOpen] = useState(false);
   const [thread, setThread] = useState<string | null>(null);
   const [convos, setConvos] = useState<Conversation[]>([]);
@@ -108,6 +119,8 @@ export default function ChatDock() {
     border: "1px solid var(--ink)", borderBottom: 0,
     display: "flex", flexDirection: "column",
   };
+
+  if (phone) return null;
 
   if (!open) {
     return (
