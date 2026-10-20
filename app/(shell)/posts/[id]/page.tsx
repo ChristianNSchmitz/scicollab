@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Page, Panel, PanelHead, Outcome, Tag, btn, btnPrimary, mono } from "@/components/ui";
+import { Page, Panel, PanelHead, Outcome, Tag, field, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import { roomById, housesOfRoom, intentById } from "@/lib/taxonomy";
+import { attachmentsFor, pendingFor, requestAccess, decideRequest } from "@/app/actions/attachments";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,11 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
     post.method_card_id
       ? supabase.from("method_cards").select("id, code, title, outcome, system, conditions, fails_under").eq("id", post.method_card_id).maybeSingle()
       : Promise.resolve({ data: null }),
+  ]);
+
+  const [attachments, pending] = await Promise.all([
+    attachmentsFor(post.id),
+    pendingFor(post.id),
   ]);
 
   const room = roomById(post.room_id);
@@ -80,6 +86,74 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
                   </div>
                 )}
               </div>
+            </Panel>
+          )}
+          {attachments.map((a) => (
+            <Panel key={a.id} style={a.unlocked ? undefined : { borderColor: "var(--flag)" }}>
+              <PanelHead>
+                {a.kind === "dataset" ? "Dataset" : "Code"} from {a.projectTitle}
+                {a.unlocked ? "" : " · access on request"}
+              </PanelHead>
+              <div style={{ padding: 14 }}>
+                <div style={{ font: mono(14, 500, 1.35) }}>{a.title}</div>
+                <div style={{ font: mono(11), color: "var(--mute)", marginTop: 5 }}>{a.meta}</div>
+
+                {a.unlocked ? (
+                  <>
+                    {a.detail && (
+                      <p style={{ font: "400 12.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{a.detail}</p>
+                    )}
+                    <div style={{ marginTop: 11, font: mono(10.5), color: "var(--ok)" }}>
+                      {a.access === "open" ? "OPEN — anyone reading this post can open it" : "YOU HAVE ACCESS"}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ font: "400 12.5px/1.65 var(--sans)", color: "var(--mute)", margin: "10px 0 0" }}>
+                      You can see that this exists and what shape it is. The contents stay with the author
+                      until they grant you access.
+                    </p>
+                    {a.myRequest === "pending" ? (
+                      <div style={{ marginTop: 11, font: mono(11), color: "#8A6A00" }}>REQUESTED — waiting on the author</div>
+                    ) : a.myRequest === "denied" ? (
+                      <div style={{ marginTop: 11, font: mono(11), color: "var(--err)" }}>NOT GRANTED</div>
+                    ) : (
+                      <form action={requestAccess.bind(null, a.id)} style={{ marginTop: 12 }}>
+                        <input
+                          name="message" style={field}
+                          placeholder="Why you want it — one line is enough"
+                        />
+                        <button type="submit" style={{ ...btnPrimary, marginTop: 9 }}>Request access</button>
+                      </form>
+                    )}
+                  </>
+                )}
+              </div>
+            </Panel>
+          ))}
+
+          {pending.length > 0 && (
+            <Panel style={{ borderColor: "var(--signal)" }}>
+              <PanelHead>Access requests · {pending.length}</PanelHead>
+              {pending.map((r) => (
+                <div key={r.id} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
+                  <div style={{ font: mono(12.5, 500) }}>{r.who.display_name}</div>
+                  <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 3 }}>
+                    {r.who.institution || "—"} · {timeAgo(r.created_at)}
+                  </div>
+                  {r.message && (
+                    <p style={{ font: "400 12.5px/1.6 var(--sans)", margin: "9px 0 0" }}>{r.message}</p>
+                  )}
+                  <div style={{ display: "flex", gap: 8, marginTop: 11 }}>
+                    <form action={decideRequest.bind(null, r.id, "granted")}>
+                      <button type="submit" style={{ ...btn, borderColor: "var(--ok)", color: "var(--ok)" }}>Grant access</button>
+                    </form>
+                    <form action={decideRequest.bind(null, r.id, "denied")}>
+                      <button type="submit" style={{ ...btn, borderColor: "var(--err)", color: "var(--err)" }}>Decline</button>
+                    </form>
+                  </div>
+                </div>
+              ))}
             </Panel>
           )}
         </div>
