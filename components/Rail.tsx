@@ -10,14 +10,15 @@ import { useState } from "react";
 
 type Item = { href: string; label: string; d: string };
 
-export const PRIMARY: Item[] = [
+export /* Data and Code were removed from the rail: a dataset and a repository only
+   mean anything next to the work that produced them, so both now live inside
+   a project alongside the notebook. Thirteen items was also simply too many. */
+const PRIMARY: Item[] = [
   { href: "/home",      label: "Home",     d: "M3 9.8 12 3l9 6.8V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z" },
   { href: "/rooms",     label: "Rooms",    d: "M4 21V9l8-6 8 6v12h-6v-7H10v7zM9 4.5h6" },
   { href: "/ask",       label: "Ask",      d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" },
   { href: "/methods",   label: "Methods",  d: "M9 3v6l-5 9a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3l-5-9V3M8 3h8M7.5 14h9" },
   { href: "/projects",  label: "Projects", d: "M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" },
-  { href: "/data",      label: "Data",     d: "M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zm0 0v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" },
-  { href: "/code",      label: "Code",     d: "m8 7-5 5 5 5m8-10 5 5-5 5" },
   { href: "/write",     label: "Write",    d: "M4 20h4l10-10a2.8 2.8 0 0 0-4-4L4 16zM13 6l4 4" },
   { href: "/network",   label: "Network",  d: "M12 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM5 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm14 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM10.5 7 6.5 16m7-9 4 9" },
   { href: "/you",       label: "You",      d: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0" },
