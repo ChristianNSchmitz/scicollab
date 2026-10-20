@@ -7,6 +7,7 @@ import { Panel, PanelHead, field, fieldLabel, btnPrimary, mono } from "@/compone
 
 type Room = { id: string; name: string };
 type Card = { id: string; code: string; title: string };
+type Attachable = { value: string; project: string; label: string; kind: string };
 
 /**
  * The composer form.
@@ -17,11 +18,12 @@ type Card = { id: string; code: string; title: string };
  * courtesy layer, not the guard.
  */
 export default function PostComposer({
-  rooms, cards, defaultRoom, defaultIntent, defaultCard,
+  rooms, cards, attachables = [], defaultRoom, defaultIntent, defaultCard,
 }: {
-  rooms: Room[]; cards: Card[];
+  rooms: Room[]; cards: Card[]; attachables?: Attachable[];
   defaultRoom?: string; defaultIntent?: string; defaultCard?: string;
 }) {
+  const [attach, setAttach] = useState("");
   const [state, action, pending] = useActionState<PostState, FormData>(createPost, null);
   const [intent, setIntent] = useState<Intent>(
     (INTENTS.find((i) => i.id === defaultIntent)?.id ?? "result") as Intent
@@ -97,6 +99,60 @@ export default function PostComposer({
               </p>
             )}
           </div>
+        </div>
+      </Panel>
+
+      <Panel style={{ marginBottom: 12 }}>
+        <PanelHead>Attach data or code from a project</PanelHead>
+        <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 13 }}>
+          {attachables.length === 0 ? (
+            <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+              Nothing to attach yet — datasets and code live inside a project, and you are not on one that has any.
+            </p>
+          ) : (
+            <>
+              <div>
+                <label style={fieldLabel} htmlFor="attach">The evidence</label>
+                <select
+                  id="attach" name="attach" value={attach}
+                  onChange={(e) => setAttach(e.target.value)}
+                  style={{ ...field, height: 38 }}
+                >
+                  <option value="">Nothing attached</option>
+                  {[...new Set(attachables.map((a) => a.project))].map((proj) => (
+                    <optgroup key={proj} label={proj}>
+                      {attachables.filter((a) => a.project === proj).map((a) => (
+                        <option key={a.value} value={a.value}>{a.kind} · {a.label}</option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+              </div>
+
+              {attach && (
+                <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
+                  <legend style={{ ...fieldLabel, padding: 0 }}>Who can open it</legend>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+                    <label style={{ border: "1px solid var(--rule)", padding: "10px 11px", cursor: "pointer", background: "var(--bg)" }}>
+                      <input type="radio" name="access" value="on_request" defaultChecked style={{ marginRight: 8 }} />
+                      <span style={{ font: mono(12.5, 500) }}>Request access</span>
+                      <span style={{ display: "block", font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
+                        The room sees what it is — title, kind, size, licence — and has to ask you.
+                        You approve one researcher at a time.
+                      </span>
+                    </label>
+                    <label style={{ border: "1px solid var(--rule)", padding: "10px 11px", cursor: "pointer", background: "var(--bg)" }}>
+                      <input type="radio" name="access" value="open" style={{ marginRight: 8 }} />
+                      <span style={{ font: mono(12.5, 500) }}>Open</span>
+                      <span style={{ display: "block", font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
+                        Anyone who can read the post can open it. Sensible for data you have already published.
+                      </span>
+                    </label>
+                  </div>
+                </fieldset>
+              )}
+            </>
+          )}
         </div>
       </Panel>
 

@@ -12,10 +12,27 @@ export default async function Compose({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const [{ data: mine }, { data: cards }] = await Promise.all([
+  const [{ data: mine }, { data: cards }, { data: memberships }] = await Promise.all([
     supabase.from("user_rooms").select("room_id").eq("user_id", user!.id),
     supabase.from("method_cards").select("id, code, title").eq("author_id", user!.id).order("created_at", { ascending: false }),
+    supabase.from("project_members").select("project_id").eq("user_id", user!.id),
   ]);
+
+  // Evidence you can attach: the data and code in projects you are on.
+  const projectIds = (memberships ?? []).map((m: { project_id: string }) => m.project_id);
+  const [{ data: projects }, { data: datasets }, { data: codeFiles }] = projectIds.length
+    ? await Promise.all([
+        supabase.from("projects").select("id, title").in("id", projectIds),
+        supabase.from("datasets").select("id, title, project_id, size_bytes").in("project_id", projectIds),
+        supabase.from("code_files").select("id, path, project_id, language").in("project_id", projectIds),
+      ])
+    : [{ data: [] as any[] }, { data: [] as any[] }, { data: [] as any[] }];
+
+  const titleOf = (pid: string) => (projects ?? []).find((x: any) => x.id === pid)?.title ?? "Project";
+  const attachables = [
+    ...(datasets ?? []).map((d: any) => ({ value: `dataset:${d.id}`, project: titleOf(d.project_id), label: d.title, kind: "Data" })),
+    ...(codeFiles ?? []).map((f: any) => ({ value: `code:${f.id}`,  project: titleOf(f.project_id), label: f.path,  kind: "Code" })),
+  ].sort((a, b) => a.project.localeCompare(b.project) || a.label.localeCompare(b.label));
 
   const rooms = (mine ?? [])
     .map((r: { room_id: string }) => roomById(r.room_id))
@@ -30,6 +47,7 @@ export default async function Compose({
         defaultRoom={room}
         defaultIntent={intent}
         defaultCard={card}
+        attachables={attachables}
       />
     </Page>
   );

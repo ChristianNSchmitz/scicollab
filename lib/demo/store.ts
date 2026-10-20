@@ -80,6 +80,19 @@ export type CodeCommit = {
   message: string; files: number; created_at: string;
 };
 
+
+export type PostAttachment = {
+  id: string; post_id: string; kind: "dataset" | "code";
+  dataset_id: string | null; code_file_id: string | null; project_id: string;
+  access: "open" | "on_request"; owner_id: string; created_at: string;
+};
+
+export type AccessRequest = {
+  id: string; attachment_id: string; requester_id: string; owner_id: string;
+  status: "pending" | "granted" | "denied"; message: string;
+  created_at: string; decided_at: string | null;
+};
+
 export const DEMO_EMAIL = "demo@scicollab.test";
 export const DEMO_PASSWORD = "reproduce";
 
@@ -357,24 +370,54 @@ const code_commits: CodeCommit[] = [
     message: "Poll every hour instead of every minute", created_at: ago(2) },
 ];
 
+
+/* Two attachments, one of each disclosure mode, so both halves of the rule
+   are visible without creating anything: p-1's open dataset on the negative
+   result, and a gated raw-data file on the question. */
+const post_attachments: PostAttachment[] = [
+  { id: "pa-1", post_id: "p-1", kind: "dataset", dataset_id: "d-1", code_file_id: null,
+    project_id: "p-1", access: "open", owner_id: ME, created_at: ago(11) },
+  { id: "pa-2", post_id: "p-2", kind: "dataset", dataset_id: "d-2", code_file_id: null,
+    project_id: "p-1", access: "on_request", owner_id: ME, created_at: ago(2) },
+  { id: "pa-3", post_id: "p-4", kind: "code", dataset_id: null, code_file_id: "cf-3",
+    project_id: "p-1", access: "on_request", owner_id: "u-okafor", created_at: ago(6) },
+];
+
+const access_requests: AccessRequest[] = [
+  { id: "ar-1", attachment_id: "pa-2", requester_id: "u-okafor", owner_id: ME,
+    status: "pending", message: "We are about to run the same comparison and want to match your gating.",
+    created_at: ago(1), decided_at: null },
+];
+
 /* ── raw table access ─────────────────────────────────────────────────────
    The demo client shim queries these by name, exactly as PostgREST would.
-   They are live references: writes through the shim mutate them in place. */
-export const tables: Record<string, Record<string, unknown>[]> = {
-  profiles,
-  method_cards: cards,
-  questions,
-  answers,
-  projects,
-  project_members: members,
-  eln_entries: entries,
-  messages,
-  user_rooms,
-  posts,
-  datasets,
-  code_files,
-  code_commits,
-} as unknown as Record<string, Record<string, unknown>[]>;
+
+   Pinned on globalThis deliberately. These arrays are mutable module state,
+   and Next.js can instantiate a module more than once — a server action and
+   the page that re-renders after it do not reliably share one copy. Without
+   this, a write lands in one instance and the read happens in another, so
+   the change appears to succeed and then vanishes. Pinning gives every
+   instance the same tables. */
+const __sc = globalThis as { __scicollabTables?: Record<string, Record<string, unknown>[]> };
+
+export const tables: Record<string, Record<string, unknown>[]> =
+  (__sc.__scicollabTables ??= {
+    profiles,
+    method_cards: cards,
+    questions,
+    answers,
+    projects,
+    project_members: members,
+    eln_entries: entries,
+    messages,
+    user_rooms,
+    posts,
+    datasets,
+    code_files,
+    code_commits,
+    post_attachments,
+    access_requests,
+  } as unknown as Record<string, Record<string, unknown>[]>);
 
 // ── accessors ────────────────────────────────────────────────────────────
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));

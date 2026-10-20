@@ -51,6 +51,33 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
     .single();
 
   if (error) return { error: error.message };
+
+  // Optional project evidence, with its disclosure setting. "attach" arrives
+  // as "<kind>:<id>" so one control can offer datasets and code together.
+  const attach = String(form.get("attach") ?? "");
+  if (attach) {
+    const [kind, refId] = attach.split(":");
+    const access = String(form.get("access") ?? "on_request") === "open" ? "open" : "on_request";
+
+    if (kind === "dataset" || kind === "code") {
+      const table = kind === "dataset" ? "datasets" : "code_files";
+      const { data: ref } = await supabase
+        .from(table).select("id, project_id").eq("id", refId).maybeSingle();
+
+      if (ref) {
+        await supabase.from("post_attachments").insert({
+          post_id: data.id,
+          kind,
+          dataset_id:   kind === "dataset" ? ref.id : null,
+          code_file_id: kind === "code"    ? ref.id : null,
+          project_id:   ref.project_id,
+          access,
+          owner_id: user.id,
+        });
+      }
+    }
+  }
+
   revalidatePath("/home");
   redirect(`/posts/${data.id}`);
 }
