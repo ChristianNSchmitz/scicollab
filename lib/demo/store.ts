@@ -64,6 +64,22 @@ export type Post = {
   created_at: string;
 };
 
+
+export type Dataset = {
+  id: string; owner_id: string; project_id: string; title: string; summary: string;
+  doi: string | null; licence: string; visibility: Visibility; size_bytes: number; created_at: string;
+};
+
+export type CodeFile = {
+  id: string; project_id: string; path: string; language: string;
+  size_bytes: number; last_change: string; updated_at: string; created_at: string;
+};
+
+export type CodeCommit = {
+  id: string; project_id: string; author_id: string; sha: string;
+  message: string; files: number; created_at: string;
+};
+
 export const DEMO_EMAIL = "demo@scicollab.test";
 export const DEMO_PASSWORD = "reproduce";
 
@@ -290,6 +306,57 @@ const posts: Post[] = [
   },
 ];
 
+
+/* Data and code for the two seeded projects, so the three project tabs have
+   something real-shaped to show. p-1 is the passage-number study, p-2 the
+   incubator qualification. */
+const datasets: Dataset[] = [
+  { id: "d-1", owner_id: ME, project_id: "p-1", title: "Transfection efficiency by passage number (p8–p24)",
+    summary: "Flow cytometry readings, three biological replicates per passage, two reagent lots. The source for MC-0412.",
+    doi: "10.5281/zenodo.8841", licence: "CC BY 4.0", visibility: "public", size_bytes: 48_200_000, created_at: ago(10) },
+  { id: "d-2", owner_id: ME, project_id: "p-1", title: "Raw flow cytometry · run 14–16",
+    summary: "Unprocessed .fcs files behind the p19 replicates. Gating strategy is in the notebook entry of the same date.",
+    doi: null, licence: "CC BY 4.0", visibility: "lab", size_bytes: 1_240_000_000, created_at: ago(9) },
+  { id: "d-3", owner_id: ME, project_id: "p-1", title: "Reagent lot comparison — L3K-2251 vs L3K-1980",
+    summary: "The control that ruled reagent out as the variable.", doi: null, licence: "CC BY 4.0",
+    visibility: "lab", size_bytes: 3_100_000, created_at: ago(7) },
+  { id: "d-4", owner_id: ME, project_id: "p-2", title: "CO₂ logging · all three bays · 72 h",
+    summary: "Independent meter against each incubator's own readout, logged hourly.",
+    doi: null, licence: "CC0 1.0", visibility: "lab", size_bytes: 820_000, created_at: ago(2) },
+];
+
+const code_files: CodeFile[] = [
+  { id: "cf-1", project_id: "p-1", path: "README.md", language: "Markdown", size_bytes: 2_400,
+    last_change: "Document the gating strategy", updated_at: ago(7), created_at: ago(30) },
+  { id: "cf-2", project_id: "p-1", path: "analysis/gating.py", language: "Python", size_bytes: 11_800,
+    last_change: "Exclude doublets before the live gate", updated_at: ago(7), created_at: ago(29) },
+  { id: "cf-3", project_id: "p-1", path: "analysis/passage_curve.py", language: "Python", size_bytes: 8_300,
+    last_change: "Fit a sigmoid rather than a line — the drop is not gradual", updated_at: ago(5), created_at: ago(24) },
+  { id: "cf-4", project_id: "p-1", path: "analysis/figures.R", language: "R", size_bytes: 5_100,
+    last_change: "Error bars are SD across biological replicates, not technical", updated_at: ago(5), created_at: ago(20) },
+  { id: "cf-5", project_id: "p-1", path: "notebooks/exploration.ipynb", language: "Jupyter", size_bytes: 412_000,
+    last_change: "First pass over the p19 data", updated_at: ago(9), created_at: ago(28) },
+  { id: "cf-6", project_id: "p-1", path: "environment.yml", language: "YAML", size_bytes: 940,
+    last_change: "Pin scipy — the fit changed between versions", updated_at: ago(5), created_at: ago(30) },
+  { id: "cf-7", project_id: "p-2", path: "logger/read_meter.py", language: "Python", size_bytes: 3_600,
+    last_change: "Poll every hour instead of every minute", updated_at: ago(2), created_at: ago(6) },
+  { id: "cf-8", project_id: "p-2", path: "logger/plot_drift.R", language: "R", size_bytes: 2_200,
+    last_change: "Plot all three bays on one axis", updated_at: ago(2), created_at: ago(5) },
+];
+
+const code_commits: CodeCommit[] = [
+  { id: "cc-1", project_id: "p-1", author_id: ME, sha: "a3f91c4e2b", files: 2,
+    message: "Fit a sigmoid rather than a line — the drop is not gradual", created_at: ago(5) },
+  { id: "cc-2", project_id: "p-1", author_id: "u-lindqvist", sha: "7d2e88b104", files: 1,
+    message: "Error bars are SD across biological replicates", created_at: ago(5) },
+  { id: "cc-3", project_id: "p-1", author_id: ME, sha: "c914aa7f30", files: 3,
+    message: "Exclude doublets before the live gate", created_at: ago(7) },
+  { id: "cc-4", project_id: "p-1", author_id: ME, sha: "0b55e1d9a8", files: 1,
+    message: "Pin scipy — the fit changed between versions", created_at: ago(5) },
+  { id: "cc-5", project_id: "p-2", author_id: ME, sha: "e81c30fa55", files: 2,
+    message: "Poll every hour instead of every minute", created_at: ago(2) },
+];
+
 /* ── raw table access ─────────────────────────────────────────────────────
    The demo client shim queries these by name, exactly as PostgREST would.
    They are live references: writes through the shim mutate them in place. */
@@ -302,9 +369,11 @@ export const tables: Record<string, Record<string, unknown>[]> = {
   project_members: members,
   eln_entries: entries,
   messages,
-  datasets: [],
   user_rooms,
   posts,
+  datasets,
+  code_files,
+  code_commits,
 } as unknown as Record<string, Record<string, unknown>[]>;
 
 // ── accessors ────────────────────────────────────────────────────────────
