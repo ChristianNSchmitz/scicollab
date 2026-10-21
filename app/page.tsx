@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import DemoNotice from "@/components/DemoNotice";
+import Link from "next/link";
 import Screen from "@/components/Screen";
+import { btn, btnPrimary, mono } from "@/components/ui";
 import { createClient } from "@/lib/supabase/server";
 import { isConfigured } from "@/lib/mode";
 
@@ -25,7 +27,8 @@ export default async function Landing() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--canvas)" }}>
       <DemoNotice />
-      <div style={{ padding: 24 }}>
+      <MobileLanding />
+      <div className="sc-land-board" style={{ padding: 24, overflowX: "auto" }}>
       <div style={{ width: 1440, margin: "0 auto" }}>
         <Screen
           id="b1-marketing-landing-page"
@@ -34,6 +37,7 @@ export default async function Landing() {
             "Create account": "/signup",
             "Connect ORCID → start": "/signup",
             "Book a lab pilot": "/signup",
+            "Talk to us about a pilot": "/signup",
             "Method cards": "/login",
             "Pricing": "/login",
             "Docs": "/login",
@@ -41,6 +45,48 @@ export default async function Landing() {
         />
         </div>
       </div>
+    </div>
+  );
+}
+
+/** The board is a fixed 1440px artboard, which a phone can only show a strip
+ *  of. Below 760px the same message is set in the house kit instead, so the
+ *  front door still reads and both ways in stay on screen. */
+function MobileLanding() {
+  const point = (t: string) => (
+    <li style={{ display: "flex", gap: 8, font: "400 13px/1.55 var(--sans)" }}>
+      <span style={{ color: "var(--signal)" }}>→</span><span>{t}</span>
+    </li>
+  );
+  return (
+    <div className="sc-land-mobile" style={{ padding: "18px 16px 40px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
+        <span style={{ font: mono(17, 700), marginRight: "auto" }}>scicollab<span style={{ color: "var(--signal)" }}>/</span></span>
+        <Link href="/login" style={btn}>Sign in</Link>
+      </div>
+      <div style={{ font: mono(10, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 12 }}>
+        GITHUB × STACK OVERFLOW × DATABASE, FOR SCIENTISTS
+      </div>
+      <h1 style={{ font: mono(30, 700, 1.12), letterSpacing: "-.03em", margin: "0 0 14px" }}>
+        A failed experiment nobody wrote down gets repeated.
+      </h1>
+      <p style={{ font: "400 15px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 20px" }}>
+        Somewhere else. By someone junior. Next month. SciCollab keeps the data, the code, the conditions
+        and the argument in one place — including the runs that didn&apos;t work.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Link href="/signup" style={{ ...btnPrimary, height: 44, justifyContent: "center" }}>Connect ORCID → start</Link>
+        <Link href="/signup" style={{ ...btn, height: 44, justifyContent: "center" }}>Book a lab pilot</Link>
+      </div>
+      <p style={{ font: mono(11), color: "var(--mute)", margin: "12px 0 28px" }}>
+        Free for individual researchers · institutional pilots start at one lab
+      </p>
+      <ul style={{ listStyle: "none", padding: "18px 0 0", margin: 0, borderTop: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: 10 }}>
+        {point("Ask with the data attached, not a paraphrase of it")}
+        {point("Find the prior failure before you fund the repeat")}
+        {point("Negative and null results as citable, reusable objects")}
+        {point("Method cards: structured, versioned, forkable, and explicit about when a method fails")}
+      </ul>
     </div>
   );
 }

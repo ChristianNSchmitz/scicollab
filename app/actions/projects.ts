@@ -42,3 +42,30 @@ export async function addEntry(projectId: string, form: FormData) {
   if (error) throw new Error(error.message);
   revalidatePath(`/projects/${projectId}`);
 }
+
+/** Registers a dataset inside a project. It records what the data is and
+ *  where it lives (a DOI or repository); files themselves are not uploaded. */
+export async function depositDataset(projectId: string, form: FormData) {
+  const { supabase, user } = await me();
+  const title = String(form.get("title") ?? "").trim();
+  if (!title) return;
+  // Only people on the project may add to it.
+  const { data: member } = await supabase
+    .from("project_members").select("user_id")
+    .eq("project_id", projectId).eq("user_id", user.id).maybeSingle();
+  if (!member) throw new Error("Only project members can deposit data here.");
+  const visibility = String(form.get("visibility") ?? "private");
+  const { error } = await supabase.from("datasets").insert({
+    owner_id: user.id,
+    project_id: projectId,
+    title,
+    summary: String(form.get("summary") ?? "").trim(),
+    doi: String(form.get("doi") ?? "").trim() || null,
+    licence: String(form.get("licence") ?? "").trim() || "CC BY 4.0",
+    visibility: ["private", "lab", "public"].includes(visibility) ? visibility : "private",
+  });
+  if (error) throw new Error(error.message);
+  revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/post");
+  redirect(`/projects/${projectId}?tab=data`);
+}

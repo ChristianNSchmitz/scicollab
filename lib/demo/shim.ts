@@ -21,6 +21,22 @@ type Result<T> = { data: T; error: { message: string } | null; count?: number };
 const clone = <T,>(v: T): T => (v === undefined ? v : JSON.parse(JSON.stringify(v)));
 const uid = () => "d-" + Math.random().toString(36).slice(2, 10);
 
+/* Column defaults from supabase/schema.sql that the pages read back. Postgres
+   fills these on insert; without them a new demo row renders "v" with no
+   number and "reproductions" with no count. */
+const DEFAULTS: Record<string, () => Row> = {
+  method_cards: () => ({
+    code: "MC-" + String(Math.floor(Math.random() * 9000) + 1000),
+    version: 1, method: "", system: "", conditions: "", outcome_detail: "",
+    fails_under: "", tags: [], visibility: "private", reproductions: 0,
+    updated_at: new Date().toISOString(),
+  }),
+  questions: () => ({ body: "", tags: [], visibility: "public", views: 0 }),
+  answers:   () => ({ accepted: false, votes: 0 }),
+  projects:  () => ({ summary: "", status: "active", tags: [], visibility: "lab", updated_at: new Date().toISOString() }),
+  datasets:  () => ({ summary: "", doi: null, licence: "CC BY 4.0", visibility: "private", size_bytes: 0 }),
+};
+
 /** `col.op.value`, as PostgREST spells a filter inside or(). */
 function matchLeaf(row: Row, leaf: string): boolean {
   const m = leaf.match(/^([a-z_]+)\.(eq|neq|ilike|like|is|in)\.(.*)$/i);
@@ -125,9 +141,11 @@ class Query implements PromiseLike<Result<Row[]>> {
     this.pending = null;
 
     if (p.kind === "insert" || p.kind === "upsert") {
+      const defaults = p.kind === "insert" ? DEFAULTS[this.table] : undefined;
       const incoming = (Array.isArray(p.payload) ? p.payload : [p.payload]).map((r: Row) => ({
         id: r.id ?? uid(),
         created_at: r.created_at ?? new Date().toISOString(),
+        ...defaults?.(),
         ...r,
       }));
       const written: Row[] = [];

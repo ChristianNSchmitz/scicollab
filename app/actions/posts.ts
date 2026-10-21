@@ -30,7 +30,7 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
   // The intents that exist to carry evidence must carry it. This is the rule
   // that keeps the feed anchored to artifacts rather than to opinion.
   if (spec.needsArtifact && !card) {
-    return { error: `“${spec.label}” needs a method card attached. Pick one below, or choose a different kind of post.` };
+    return { error: `“${spec.label}” needs a method card attached. Pick one in the method card field, or choose a different kind of post.` };
   }
 
   const { data, error } = await supabase

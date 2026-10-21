@@ -33,7 +33,7 @@ export default async function Question({ params }: { params: Promise<{ id: strin
   const isAsker = q.author_id === user!.id;
 
   return (
-    <Page title={q.title} lede={undefined}>
+    <Page title={q.title} actions={<Link href="/ask#questions" style={btn}>All questions</Link>}>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <Panel>
           <div style={{ padding: "12px 14px", borderBottom: "1px solid var(--rule)", font: mono(11), color: "var(--mute)" }}>

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { addEntry } from "@/app/actions/projects";
-import { Page, Panel, PanelHead, Empty, Tag, Visibility, field, btn, btnPrimary, mono } from "@/components/ui";
+import { addEntry, depositDataset } from "@/app/actions/projects";
+import { Page, Panel, PanelHead, Empty, Tag, Visibility, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -55,6 +55,8 @@ export default async function Project({
     ]);
 
   const ids = (members ?? []).map((m: { user_id: string }) => m.user_id);
+  const { data: { user } } = await supabase.auth.getUser();
+  const isMember = !!user && ids.includes(user.id);
   const authorIds = [...new Set((commits ?? []).map((c: any) => c.author_id).filter(Boolean))];
   const { data: people } = [...ids, ...authorIds].length
     ? await supabase.from("profiles").select("id, display_name, institution").in("id", [...new Set([...ids, ...authorIds])])
@@ -142,9 +144,43 @@ export default async function Project({
                   <div style={{ marginTop: 9 }}><Tag>{d.licence}</Tag></div>
                 </div>
               ))}
-              <div style={{ padding: 14 }}>
-                <Link href="/data" style={{ ...btn, width: "100%", justifyContent: "center" }}>Deposit a dataset</Link>
-              </div>
+              {isMember && <details style={{ padding: 14 }}>
+                <summary style={{ ...btn, width: "100%", justifyContent: "center", cursor: "pointer", listStyle: "none" }}>Deposit a dataset</summary>
+                <form action={depositDataset.bind(null, p.id)} style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14 }}>
+                  <div>
+                    <label style={fieldLabel} htmlFor="ds-title">Title</label>
+                    <input id="ds-title" name="title" required style={field} placeholder="Transfection efficiency by passage number (p8–p24)" />
+                  </div>
+                  <div>
+                    <label style={fieldLabel} htmlFor="ds-summary">What it contains</label>
+                    <textarea id="ds-summary" name="summary" rows={3} style={field} placeholder="Three biological replicates per passage, raw counts and normalised values." />
+                  </div>
+                  <div className="sc-pair" style={{ gap: 12 }}>
+                    <div>
+                      <label style={fieldLabel} htmlFor="ds-doi">DOI or repository link</label>
+                      <input id="ds-doi" name="doi" style={field} placeholder="10.5281/zenodo.1234567" />
+                    </div>
+                    <div>
+                      <label style={fieldLabel} htmlFor="ds-licence">Licence</label>
+                      <input id="ds-licence" name="licence" defaultValue="CC BY 4.0" style={field} />
+                    </div>
+                  </div>
+                  <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
+                    <legend style={{ ...fieldLabel, padding: 0 }}>Who can see it</legend>
+                    <div style={{ display: "flex", gap: 16, flexWrap: "wrap", font: mono(12) }}>
+                      {(["private", "lab", "public"] as const).map((v) => (
+                        <label key={v} style={{ cursor: "pointer" }}>
+                          <input type="radio" name="visibility" value={v} defaultChecked={v === "private"} style={{ marginRight: 6 }} />{v}
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <p style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>
+                    This records the dataset and where it lives. The files stay in your repository.
+                  </p>
+                  <button type="submit" style={{ ...btnPrimary, justifyContent: "center" }}>Deposit</button>
+                </form>
+              </details>}
             </Panel>
           )}
 
