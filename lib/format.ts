@@ -12,6 +12,11 @@ export function initialsOf(name: string): string {
   return letter ? letter.toUpperCase() : "·";
 }
 
+/** "1 fork", "3 forks" — a count with its noun in the right number. */
+export function plural(n: number, one: string, many = `${one}s`): string {
+  return `${n} ${n === 1 ? one : many}`;
+}
+
 /** "4 h ago" / "3 d ago" — the terse form the boards use. */
 export function timeAgo(iso: string): string {
   const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);

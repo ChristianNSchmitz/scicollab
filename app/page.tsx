@@ -29,7 +29,7 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
     <div style={{ minHeight: "100vh", background: "var(--canvas)" }}>
       <DemoNotice />
       {deleted && (
-        <p role="status" style={{ margin: 0, padding: "10px 16px", font: "400 13px/1.5 var(--sans)", background: "var(--surface)", borderBottom: "1px solid var(--rule)", textAlign: "center" }}>
+        <p role="status" style={{ margin: 0, padding: "10px 16px", font: "400 14px/1.5 var(--sans)", background: "var(--surface)", borderBottom: "1px solid var(--rule)", textAlign: "center" }}>
           Your account and everything that belonged to it have been deleted.
         </p>
       )}
@@ -60,17 +60,17 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
  *  front door still reads and both ways in stay on screen. */
 function MobileLanding() {
   const point = (t: string) => (
-    <li style={{ display: "flex", gap: 8, font: "400 13px/1.55 var(--sans)" }}>
-      <span style={{ color: "var(--signal)" }}>→</span><span>{t}</span>
+    <li style={{ display: "flex", gap: 8, font: "400 14px/1.55 var(--sans)" }}>
+      <span style={{ color: "var(--signal-ink)" }}>→</span><span>{t}</span>
     </li>
   );
   return (
-    <div className="sc-land-mobile" style={{ padding: "18px 16px 40px" }}>
+    <div className="sc-land-mobile" style={{ padding: "18px 16px 40px", background: "var(--bg)", minHeight: "100vh" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
-        <span style={{ font: mono(17, 700), marginRight: "auto" }}>scicollab<span style={{ color: "var(--signal)" }}>/</span></span>
+        <span style={{ font: mono(17, 700), marginRight: "auto" }}>scicollab<span style={{ color: "var(--signal-ink)" }}>/</span></span>
         <Link href="/login" style={btn}>Sign in</Link>
       </div>
-      <div style={{ font: mono(10, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 12 }}>
+      <div style={{ font: mono(10, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 12 }}>
         GITHUB × STACK OVERFLOW × DATABASE, FOR SCIENTISTS
       </div>
       <h1 style={{ font: mono(30, 700, 1.12), letterSpacing: "-.03em", margin: "0 0 14px" }}>

@@ -31,7 +31,7 @@ export default async function Projects() {
               <Visibility value={p.visibility} />
             </div>
             <div style={{ font: mono(14, 500, 1.35) }}>{p.title}</div>
-            {p.summary && <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: "5px 0 0" }}>{p.summary}</p>}
+            {p.summary && <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "5px 0 0" }}>{p.summary}</p>}
             {p.tags?.length > 0 && (
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 8 }}>{p.tags.map((t: string) => <Tag key={t}>{t}</Tag>)}</div>
             )}

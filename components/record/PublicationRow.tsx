@@ -16,7 +16,7 @@ export default function PublicationRow({ p, c, isNew, detailed = false }: {
   return (
     <div style={{ display: "flex", gap: 12, alignItems: "center", padding: "10px 14px", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
       <div style={{ flex: "1 1 320px", minWidth: 0 }}>
-        <div style={{ font: "500 12.5px/1.45 var(--sans)" }}>
+        <div style={{ font: "500 13.5px/1.45 var(--sans)" }}>
           {isNew && <span style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--ok)", border: "1px solid var(--ok)", padding: "1px 5px", marginRight: 7 }}>NEW</span>}
           {href ? <a href={href} target="_blank" rel="noreferrer" style={{ color: "var(--ink)" }}>{p.title || "Untitled"}</a> : (p.title || "Untitled")}
         </div>
@@ -37,7 +37,7 @@ export default function PublicationRow({ p, c, isNew, detailed = false }: {
       )}
       <div style={{ textAlign: "right", whiteSpace: "nowrap", minWidth: 96 }}>
         <span style={{ font: mono(13, 600) }}>{p.cited_by_count}</span>
-        <span style={{ font: mono(10.5), color: "var(--mute)" }}> citations</span>
+        <span style={{ font: mono(10.5), color: "var(--mute)" }}> {p.cited_by_count === 1 ? "citation" : "citations"}</span>
         {!detailed && now > 0 && <div style={{ font: mono(10.5), color: "var(--mute)" }}>{now} in {c.year}</div>}
         {d !== 0 && <div style={{ font: mono(10.5), color: d > 0 ? "var(--ok)" : "var(--mute)" }}>{d > 0 ? "+" : ""}{d} since last sync</div>}
       </div>

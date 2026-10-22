@@ -20,7 +20,7 @@ export default function CitationTracker({ biblio, change, c, pubs }: {
     return (
       <Panel>
         <PanelHead>Citation tracker</PanelHead>
-        <div style={{ padding: 14, font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: 14, font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
           {biblio.state === "no-orcid" || biblio.state === "invalid-orcid" ? (
             <>Link your ORCID and your citations, h-index and new publications are tracked here automatically.{" "}
               <Link href="/settings#orcid" style={{ color: "var(--link)" }}>Link ORCID</Link></>
@@ -70,7 +70,7 @@ export default function CitationTracker({ biblio, change, c, pubs }: {
 
       <div style={{ padding: "11px 14px 4px" }}>
         <YearBars points={perYear} unit="citations" current={b.year} height={34} />
-        <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 6 }}>
+        <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 6 }}>
           <b style={{ color: "var(--ink)" }}>{b.citationsThisYear}</b> so far in {b.year} · {lastYear} in {b.year - 1}
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function CitationTracker({ biblio, change, c, pubs }: {
         <div style={{ padding: "8px 14px 4px" }}>
           <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 6 }}>BEING CITED NOW</div>
           {moving.map(({ p, gain, now }) => (
-            <div key={p.openalex_id} style={{ display: "flex", gap: 8, font: "400 11.5px/1.4 var(--sans)", marginBottom: 6 }}>
+            <div key={p.openalex_id} style={{ display: "flex", gap: 8, font: "400 12.5px/1.4 var(--sans)", marginBottom: 6 }}>
               <span style={{ font: mono(11, 700), minWidth: 34, textAlign: "right", color: gain > 0 ? "var(--ok)" : "var(--ink)" }}>
                 {gain > 0 ? sign(gain) : now}
               </span>
@@ -90,7 +90,7 @@ export default function CitationTracker({ biblio, change, c, pubs }: {
       )}
 
       {change.newPubs.length > 0 && (
-        <div style={{ padding: "4px 14px 6px", font: "400 11.5px/1.5 var(--sans)" }}>
+        <div style={{ padding: "4px 14px 6px", font: "400 12.5px/1.5 var(--sans)" }}>
           <b>{change.newPubs.length}</b> new publication{change.newPubs.length > 1 ? "s" : ""} in 30 days
           {change.newPubs.slice(0, 2).map((p) => (
             <div key={p.openalex_id} style={{ font: mono(10.5), color: "var(--mute)", marginTop: 3 }}>· {p.title}</div>

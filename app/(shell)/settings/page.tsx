@@ -60,7 +60,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
 
         {flash && (
           <p role={flash.error ? "alert" : "status"} style={{
-            font: "400 12.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px",
+            font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px",
             border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, color: flash.error ? "var(--err)" : "var(--ink)", background: "var(--surface)",
           }}>{flash.text}</p>
         )}
@@ -119,7 +119,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
         <section id="account" style={{ scrollMarginTop: 72 }}>
           <Panel>
             <PanelHead>Account</PanelHead>
-            <div style={{ padding: 14, font: "400 12.5px/1.7 var(--sans)" }}>
+            <div style={{ padding: 14, font: "400 13.5px/1.7 var(--sans)" }}>
               <div><span style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--mute)", marginRight: 8 }}>EMAIL</span>{user!.email ?? "—"}</div>
               <div style={{ color: "var(--mute)", marginTop: 6 }}>Changing your email is not available here yet.</div>
 

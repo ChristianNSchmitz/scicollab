@@ -63,7 +63,7 @@ export default function AvatarPicker({ name, current }: { name: string; current:
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
         <Avatar name={name} url={shown} size={72} />
-        <div style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", flex: "1 1 220px" }}>
+        <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", flex: "1 1 220px" }}>
           {upload ? "Preview of your upload. Save it to use it everywhere." :
             parsed.kind === "image" ? "Your own picture." :
             parsed.kind === "preset" ? "A built-in picture." : "No picture yet: people see the first letter of your name."}
@@ -87,7 +87,7 @@ export default function AvatarPicker({ name, current }: { name: string; current:
             </>
           )}
         </div>
-        <p style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>
+        <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>
           JPEG, PNG or WebP. It is cropped to a square and scaled to 256 px before upload.
         </p>
       </div>
@@ -127,7 +127,7 @@ export default function AvatarPicker({ name, current }: { name: string; current:
       )}
 
       {message && (
-        <p role={message.error ? "alert" : "status"} style={{ font: "400 12px/1.5 var(--sans)", margin: 0, color: message.error ? "var(--err)" : "var(--ok)" }}>
+        <p role={message.error ? "alert" : "status"} style={{ font: "400 13px/1.5 var(--sans)", margin: 0, color: message.error ? "var(--err)" : "var(--ok)" }}>
           {message.text}
         </p>
       )}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, Empty, Outcome, Tag, Visibility, btnPrimary, mono } from "@/components/ui";
-import { timeAgo } from "@/lib/format";
+import { timeAgo, plural } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +48,7 @@ function Section({ title, cards, empty }: { title: string; cards: any[]; empty: 
             </div>
             <div style={{ font: mono(14, 500, 1.35) }}>{c.title}</div>
             <div style={{ font: mono(11), color: "var(--mute)", marginTop: 4 }}>
-              {c.system || "—"} · {c.reproductions} reproductions
+              {c.system || "—"} · {plural(c.reproductions ?? 0, "reproduction")}
             </div>
             {c.tags?.length > 0 && (
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 8 }}>

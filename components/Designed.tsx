@@ -21,9 +21,9 @@ export default function Designed({
           border: "1px solid var(--flag)", background: "var(--surface)",
         }}
       >
-        <span style={{ font: mono(10, 700), letterSpacing: ".1em", color: "#8A6A00" }}>DESIGNED · NOT WIRED</span>
+        <span style={{ font: mono(10, 700), letterSpacing: ".1em", color: "var(--flag-ink)" }}>DESIGNED · NOT WIRED</span>
         <span style={{ font: mono(12, 500) }}>{title}</span>
-        <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", flex: 1, minWidth: 260 }}>
+        <span style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", flex: 1, minWidth: 260 }}>
           {missing}
         </span>
         <span style={{ font: mono(10.5), color: "var(--mute)" }}>board {board}</span>

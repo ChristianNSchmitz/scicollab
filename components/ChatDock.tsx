@@ -134,7 +134,7 @@ export default function ChatDock() {
         </svg>
         <span style={{ font: mono(12, 500), flex: 1 }}>Chat</span>
         {unread > 0 && (
-          <span style={{ font: mono(10, 700), background: "var(--signal)", color: "#fff", padding: "2px 6px" }}>{unread}</span>
+          <span style={{ font: mono(10, 700), background: "var(--signal-fill)", color: "var(--on-signal)", padding: "2px 6px" }}>{unread}</span>
         )}
       </button>
     );
@@ -184,7 +184,7 @@ export default function ChatDock() {
             ))}
 
             {found.length === 0 && convos.length === 0 && (
-              <p style={{ padding: 16, font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+              <p style={{ padding: 16, font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
                 No conversations yet. Search for someone above, or message an author from a post.
               </p>
             )}
@@ -194,7 +194,7 @@ export default function ChatDock() {
                 <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
                   <span style={{ font: mono(12, c.unread ? 700 : 500), flex: 1 }}>{c.name}</span>
                   {c.unread > 0 && (
-                    <span style={{ font: mono(9.5, 700), background: "var(--signal)", color: "#fff", padding: "1px 5px" }}>{c.unread}</span>
+                    <span style={{ font: mono(9.5, 700), background: "var(--signal-fill)", color: "var(--on-signal)", padding: "1px 5px" }}>{c.unread}</span>
                   )}
                   <span style={{ font: mono(9.5), color: "var(--mute)" }}>{timeAgo(c.at)}</span>
                 </span>
@@ -212,17 +212,17 @@ export default function ChatDock() {
         <>
           <div ref={scroller} style={{ flex: 1, overflowY: "auto", padding: 10, display: "flex", flexDirection: "column", gap: 8, background: "var(--bg)" }}>
             {messages.length === 0 && (
-              <p style={{ font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>
+              <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>
                 No messages yet.
               </p>
             )}
             {messages.map((m) => (
               <div key={m.id} style={{ alignSelf: m.mine ? "flex-end" : "flex-start", maxWidth: "86%" }}>
                 <div style={{ border: "1px solid var(--rule)", background: m.mine ? "var(--surface)" : "var(--surface)", padding: "7px 9px" }}>
-                  <p style={{ font: "400 12px/1.55 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
+                  <p style={{ font: "400 13px/1.55 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
                   {m.card && (
                     <Link href={`/methods/${m.card.id}`} style={{ display: "block", marginTop: 6, borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "5px 7px", color: "var(--ink)" }}>
-                      <span style={{ font: mono(9, 700), letterSpacing: ".08em", color: "var(--signal)" }}>METHOD CARD</span>
+                      <span style={{ font: mono(9, 700), letterSpacing: ".08em", color: "var(--signal-ink)" }}>METHOD CARD</span>
                       <span style={{ display: "block", font: mono(11, 500), marginTop: 2 }}>{m.card.code} — {m.card.title}</span>
                     </Link>
                   )}
@@ -236,7 +236,7 @@ export default function ChatDock() {
 
           {gated ? (
             <div style={{ flex: "none", borderTop: "1px solid var(--flag)", background: "var(--surface)", padding: "10px 12px" }}>
-              <p style={{ font: "400 11.5px/1.55 var(--sans)", margin: "0 0 8px" }}>
+              <p style={{ font: "400 12.5px/1.55 var(--sans)", margin: "0 0 8px" }}>
                 You cannot message strangers yet. Record a method card, ask a question or answer one, and this opens.
               </p>
               <Link href="/methods/new" style={{ font: mono(11, 500), color: "var(--link)" }}>Record a method →</Link>
@@ -251,7 +251,7 @@ export default function ChatDock() {
                   style={{ flex: 1, padding: "8px 9px", border: "1px solid var(--rule)", background: "var(--bg)", font: mono(12), color: "var(--ink)" }}
                 />
                 <button type="submit" disabled={!draft.trim()}
-                  style={{ padding: "0 12px", border: "1px solid var(--signal)", background: "var(--signal)", color: "#fff", font: mono(11, 500), cursor: draft.trim() ? "pointer" : "default", opacity: draft.trim() ? 1 : .5 }}>
+                  style={{ padding: "0 12px", border: "1px solid var(--signal)", background: "var(--signal-fill)", color: "var(--on-signal)", font: mono(11, 500), cursor: draft.trim() ? "pointer" : "default", opacity: draft.trim() ? 1 : .5 }}>
                   Send
                 </button>
               </div>

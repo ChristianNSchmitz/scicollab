@@ -56,13 +56,13 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             </div>
             {post.body && (
               <div style={{ padding: 14 }}>
-                <p style={{ font: "400 13px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{post.body}</p>
+                <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{post.body}</p>
               </div>
             )}
 
             {post.intent === "collab" && (
               <div style={{ padding: 14, borderTop: "1px solid var(--rule)" }}>
-                <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 8 }}>THE ASK</div>
+                <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 8 }}>THE ASK</div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, font: mono(12, 400, 1.6) }}>
                   <div><span style={{ color: "var(--mute)" }}>technique</span><br />{post.technique || "—"}</div>
                   <div><span style={{ color: "var(--mute)" }}>system</span><br />{post.organism || "—"}</div>
@@ -87,8 +87,8 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                 </div>
                 {card.fails_under && (
                   <div style={{ marginTop: 11, borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "9px 12px" }}>
-                    <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 4 }}>FAILS UNDER</div>
-                    <p style={{ font: "400 12px/1.6 var(--sans)", margin: 0 }}>{card.fails_under}</p>
+                    <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 4 }}>FAILS UNDER</div>
+                    <p style={{ font: "400 13px/1.6 var(--sans)", margin: 0 }}>{card.fails_under}</p>
                   </div>
                 )}
               </div>
@@ -107,7 +107,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                 {a.unlocked ? (
                   <>
                     {a.detail && (
-                      <p style={{ font: "400 12.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{a.detail}</p>
+                      <p style={{ font: "400 13.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{a.detail}</p>
                     )}
                     <div style={{ marginTop: 11, font: mono(10.5), color: "var(--ok)" }}>
                       {a.access === "open" ? "OPEN — anyone reading this post can open it" : "YOU HAVE ACCESS"}
@@ -115,12 +115,12 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                   </>
                 ) : (
                   <>
-                    <p style={{ font: "400 12.5px/1.65 var(--sans)", color: "var(--mute)", margin: "10px 0 0" }}>
+                    <p style={{ font: "400 13.5px/1.65 var(--sans)", color: "var(--mute)", margin: "10px 0 0" }}>
                       You can see that this exists and what shape it is. The contents stay with the author
                       until they grant you access.
                     </p>
                     {a.myRequest === "pending" ? (
-                      <div style={{ marginTop: 11, font: mono(11), color: "#8A6A00" }}>REQUESTED — waiting on the author</div>
+                      <div style={{ marginTop: 11, font: mono(11), color: "var(--flag-ink)" }}>REQUESTED — waiting on the author</div>
                     ) : a.myRequest === "denied" ? (
                       <div style={{ marginTop: 11, font: mono(11), color: "var(--err)" }}>NOT GRANTED</div>
                     ) : (
@@ -148,7 +148,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                     {r.who.institution || "—"} · {timeAgo(r.created_at)}
                   </div>
                   {r.message && (
-                    <p style={{ font: "400 12.5px/1.6 var(--sans)", margin: "9px 0 0" }}>{r.message}</p>
+                    <p style={{ font: "400 13.5px/1.6 var(--sans)", margin: "9px 0 0" }}>{r.message}</p>
                   )}
                   <div style={{ display: "flex", gap: 8, marginTop: 11 }}>
                     <form action={decideRequest.bind(null, r.id, "granted")}>
@@ -169,7 +169,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             <PanelHead>Room</PanelHead>
             <div style={{ padding: 14 }}>
               <Link href={`/home?room=${post.room_id}`} style={{ font: mono(13.5, 500), color: "var(--ink)" }}>#{post.room_id}</Link>
-              <p style={{ font: "400 12px/1.55 var(--sans)", color: "var(--mute)", margin: "6px 0 10px" }}>{room?.blurb}</p>
+              <p style={{ font: "400 13px/1.55 var(--sans)", color: "var(--mute)", margin: "6px 0 10px" }}>{room?.blurb}</p>
               <div style={{ font: mono(9.5, 700), letterSpacing: ".09em", color: "var(--mute)", marginBottom: 6 }}>APPEARS IN</div>
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                 {housesOfRoom(post.room_id).map((h) => <Tag key={h.id}>{h.name}</Tag>)}

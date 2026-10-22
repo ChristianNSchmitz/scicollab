@@ -58,7 +58,7 @@ export default function OrcidLinker({ linked, defaultName }: { linked: LinkedSum
             <span style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--ok)", border: "1px solid var(--ok)", padding: "2px 6px" }}>LINKED</span>
             <a href={orcidUrl(linked.orcid)} target="_blank" rel="noreferrer" style={{ font: mono(13, 500), color: "var(--ink)" }}>{linked.orcid} ↗</a>
           </div>
-          <div style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
+          <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
             {linked.state === "ok" ? (
               <>OpenAlex: <b style={{ color: "var(--ink)" }}>{linked.name}</b> · {linked.works} works · {linked.citations?.toLocaleString("en-GB")} citations · h-index {linked.hIndex}
                 {linked.syncedAt && <> · checked {new Date(linked.syncedAt).toISOString().slice(0, 16).replace("T", " ")} UTC</>}</>
@@ -96,9 +96,9 @@ export default function OrcidLinker({ linked, defaultName }: { linked: LinkedSum
                 {pending ? "Checking…" : "Check"}
               </button>
             </div>
-            {problem && <p role="alert" style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>{problem}</p>}
+            {problem && <p role="alert" style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>{problem}</p>}
             {canonical && !checked && !lookupError && (
-              <p style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>
+              <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>
                 Valid iD. Check it to see whose record it is before linking.
               </p>
             )}
@@ -107,7 +107,7 @@ export default function OrcidLinker({ linked, defaultName }: { linked: LinkedSum
           {checked && <PreviewCard p={checked} action={linkForm(checked.orcid, "Link this ORCID")} />}
           {lookupError && canonical && (
             <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-              <p style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", margin: 0, flex: "1 1 260px" }}>{lookupError}</p>
+              <p style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", margin: 0, flex: "1 1 260px" }}>{lookupError}</p>
               {linkForm(canonical, "Link anyway", false)}
             </div>
           )}
@@ -123,11 +123,11 @@ export default function OrcidLinker({ linked, defaultName }: { linked: LinkedSum
                         if (r.ok) { setResults(r.results); setSearchError(null); } else { setResults(null); setSearchError(r.error); }
                       })}>Search OpenAlex</button>
             </div>
-            {searchError && <p role="alert" style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>{searchError}</p>}
+            {searchError && <p role="alert" style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>{searchError}</p>}
             {results && (
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
                 {results.length === 0 ? (
-                  <p style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>No authors with an ORCID match that name. You can register one free at orcid.org.</p>
+                  <p style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>No authors with an ORCID match that name. You can register one free at orcid.org.</p>
                 ) : results.map((r) => (
                   <PreviewCard key={r.orcid} p={r} action={linkForm(r.orcid, "This is me", false)} />
                 ))}
@@ -139,7 +139,7 @@ export default function OrcidLinker({ linked, defaultName }: { linked: LinkedSum
         </>
       )}
 
-      <p style={{ font: "400 11px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+      <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
         The link is self-declared for now: signing in with ORCID, which proves the iD is yours, is not connected yet.
         Publications, citations and the h-index come from OpenAlex, matched by your ORCID, and are checked every 12 hours.
         A change on OpenAlex usually shows here within a day. If a paper is missing, fix it in ORCID or OpenAlex; it follows on the next sync.

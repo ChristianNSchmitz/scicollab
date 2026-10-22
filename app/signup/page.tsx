@@ -64,11 +64,11 @@ export default function SignupPage() {
             scicollab
             <span style={{ position: "absolute", left: 0, bottom: -5, width: 12, height: 3, background: "var(--signal)" }} />
           </span>
-          <span style={{ font: "700 18px/1 var(--mono)", color: "var(--signal)" }}>/</span>
+          <span style={{ font: "700 18px/1 var(--mono)", color: "var(--signal-ink)" }}>/</span>
         </Link>
 
         <h1 style={{ font: "700 20px/1.2 var(--mono)", margin: "0 0 6px", letterSpacing: "-.02em" }}>Create your account</h1>
-        <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 20px" }}>
+        <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 20px" }}>
           Free for individual researchers · institutional pilots start at one lab
         </p>
 
@@ -124,8 +124,8 @@ export default function SignupPage() {
 }
 
 const label: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 6 };
-const labelText: React.CSSProperties = { font: "500 10px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)" };
+const labelText: React.CSSProperties = { font: "500 11px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)" };
 const input: React.CSSProperties = { height: 38, padding: "0 10px", border: "1px solid var(--rule)", background: "var(--bg)", font: "400 13px/1 var(--mono)", color: "var(--ink)" };
-const primary: React.CSSProperties = { height: 42, background: "var(--signal)", color: "#fff", border: "1px solid var(--signal)", font: "500 13px/1 var(--mono)", cursor: "pointer", marginTop: 4 };
+const primary: React.CSSProperties = { height: 42, background: "var(--signal-fill)", color: "var(--on-signal)", border: "1px solid var(--signal-fill)", font: "500 13px/1 var(--mono)", cursor: "pointer", marginTop: 4 };
 const provider: React.CSSProperties = { flex: 1, height: 44, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2, border: "1px solid var(--rule)", background: "var(--bg)", font: "500 12px/1 var(--mono)", color: "var(--mute)", cursor: "not-allowed" };
-const soon: React.CSSProperties = { font: "400 9px/1 var(--mono)", fontStyle: "normal", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--mute)", opacity: .7 };
+const soon: React.CSSProperties = { font: "400 11px/1 var(--mono)", fontStyle: "normal", letterSpacing: ".08em", textTransform: "uppercase", color: "var(--mute)", opacity: .7 };

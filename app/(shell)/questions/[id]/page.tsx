@@ -45,7 +45,7 @@ export default async function Question({ params, searchParams }: { params: Promi
           </div>
           {q.body && (
             <div style={{ padding: 14 }}>
-              <p style={{ font: "400 13px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{q.body}</p>
+              <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{q.body}</p>
             </div>
           )}
           {card && (
@@ -79,7 +79,7 @@ export default async function Question({ params, searchParams }: { params: Promi
                 </div>
               )}
               <div style={{ padding: 14 }}>
-                <p style={{ font: "400 13px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{a.body}</p>
+                <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{a.body}</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12, paddingTop: 10, borderTop: "1px solid var(--rule)" }}>
                   <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={22} />
                   <span style={{ font: mono(11), color: "var(--mute)" }}>

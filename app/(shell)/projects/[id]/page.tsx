@@ -113,7 +113,7 @@ export default async function Project({
                   <button type="submit" style={{ ...btnPrimary, marginTop: 11 }}>Sign and add entry</button>
                 </form>
               ) : (
-                <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>
+                <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>
                   Only the people on this project can add to its notebook.
                 </div>
               )}
@@ -124,7 +124,7 @@ export default async function Project({
                   <div style={{ font: mono(10.5), color: "var(--mute)", marginBottom: 7 }}>
                     {new Date(e.created_at).toISOString().slice(0, 16).replace("T", " ")} · signed · {timeAgo(e.created_at)}
                   </div>
-                  <p style={{ font: "400 13px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{e.body}</p>
+                  <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{e.body}</p>
                 </div>
               ))}
             </Panel>
@@ -146,7 +146,7 @@ export default async function Project({
                   </div>
                   <div style={{ font: mono(14, 500, 1.35) }}>{d.title}</div>
                   {d.summary && (
-                    <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>{d.summary}</p>
+                    <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>{d.summary}</p>
                   )}
                   <div style={{ marginTop: 9 }}><Tag>{d.licence}</Tag></div>
                 </div>
@@ -182,7 +182,7 @@ export default async function Project({
                       ))}
                     </div>
                   </fieldset>
-                  <p style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>
+                  <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>
                     This records the dataset and where it lives. The files stay in your repository.
                   </p>
                   <button type="submit" style={{ ...btnPrimary, justifyContent: "center" }}>Deposit</button>
@@ -214,7 +214,7 @@ export default async function Project({
                 ) : commits!.map((c: any) => (
                   <div key={c.id} style={{ padding: "11px 14px", borderBottom: "1px solid var(--rule)" }}>
                     <div style={{ display: "flex", gap: 9, alignItems: "baseline", flexWrap: "wrap" }}>
-                      <span style={{ font: mono(11, 700), color: "var(--signal)" }}>{c.sha.slice(0, 7)}</span>
+                      <span style={{ font: mono(11, 700), color: "var(--signal-ink)" }}>{c.sha.slice(0, 7)}</span>
                       <span style={{ font: mono(12.5, 500), flex: 1, minWidth: 0 }}>{c.message}</span>
                       <span style={{ font: mono(10.5), color: "var(--mute)" }}>{timeAgo(c.created_at)}</span>
                     </div>

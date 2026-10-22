@@ -34,7 +34,7 @@ export default function YearBars({
         })}
       </svg>
       {labels && (
-        <div style={{ display: "flex", justifyContent: "space-between", font: "400 10px/1 var(--mono)", color: "var(--mute)", marginTop: 5 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", font: "400 11px/1 var(--mono)", color: "var(--mute)", marginTop: 5 }}>
           <span>{points[0].year}</span>
           <span>max {max}</span>
           <span>{points.at(-1)!.year}</span>

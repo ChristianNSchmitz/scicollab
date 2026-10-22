@@ -72,13 +72,13 @@ export default async function Thread({ params, searchParams }: { params: Promise
                     <div style={{ font: mono(10), color: "var(--mute)", marginBottom: 5 }}>
                       {mine ? "You" : other.display_name} · {timeAgo(m.created_at)}
                     </div>
-                    <p style={{ font: "400 13px/1.65 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
+                    <p style={{ font: "400 14px/1.65 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
                     {card && (
                       <Link
                         href={`/methods/${card.id}`}
                         style={{ display: "block", marginTop: 9, borderLeft: "3px solid var(--signal)", background: "var(--surface)", padding: "8px 10px", color: "var(--ink)" }}
                       >
-                        <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)" }}>METHOD CARD</div>
+                        <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)" }}>METHOD CARD</div>
                         <div style={{ font: mono(12, 500), marginTop: 3 }}>{card.code} — {card.title}</div>
                       </Link>
                     )}
@@ -107,14 +107,14 @@ export default async function Thread({ params, searchParams }: { params: Promise
           <Panel style={{ borderColor: "var(--flag)" }}>
             <PanelHead>You cannot message strangers yet</PanelHead>
             <div style={{ padding: 14 }}>
-              <p style={{ font: "400 13px/1.7 var(--sans)", margin: "0 0 14px" }}>
+              <p style={{ font: "400 14px/1.7 var(--sans)", margin: "0 0 14px" }}>
                 New accounts cannot send an unsolicited direct message. This is not about you — it is the single
                 measure that stops a research network turning into a recruiting channel.
               </p>
               <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 8 }}>
                 THE PATH TO UNLOCKING · ANY ONE OF THESE
               </div>
-              <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 12.5px/1.8 var(--sans)" }}>
+              <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 13.5px/1.8 var(--sans)" }}>
                 <li>Record one method card — including a run that did not work</li>
                 <li>Ask one question</li>
                 <li>Answer someone else&rsquo;s question</li>
@@ -123,7 +123,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
                 <Link href="/methods/new" style={btnPrimary}>Record a method</Link>
                 <Link href="/ask" style={btn}>Ask publicly instead</Link>
               </div>
-              <p style={{ font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)", margin: "12px 0 0" }}>
+              <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "12px 0 0" }}>
                 Asking publicly is usually faster than a direct message, and others benefit from the answer.
               </p>
             </div>

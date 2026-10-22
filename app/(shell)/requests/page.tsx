@@ -68,7 +68,7 @@ export default async function Requests() {
             <Tag>{what(a)}</Tag>
             {a && <Link href={`/posts/${a.post_id}`} style={{ font: mono(11), color: "var(--link)" }}>on “{postTitle(a.post_id)}”</Link>}
           </div>
-          {r.message && <p style={{ font: "400 12.5px/1.6 var(--sans)", margin: "8px 0 0" }}>{r.message}</p>}
+          {r.message && <p style={{ font: "400 13.5px/1.6 var(--sans)", margin: "8px 0 0" }}>{r.message}</p>}
           {mine && r.status === "pending" && (
             <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
               <form action={decideRequest.bind(null, r.id, "granted")}>

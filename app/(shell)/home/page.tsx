@@ -14,7 +14,7 @@ import { ensureRecordSeed } from "@/lib/record/demo-seed";
 export const dynamic = "force-dynamic";
 
 const INTENT_COLOUR: Record<string, string> = {
-  result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal)",
+  result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal-ink)",
 };
 
 /**
@@ -159,7 +159,7 @@ export default async function Home({
                     <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={18} />
                     <span>{author?.display_name ?? "Someone"}{author?.institution ? ` · ${author.institution}` : ""}</span>
                   </div>
-                  {p.body && <p style={{ font: "400 12.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{p.body.slice(0, 280)}</p>}
+                  {p.body && <p className="sc-prose" style={{ font: "400 13.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{excerpt(p.body, 280)}</p>}
 
                   {card && (
                     <Link href={`/methods/${card.id}`} style={{ display: "block", marginTop: 11, border: "1px solid var(--rule)", background: "var(--bg)", padding: "10px 12px", color: "var(--ink)" }}>
@@ -173,7 +173,7 @@ export default async function Home({
 
                   {p.intent === "collab" && (p.technique || p.offer || p.deadline) && (
                     <div style={{ marginTop: 11, border: "1px solid var(--signal)", padding: "10px 12px" }}>
-                      <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 6 }}>WHAT IS NEEDED</div>
+                      <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 6 }}>WHAT IS NEEDED</div>
                       <div style={{ font: mono(11.5, 400, 1.7) }}>
                         {p.technique && <div>technique · {p.technique}</div>}
                         {p.organism && <div>system · {p.organism}</div>}
@@ -233,12 +233,19 @@ function AttentionPanel({ unread, requests, requestPost, answers, answeredQuesti
     <Panel>
       <PanelHead>Waiting on you</PanelHead>
       {items.length === 0 ? (
-        <div style={{ padding: 14, font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Nothing right now.</div>
+        <div style={{ padding: 14, font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>Nothing right now.</div>
       ) : items.map((i) => (
-        <Link key={i.text} href={i.href} style={{ display: "flex", gap: 8, padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.5 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>
-          <span style={{ color: "var(--signal)" }}>→</span>{i.text}
+        <Link key={i.text} href={i.href} style={{ display: "flex", gap: 8, padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13.5px/1.5 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>
+          <span style={{ color: "var(--signal-ink)" }}>→</span>{i.text}
         </Link>
       ))}
     </Panel>
   );
+}
+
+/** The first `max` characters, cut at a word and marked as cut. */
+function excerpt(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  return cut.slice(0, Math.max(cut.lastIndexOf(" "), max * 0.6)).trimEnd() + "…";
 }

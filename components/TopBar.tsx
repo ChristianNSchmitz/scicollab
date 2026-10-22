@@ -76,7 +76,7 @@ export default function TopBar({ name = "", avatarUrl = null }: { name?: string;
           scicollab
           <span style={{ position: "absolute", left: 0, bottom: -5, width: 11, height: 3, background: "var(--signal)" }} />
         </span>
-        <span style={{ font: "700 16px/1 var(--mono)", color: "var(--signal)" }}>/</span>
+        <span style={{ font: "700 16px/1 var(--mono)", color: "var(--signal-ink)" }}>/</span>
       </Link>
 
       <Link
@@ -95,7 +95,7 @@ export default function TopBar({ name = "", avatarUrl = null }: { name?: string;
         <span className="sc-top-search-text" style={{ font: "400 12px/1 var(--mono)", color: "var(--mute)", flex: 1 }}>
           Search people, projects, datasets, methods, discussions
         </span>
-        <span className="sc-top-kbd" style={{ font: "500 10px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
+        <span className="sc-top-kbd" style={{ font: "500 11px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
       </Link>
 
       <Link href="/methods/new" className="sc-top-create" aria-label="Create" style={{ ...ghost, borderColor: "var(--ink)", background: "var(--ink)", color: "var(--bg)", textDecoration: "none" }}>

@@ -79,5 +79,5 @@ export default function Screen({
     );
   }
 
-  return <div className={className} dangerouslySetInnerHTML={{ __html: wire(html, links) }} />;
+  return <div className={["sc-screen", className].filter(Boolean).join(" ")} dangerouslySetInnerHTML={{ __html: wire(html, links) }} />;
 }

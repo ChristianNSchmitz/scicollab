@@ -112,7 +112,7 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
             </div>
           ))}
         </div>
-        <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)", font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)" }}>
           These are never added together, and no institution can obtain them per researcher — board K5 question 9.
         </div>
       </Panel>
@@ -164,11 +164,11 @@ function Headline({ biblio, recs, recent, recCards }: {
           <div key={c.label} style={{ padding: "16px 16px 14px", background: "var(--surface)" }}>
             <div style={{ font: mono(34, 700), letterSpacing: "-.03em" }}>{c.value}</div>
             <div style={{ font: mono(11, 500), marginTop: 6 }}>{c.label}</div>
-            <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{c.sub}</div>
+            <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{c.sub}</div>
           </div>
         ))}
       </div>
-      <div style={{ padding: "9px 16px", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+      <div style={{ padding: "9px 16px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
         {ok ? (
           <>
             Citations and h-index from <a href={ok.url} target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a>
@@ -215,7 +215,7 @@ function OverTime({ timeline: t }: { timeline: Timeline }) {
           ]}
         />
       </div>
-      <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+      <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
         {dc !== null && <>Citations +{dc.toLocaleString("en-GB")} and involvement +{di} over this range. </>}
         {t.citationsNote} Involvement counts everything you contributed: cards, null results, repeats, questions, answers, reviews and mentoring; what others did with your work is in <Link href="/you/record" style={{ color: "var(--link)" }}>Your record</Link>. Each line has its own scale.
       </div>
@@ -257,11 +257,11 @@ function Publications({ pubs, runs, biblio, example, flash, c }: {
       </div>
 
       {flash && flashText[flash] && (
-        <div role="status" style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 12px/1.5 var(--sans)", background: "var(--bg)" }}>{flashText[flash]}</div>
+        <div role="status" style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.5 var(--sans)", background: "var(--bg)" }}>{flashText[flash]}</div>
       )}
 
       {last && !last.initial && (last.new_works > 0 || last.citations_delta !== 0 || last.removed_works > 0) && (
-        <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)" }}>
+        <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.6 var(--sans)" }}>
           <b style={{ font: mono(10, 700), letterSpacing: ".08em" }}>SINCE THE PREVIOUS SYNC</b>{"  "}
           {[
             last.citations_delta ? `${last.citations_delta > 0 ? "+" : ""}${last.citations_delta} citations` : null,
@@ -272,7 +272,7 @@ function Publications({ pubs, runs, biblio, example, flash, c }: {
       )}
 
       {lastAny && lastAny.status !== "ok" && lastAny.status !== "running" && !example && (
-        <div style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)" }}>
           Last attempt {timeAgo(lastAny.started_at)}: {lastAny.error ?? lastAny.status}
         </div>
       )}
@@ -287,7 +287,7 @@ function Publications({ pubs, runs, biblio, example, flash, c }: {
           All {pubs.length} publications with citations, search and sorting →
         </Link>
       )}
-      <div style={{ padding: "9px 14px", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+      <div style={{ padding: "9px 14px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
         Synced from <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID every 12 hours. If a paper is missing or wrongly attributed, it needs fixing in OpenAlex or ORCID; it will follow here on the next sync.
       </div>
     </Panel>
@@ -311,7 +311,7 @@ function CitationPanel({ c, biblio }: { c: CitationProfile; biblio: Bibliometric
         <div style={cell}>
           <div style={head}>Citations per year</div>
           <YearBars points={perYear} unit="citations" current={c.year} />
-          <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
+          <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
             <b style={{ color: "var(--ink)" }}>{biblio.citationsThisYear}</b> so far in {c.year} · {lastYearValue} in {c.year - 1}
           </div>
         </div>
@@ -320,13 +320,13 @@ function CitationPanel({ c, biblio }: { c: CitationProfile; biblio: Bibliometric
           {c.hasHistory && h.length > 0 ? (
             <>
               <YearBars points={h} unit="h-index" current={c.year} />
-              <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
+              <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
                 <b style={{ color: "var(--ink)" }}>{h.at(-1)!.value}</b> now
                 {hLastYear !== undefined && <> · {h.at(-1)!.value - hLastYear >= 0 ? "+" : ""}{h.at(-1)!.value - hLastYear} since the end of {c.year - 1}</>}
               </div>
             </>
           ) : (
-            <p style={{ font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+            <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
               Appears after the next full sync, which stores each paper&apos;s citations per year.
             </p>
           )}
@@ -334,13 +334,13 @@ function CitationPanel({ c, biblio }: { c: CitationProfile; biblio: Bibliometric
         <div style={cell}>
           <div style={head}>Most cited in {c.year}</div>
           {c.topThisYear.length === 0 ? (
-            <p style={{ font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+            <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
               {c.hasHistory ? `No citations recorded in ${c.year} yet.` : "Appears after the next full sync."}
             </p>
           ) : (
             <ol style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7 }}>
               {c.topThisYear.map((t) => (
-                <li key={t.openalex_id} style={{ display: "flex", gap: 8, font: "400 11.5px/1.4 var(--sans)" }}>
+                <li key={t.openalex_id} style={{ display: "flex", gap: 8, font: "400 12.5px/1.4 var(--sans)" }}>
                   <span style={{ font: mono(11, 700), minWidth: 22, textAlign: "right" }}>{t.n}</span>
                   <span style={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{t.title}</span>
                 </li>
@@ -349,7 +349,7 @@ function CitationPanel({ c, biblio }: { c: CitationProfile; biblio: Bibliometric
           )}
         </div>
       </div>
-      <div style={{ padding: "9px 16px", borderTop: "1px solid var(--rule)", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+      <div style={{ padding: "9px 16px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
         Worked out from each paper&apos;s citations per year as OpenAlex reports them, which covers about the last ten years.
         The current year is still filling and is drawn lighter.
       </div>

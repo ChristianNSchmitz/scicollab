@@ -51,7 +51,7 @@ export default function NewMethod() {
                       <label key={v} style={{ flex: 1, border: "1px solid var(--rule)", padding: "10px 11px", cursor: "pointer", background: "var(--bg)" }}>
                         <input type="radio" name="outcome" value={v} style={{ marginRight: 7 }} />
                         <span style={{ font: mono(12, 500) }}>{label}</span>
-                        <span style={{ display: "block", font: "400 11px/1.4 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{hint}</span>
+                        <span style={{ display: "block", font: "400 12px/1.4 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{hint}</span>
                       </label>
                     ))}
                   </div>
@@ -80,10 +80,10 @@ export default function NewMethod() {
                   <label key={v} style={{ border: "1px solid var(--rule)", padding: "9px 10px", cursor: "pointer" }}>
                     <input type="radio" name="visibility" value={v} defaultChecked={i === 0} style={{ marginRight: 7 }} />
                     <span style={{ font: mono(12, 500) }}>{label}</span>
-                    <span style={{ display: "block", font: "400 11px/1.4 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{hint}</span>
+                    <span style={{ display: "block", font: "400 12px/1.4 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{hint}</span>
                   </label>
                 ))}
-                <p style={{ font: "400 11px/1.55 var(--sans)", color: "var(--mute)", margin: "2px 0 0" }}>
+                <p style={{ font: "400 12px/1.55 var(--sans)", color: "var(--mute)", margin: "2px 0 0" }}>
                   You can raise visibility later. Public plus a DOI is designed as irreversible — that decision is still open on board K5.
                 </p>
               </div>

@@ -19,7 +19,7 @@ export default async function BoardScreen({ params }: { params: Promise<{ id: st
     <div style={{ background: "var(--canvas)", minHeight: "100vh", padding: 24 }}>
       <div style={{ maxWidth: 1440, margin: "0 auto 14px", display: "flex", gap: 12, alignItems: "baseline", flexWrap: "wrap" }}>
         <Link href="/boards" style={{ font: mono(11, 500), border: "1px solid var(--ink)", padding: "7px 10px", color: "var(--ink)" }}>← all screens</Link>
-        <span style={{ font: mono(10.5, 700), color: "var(--signal)" }}>{entry.num}</span>
+        <span style={{ font: mono(10.5, 700), color: "var(--signal-ink)" }}>{entry.num}</span>
         <span style={{ font: mono(13, 500) }}>{entry.name}</span>
         <span style={{ font: mono(11), color: "var(--mute)" }}>{entry.dim || `${entry.width}px`} · board {entry.board}</span>
       </div>

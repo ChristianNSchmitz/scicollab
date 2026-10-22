@@ -69,7 +69,7 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
                     ))}
                   </select>
                 ) : (
-                  <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+                  <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
                     You have no method cards yet. A question without one still works, it just makes peers guess.{" "}
                     <Link href="/methods/new" style={{ color: "var(--link)" }}>Record a method</Link>
                   </p>

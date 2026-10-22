@@ -32,7 +32,7 @@ export default async function Rooms() {
               <PanelHead>
                 {house.name} · {rooms.length} rooms
               </PanelHead>
-              <div style={{ padding: "10px 14px", font: "400 12px/1.5 var(--sans)", color: "var(--mute)", borderBottom: "1px solid var(--rule)" }}>
+              <div style={{ padding: "10px 14px", font: "400 13px/1.5 var(--sans)", color: "var(--mute)", borderBottom: "1px solid var(--rule)" }}>
                 {house.blurb}
               </div>
               {rooms.map((room) => {
@@ -42,10 +42,10 @@ export default async function Rooms() {
                   <div key={room.id} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "12px 14px", borderBottom: "1px solid var(--rule)" }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ font: mono(13.5, 500) }}>#{room.id}</div>
-                      <div style={{ font: "400 12px/1.55 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{room.blurb}</div>
+                      <div style={{ font: "400 13px/1.55 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{room.blurb}</div>
                       {elsewhere.length > 0 && (
                         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 7, alignItems: "center" }}>
-                          <span style={{ font: mono(9.5, 700), letterSpacing: ".09em", color: "var(--signal)" }}>ALSO IN</span>
+                          <span style={{ font: mono(9.5, 700), letterSpacing: ".09em", color: "var(--signal-ink)" }}>ALSO IN</span>
                           {elsewhere.map((h) => <Tag key={h.id}>{h.name}</Tag>)}
                         </div>
                       )}

@@ -49,7 +49,7 @@ export default async function Messages() {
               </div>
               <span style={{ font: mono(10.5), color: "var(--mute)" }}>{timeAgo(t.last.created_at)}</span>
               {t.unread > 0 && (
-                <span style={{ font: mono(10, 700), background: "var(--signal)", color: "#fff", padding: "2px 6px" }}>{t.unread}</span>
+                <span style={{ font: mono(10, 700), background: "var(--signal-fill)", color: "var(--on-signal)", padding: "2px 6px" }}>{t.unread}</span>
               )}
             </Link>
           );

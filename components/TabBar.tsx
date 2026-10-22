@@ -51,7 +51,7 @@ export default function TabBar() {
       <>
         {on && <span style={{ position: "absolute", top: 0, left: "22%", right: "22%", height: 3, background: "var(--signal)" }} />}
         <Icon d={d} />
-        <span style={{ font: "500 10px/1 var(--mono)" }}>{label}</span>
+        <span style={{ font: "500 11px/1 var(--mono)" }}>{label}</span>
       </>
     );
     const style: React.CSSProperties = {
@@ -79,7 +79,7 @@ export default function TabBar() {
             maxHeight: "75vh", overflowY: "auto", background: "var(--surface)", borderTop: "1px solid var(--ink)",
           }}>
             <div style={{ display: "flex", alignItems: "center", padding: "12px 16px", borderBottom: "1px solid var(--rule)" }}>
-              <span style={{ font: "700 10px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", flex: 1 }}>More</span>
+              <span style={{ font: "700 11px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", flex: 1 }}>More</span>
               <button type="button" onClick={() => setOpen(false)} aria-label="Close" style={{ background: "transparent", border: "1px solid var(--rule)", padding: "6px 10px", font: "500 11px/1 var(--mono)", color: "var(--ink)", cursor: "pointer" }}>Close</button>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, background: "var(--rule)" }}>

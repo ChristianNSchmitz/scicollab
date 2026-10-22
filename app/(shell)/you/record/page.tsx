@@ -71,7 +71,7 @@ export default async function RecordPage({ searchParams }: {
             <Panel key={a.key} style={signal ? { borderColor: "var(--signal)" } : undefined}>
               <div style={{ padding: "12px 14px 14px" }}>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
-                  <Link href={q({ axis: a.key }) + "#ledger"} style={{ ...smallCaps, color: signal ? "var(--signal)" : "var(--ink)", textDecoration: "none" }}>
+                  <Link href={q({ axis: a.key }) + "#ledger"} style={{ ...smallCaps, color: signal ? "var(--signal-ink)" : "var(--ink)", textDecoration: "none" }}>
                     {a.label}
                   </Link>
                   <span style={{ font: mono(26, 700), letterSpacing: "-.02em" }}>{a.total}</span>
@@ -143,7 +143,7 @@ export default async function RecordPage({ searchParams }: {
             </table>
           </div>
         )}
-        <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
           A read is a distinct reader in one week. Who read your work is never stored, so it cannot be shown to you or anyone else (board J2).
         </div>
       </Panel>
@@ -161,7 +161,7 @@ export default async function RecordPage({ searchParams }: {
               </Empty>
             ) : r.reuse.slice(0, 8).map((e, i) => (
               <Link key={i} href={e.href} style={{ display: "flex", gap: 12, padding: "11px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" }}>
-                <span style={{ font: "400 12.5px/1.5 var(--sans)", flex: 1, minWidth: 0 }}>{e.text}</span>
+                <span style={{ font: "400 13.5px/1.5 var(--sans)", flex: 1, minWidth: 0 }}>{e.text}</span>
                 <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(e.at)}</span>
               </Link>
             ))}
@@ -174,7 +174,7 @@ export default async function RecordPage({ searchParams }: {
               <Empty>Nothing waiting on you.</Empty>
             ) : r.loops.slice(0, 7).map((l, i) => (
               <Link key={i} href={l.href} style={{ display: "block", padding: "10px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" }}>
-                <div style={{ font: "400 12px/1.45 var(--sans)" }}>{l.text}</div>
+                <div style={{ font: "400 13px/1.45 var(--sans)" }}>{l.text}</div>
                 <div style={{ font: mono(10), color: "var(--mute)", marginTop: 3 }}>{l.hint}</div>
               </Link>
             ))}
@@ -213,7 +213,7 @@ export default async function RecordPage({ searchParams }: {
                   <tr key={i} style={{ borderTop: "1px solid var(--rule)" }}>
                     <td style={{ ...td, font: mono(11), color: "var(--mute)", whiteSpace: "nowrap" }}>{e.at.slice(0, 10)}</td>
                     <td style={{ ...td, font: mono(11), whiteSpace: "nowrap" }}>{AXIS_LABEL[e.axis]}</td>
-                    <td style={{ ...td, font: "400 12.5px/1.5 var(--sans)" }}>{e.text}</td>
+                    <td style={{ ...td, font: "400 13.5px/1.5 var(--sans)" }}>{e.text}</td>
                     <td style={{ ...td, textAlign: "right" }}><Link href={e.href} style={{ font: mono(11) }}>open →</Link></td>
                   </tr>
                 ))}

@@ -28,7 +28,7 @@ export default async function Welcome({ searchParams }: { searchParams: Promise<
       lede="A house is a broad discipline. Choosing one joins you to the rooms inside it, and you can prune or add later. Most researchers pick two or three — the cross-disciplinary rooms are where the useful surprises are."
     >
       {error === "none" && (
-        <p role="alert" style={{ maxWidth: 900, font: "400 12.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
+        <p role="alert" style={{ maxWidth: 900, font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
           Pick at least one house. Your feed is built from the rooms inside the houses you choose.
         </p>
       )}
@@ -43,7 +43,7 @@ export default async function Welcome({ searchParams }: { searchParams: Promise<
                     <input type="checkbox" name="house" value={h.id} style={{ marginTop: 3 }} />
                     <div style={{ minWidth: 0 }}>
                       <div style={{ font: mono(13.5, 500) }}>{h.name}</div>
-                      <div style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{h.blurb}</div>
+                      <div style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{h.blurb}</div>
                       <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 7 }}>
                         {rooms.length} rooms · {rooms.slice(0, 3).map((r) => "#" + r.id).join("  ")}
                       </div>
