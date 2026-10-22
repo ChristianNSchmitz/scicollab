@@ -60,3 +60,19 @@ create policy avatars_update on storage.objects for update to authenticated
   using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 create policy avatars_delete on storage.objects for delete to authenticated
   using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Notebook entries: eln_write only checked the author, so anyone signed in
+-- could append to any project's notebook. Writing now needs membership,
+-- the same condition eln_read already uses.
+-- ─────────────────────────────────────────────────────────────────────────
+drop policy if exists eln_write on public.eln_entries;
+create policy eln_write on public.eln_entries for insert to authenticated
+  with check (
+    author_id = auth.uid()
+    and exists (select 1 from public.projects p
+                where p.id = project_id
+                  and (p.owner_id = auth.uid()
+                       or exists (select 1 from public.project_members m
+                                  where m.project_id = p.id and m.user_id = auth.uid())))
+  );

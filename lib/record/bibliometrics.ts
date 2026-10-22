@@ -64,8 +64,9 @@ export async function bibliometricsFor(userId: string, orcidRaw: string | null |
 
 // ── citation history ──────────────────────────────────────────────────────
 // OpenAlex reports citations per year only. For a weekly or monthly view,
-// SciCollab keeps its own dated snapshot of the total, at most one a day,
-// written when the owner opens their page. History starts at the first one.
+// SciCollab keeps its own dated snapshot of the total and the h-index, at
+// most one a day, written by every successful sync (lib/openalex/store.ts).
+// History starts at the first one.
 
 
 type Client = SupabaseClient<any, "public", any>;

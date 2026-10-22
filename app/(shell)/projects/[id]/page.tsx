@@ -107,10 +107,16 @@ export default async function Project({
           {active === "notebook" && (
             <Panel>
               <PanelHead>Notebook — append only</PanelHead>
-              <form action={addEntry.bind(null, p.id)} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
-                <textarea name="body" rows={4} required style={field} placeholder="What you did, what you observed, what you are doing next." />
-                <button type="submit" style={{ ...btnPrimary, marginTop: 11 }}>Sign and add entry</button>
-              </form>
+              {isMember ? (
+                <form action={addEntry.bind(null, p.id)} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
+                  <textarea name="body" rows={4} required style={field} placeholder="What you did, what you observed, what you are doing next." />
+                  <button type="submit" style={{ ...btnPrimary, marginTop: 11 }}>Sign and add entry</button>
+                </form>
+              ) : (
+                <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>
+                  Only the people on this project can add to its notebook.
+                </div>
+              )}
               {(entries?.length ?? 0) === 0 ? (
                 <Empty>No entries yet.</Empty>
               ) : entries!.map((e: any) => (

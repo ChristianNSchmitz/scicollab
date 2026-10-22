@@ -36,6 +36,12 @@ export async function addEntry(projectId: string, form: FormData) {
   const { supabase, user } = await me();
   const body = String(form.get("body") ?? "").trim();
   if (!body) return;
+  // The notebook belongs to the project's people; supabase/06 makes the
+  // policy say the same, this gives the clear message.
+  const { data: member } = await supabase
+    .from("project_members").select("user_id")
+    .eq("project_id", projectId).eq("user_id", user.id).maybeSingle();
+  if (!member) throw new Error("Only project members can write in this notebook.");
   const { error } = await supabase
     .from("eln_entries")
     .insert({ project_id: projectId, author_id: user.id, body, signed_at: new Date().toISOString() });

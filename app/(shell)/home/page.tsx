@@ -5,14 +5,10 @@ import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import { ROOMS, roomById, housesOfRoom, INTENTS, intentById } from "@/lib/taxonomy";
-import { after } from "next/server";
-import { bibliometricsFor, loadSnapshots, recentChange, type Bibliometrics, type RecentChange } from "@/lib/record/bibliometrics";
-import { isDue, syncResearcher, DEMO_ORCID, normaliseOrcid } from "@/lib/openalex/sync";
-import { lastRuns, readPublications } from "@/lib/openalex/store";
-import { examplePublications } from "@/lib/openalex/example";
+import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibliometrics";
 import { citationProfile } from "@/lib/record/citations";
-import { syncNow } from "@/app/actions/openalex";
-import { isConfigured } from "@/lib/mode";
+import { loadPublications, syncIfDue } from "@/lib/record/publications";
+import CitationTracker from "@/components/record/CitationTracker";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 
 export const dynamic = "force-dynamic";
@@ -68,17 +64,14 @@ export default async function Home({
     supabase.from("questions").select("id, title").eq("author_id", user!.id),
   ]);
   // An overdue OpenAlex sync runs after the page is sent; the next visit shows it.
-  if (await isDue(user!.id, me?.orcid)) after(() => syncResearcher(user!.id, me?.orcid, "visit"));
-  const biblio = await bibliometricsFor(user!.id, me?.orcid);
-  const example = !isConfigured() && normaliseOrcid(me?.orcid) === DEMO_ORCID;
-  const [snapshots, runs, pubs] = await Promise.all([
-    loadSnapshots(supabase, user!.id, biblio),
-    example ? Promise.resolve([]) : lastRuns(user!.id, 20),
-    biblio.state !== "ok" ? Promise.resolve([]) : example ? Promise.resolve(examplePublications(user!.id)) : readPublications(user!.id),
+  await syncIfDue(user!.id, me?.orcid, { waitForFirst: false });
+  const [biblio, { pubs, runs }] = await Promise.all([
+    bibliometricsFor(user!.id, me?.orcid),
+    loadPublications(user!.id, me?.orcid, 20),
   ]);
+  const snapshots = await loadSnapshots(supabase, user!.id, biblio);
   const change = recentChange(biblio, snapshots, runs);
-  const hist = citationProfile(pubs).hIndexByYear;
-  const hDelta = hist.length > 1 ? hist.at(-1)!.value - hist.at(-2)!.value : null;
+  const citations = citationProfile(pubs);
 
   const requestAtts = [...new Set((myRequests ?? []).map((r: any) => r.attachment_id))];
   const { data: atts } = requestAtts.length
@@ -196,7 +189,7 @@ export default async function Home({
         </div>
 
         <aside className="sc-home-aside" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <ResearchPanel biblio={biblio} change={change} hDelta={hDelta} />
+          <CitationTracker biblio={biblio} change={change} c={citations} pubs={pubs} />
           <AttentionPanel
             unread={unread ?? 0}
             requests={(myRequests ?? []).length}
@@ -224,63 +217,6 @@ export default async function Home({
         </aside>
       </div>
     </Page>
-  );
-}
-
-/** Citations and h-index at a glance, and what changed in the last 30 days. */
-function ResearchPanel({ biblio, change, hDelta }: { biblio: Bibliometrics; change: RecentChange; hDelta: number | null }) {
-  const ok = biblio.state === "ok" ? biblio : null;
-  return (
-    <Panel>
-      <PanelHead>Your research</PanelHead>
-      {ok ? (
-        <>
-          <div className="sc-pair" style={{ gap: 1, background: "var(--rule)", borderBottom: "1px solid var(--rule)" }}>
-            {([
-              [ok.citations.toLocaleString("en-GB"), "citations", `${ok.citationsThisYear} in ${ok.year}`],
-              [ok.hIndex, "h-index", hDelta === null ? `i10-index ${ok.i10}` : `${hDelta >= 0 ? "+" : ""}${hDelta} since ${ok.year - 1}`],
-            ] as const).map(([v, l, sub]) => (
-              <div key={String(l)} style={{ background: "var(--surface)", padding: "12px 14px" }}>
-                <div style={{ font: mono(22, 700), letterSpacing: "-.02em" }}>{v}</div>
-                <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 4 }}>{l}</div>
-                <div style={{ font: mono(10), color: "var(--mute)", marginTop: 3 }}>{sub}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{ padding: "10px 14px", font: "400 12px/1.6 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>
-            {change.gain !== null && (
-              <div><b style={{ color: change.gain > 0 ? "var(--ok)" : "var(--ink)" }}>{change.gain > 0 ? "+" : ""}{change.gain}</b> citations since {change.since}</div>
-            )}
-            {change.newPubs.length > 0 ? (
-              <div>
-                <b>{change.newPubs.length}</b> new publication{change.newPubs.length > 1 ? "s" : ""} in 30 days
-                {change.newPubs.slice(0, 2).map((p) => (
-                  <div key={p.openalex_id} style={{ font: mono(11), color: "var(--mute)", marginTop: 3 }}>· {p.title}</div>
-                ))}
-              </div>
-            ) : <div style={{ color: "var(--mute)" }}>No new publications in 30 days.</div>}
-            <div style={{ font: mono(10.5), color: "var(--mute)" }}>
-              {ok.example ? "example values · demo account" : `OpenAlex · checked ${timeAgo(ok.updated)}`}
-            </div>
-          </div>
-          <div style={{ padding: "0 14px 14px", display: "flex", gap: 6 }}>
-            <Link href="/you#publications" style={{ ...btn, flex: 1, justifyContent: "center" }}>Publications</Link>
-            {!ok.example && (
-              <form action={syncNow}><button type="submit" style={btn} title="Check OpenAlex now">Sync now</button></form>
-            )}
-          </div>
-        </>
-      ) : (
-        <div style={{ padding: 14, font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-          {biblio.state === "no-orcid" || biblio.state === "invalid-orcid" ? (
-            <>Link your ORCID and your citations, h-index and new publications show here, updated automatically.{" "}
-              <Link href="/settings#orcid" style={{ color: "var(--link)" }}>Link ORCID</Link></>
-          ) : biblio.state === "pending" ? "Fetching your record from OpenAlex for the first time…"
-            : biblio.state === "not-found" ? "OpenAlex has no author for your ORCID yet. It is checked again on every sync."
-            : "OpenAlex could not be reached. The next sync will try again."}
-        </div>
-      )}
-    </Panel>
   );
 }
 

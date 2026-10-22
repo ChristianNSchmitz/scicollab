@@ -140,6 +140,7 @@ export default function TopBar({ name = "", avatarUrl = null }: { name?: string;
               <div style={{ font: "500 12px/1.3 var(--mono)" }}>{name || "Signed in"}</div>
             </div>
             <Link href="/you" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your profile</Link>
+            <Link href="/you/publications" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your publications</Link>
             <Link href="/requests" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Access requests</Link>
             <Link href="/settings" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Settings</Link>
             <button onClick={signOut} style={{ width: "100%", textAlign: "left", padding: "9px 12px", font: "400 12px/1 var(--mono)", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", color: "var(--err)", cursor: "pointer" }}>

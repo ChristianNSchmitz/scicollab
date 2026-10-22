@@ -2,37 +2,30 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, Visibility, btn, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
-import { after } from "next/server";
 import { bibliometricsFor, loadSnapshots, type Bibliometrics } from "@/lib/record/bibliometrics";
-import { isDue, syncResearcher, DEMO_ORCID, normaliseOrcid, SYNC_INTERVAL_MS } from "@/lib/openalex/sync";
-import { readAuthor, readPublications, lastRuns, type PubRow, type RunRow } from "@/lib/openalex/store";
-import { examplePublications, exampleRun } from "@/lib/openalex/example";
+import { normaliseOrcid, SYNC_INTERVAL_MS } from "@/lib/openalex/sync";
+import type { PubRow, RunRow } from "@/lib/openalex/store";
 import { syncNow } from "@/app/actions/openalex";
-import { isConfigured } from "@/lib/mode";
 import { loadRecord } from "@/lib/record/metrics";
 import { buildTimeline, RANGES, type Range, type Timeline } from "@/lib/record/timeline";
 import TimelineChart from "@/components/record/TimelineChart";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
+import { loadPublications, syncIfDue, sortPublications, newIds } from "@/lib/record/publications";
+import PublicationRow from "@/components/record/PublicationRow";
 import Avatar from "@/components/Avatar";
 import { orcidUrl } from "@/lib/orcid";
 import { citationProfile, type CitationProfile } from "@/lib/record/citations";
 import YearBars from "@/components/record/YearBars";
 
-type Sort = "new" | "cited" | "year" | "change";
-const SORTS: { key: Sort; label: string }[] = [
-  { key: "new", label: "Newest" }, { key: "cited", label: "Most cited" },
-  { key: "year", label: "Cited this year" }, { key: "change", label: "Since last sync" },
-];
 
 export const dynamic = "force-dynamic";
 
 /** Your record — board B3 screen 16. Six axes, never summed. Citations,
  *  h-index and recommendations sit above them as three separate numbers,
  *  each with its source; nothing on this page combines them. */
-export default async function You({ searchParams }: { searchParams: Promise<{ range?: string; sync?: string; sort?: string }> }) {
+export default async function You({ searchParams }: { searchParams: Promise<{ range?: string; sync?: string }> }) {
   ensureRecordSeed();
-  const { range: rangeParam, sync: syncFlash, sort: sortParam } = await searchParams;
-  const sort: Sort = SORTS.some((s) => s.key === sortParam) ? (sortParam as Sort) : "new";
+  const { range: rangeParam, sync: syncFlash } = await searchParams;
   const range: Range = RANGES.some((r) => r.key === rangeParam) ? (rangeParam as Range) : "months";
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -45,21 +38,9 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
     supabase.from("datasets").select("id", { count: "exact", head: true }).eq("owner_id", user!.id),
   ]);
 
-  // OpenAlex: synced every 12 hours by the scheduler. A visit is a safety
-  // net — the first ever sync runs before the page renders (so there is
-  // something to show), later overdue ones run after the response is sent.
-  if (await isDue(user!.id, profile?.orcid)) {
-    const synced = await readAuthor(user!.id);
-    if (!synced || synced.orcid !== normaliseOrcid(profile?.orcid)) {
-      await Promise.race([syncResearcher(user!.id, profile?.orcid, "visit"), new Promise((r) => setTimeout(r, 12000))]);
-    } else {
-      after(() => syncResearcher(user!.id, profile?.orcid, "visit"));
-    }
-  }
-  const isExample = !isConfigured() && normaliseOrcid(profile?.orcid) === DEMO_ORCID;
-  const [pubs, runs] = isExample
-    ? [examplePublications(user!.id), [exampleRun(user!.id)]]
-    : await Promise.all([readPublications(user!.id), lastRuns(user!.id, 10)]);
+  // OpenAlex: synced every 12 hours by the scheduler; a visit is the safety net.
+  await syncIfDue(user!.id, profile?.orcid, { waitForFirst: true });
+  const { pubs, runs, example: isExample } = await loadPublications(user!.id, profile?.orcid, 10);
   const profileC = citationProfile(pubs);
 
   // Recommendations: other people endorsing your method cards.
@@ -97,6 +78,7 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
       lede={[profile?.role_title, profile?.institution, profile?.field].filter(Boolean).join(" · ") || "Add an institution and field in Settings."}
       actions={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          <Link href="/you/publications" style={btn}>Publications →</Link>
           <Link href="/you/record" style={btn}>Your record →</Link>
           <Link href="/settings" style={btn}>Edit profile</Link>
         </div>
@@ -117,7 +99,7 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
       <Headline biblio={biblio} recs={recs?.length ?? 0} recent={recent} recCards={recCards} />
       <CitationPanel c={profileC} biblio={biblio} />
       <OverTime timeline={timeline} />
-      <Publications pubs={pubs} runs={runs} biblio={biblio} example={isExample} flash={syncFlash} sort={sort} range={range} c={profileC} />
+      <Publications pubs={pubs} runs={runs} biblio={biblio} example={isExample} flash={syncFlash} c={profileC} />
 
       <Panel style={{ marginBottom: 16 }}>
         <PanelHead>Six axes · never summed</PanelHead>
@@ -241,66 +223,23 @@ function OverTime({ timeline: t }: { timeline: Timeline }) {
   );
 }
 
-/** Publications as last synced from OpenAlex, what changed, and when. */
-function Publications({ pubs, runs, biblio, example, flash, sort, range, c }: {
-  pubs: PubRow[]; runs: RunRow[]; biblio: Bibliometrics; example: boolean; flash?: string; sort: Sort; range: Range; c: CitationProfile;
+/** The five newest publications and what changed; the full list with its
+ *  statistics, search and sorting is /you/publications. */
+function Publications({ pubs, runs, biblio, example, flash, c }: {
+  pubs: PubRow[]; runs: RunRow[]; biblio: Bibliometrics; example: boolean; flash?: string; c: CitationProfile;
 }) {
-  const thisYear = (p: PubRow) => c.trend.get(p.openalex_id)?.at(-1) ?? 0;
   if (biblio.state === "no-orcid" || biblio.state === "invalid-orcid") return null;
-  const byDate = (a: PubRow, b: PubRow) => (b.pub_date ?? `${b.year ?? 0}`).localeCompare(a.pub_date ?? `${a.year ?? 0}`);
-  const sorted = [...pubs].sort((a, b) =>
-    sort === "cited" ? b.cited_by_count - a.cited_by_count || byDate(a, b)
-    : sort === "year" ? thisYear(b) - thisYear(a) || b.cited_by_count - a.cited_by_count
-    : sort === "change" ? (b.cited_by_count - b.prev_cited_by_count) - (a.cited_by_count - a.prev_cited_by_count) || b.cited_by_count - a.cited_by_count
-    : byDate(a, b));
-  const sortHref = (k: Sort) => {
-    const q = new URLSearchParams();
-    if (range !== "months") q.set("range", range);
-    if (k !== "new") q.set("sort", k);
-    const s = q.toString();
-    return s ? `/you?${s}#publications` : "/you#publications";
-  };
   const last = runs.find((r) => r.status === "ok");
   const lastAny = runs[0];
   const synced = biblio.state === "ok" ? biblio.updated : last?.finished_at ?? null;
   const nextIn = synced ? Math.max(0, +new Date(synced) + SYNC_INTERVAL_MS - Date.now()) : 0;
   const hours = (ms: number) => (ms < 3600e3 ? `${Math.max(1, Math.round(ms / 60e3))} min` : `${Math.round(ms / 3600e3)} h`);
-  const isNew = (p: PubRow) => !example ? last && !last.initial && last.changes.some((c) => c.new && c.openalex_id === p.openalex_id) : p.openalex_id === "W-example-0";
+  const fresh = newIds(runs, example, pubs);
   const flashText: Record<string, string> = {
     ok: "Synced just now.", cooldown: "Synced less than 10 minutes ago; try again shortly.",
     "rate-limited": "OpenAlex's daily allowance is used up; the next scheduled sync will retry.",
     "not-found": "OpenAlex has no record for this ORCID.", error: "OpenAlex could not be reached; the next sync will retry.",
     skipped: "Nothing to sync for this account.",
-  };
-  const link = (p: PubRow) => (p.doi ? `https://doi.org/${p.doi}` : p.openalex_id.startsWith("W-example") ? undefined : `https://openalex.org/${p.openalex_id}`);
-  const row = (p: PubRow) => {
-    const d = p.cited_by_count - p.prev_cited_by_count;
-    const href = link(p);
-    return (
-      <div key={p.openalex_id} style={{ display: "flex", gap: 12, alignItems: "baseline", padding: "10px 14px", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
-        <div style={{ flex: "1 1 320px", minWidth: 0 }}>
-          <div style={{ font: "500 12.5px/1.45 var(--sans)" }}>
-            {isNew(p) && <span style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--ok)", border: "1px solid var(--ok)", padding: "1px 5px", marginRight: 7 }}>NEW</span>}
-            {href ? <a href={href} target="_blank" rel="noreferrer" style={{ color: "var(--ink)" }}>{p.title || "Untitled"}</a> : (p.title || "Untitled")}
-          </div>
-          <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 3 }}>
-            {[p.venue, p.year, p.type].filter(Boolean).join(" · ")}
-          </div>
-        </div>
-        {c.hasHistory && (c.trend.get(p.openalex_id) ?? []).some((n) => n > 0) && (
-          <div style={{ width: 72, flex: "none", alignSelf: "center" }} title={`Citations per year, ${c.trendYears[0]}–${c.year}`}>
-            <YearBars points={c.trendYears.map((y, i) => ({ year: y, value: c.trend.get(p.openalex_id)![i] }))}
-                      unit="citations" height={20} labels={false} current={c.year} />
-          </div>
-        )}
-        <div style={{ textAlign: "right", whiteSpace: "nowrap" }}>
-          <span style={{ font: mono(13, 600) }}>{p.cited_by_count}</span>
-          <span style={{ font: mono(10.5), color: "var(--mute)" }}> citations</span>
-          {thisYear(p) > 0 && <div style={{ font: mono(10.5), color: "var(--mute)" }}>{thisYear(p)} in {c.year}</div>}
-          {d !== 0 && <div style={{ font: mono(10.5), color: d > 0 ? "var(--ok)" : "var(--mute)" }}>{d > 0 ? "+" : ""}{d} since last sync</div>}
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -312,14 +251,8 @@ function Publications({ pubs, runs, biblio, example, flash, sort, range, c }: {
         <span style={{ font: mono(10.5), color: "var(--mute)" }}>
           {example ? "demo account, not synced" : synced ? `synced ${timeAgo(synced)} · next in ~${hours(nextIn)}` : "first sync pending"}
         </span>
-        {pubs.length > 0 && (
-          <span style={{ display: "flex", gap: 8, font: mono(11) }}>
-            <a href="/you/publications/export" download style={{ color: "var(--link)" }}>BibTeX</a>
-            <a href="/you/publications/export?format=csv" download style={{ color: "var(--link)" }}>CSV</a>
-          </span>
-        )}
         {!example && (
-          <form action={syncNow}><button type="submit" style={{ ...btn, height: 28, padding: "0 10px", font: mono(11, 500) }}>Sync now</button></form>
+          <form action={syncNow.bind(null, "/you")}><button type="submit" style={{ ...btn, height: 28, padding: "0 10px", font: mono(11, 500) }}>Sync now</button></form>
         )}
       </div>
 
@@ -344,49 +277,15 @@ function Publications({ pubs, runs, biblio, example, flash, sort, range, c }: {
         </div>
       )}
 
-      {pubs.length > 1 && (
-        <div role="group" aria-label="Sort publications" style={{ display: "flex", gap: 6, flexWrap: "wrap", padding: "8px 14px", borderBottom: "1px solid var(--rule)" }}>
-          {SORTS.map((s) => (
-            <Link key={s.key} href={sortHref(s.key)} scroll={false} aria-current={s.key === sort ? "true" : undefined}
-                  style={{ font: mono(11, 500), padding: "4px 9px", border: "1px solid var(--rule)", textDecoration: "none",
-                           background: s.key === sort ? "var(--ink)" : "transparent", color: s.key === sort ? "var(--bg)" : "var(--ink)" }}>
-              {s.label}
-            </Link>
-          ))}
-        </div>
-      )}
-
       {pubs.length === 0 ? (
         <Empty>{biblio.state === "pending" ? "The first sync is still running. Reload in a moment." : "No publications in OpenAlex for this ORCID yet."}</Empty>
       ) : (
-        <>
-          {sorted.slice(0, 8).map(row)}
-          {sorted.length > 8 && (
-            <details>
-              <summary style={{ padding: "10px 14px", font: mono(11), color: "var(--link)", cursor: "pointer" }}>Show all {sorted.length}</summary>
-              {sorted.slice(8).map(row)}
-            </details>
-          )}
-        </>
+        sortPublications(pubs, "new", c).slice(0, 5).map((p) => <PublicationRow key={p.openalex_id} p={p} c={c} isNew={fresh.has(p.openalex_id)} />)
       )}
-      {runs.length > 0 && !example && (
-        <details style={{ borderBottom: "1px solid var(--rule)" }}>
-          <summary style={{ padding: "10px 14px", font: mono(11), color: "var(--link)", cursor: "pointer" }}>Sync history · last {runs.length}</summary>
-          {runs.map((r) => (
-            <div key={r.id} style={{ display: "flex", gap: 10, flexWrap: "wrap", padding: "7px 14px", borderTop: "1px solid var(--rule)", font: mono(11, 400, 1.5) }}>
-              <span style={{ color: "var(--mute)", minWidth: 150 }}>{new Date(r.started_at).toISOString().slice(0, 16).replace("T", " ")} UTC</span>
-              <span style={{ color: "var(--mute)", minWidth: 64 }}>{r.trigger}</span>
-              <span style={{ flex: 1, minWidth: 200, color: r.status === "ok" ? "var(--ink)" : "var(--err)" }}>
-                {r.status === "running" ? "running…"
-                  : r.status !== "ok" ? (r.error ?? r.status)
-                  : r.initial ? "first import"
-                  : [r.citations_delta ? `${r.citations_delta > 0 ? "+" : ""}${r.citations_delta} citations` : null,
-                     r.new_works ? `${r.new_works} new publication${r.new_works > 1 ? "s" : ""}` : null,
-                     r.removed_works ? `${r.removed_works} removed` : null].filter(Boolean).join(" · ") || "no change"}
-              </span>
-            </div>
-          ))}
-        </details>
+      {pubs.length > 0 && (
+        <Link href="/you/publications" style={{ display: "block", padding: "11px 14px", font: mono(12, 500), color: "var(--link)", borderBottom: "1px solid var(--rule)" }}>
+          All {pubs.length} publications with citations, search and sorting →
+        </Link>
       )}
       <div style={{ padding: "9px 14px", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
         Synced from <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID every 12 hours. If a paper is missing or wrongly attributed, it needs fixing in OpenAlex or ORCID; it will follow here on the next sync.

@@ -45,7 +45,9 @@ export function examplePublications(userId: string): PubRow[] {
   const sum = rows.reduce((n, r) => n + r.cited_by_count, 0);
   let left = 412;
   rows.forEach((r, i) => { r.cited_by_count = i === rows.length - 1 ? left : Math.round((r.cited_by_count / sum) * 412); left -= r.cited_by_count; });
-  rows.forEach((r, i) => { r.prev_cited_by_count = Math.max(0, r.cited_by_count - (i % 5 === 1 ? 2 : i % 4 === 0 ? 1 : 0)); });
+  // A few small gains since the last sync, fewer than the 30-day gain the
+  // example snapshots show, so the two never contradict each other.
+  rows.forEach((r, i) => { r.prev_cited_by_count = Math.max(0, r.cited_by_count - (i % 9 === 3 ? 1 : 0)); });
   // Spread the citations over the years so they add up to the persona's
   // per-year example counts (lib/record/bibliometrics.ts): each year's count
   // goes to the papers that existed then, in proportion to what each still

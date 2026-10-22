@@ -14,7 +14,8 @@ export const dynamic = "force-dynamic";
  * has something in it the moment you arrive — the alternative is an empty
  * page and a tag search, which is where new accounts go to die.
  */
-export default async function Welcome() {
+export default async function Welcome({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const { error } = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { count } = await supabase
@@ -26,6 +27,11 @@ export default async function Welcome() {
       title="Pick your houses"
       lede="A house is a broad discipline. Choosing one joins you to the rooms inside it, and you can prune or add later. Most researchers pick two or three — the cross-disciplinary rooms are where the useful surprises are."
     >
+      {error === "none" && (
+        <p role="alert" style={{ maxWidth: 900, font: "400 12.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
+          Pick at least one house. Your feed is built from the rooms inside the houses you choose.
+        </p>
+      )}
       <form action={joinHouses} style={{ maxWidth: 900 }}>
         <div className="sc-pair" style={{ gap: 12 }}>
           {HOUSES.map((h) => {
