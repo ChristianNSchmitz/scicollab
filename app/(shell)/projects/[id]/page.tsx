@@ -1,9 +1,10 @@
+import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { addEntry, depositDataset } from "@/app/actions/projects";
 import { Page, Panel, PanelHead, Empty, Tag, Visibility, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
-import { timeAgo } from "@/lib/format";
+import { timeAgo, bytes } from "@/lib/format";
 import Avatar from "@/components/Avatar";
 
 export const dynamic = "force-dynamic";
@@ -26,11 +27,6 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "code",     label: "Code" },
 ];
 
-const kb = (n: number) =>
-  n >= 1e9 ? `${(n / 1e9).toFixed(1)} GB`
-  : n >= 1e6 ? `${(n / 1e6).toFixed(1)} MB`
-  : n >= 1e3 ? `${Math.round(n / 1e3)} kB`
-  : `${n} B`;
 
 export default async function Project({
   params, searchParams,
@@ -58,11 +54,8 @@ export default async function Project({
   const ids = (members ?? []).map((m: { user_id: string }) => m.user_id);
   const { data: { user } } = await supabase.auth.getUser();
   const isMember = !!user && ids.includes(user.id);
-  const authorIds = [...new Set((commits ?? []).map((c: any) => c.author_id).filter(Boolean))];
-  const { data: people } = [...ids, ...authorIds].length
-    ? await supabase.from("profiles").select("id, display_name, institution, avatar_url").in("id", [...new Set([...ids, ...authorIds])])
-    : { data: [] as any[] };
-  const nameOf = (uid: string) => (people ?? []).find((x: any) => x.id === uid)?.display_name ?? "Someone";
+  const people = await peopleById(supabase, [...ids, ...(commits ?? []).map((c: any) => c.author_id)]);
+  const nameOf = (uid: string) => people.get(uid)?.display_name ?? "Someone";
 
   const counts: Record<Tab, number> = {
     notebook: entries?.length ?? 0,
@@ -141,7 +134,7 @@ export default async function Project({
                     <Visibility value={d.visibility} />
                     {d.doi && <span style={{ font: mono(10.5), color: "var(--mute)" }}>{d.doi}</span>}
                     <span style={{ marginLeft: "auto", font: mono(10.5), color: "var(--mute)" }}>
-                      {kb(d.size_bytes)} · {timeAgo(d.created_at)}
+                      {bytes(d.size_bytes)} · {timeAgo(d.created_at)}
                     </span>
                   </div>
                   <div style={{ font: mono(14, 500, 1.35) }}>{d.title}</div>
@@ -201,7 +194,7 @@ export default async function Project({
                   <div key={f.id} style={{ display: "flex", gap: 12, alignItems: "baseline", padding: "10px 14px", borderBottom: "1px solid var(--rule)" }}>
                     <span style={{ font: mono(12.5, 500), minWidth: 0, flex: 1, wordBreak: "break-all" }}>{f.path}</span>
                     {f.language && <Tag>{f.language}</Tag>}
-                    <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{kb(f.size_bytes)}</span>
+                    <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{bytes(f.size_bytes)}</span>
                     <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(f.updated_at)}</span>
                   </div>
                 ))}
@@ -251,7 +244,7 @@ export default async function Project({
             <div style={{ padding: 14, font: mono(12, 400, 1.8), display: "flex", flexDirection: "column", gap: 6 }}>
               {(members ?? []).map((m: any) => (
                 <div key={m.user_id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <Avatar name={nameOf(m.user_id)} url={(people ?? []).find((x: any) => x.id === m.user_id)?.avatar_url} size={22} />
+                  <Avatar name={nameOf(m.user_id)} url={people.get(m.user_id)?.avatar_url} size={22} />
                   <span>{nameOf(m.user_id)} <span style={{ color: "var(--mute)" }}>· {m.role}</span></span>
                 </div>
               ))}

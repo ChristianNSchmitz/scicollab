@@ -20,13 +20,14 @@ export async function GET() {
     return error ? [] : data ?? [];
   };
 
-  const [profile, cards, questions, answers, posts, sent, received, projects, memberships, entries, datasets, rooms, requests, author, publications] =
+  const [profile, cards, questions, answers, posts, replies, sent, received, projects, memberships, entries, datasets, rooms, requests, author, publications] =
     await Promise.all([
       supabase.from("profiles").select("*").eq("id", id).maybeSingle().then((r) => r.data),
       rows("method_cards", "author_id"),
       rows("questions", "author_id"),
       rows("answers", "author_id"),
       rows("posts", "author_id"),
+      rows("post_replies", "author_id"),
       rows("messages", "sender_id"),
       rows("messages", "recipient_id"),
       rows("projects", "owner_id"),
@@ -43,7 +44,7 @@ export async function GET() {
     exported_at: new Date().toISOString(),
     account: { id, email: user.email ?? null, created_at: user.created_at ?? null },
     profile,
-    method_cards: cards, questions, answers, posts,
+    method_cards: cards, questions, answers, posts, post_replies: replies,
     messages: { sent, received },
     projects_owned: projects, project_memberships: memberships, notebook_entries: entries, datasets,
     rooms_joined: rooms, access_requests_made: requests,

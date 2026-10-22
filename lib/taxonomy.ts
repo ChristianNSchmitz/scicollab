@@ -92,4 +92,3 @@ export const INTENTS: { id: Intent; label: string; hint: string; needsArtifact: 
 
 export const intentById = (id: string) => INTENTS.find((i) => i.id === id) ?? null;
 
-export const intentLabel = (id: string) => intentById(id)?.label ?? id;

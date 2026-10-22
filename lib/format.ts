@@ -29,3 +29,16 @@ export function timeAgo(iso: string): string {
   if (d < 31) return `${Math.floor(d)} d ago`;
   return new Date(iso).toISOString().slice(0, 10);
 }
+
+/** 1234567 → "1.2 MB". */
+export function bytes(n: number): string {
+  return n >= 1e9 ? `${(n / 1e9).toFixed(1)} GB`
+    : n >= 1e6 ? `${(n / 1e6).toFixed(1)} MB`
+    : n >= 1e3 ? `${Math.round(n / 1e3)} kB`
+    : `${n} B`;
+}
+
+/** A wait, roughly: "8 min" or "11 h". */
+export function inAbout(ms: number): string {
+  return ms < 3600e3 ? `${Math.max(1, Math.round(ms / 60e3))} min` : `${Math.round(ms / 3600e3)} h`;
+}

@@ -62,6 +62,8 @@ Run these in the Supabase SQL editor, in this order. Each is safe to re-run.
 5. `supabase/06-profiles-and-citations.sql` — profile pictures (and the
    `avatars` storage bucket), the guard on reputation counters, and the
    columns the OpenAlex sync uses for per-paper citation history.
+6. `supabase/07-forum-and-chat.sql` — replies on posts, and a guard so the
+   recipient of a message can only mark it read, not change it.
 
 A new schema change goes in the next numbered file, so the live project
 only ever needs the files it has not run yet.

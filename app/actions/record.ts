@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/session";
 import { isConfigured } from "@/lib/mode";
 import { ensureRecordTables } from "@/lib/record/demo-seed";
 
@@ -13,10 +13,7 @@ import { ensureRecordTables } from "@/lib/record/demo-seed";
 
 async function me() {
   ensureRecordTables();
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  return { supabase, user };
+  return requireUser();
 }
 
 async function notMine(supabase: Awaited<ReturnType<typeof createClient>>, cardId: string, userId: string) {

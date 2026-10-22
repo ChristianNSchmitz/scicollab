@@ -1,3 +1,4 @@
+import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { decideRequest } from "@/app/actions/attachments";
@@ -29,18 +30,18 @@ export default async function Requests() {
   const cfIds = (atts ?? []).map((a: any) => a.code_file_id).filter(Boolean);
   const postIds = [...new Set((atts ?? []).map((a: any) => a.post_id))];
   const peopleIds = [...new Set(all.flatMap((r: any) => [r.requester_id, r.owner_id]))];
-  const [{ data: ds }, { data: cf }, { data: posts }, { data: people }] = await Promise.all([
+  const [{ data: ds }, { data: cf }, { data: posts }, people] = await Promise.all([
     dsIds.length ? supabase.from("datasets").select("id, title").in("id", dsIds) : Promise.resolve({ data: [] as any[] }),
     cfIds.length ? supabase.from("code_files").select("id, path").in("id", cfIds) : Promise.resolve({ data: [] as any[] }),
     postIds.length ? supabase.from("posts").select("id, title").in("id", postIds) : Promise.resolve({ data: [] as any[] }),
-    peopleIds.length ? supabase.from("profiles").select("id, display_name, institution, avatar_url").in("id", peopleIds) : Promise.resolve({ data: [] as any[] }),
+    peopleById(supabase, peopleIds),
   ]);
 
   const att = (id: string) => (atts ?? []).find((a: any) => a.id === id);
   const what = (a: any) => a?.kind === "dataset"
     ? `Data · ${(ds ?? []).find((d: any) => d.id === a.dataset_id)?.title ?? "dataset"}`
     : `Code · ${(cf ?? []).find((c: any) => c.id === a?.code_file_id)?.path ?? "file"}`;
-  const who = (id: string) => (people ?? []).find((p: any) => p.id === id);
+  const who = (id: string) => people.get(id);
   const postTitle = (id: string) => (posts ?? []).find((p: any) => p.id === id)?.title ?? "a post";
 
   const pending = (incoming ?? []).filter((r: any) => r.status === "pending");

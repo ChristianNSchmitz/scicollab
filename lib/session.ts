@@ -1,31 +1,22 @@
-import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isDemo } from "@/lib/mode";
-import { demo, ME } from "@/lib/demo/store";
 
-export const DEMO_COOKIE = "sc-demo";
-
-export type SessionUser = { id: string; email: string; display_name: string };
-
-/** The signed-in user, from Supabase or from the demo cookie. */
-export async function currentUser(): Promise<SessionUser | null> {
-  if (isDemo()) {
-    const jar = await cookies();
-    if (jar.get(DEMO_COOKIE)?.value !== "1") return null;
-    const me = demo.me();
-    return { id: ME, email: "demo@scicollab.test", display_name: me.display_name };
-  }
-
+/**
+ * The signed-in user and a client acting as them, for server actions and
+ * route handlers. Works the same with Supabase or the demo store.
+ *
+ * `requireUser` sends anyone signed out to /login; `sessionUser` returns
+ * `user: null` instead, for callers such as the chat dock's polling that
+ * should answer quietly rather than redirect.
+ */
+export async function sessionUser() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
+  return { supabase, user };
+}
 
-  const { data: profile } = await supabase
-    .from("profiles").select("display_name").eq("id", user.id).maybeSingle();
-
-  return {
-    id: user.id,
-    email: user.email ?? "",
-    display_name: profile?.display_name || user.email || "Researcher",
-  };
+export async function requireUser() {
+  const { supabase, user } = await sessionUser();
+  if (!user) redirect("/login");
+  return { supabase, user };
 }

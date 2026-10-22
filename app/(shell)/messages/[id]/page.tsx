@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { MESSAGE_PROBLEM } from "@/lib/messages";
+import type { MessageProblem } from "@/app/actions/messages";
+import Avatar from "@/components/Avatar";
 import { createClient } from "@/lib/supabase/server";
 import { canMessage, sendMessage, markRead } from "@/app/actions/messages";
 import { Page, LimitNotice, Panel, PanelHead, Empty, field, btnPrimary, btn, mono } from "@/components/ui";
@@ -16,15 +19,18 @@ export const dynamic = "force-dynamic";
  * and offers the routes out, because a gate with no explanation reads as
  * "you are not welcome here".
  */
-export default async function Thread({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string }> }) {
-  const { limited } = await searchParams;
+export default async function Thread({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string; error?: string }> }) {
+  const { limited, error } = await searchParams;
   const { id: otherId } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  // There is no conversation with yourself; the gate would wrongly call you a stranger.
+  if (otherId === user!.id) redirect("/messages");
+  const problem = error && error in MESSAGE_PROBLEM ? MESSAGE_PROBLEM[error as MessageProblem] : null;
 
   const { data: other } = await supabase
     .from("profiles")
-    .select("id, display_name, institution, role_title")
+    .select("id, display_name, institution, role_title, avatar_url")
     .eq("id", otherId)
     .maybeSingle();
   if (!other) notFound();
@@ -58,6 +64,11 @@ export default async function Thread({ params, searchParams }: { params: Promise
       actions={<Link href="/messages" style={btn}>All messages</Link>}
     >
       <LimitNotice show={limited} />
+      {problem && (
+        <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)", maxWidth: 760 }}>
+          {problem}
+        </p>
+      )}
       <div style={{ maxWidth: 760, display: "flex", flexDirection: "column", gap: 12 }}>
         <Panel>
           <PanelHead>Conversation</PanelHead>
@@ -69,7 +80,8 @@ export default async function Thread({ params, searchParams }: { params: Promise
               return (
                 <div key={m.id} style={{ display: "flex", justifyContent: mine ? "flex-end" : "flex-start" }}>
                   <div style={{ maxWidth: 520, border: "1px solid var(--rule)", background: mine ? "var(--bg)" : "var(--surface)", padding: "10px 12px" }}>
-                    <div style={{ font: mono(10), color: "var(--mute)", marginBottom: 5 }}>
+                    <div style={{ font: mono(10), color: "var(--mute)", marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}>
+                      {!mine && <Avatar name={other.display_name} url={other.avatar_url} size={16} />}
                       {mine ? "You" : other.display_name} · {timeAgo(m.created_at)}
                     </div>
                     <p style={{ font: "400 14px/1.65 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
@@ -93,7 +105,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
           <Panel>
             <PanelHead>Reply</PanelHead>
             <form action={sendMessage.bind(null, otherId)} style={{ padding: 14 }}>
-              <textarea name="body" rows={3} required style={field} placeholder="Reply — attach the card rather than retyping the conditions." />
+              <textarea name="body" rows={3} required maxLength={4000} style={field} placeholder="Reply — attach the card rather than retyping the conditions." />
               {myCards && myCards.length > 0 && (
                 <select name="method_card_id" defaultValue="" style={{ ...field, height: 36, marginTop: 10 }}>
                   <option value="">No card attached</option>
@@ -117,7 +129,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
               <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 13.5px/1.8 var(--sans)" }}>
                 <li>Record one method card — including a run that did not work</li>
                 <li>Ask one question</li>
-                <li>Answer someone else&rsquo;s question</li>
+                <li>Answer someone else&rsquo;s question, or reply to a post in a room</li>
               </ul>
               <div style={{ display: "flex", gap: 8 }}>
                 <Link href="/methods/new" style={btnPrimary}>Record a method</Link>

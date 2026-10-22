@@ -1,3 +1,4 @@
+import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { recordReproduction, writeReview } from "@/app/actions/record";
@@ -25,11 +26,8 @@ export default async function CardRecordPanels({ supabase, cardId, isOwner, user
     supabase.from("reproductions").select("id, user_id, outcome, note, created_at").eq("card_id", cardId).order("created_at", { ascending: false }),
     supabase.from("reviews").select("id, reviewer_id, verdict, body, created_at").eq("card_id", cardId).order("created_at", { ascending: false }),
   ]);
-  const ids = [...new Set([...(repros ?? []).map((r) => r.user_id), ...(reviews ?? []).map((r) => r.reviewer_id)])];
-  const { data: people } = ids.length
-    ? await supabase.from("profiles").select("id, display_name").in("id", ids)
-    : { data: [] as any[] };
-  const name = (id: string) => (id === userId ? "You" : people?.find((p) => p.id === id)?.display_name ?? "Someone");
+  const people = await peopleById(supabase, [...(repros ?? []).map((r) => r.user_id), ...(reviews ?? []).map((r) => r.reviewer_id)]);
+  const name = (id: string) => (id === userId ? "You" : people.get(id)?.display_name ?? "Someone");
   const held = (repros ?? []).filter((r) => r.outcome === "held").length;
   const reviewed = (reviews ?? []).some((r) => r.reviewer_id === userId);
 

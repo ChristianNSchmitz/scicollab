@@ -2,16 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/session";
 import { isConfigured } from "@/lib/mode";
 import { parseAvatar, presetValue } from "@/lib/avatar";
 
-async function me() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  return { supabase, user };
-}
 
 /** Everywhere a person is drawn reads the profile, so all of it is refreshed. */
 function refreshEverywhere() {
@@ -21,7 +15,7 @@ function refreshEverywhere() {
 /** The ORCID is linked separately (app/actions/orcid.ts), so it is checked
  *  and synced as one step; this form never touches it. */
 export async function saveProfile(form: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const name = String(form.get("display_name") ?? "").trim();
   if (!name) redirect("/settings?error=name#profile");
 
@@ -43,7 +37,7 @@ export async function saveProfile(form: FormData) {
 
 /** A built-in picture, or back to the initial. */
 export async function setAvatarPreset(icon: string, colour: string) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const value = presetValue(icon, colour);
   if (parseAvatar(value).kind !== "preset") return { error: "Unknown picture." };
   const { error } = await supabase.from("profiles").update({ avatar_url: value }).eq("id", user.id);
@@ -53,7 +47,7 @@ export async function setAvatarPreset(icon: string, colour: string) {
 }
 
 export async function clearAvatar() {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const { error } = await supabase.from("profiles").update({ avatar_url: null }).eq("id", user.id);
   if (error) return { error: error.message };
   refreshEverywhere();
@@ -69,7 +63,7 @@ const MAX_BYTES = 2 * 1024 * 1024;
  * not the courtesy. SVG is refused on purpose: it can carry script.
  */
 export async function uploadAvatar(form: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const file = form.get("file");
   if (!(file instanceof File) || file.size === 0) return { error: "Choose an image first." };
   if (!TYPES.includes(file.type)) return { error: "Use a JPEG, PNG or WebP image." };

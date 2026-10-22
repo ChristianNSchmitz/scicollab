@@ -2,22 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/session";
 
 /* The owner is always resolved from the session on the server. A client-supplied
    id is never trusted, so a card cannot be written on another account's behalf. */
-async function me() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  return { supabase, user };
-}
 
 const arr = (s: FormDataEntryValue | null) =>
   String(s ?? "").split(",").map((t) => t.trim()).filter(Boolean);
 
 export async function createCard(form: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
 
   const outcome = String(form.get("outcome") ?? "");
   const { data, error } = await supabase
@@ -45,7 +39,7 @@ export async function createCard(form: FormData) {
 
 /** Forking records lineage; it never copies silently. */
 export async function forkCard(id: string) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
 
   const { data: src, error: readErr } = await supabase
     .from("method_cards")
@@ -79,7 +73,7 @@ export async function forkCard(id: string) {
 }
 
 export async function setVisibility(id: string, visibility: "private" | "lab" | "public") {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   // Bound arguments arrive from the browser, so both are checked here, and
   // only the author's own card matches. Row-level security says the same.
   if (!["private", "lab", "public"].includes(visibility)) throw new Error("Unknown visibility.");
@@ -92,7 +86,7 @@ export async function setVisibility(id: string, visibility: "private" | "lab" | 
 }
 
 export async function deleteCard(id: string) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   // Without the author filter a refused delete looked like a successful one:
   // the policy matched no rows, no error came back, and the page moved on.
   const { data, error } = await supabase.from("method_cards").delete()

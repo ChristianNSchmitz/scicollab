@@ -7,6 +7,8 @@ import {
   type Conversation, type ChatMessage,
 } from "@/app/actions/chat";
 import { timeAgo } from "@/lib/format";
+import { mono as kitMono } from "@/components/ui";
+import Avatar from "@/components/Avatar";
 
 /**
  * Chat, docked bottom-right on every screen.
@@ -21,8 +23,21 @@ import { timeAgo } from "@/lib/format";
  * in minutes, and websockets are infrastructure to run before there are users.
  */
 
-const mono = (size: number, weight = 400, lh = 1.4) =>
-  `${weight} ${size}px/${lh} var(--mono)`;
+// The kit's mono, with the looser line height the dock's rows need.
+const mono = (size: number, weight = 400, lh = 1.4) => kitMono(size, weight, lh);
+
+/** Run `fn` every `ms` while the tab is visible, and once on becoming visible
+ *  again, so a background tab does not keep asking the server. */
+function useVisiblePoll(fn: () => void, ms: number, enabled = true) {
+  useEffect(() => {
+    if (!enabled) return;
+    fn();
+    const t = setInterval(() => { if (document.visibilityState === "visible") fn(); }, ms);
+    const onVis = () => { if (document.visibilityState === "visible") fn(); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => { clearInterval(t); document.removeEventListener("visibilitychange", onVis); };
+  }, [fn, ms, enabled]);
+}
 
 const POLL_MS = 8000;
 
@@ -52,13 +67,8 @@ export default function ChatDock() {
   const scroller = useRef<HTMLDivElement>(null);
 
   // Badge count, whether the dock is open or shut.
-  useEffect(() => {
-    let alive = true;
-    const tick = () => unreadTotal().then((n) => alive && setUnread(n)).catch(() => {});
-    tick();
-    const t = setInterval(tick, POLL_MS);
-    return () => { alive = false; clearInterval(t); };
-  }, []);
+  const refreshUnread = useCallback(() => { unreadTotal().then(setUnread).catch(() => {}); }, []);
+  useVisiblePoll(refreshUnread, POLL_MS, !phone);
 
   const refreshList = useCallback(() => {
     listConversations().then(setConvos).catch(() => {});
@@ -74,12 +84,8 @@ export default function ChatDock() {
 
   useEffect(() => { if (open && !thread) refreshList(); }, [open, thread, refreshList]);
 
-  useEffect(() => {
-    if (!open || !thread) return;
-    refreshThread(thread);
-    const t = setInterval(() => refreshThread(thread), POLL_MS);
-    return () => clearInterval(t);
-  }, [open, thread, refreshThread]);
+  const pollThread = useCallback(() => { if (thread) refreshThread(thread); }, [thread, refreshThread]);
+  useVisiblePoll(pollThread, POLL_MS, open && !!thread);
 
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight });
@@ -170,7 +176,7 @@ export default function ChatDock() {
           <div style={{ padding: 8, borderBottom: "1px solid var(--rule)" }}>
             <input
               value={query} onChange={(e) => setQuery(e.target.value)}
-              placeholder="Find a researcher…"
+              placeholder="Find a researcher…" aria-label="Find a researcher"
               style={{ width: "100%", padding: "7px 9px", border: "1px solid var(--rule)", background: "var(--bg)", font: mono(12), color: "var(--ink)" }}
             />
           </div>
@@ -190,7 +196,9 @@ export default function ChatDock() {
             )}
 
             {found.length === 0 && convos.map((c) => (
-              <button key={c.id} onClick={() => setThread(c.id)} style={rowStyle}>
+              <button key={c.id} onClick={() => setThread(c.id)} style={{ ...rowStyle, display: "flex", gap: 9, alignItems: "center" }}>
+                <Avatar name={c.name} url={c.avatar_url} size={26} />
+                <span style={{ flex: 1, minWidth: 0 }}>
                 <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
                   <span style={{ font: mono(12, c.unread ? 700 : 500), flex: 1 }}>{c.name}</span>
                   {c.unread > 0 && (
@@ -200,6 +208,7 @@ export default function ChatDock() {
                 </span>
                 <span style={{ font: mono(10.5), color: "var(--mute)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "block" }}>
                   {c.last}
+                </span>
                 </span>
               </button>
             ))}
@@ -218,7 +227,7 @@ export default function ChatDock() {
             )}
             {messages.map((m) => (
               <div key={m.id} style={{ alignSelf: m.mine ? "flex-end" : "flex-start", maxWidth: "86%" }}>
-                <div style={{ border: "1px solid var(--rule)", background: m.mine ? "var(--surface)" : "var(--surface)", padding: "7px 9px" }}>
+                <div style={{ border: `1px solid ${m.mine ? "var(--ink)" : "var(--rule)"}`, background: "var(--surface)", padding: "7px 9px" }}>
                   <p style={{ font: "400 13px/1.55 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
                   {m.card && (
                     <Link href={`/methods/${m.card.id}`} style={{ display: "block", marginTop: 6, borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "5px 7px", color: "var(--ink)" }}>
@@ -228,7 +237,7 @@ export default function ChatDock() {
                   )}
                 </div>
                 <div style={{ font: mono(9), color: "var(--mute)", marginTop: 3, textAlign: m.mine ? "right" : "left" }}>
-                  {timeAgo(m.at)}
+                  {m.mine ? "You" : who.name} · {timeAgo(m.at)}
                 </div>
               </div>
             ))}
@@ -237,7 +246,7 @@ export default function ChatDock() {
           {gated ? (
             <div style={{ flex: "none", borderTop: "1px solid var(--flag)", background: "var(--surface)", padding: "10px 12px" }}>
               <p style={{ font: "400 12.5px/1.55 var(--sans)", margin: "0 0 8px" }}>
-                You cannot message strangers yet. Record a method card, ask a question or answer one, and this opens.
+                You cannot message strangers yet. Record a method card, ask or answer a question, or reply to a post, and this opens.
               </p>
               <Link href="/methods/new" style={{ font: mono(11, 500), color: "var(--link)" }}>Record a method →</Link>
             </div>
@@ -247,7 +256,7 @@ export default function ChatDock() {
               <div style={{ display: "flex", gap: 6 }}>
                 <input
                   value={draft} onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Write a message…"
+                  placeholder="Write a message…" maxLength={4000} aria-label="Message"
                   style={{ flex: 1, padding: "8px 9px", border: "1px solid var(--rule)", background: "var(--bg)", font: mono(12), color: "var(--ink)" }}
                 />
                 <button type="submit" disabled={!draft.trim()}

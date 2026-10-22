@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
  * Per-researcher limits on writes that reach other people: messages, posts,
- * questions, answers and data access requests.
+ * replies, questions, answers and data access requests.
  *
  * Counted from the rows themselves, so the limit holds across server
  * instances and restarts without another store. Generous enough that nobody
@@ -16,6 +16,7 @@ export const LIMITS = {
   post:     { table: "posts",           column: "author_id",    max: 10, minutes: 60, noun: "posts" },
   question: { table: "questions",       column: "author_id",    max: 10, minutes: 60, noun: "questions" },
   answer:   { table: "answers",         column: "author_id",    max: 30, minutes: 60, noun: "answers" },
+  reply:    { table: "post_replies",    column: "author_id",    max: 30, minutes: 60, noun: "replies" },
   request:  { table: "access_requests", column: "requester_id", max: 20, minutes: 60, noun: "access requests" },
 } satisfies Record<string, Limit>;
 

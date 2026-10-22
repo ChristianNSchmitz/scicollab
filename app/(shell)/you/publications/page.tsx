@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, btn, field, mono } from "@/components/ui";
-import { timeAgo } from "@/lib/format";
+import { timeAgo, inAbout } from "@/lib/format";
+import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { bibliometricsFor } from "@/lib/record/bibliometrics";
 import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue, sortPublications, newIds, pubSort, PUB_SORTS, thisYearOf } from "@/lib/record/publications";
@@ -12,13 +13,6 @@ import PublicationRow from "@/components/record/PublicationRow";
 import YearBars from "@/components/record/YearBars";
 
 export const dynamic = "force-dynamic";
-
-const FLASH: Record<string, string> = {
-  ok: "Synced just now.", cooldown: "Synced less than 10 minutes ago; try again shortly.",
-  "rate-limited": "OpenAlex's daily allowance is used up; the next scheduled sync will retry.",
-  "not-found": "OpenAlex has no record for this ORCID.", error: "OpenAlex could not be reached; the next sync will retry.",
-  skipped: "Nothing to sync for this account.",
-};
 
 /**
  * Your publications — every work OpenAlex attributes to your ORCID, with the
@@ -73,7 +67,6 @@ export default async function Publications({
   const ok = biblio.state === "ok" ? biblio : null;
   const synced = ok?.updated ?? runs.find((r) => r.status === "ok")?.finished_at ?? null;
   const nextIn = synced ? Math.max(0, +new Date(synced) + SYNC_INTERVAL_MS - Date.now()) : 0;
-  const hours = (ms: number) => (ms < 3600e3 ? `${Math.max(1, Math.round(ms / 60e3))} min` : `${Math.round(ms / 3600e3)} h`);
   const h = c.hIndexByYear;
   const hDelta = h.length > 1 ? h.at(-1)!.value - h.at(-2)!.value : null;
   const lastYearCites = ok?.countsByYear.find((x) => x.year === c.year - 1)?.cited_by_count ?? 0;
@@ -104,8 +97,8 @@ export default async function Publications({
         </div>
       }
     >
-      {sp.sync && FLASH[sp.sync] && (
-        <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{FLASH[sp.sync]}</p>
+      {sp.sync && SYNC_FLASH[sp.sync] && (
+        <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sp.sync]}</p>
       )}
 
       {ok ? (
@@ -131,7 +124,7 @@ export default async function Publications({
             </div>
           </div>
           <div style={{ padding: "8px 16px", borderTop: "1px solid var(--rule)", font: mono(10.5), color: "var(--mute)", display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <span>{example ? "example values · demo account, not synced" : synced ? `checked ${timeAgo(synced)} · next check in ~${hours(nextIn)}` : "first sync pending"}</span>
+            <span>{example ? "example values · demo account, not synced" : synced ? `checked ${timeAgo(synced)} · next check in ~${inAbout(nextIn)}` : "first sync pending"}</span>
             {ok.url && !ok.example && <a href={ok.url} target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>your OpenAlex record ↗</a>}
           </div>
         </Panel>

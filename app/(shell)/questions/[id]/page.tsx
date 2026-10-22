@@ -1,3 +1,4 @@
+import { peopleById } from "@/lib/people";
 import Avatar from "@/components/Avatar";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -27,10 +28,7 @@ export default async function Question({ params, searchParams }: { params: Promi
       : Promise.resolve({ data: null }),
   ]);
 
-  const ids = [...new Set((answers ?? []).map((a) => a.author_id))];
-  const { data: people } = ids.length
-    ? await supabase.from("profiles").select("id, display_name, institution, avatar_url").in("id", ids)
-    : { data: [] as any[] };
+  const people = await peopleById(supabase, (answers ?? []).map((a) => a.author_id));
 
   const isAsker = q.author_id === user!.id;
 
@@ -70,7 +68,7 @@ export default async function Question({ params, searchParams }: { params: Promi
         {(answers?.length ?? 0) === 0 && <Panel><Empty>No answers yet.</Empty></Panel>}
 
         {answers?.map((a) => {
-          const who = people?.find((p) => p.id === a.author_id);
+          const who = people.get(a.author_id);
           return (
             <Panel key={a.id} style={a.accepted ? { borderColor: "var(--ok)" } : undefined}>
               {a.accepted && (

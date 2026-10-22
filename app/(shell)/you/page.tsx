@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, Visibility, btn, mono } from "@/components/ui";
-import { timeAgo } from "@/lib/format";
+import { timeAgo, inAbout } from "@/lib/format";
+import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { bibliometricsFor, loadSnapshots, type Bibliometrics } from "@/lib/record/bibliometrics";
 import { normaliseOrcid, SYNC_INTERVAL_MS } from "@/lib/openalex/sync";
 import type { PubRow, RunRow } from "@/lib/openalex/store";
@@ -233,14 +234,7 @@ function Publications({ pubs, runs, biblio, example, flash, c }: {
   const lastAny = runs[0];
   const synced = biblio.state === "ok" ? biblio.updated : last?.finished_at ?? null;
   const nextIn = synced ? Math.max(0, +new Date(synced) + SYNC_INTERVAL_MS - Date.now()) : 0;
-  const hours = (ms: number) => (ms < 3600e3 ? `${Math.max(1, Math.round(ms / 60e3))} min` : `${Math.round(ms / 3600e3)} h`);
   const fresh = newIds(runs, example, pubs);
-  const flashText: Record<string, string> = {
-    ok: "Synced just now.", cooldown: "Synced less than 10 minutes ago; try again shortly.",
-    "rate-limited": "OpenAlex's daily allowance is used up; the next scheduled sync will retry.",
-    "not-found": "OpenAlex has no record for this ORCID.", error: "OpenAlex could not be reached; the next sync will retry.",
-    skipped: "Nothing to sync for this account.",
-  };
 
   return (
     <Panel style={{ marginBottom: 16 }}>
@@ -249,15 +243,15 @@ function Publications({ pubs, runs, biblio, example, flash, c }: {
           Publications · {pubs.length} from OpenAlex{example ? " · example" : ""}
         </span>
         <span style={{ font: mono(10.5), color: "var(--mute)" }}>
-          {example ? "demo account, not synced" : synced ? `synced ${timeAgo(synced)} · next in ~${hours(nextIn)}` : "first sync pending"}
+          {example ? "demo account, not synced" : synced ? `synced ${timeAgo(synced)} · next in ~${inAbout(nextIn)}` : "first sync pending"}
         </span>
         {!example && (
           <form action={syncNow.bind(null, "/you")}><button type="submit" style={{ ...btn, height: 28, padding: "0 10px", font: mono(11, 500) }}>Sync now</button></form>
         )}
       </div>
 
-      {flash && flashText[flash] && (
-        <div role="status" style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.5 var(--sans)", background: "var(--bg)" }}>{flashText[flash]}</div>
+      {flash && SYNC_FLASH[flash] && (
+        <div role="status" style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.5 var(--sans)", background: "var(--bg)" }}>{SYNC_FLASH[flash]}</div>
       )}
 
       {last && !last.initial && (last.new_works > 0 || last.citations_delta !== 0 || last.removed_works > 0) && (

@@ -2,17 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/session";
 
-async function me() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  return { supabase, user };
-}
 
 export async function createProject(form: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const { data, error } = await supabase
     .from("projects")
     .insert({
@@ -33,7 +27,7 @@ export async function createProject(form: FormData) {
 /** Notebook entries are append-only — the board makes that visible rather than
  *  implying it, so there is no update path here on purpose. */
 export async function addEntry(projectId: string, form: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const body = String(form.get("body") ?? "").trim();
   if (!body) return;
   // The notebook belongs to the project's people; supabase/06 makes the
@@ -52,7 +46,7 @@ export async function addEntry(projectId: string, form: FormData) {
 /** Registers a dataset inside a project. It records what the data is and
  *  where it lives (a DOI or repository); files themselves are not uploaded. */
 export async function depositDataset(projectId: string, form: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const title = String(form.get("title") ?? "").trim();
   if (!title) return;
   // Only people on the project may add to it.

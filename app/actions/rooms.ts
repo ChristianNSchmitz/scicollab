@@ -2,18 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/session";
 import { roomsInHouse, roomById } from "@/lib/taxonomy";
 
-async function me() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  return { supabase, user };
-}
 
 export async function joinRoom(roomId: string) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   if (!roomById(roomId)) return;   // only rooms that exist in the taxonomy
   await supabase.from("user_rooms").insert({ user_id: user.id, room_id: roomId });
   revalidatePath("/rooms");
@@ -21,7 +15,7 @@ export async function joinRoom(roomId: string) {
 }
 
 export async function leaveRoom(roomId: string) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   await supabase.from("user_rooms").delete().eq("user_id", user.id).eq("room_id", roomId);
   revalidatePath("/rooms");
   revalidatePath("/home");
@@ -30,7 +24,7 @@ export async function leaveRoom(roomId: string) {
 /** Onboarding: picking houses joins the rooms they contain, so a new
  *  account never lands on an empty feed. Rooms can be pruned afterwards. */
 export async function joinHouses(form: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const houses = form.getAll("house").map(String);
   // With nothing picked, Home would send the researcher straight back here
   // with no explanation; say so instead.

@@ -1,3 +1,4 @@
+import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
 import { redirect } from "next/navigation";
@@ -9,6 +10,7 @@ import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibl
 import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue } from "@/lib/record/publications";
 import CitationTracker from "@/components/record/CitationTracker";
+import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 
 export const dynamic = "force-dynamic";
@@ -26,8 +28,8 @@ const INTENT_COLOUR: Record<string, string> = {
  */
 export default async function Home({
   searchParams,
-}: { searchParams: Promise<{ intent?: string; room?: string }> }) {
-  const { intent, room } = await searchParams;
+}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string }> }) {
+  const { intent, room, sync } = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -47,13 +49,12 @@ export default async function Home({
   if (intent) q = q.eq("intent", intent);
   const { data: posts } = await q;
 
-  const authorIds = [...new Set((posts ?? []).map((p: any) => p.author_id))];
   const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
-  const [{ data: people }, { data: cards }] = await Promise.all([
-    authorIds.length ? supabase.from("profiles").select("id, display_name, institution, avatar_url").in("id", authorIds) : Promise.resolve({ data: [] as any[] }),
+  const [people, { data: cards }] = await Promise.all([
+    peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
     cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
   ]);
-  const who = (id: string) => (people ?? []).find((p: any) => p.id === id);
+  const who = (id: string) => people.get(id);
 
   // ── the dashboard column: your research, and what is waiting on you ──
   ensureRecordSeed();
@@ -87,6 +88,20 @@ export default async function Home({
   const answeredQ = [...new Set(freshAnswers.map((a: any) => a.question_id))];
   const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
 
+  // Reply counts for the posts on screen, and replies by others to my posts.
+  const postIds = (posts ?? []).map((p: any) => p.id);
+  const [{ data: feedReplies }, { data: myPosts }] = await Promise.all([
+    postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : Promise.resolve({ data: [] as any[] }),
+    supabase.from("posts").select("id").eq("author_id", user!.id),
+  ]);
+  const replyCount = (id: string) => (feedReplies ?? []).filter((r: any) => r.post_id === id).length;
+  const myPostIds = (myPosts ?? []).map((p: any) => p.id);
+  const { data: repliesToMe } = myPostIds.length
+    ? await supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", myPostIds)
+    : { data: [] as any[] };
+  const freshReplies = (repliesToMe ?? []).filter((r: any) => r.author_id !== user!.id && Date.now() - +new Date(r.created_at) < 7 * 864e5);
+  const repliedPosts = [...new Set(freshReplies.map((r: any) => r.post_id))];
+
   const qs = (patch: Record<string, string | undefined>) => {
     const sp = new URLSearchParams();
     const merged = { intent, room, ...patch };
@@ -107,6 +122,9 @@ export default async function Home({
       lede="Posts from the rooms you have joined. Every post states what it is, and the two that carry evidence carry a method card."
       actions={<Link href="/post" style={btnPrimary}>New post</Link>}
     >
+      {sync && SYNC_FLASH[sync] && (
+        <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sync]}</p>
+      )}
       <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {/* Filters sit directly under the composer entry, as designed. */}
@@ -183,6 +201,9 @@ export default async function Home({
                     </div>
                   )}
                 </div>
+                <Link href={`/posts/${p.id}#replies`} style={{ display: "block", padding: "9px 14px", borderTop: "1px solid var(--rule)", font: mono(11, 500), color: "var(--mute)", textDecoration: "none" }}>
+                  {replyCount(p.id) === 0 ? "Reply →" : `${replyCount(p.id)} ${replyCount(p.id) === 1 ? "reply" : "replies"} →`}
+                </Link>
               </Panel>
             );
           })}
@@ -196,6 +217,8 @@ export default async function Home({
             requestPost={requestPosts[0] ?? null}
             answers={freshAnswers.length}
             answeredQuestion={answeredQ.length === 1 ? answeredQ[0] : null}
+            replies={freshReplies.length}
+            repliedPost={repliedPosts.length === 1 ? repliedPosts[0] : null}
           />
           <div className="sc-hide-narrow" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
@@ -221,12 +244,14 @@ export default async function Home({
 }
 
 /** Only what is waiting on you, each with the way to deal with it. */
-function AttentionPanel({ unread, requests, requestPost, answers, answeredQuestion }: {
+function AttentionPanel({ unread, requests, requestPost, answers, answeredQuestion, replies, repliedPost }: {
   unread: number; requests: number; requestPost: string | null; answers: number; answeredQuestion: string | null;
+  replies: number; repliedPost: string | null;
 }) {
   const items = [
     unread > 0 && { href: "/messages", text: `${unread} unread message${unread > 1 ? "s" : ""}` },
     requests > 0 && { href: requests === 1 && requestPost ? `/posts/${requestPost}` : "/requests", text: `${requests} data access request${requests > 1 ? "s" : ""} to decide` },
+    replies > 0 && { href: repliedPost ? `/posts/${repliedPost}#replies` : "/home", text: `${replies} new ${replies === 1 ? "reply" : "replies"} to your posts this week` },
     answers > 0 && { href: answeredQuestion ? `/questions/${answeredQuestion}` : "/ask#questions", text: `${answers} new answer${answers > 1 ? "s" : ""} to your questions this week` },
   ].filter(Boolean) as { href: string; text: string }[];
   return (

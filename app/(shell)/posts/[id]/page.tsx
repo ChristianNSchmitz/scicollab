@@ -1,11 +1,13 @@
+import { peopleById } from "@/lib/people";
 import Avatar from "@/components/Avatar";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Page, LimitNotice, Panel, PanelHead, Outcome, Tag, field, btn, btnPrimary, mono } from "@/components/ui";
+import { Page, LimitNotice, Panel, PanelHead, Empty, Outcome, Tag, field, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import { roomById, housesOfRoom, intentById } from "@/lib/taxonomy";
 import { attachmentsFor, pendingFor, requestAccess, decideRequest } from "@/app/actions/attachments";
+import { replyToPost, deleteReply, deletePost } from "@/app/actions/posts";
 
 export const dynamic = "force-dynamic";
 
@@ -25,10 +27,13 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
       : Promise.resolve({ data: null }),
   ]);
 
-  const [attachments, pending] = await Promise.all([
+  const [attachments, pending, { data: replies }] = await Promise.all([
     attachmentsFor(post.id),
     pendingFor(post.id),
+    supabase.from("post_replies").select("id, author_id, body, created_at").eq("post_id", post.id).order("created_at"),
   ]);
+  const repliers = await peopleById(supabase, (replies ?? []).map((r: any) => r.author_id));
+  const replier = (id: string) => repliers.get(id);
 
   const room = roomById(post.room_id);
   const spec = intentById(post.intent);
@@ -162,6 +167,36 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               ))}
             </Panel>
           )}
+          <Panel>
+            <div id="replies" style={{ scrollMarginTop: 72 }}><PanelHead>Replies · {replies?.length ?? 0}</PanelHead></div>
+            {(replies?.length ?? 0) === 0 ? (
+              <Empty>No replies yet. If you have run into this, say what you saw: the room keeps the answer next to the question.</Empty>
+            ) : replies!.map((r: any) => {
+              const who = replier(r.author_id);
+              return (
+                <div key={r.id} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
+                  <div style={{ display: "flex", gap: 9, alignItems: "center", font: mono(11), color: "var(--mute)", marginBottom: 7 }}>
+                    <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={22} />
+                    <span style={{ flex: 1 }}>
+                      {who?.display_name ?? "Someone"}{who?.institution ? ` · ${who.institution}` : ""} · {timeAgo(r.created_at)}
+                      {r.author_id === post.author_id && <span style={{ marginLeft: 6, color: "var(--ink)" }}>· author</span>}
+                    </span>
+                    {r.author_id === user!.id && (
+                      <form action={deleteReply.bind(null, r.id, post.id)}>
+                        <button type="submit" style={{ background: "transparent", border: 0, padding: 0, font: mono(11), color: "var(--mute)", cursor: "pointer" }}>delete</button>
+                      </form>
+                    )}
+                  </div>
+                  <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{r.body}</p>
+                </div>
+              );
+            })}
+            <form action={replyToPost.bind(null, post.id)} style={{ padding: 14 }}>
+              <textarea name="body" rows={3} required maxLength={5000} style={field}
+                        placeholder={isMine ? "Add to your post, or answer someone below." : "What you saw, and under which conditions."} />
+              <button type="submit" style={{ ...btnPrimary, marginTop: 10 }}>Reply</button>
+            </form>
+          </Panel>
         </div>
 
         <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -176,6 +211,15 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               </div>
             </div>
           </Panel>
+          {isMine && (
+            <details>
+              <summary style={{ font: mono(11.5), color: "var(--err)", cursor: "pointer" }}>Delete this post</summary>
+              <form action={deletePost.bind(null, post.id)} style={{ marginTop: 8 }}>
+                <p style={{ font: "400 13px/1.5 var(--sans)", margin: "0 0 8px", color: "var(--mute)" }}>The post and its replies are removed for everyone.</p>
+                <button type="submit" style={{ ...btn, borderColor: "var(--err)", color: "var(--err)" }}>Delete post and replies</button>
+              </form>
+            </details>
+          )}
           {post.intent === "collab" && !isMine && (
             <Link href={`/messages/${post.author_id}`} style={{ ...btnPrimary, justifyContent: "center" }}>
               Offer to collaborate
