@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, Empty, mono } from "@/components/ui";
-import { timeAgo, initialsOf } from "@/lib/format";
+import { timeAgo } from "@/lib/format";
+import Avatar from "@/components/Avatar";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,7 @@ export default async function Messages() {
 
   const ids = [...threads.keys()];
   const { data: people } = ids.length
-    ? await supabase.from("profiles").select("id, display_name, institution").in("id", ids)
+    ? await supabase.from("profiles").select("id, display_name, institution, avatar_url").in("id", ids)
     : { data: [] as any[] };
 
   return (
@@ -39,9 +40,7 @@ export default async function Messages() {
           const who = people?.find((p) => p.id === id);
           return (
             <Link key={id} href={`/messages/${id}`} style={{ display: "flex", gap: 12, alignItems: "center", padding: "13px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
-              <span style={{ width: 34, height: 34, border: "1px solid var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", font: mono(11, 500), background: "var(--bg)", flex: "none" }}>
-                {initialsOf(who?.display_name ?? "")}
-              </span>
+              <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={34} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ font: mono(13, 500) }}>{who?.display_name ?? "Researcher"}</div>
                 <div style={{ font: mono(11), color: "var(--mute)", marginTop: 3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>

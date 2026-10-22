@@ -51,7 +51,7 @@ export default function PostComposer({
     <form onSubmit={submit} style={{ maxWidth: 820 }}>
       <Panel style={{ marginBottom: 12 }}>
         <PanelHead>What kind of post is this?</PanelHead>
-        <div style={{ padding: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+        <div className="sc-pair" style={{ padding: 14, gap: 10 }}>
           {INTENTS.map((i) => (
             <label
               key={i.id}
@@ -185,7 +185,7 @@ export default function PostComposer({
       {intent === "collab" && (
         <Panel style={{ marginBottom: 12 }}>
           <PanelHead>What you need, and what you offer</PanelHead>
-          <div style={{ padding: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="sc-pair" style={{ padding: 14, gap: 12 }}>
             <div>
               <label style={fieldLabel} htmlFor="technique">Technique needed</label>
               <input id="technique" name="technique" style={field} placeholder="Lipofection" />

@@ -101,6 +101,10 @@ input::placeholder, textarea::placeholder { color: #9A968E; }
 
 @media (max-width: 900px) {
   .sc-two-col { grid-template-columns: minmax(0, 1fr); }
+  /* On a narrow screen the dashboard column comes before the feed, and the
+     room lists are dropped: the feed's own room filter already shows them. */
+  .sc-home-aside { order: -1; }
+  .sc-hide-narrow { display: none !important; }
 }
 
 @media (max-width: 760px) {

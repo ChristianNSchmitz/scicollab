@@ -5,7 +5,6 @@ import Rail from "@/components/Rail";
 import TopBar from "@/components/TopBar";
 import TabBar from "@/components/TabBar";
 import { createClient } from "@/lib/supabase/server";
-import { initialsOf } from "@/lib/format";
 
 /**
  * The navigation shell — board [ 003 ].
@@ -20,7 +19,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("display_name, institution")
+    .select("display_name, institution, avatar_url")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -29,7 +28,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--bg)" }}>
       <DemoNotice />
-      <TopBar initials={initialsOf(name)} name={name} />
+      <TopBar name={name} avatarUrl={profile?.avatar_url ?? null} />
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
         <Rail />
         <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)" }}>

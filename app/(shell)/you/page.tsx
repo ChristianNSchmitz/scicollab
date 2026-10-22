@@ -13,24 +13,33 @@ import { loadRecord } from "@/lib/record/metrics";
 import { buildTimeline, RANGES, type Range, type Timeline } from "@/lib/record/timeline";
 import TimelineChart from "@/components/record/TimelineChart";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
+import Avatar from "@/components/Avatar";
+import { orcidUrl } from "@/lib/orcid";
+
+type Sort = "new" | "cited" | "change";
+const SORTS: { key: Sort; label: string }[] = [
+  { key: "new", label: "Newest" }, { key: "cited", label: "Most cited" }, { key: "change", label: "Recent citations" },
+];
 
 export const dynamic = "force-dynamic";
 
 /** Your record — board B3 screen 16. Six axes, never summed. Citations,
  *  h-index and recommendations sit above them as three separate numbers,
  *  each with its source; nothing on this page combines them. */
-export default async function You({ searchParams }: { searchParams: Promise<{ range?: string; sync?: string }> }) {
+export default async function You({ searchParams }: { searchParams: Promise<{ range?: string; sync?: string; sort?: string }> }) {
   ensureRecordSeed();
-  const { range: rangeParam, sync: syncFlash } = await searchParams;
+  const { range: rangeParam, sync: syncFlash, sort: sortParam } = await searchParams;
+  const sort: Sort = SORTS.some((s) => s.key === sortParam) ? (sortParam as Sort) : "new";
   const range: Range = RANGES.some((r) => r.key === rangeParam) ? (rangeParam as Range) : "months";
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: cards }, { count: questions }, { count: answers }] = await Promise.all([
+  const [{ data: profile }, { data: cards }, { count: questions }, { count: answers }, { count: datasets }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle(),
     supabase.from("method_cards").select("id, code, title, outcome, visibility, reproductions, created_at").eq("author_id", user!.id).order("created_at", { ascending: false }),
     supabase.from("questions").select("id", { count: "exact", head: true }).eq("author_id", user!.id),
     supabase.from("answers").select("id", { count: "exact", head: true }).eq("author_id", user!.id),
+    supabase.from("datasets").select("id", { count: "exact", head: true }).eq("owner_id", user!.id),
   ]);
 
   // OpenAlex: synced every 12 hours by the scheduler. A visit is a safety
@@ -75,7 +84,7 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
     ["Questions asked", questions ?? 0],
     ["Answers given", answers ?? 0],
     ["Reproductions of your work", reproductions],
-    ["Data deposited", 0],
+    ["Data deposited", datasets ?? 0],
   ] as const;
 
   return (
@@ -89,9 +98,21 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
         </div>
       }
     >
+      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 14 }}>
+        <Avatar name={profile?.display_name ?? ""} url={profile?.avatar_url} size={56} />
+        <div style={{ font: mono(11), color: "var(--mute)", lineHeight: 1.7 }}>
+          {normaliseOrcid(profile?.orcid) ? (
+            <a href={orcidUrl(normaliseOrcid(profile?.orcid)!)} target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>
+              ORCID {normaliseOrcid(profile?.orcid)} ↗
+            </a>
+          ) : <Link href="/settings#orcid" style={{ color: "var(--link)" }}>Link your ORCID</Link>}
+          {(profile?.techniques?.length ?? 0) > 0 && <div>{profile!.techniques.slice(0, 6).join(" · ")}</div>}
+        </div>
+        {!profile?.avatar_url && <Link href="/settings#picture" style={{ font: mono(11), color: "var(--link)", marginLeft: "auto" }}>Add a picture</Link>}
+      </div>
       <Headline biblio={biblio} recs={recs?.length ?? 0} recent={recent} recCards={recCards} />
       <OverTime timeline={timeline} />
-      <Publications pubs={pubs} runs={runs} biblio={biblio} example={isExample} flash={syncFlash} />
+      <Publications pubs={pubs} runs={runs} biblio={biblio} example={isExample} flash={syncFlash} sort={sort} range={range} />
 
       <Panel style={{ marginBottom: 16 }}>
         <PanelHead>Six axes · never summed</PanelHead>
@@ -143,7 +164,7 @@ function Headline({ biblio, recs, recent, recCards }: {
     { value: ok ? ok.citations.toLocaleString("en-GB") : "—", label: "Citations",
       sub: ok ? `+${ok.citationsThisYear} in ${ok.year} · ${ok.works} works` : missing },
     { value: ok ? ok.hIndex : "—", label: "h-index",
-      sub: ok ? `${ok.hIndex} works cited at least ${ok.hIndex} times` : missing },
+      sub: ok ? `${ok.hIndex} works cited at least ${ok.hIndex} times · i10-index ${ok.i10}` : missing },
     { value: recs, label: "Recommendations",
       sub: recs ? `+${recent} in 4 weeks · on ${recCards} of your cards` : <>None yet. Others can recommend your shared cards.</> },
   ];
@@ -216,11 +237,22 @@ function OverTime({ timeline: t }: { timeline: Timeline }) {
 }
 
 /** Publications as last synced from OpenAlex, what changed, and when. */
-function Publications({ pubs, runs, biblio, example, flash }: {
-  pubs: PubRow[]; runs: RunRow[]; biblio: Bibliometrics; example: boolean; flash?: string;
+function Publications({ pubs, runs, biblio, example, flash, sort, range }: {
+  pubs: PubRow[]; runs: RunRow[]; biblio: Bibliometrics; example: boolean; flash?: string; sort: Sort; range: Range;
 }) {
   if (biblio.state === "no-orcid" || biblio.state === "invalid-orcid") return null;
-  const sorted = [...pubs].sort((a, b) => (b.pub_date ?? `${b.year ?? 0}`).localeCompare(a.pub_date ?? `${a.year ?? 0}`));
+  const byDate = (a: PubRow, b: PubRow) => (b.pub_date ?? `${b.year ?? 0}`).localeCompare(a.pub_date ?? `${a.year ?? 0}`);
+  const sorted = [...pubs].sort((a, b) =>
+    sort === "cited" ? b.cited_by_count - a.cited_by_count || byDate(a, b)
+    : sort === "change" ? (b.cited_by_count - b.prev_cited_by_count) - (a.cited_by_count - a.prev_cited_by_count) || b.cited_by_count - a.cited_by_count
+    : byDate(a, b));
+  const sortHref = (k: Sort) => {
+    const q = new URLSearchParams();
+    if (range !== "months") q.set("range", range);
+    if (k !== "new") q.set("sort", k);
+    const s = q.toString();
+    return s ? `/you?${s}#publications` : "/you#publications";
+  };
   const last = runs.find((r) => r.status === "ok");
   const lastAny = runs[0];
   const synced = biblio.state === "ok" ? biblio.updated : last?.finished_at ?? null;
@@ -259,7 +291,7 @@ function Publications({ pubs, runs, biblio, example, flash }: {
 
   return (
     <Panel style={{ marginBottom: 16 }}>
-      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "8px 14px", borderBottom: "1px solid var(--rule)" }}>
+      <div id="publications" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "8px 14px", borderBottom: "1px solid var(--rule)", scrollMarginTop: 72 }}>
         <span style={{ font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", flex: 1 }}>
           Publications · {pubs.length} from OpenAlex{example ? " · example" : ""}
         </span>
@@ -289,6 +321,18 @@ function Publications({ pubs, runs, biblio, example, flash }: {
       {lastAny && lastAny.status !== "ok" && lastAny.status !== "running" && !example && (
         <div style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)" }}>
           Last attempt {timeAgo(lastAny.started_at)}: {lastAny.error ?? lastAny.status}
+        </div>
+      )}
+
+      {pubs.length > 1 && (
+        <div role="group" aria-label="Sort publications" style={{ display: "flex", gap: 6, flexWrap: "wrap", padding: "8px 14px", borderBottom: "1px solid var(--rule)" }}>
+          {SORTS.map((s) => (
+            <Link key={s.key} href={sortHref(s.key)} scroll={false} aria-current={s.key === sort ? "true" : undefined}
+                  style={{ font: mono(11, 500), padding: "4px 9px", border: "1px solid var(--rule)", textDecoration: "none",
+                           background: s.key === sort ? "var(--ink)" : "transparent", color: s.key === sort ? "var(--bg)" : "var(--ink)" }}>
+              {s.label}
+            </Link>
+          ))}
         </div>
       )}
 

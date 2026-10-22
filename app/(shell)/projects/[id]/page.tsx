@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { addEntry, depositDataset } from "@/app/actions/projects";
 import { Page, Panel, PanelHead, Empty, Tag, Visibility, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
+import Avatar from "@/components/Avatar";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +60,7 @@ export default async function Project({
   const isMember = !!user && ids.includes(user.id);
   const authorIds = [...new Set((commits ?? []).map((c: any) => c.author_id).filter(Boolean))];
   const { data: people } = [...ids, ...authorIds].length
-    ? await supabase.from("profiles").select("id, display_name, institution").in("id", [...new Set([...ids, ...authorIds])])
+    ? await supabase.from("profiles").select("id, display_name, institution, avatar_url").in("id", [...new Set([...ids, ...authorIds])])
     : { data: [] as any[] };
   const nameOf = (uid: string) => (people ?? []).find((x: any) => x.id === uid)?.display_name ?? "Someone";
 
@@ -241,10 +242,11 @@ export default async function Project({
 
           <Panel>
             <PanelHead>People · {members?.length ?? 0}</PanelHead>
-            <div style={{ padding: 14, font: mono(12, 400, 1.8) }}>
+            <div style={{ padding: 14, font: mono(12, 400, 1.8), display: "flex", flexDirection: "column", gap: 6 }}>
               {(members ?? []).map((m: any) => (
-                <div key={m.user_id}>
-                  {nameOf(m.user_id)} <span style={{ color: "var(--mute)" }}>· {m.role}</span>
+                <div key={m.user_id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Avatar name={nameOf(m.user_id)} url={(people ?? []).find((x: any) => x.id === m.user_id)?.avatar_url} size={22} />
+                  <span>{nameOf(m.user_id)} <span style={{ color: "var(--mute)" }}>· {m.role}</span></span>
                 </div>
               ))}
             </div>

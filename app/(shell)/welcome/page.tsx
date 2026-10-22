@@ -27,7 +27,7 @@ export default async function Welcome() {
       lede="A house is a broad discipline. Choosing one joins you to the rooms inside it, and you can prune or add later. Most researchers pick two or three — the cross-disciplinary rooms are where the useful surprises are."
     >
       <form action={joinHouses} style={{ maxWidth: 900 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="sc-pair" style={{ gap: 12 }}>
           {HOUSES.map((h) => {
             const rooms = roomsInHouse(h.id);
             return (

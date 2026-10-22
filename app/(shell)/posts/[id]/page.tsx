@@ -40,7 +40,7 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
         !isMine ? <Link href={`/messages/${post.author_id}`} style={btn}>Message the author</Link> : undefined
       }
     >
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
+      <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
             <div style={{ padding: "11px 14px", borderBottom: "1px solid var(--rule)", font: mono(11), color: "var(--mute)" }}>

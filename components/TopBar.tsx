@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Avatar from "@/components/Avatar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -9,7 +10,7 @@ import { demoSignOut, backendConfigured } from "@/app/actions/demo-auth";
 /* Top bar — board [ 003 ]: 56px, wordmark in a 200px well, search to 660px
    with its ⌘K hint, Create, notifications, avatar with a presence dot. */
 
-export default function TopBar({ initials = "··", name = "" }: { initials?: string; name?: string }) {
+export default function TopBar({ name = "", avatarUrl = null }: { name?: string; avatarUrl?: string | null }) {
   const router = useRouter();
   const [menu, setMenu] = useState(false);
   const [dark, setDark] = useState(false);
@@ -118,14 +119,8 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
           style={{ ...ghost, display: "flex", alignItems: "center", gap: 8, padding: 4, border: "1px solid var(--rule)" }}
           aria-label="Account"
         >
-          <span
-            style={{
-              position: "relative", width: 26, height: 26, border: "1px solid var(--ink)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              font: "500 10px/1 var(--mono)", background: "var(--bg)",
-            }}
-          >
-            {initials}
+          <span style={{ position: "relative", display: "flex" }}>
+            <Avatar name={name} url={avatarUrl} size={26} />
             <span style={{ position: "absolute", right: -3, bottom: -3, width: 9, height: 9, background: "var(--ok)", border: "1px solid var(--surface)", borderRadius: "50%" }} />
           </span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" strokeWidth="1.8" strokeLinecap="round">

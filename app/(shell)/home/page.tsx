@@ -4,6 +4,12 @@ import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import { ROOMS, roomById, housesOfRoom, INTENTS, intentById } from "@/lib/taxonomy";
+import { after } from "next/server";
+import { bibliometricsFor, loadSnapshots, recentChange, type Bibliometrics, type RecentChange } from "@/lib/record/bibliometrics";
+import { isDue, syncResearcher, DEMO_ORCID, normaliseOrcid } from "@/lib/openalex/sync";
+import { lastRuns } from "@/lib/openalex/store";
+import { isConfigured } from "@/lib/mode";
+import { ensureRecordSeed } from "@/lib/record/demo-seed";
 
 export const dynamic = "force-dynamic";
 
@@ -48,6 +54,37 @@ export default async function Home({
     cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
   ]);
   const who = (id: string) => (people ?? []).find((p: any) => p.id === id);
+
+  // ── the dashboard column: your research, and what is waiting on you ──
+  ensureRecordSeed();
+  const [{ data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }] = await Promise.all([
+    supabase.from("profiles").select("orcid").eq("id", user!.id).maybeSingle(),
+    supabase.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", user!.id).is("read_at", null),
+    supabase.from("access_requests").select("id, attachment_id, created_at").eq("owner_id", user!.id).eq("status", "pending"),
+    supabase.from("questions").select("id, title").eq("author_id", user!.id),
+  ]);
+  // An overdue OpenAlex sync runs after the page is sent; the next visit shows it.
+  if (await isDue(user!.id, me?.orcid)) after(() => syncResearcher(user!.id, me?.orcid, "visit"));
+  const biblio = await bibliometricsFor(user!.id, me?.orcid);
+  const example = !isConfigured() && normaliseOrcid(me?.orcid) === DEMO_ORCID;
+  const [snapshots, runs] = await Promise.all([
+    loadSnapshots(supabase, user!.id, biblio),
+    example ? Promise.resolve([]) : lastRuns(user!.id, 20),
+  ]);
+  const change = recentChange(biblio, snapshots, runs);
+
+  const requestAtts = [...new Set((myRequests ?? []).map((r: any) => r.attachment_id))];
+  const { data: atts } = requestAtts.length
+    ? await supabase.from("post_attachments").select("id, post_id").in("id", requestAtts)
+    : { data: [] as any[] };
+  const requestPosts = [...new Set((atts ?? []).map((a: any) => a.post_id))];
+
+  const qIds = (myQuestions ?? []).map((q: any) => q.id);
+  const { data: qAnswers } = qIds.length
+    ? await supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds)
+    : { data: [] as any[] };
+  const freshAnswers = (qAnswers ?? []).filter((a: any) => a.author_id !== user!.id && Date.now() - +new Date(a.created_at) < 7 * 864e5);
+  const answeredQ = [...new Set(freshAnswers.map((a: any) => a.question_id))];
   const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
 
   const qs = (patch: Record<string, string | undefined>) => {
@@ -70,7 +107,7 @@ export default async function Home({
       lede="Posts from the rooms you have joined. Every post states what it is, and the two that carry evidence carry a method card."
       actions={<Link href="/post" style={btnPrimary}>New post</Link>}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", gap: 16, alignItems: "start" }}>
+      <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {/* Filters sit directly under the composer entry, as designed. */}
           <Panel style={{ padding: 12 }}>
@@ -150,7 +187,16 @@ export default async function Home({
           })}
         </div>
 
-        <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <aside className="sc-home-aside" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <ResearchPanel biblio={biblio} change={change} />
+          <AttentionPanel
+            unread={unread ?? 0}
+            requests={(myRequests ?? []).length}
+            requestPost={requestPosts[0] ?? null}
+            answers={freshAnswers.length}
+            answeredQuestion={answeredQ.length === 1 ? answeredQ[0] : null}
+          />
+          <div className="sc-hide-narrow" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
             <PanelHead>Your rooms · {myRooms.length}</PanelHead>
             <div style={{ padding: 14, display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -166,8 +212,82 @@ export default async function Home({
               <Link href="/rooms" style={{ ...btn, width: "100%", justifyContent: "center" }}>Browse all rooms</Link>
             </div>
           </Panel>
+          </div>
         </aside>
       </div>
     </Page>
+  );
+}
+
+/** Citations and h-index at a glance, and what changed in the last 30 days. */
+function ResearchPanel({ biblio, change }: { biblio: Bibliometrics; change: RecentChange }) {
+  const ok = biblio.state === "ok" ? biblio : null;
+  return (
+    <Panel>
+      <PanelHead>Your research</PanelHead>
+      {ok ? (
+        <>
+          <div className="sc-pair" style={{ gap: 1, background: "var(--rule)", borderBottom: "1px solid var(--rule)" }}>
+            {[[ok.citations.toLocaleString("en-GB"), "citations"], [ok.hIndex, "h-index"]].map(([v, l]) => (
+              <div key={String(l)} style={{ background: "var(--surface)", padding: "12px 14px" }}>
+                <div style={{ font: mono(22, 700), letterSpacing: "-.02em" }}>{v}</div>
+                <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 4 }}>{l}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: "10px 14px", font: "400 12px/1.6 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>
+            {change.gain !== null && (
+              <div><b style={{ color: change.gain > 0 ? "var(--ok)" : "var(--ink)" }}>{change.gain > 0 ? "+" : ""}{change.gain}</b> citations since {change.since}</div>
+            )}
+            {change.newPubs.length > 0 ? (
+              <div>
+                <b>{change.newPubs.length}</b> new publication{change.newPubs.length > 1 ? "s" : ""} in 30 days
+                {change.newPubs.slice(0, 2).map((p) => (
+                  <div key={p.openalex_id} style={{ font: mono(11), color: "var(--mute)", marginTop: 3 }}>· {p.title}</div>
+                ))}
+              </div>
+            ) : <div style={{ color: "var(--mute)" }}>No new publications in 30 days.</div>}
+            <div style={{ font: mono(10.5), color: "var(--mute)" }}>
+              {ok.example ? "example values · demo account" : `OpenAlex · checked ${timeAgo(ok.updated)}`}
+            </div>
+          </div>
+          <div style={{ padding: "0 14px 14px" }}>
+            <Link href="/you#publications" style={{ ...btn, width: "100%", justifyContent: "center" }}>Publications and citations</Link>
+          </div>
+        </>
+      ) : (
+        <div style={{ padding: 14, font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
+          {biblio.state === "no-orcid" || biblio.state === "invalid-orcid" ? (
+            <>Link your ORCID and your citations, h-index and new publications show here, updated automatically.{" "}
+              <Link href="/settings#orcid" style={{ color: "var(--link)" }}>Link ORCID</Link></>
+          ) : biblio.state === "pending" ? "Fetching your record from OpenAlex for the first time…"
+            : biblio.state === "not-found" ? "OpenAlex has no author for your ORCID yet. It is checked again on every sync."
+            : "OpenAlex could not be reached. The next sync will try again."}
+        </div>
+      )}
+    </Panel>
+  );
+}
+
+/** Only what is waiting on you, each with the way to deal with it. */
+function AttentionPanel({ unread, requests, requestPost, answers, answeredQuestion }: {
+  unread: number; requests: number; requestPost: string | null; answers: number; answeredQuestion: string | null;
+}) {
+  const items = [
+    unread > 0 && { href: "/messages", text: `${unread} unread message${unread > 1 ? "s" : ""}` },
+    requests > 0 && { href: requestPost ? `/posts/${requestPost}` : "/home", text: `${requests} data access request${requests > 1 ? "s" : ""} to decide` },
+    answers > 0 && { href: answeredQuestion ? `/questions/${answeredQuestion}` : "/ask#questions", text: `${answers} new answer${answers > 1 ? "s" : ""} to your questions this week` },
+  ].filter(Boolean) as { href: string; text: string }[];
+  return (
+    <Panel>
+      <PanelHead>Waiting on you</PanelHead>
+      {items.length === 0 ? (
+        <div style={{ padding: 14, font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Nothing right now.</div>
+      ) : items.map((i) => (
+        <Link key={i.text} href={i.href} style={{ display: "flex", gap: 8, padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.5 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>
+          <span style={{ color: "var(--signal)" }}>→</span>{i.text}
+        </Link>
+      ))}
+    </Panel>
   );
 }
