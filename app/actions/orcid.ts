@@ -9,6 +9,7 @@ import { syncResearcher, DEMO_ORCID } from "@/lib/openalex/sync";
 import { clearSync } from "@/lib/openalex/store";
 import { normaliseOrcid, orcidProblem } from "@/lib/orcid";
 import { isConfigured } from "@/lib/mode";
+import { DEMO_H_INDEX } from "@/lib/record/demo-values";
 
 /**
  * Linking an ORCID is one step: check the iD, look it up in OpenAlex so the
@@ -53,7 +54,7 @@ export async function lookupOrcid(raw: string): Promise<LookupResult> {
   if (!orcid) return { ok: false, error: problem ?? "Enter an ORCID iD." };
   // Demo mode only: the demo persona carries ORCID's test record and example numbers.
   if (!isConfigured() && orcid === DEMO_ORCID) {
-    return { ok: true, preview: { orcid, name: "Josiah Carberry (ORCID's public test record)", institution: "Brown University", works: 34, citations: 412, hIndex: 11, openalexId: "" } };
+    return { ok: true, preview: { orcid, name: "Josiah Carberry (ORCID's public test record)", institution: "Brown University", works: 34, citations: 412, hIndex: DEMO_H_INDEX, openalexId: "" } };
   }
   try {
     return { ok: true, preview: preview(await fetchAuthor(orcid), orcid) };

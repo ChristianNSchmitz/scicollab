@@ -592,6 +592,10 @@ create table if not exists public.publications (
   primary key (user_id, openalex_id)
 );
 create index if not exists publications_user_year_idx on public.publications (user_id, year desc);
+-- Citations each work received per calendar year, as OpenAlex reports them
+-- (about the last ten years). Kept so the profile can show per-paper trends
+-- and the h-index year by year without asking OpenAlex again.
+alter table public.publications add column if not exists counts_by_year jsonb not null default '[]';
 
 create table if not exists public.sync_runs (
   id              uuid primary key default gen_random_uuid(),

@@ -7,7 +7,10 @@ import { ROOMS, roomById, housesOfRoom, INTENTS, intentById } from "@/lib/taxono
 import { after } from "next/server";
 import { bibliometricsFor, loadSnapshots, recentChange, type Bibliometrics, type RecentChange } from "@/lib/record/bibliometrics";
 import { isDue, syncResearcher, DEMO_ORCID, normaliseOrcid } from "@/lib/openalex/sync";
-import { lastRuns } from "@/lib/openalex/store";
+import { lastRuns, readPublications } from "@/lib/openalex/store";
+import { examplePublications } from "@/lib/openalex/example";
+import { citationProfile } from "@/lib/record/citations";
+import { syncNow } from "@/app/actions/openalex";
 import { isConfigured } from "@/lib/mode";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 
@@ -67,11 +70,14 @@ export default async function Home({
   if (await isDue(user!.id, me?.orcid)) after(() => syncResearcher(user!.id, me?.orcid, "visit"));
   const biblio = await bibliometricsFor(user!.id, me?.orcid);
   const example = !isConfigured() && normaliseOrcid(me?.orcid) === DEMO_ORCID;
-  const [snapshots, runs] = await Promise.all([
+  const [snapshots, runs, pubs] = await Promise.all([
     loadSnapshots(supabase, user!.id, biblio),
     example ? Promise.resolve([]) : lastRuns(user!.id, 20),
+    biblio.state !== "ok" ? Promise.resolve([]) : example ? Promise.resolve(examplePublications(user!.id)) : readPublications(user!.id),
   ]);
   const change = recentChange(biblio, snapshots, runs);
+  const hist = citationProfile(pubs).hIndexByYear;
+  const hDelta = hist.length > 1 ? hist.at(-1)!.value - hist.at(-2)!.value : null;
 
   const requestAtts = [...new Set((myRequests ?? []).map((r: any) => r.attachment_id))];
   const { data: atts } = requestAtts.length
@@ -188,7 +194,7 @@ export default async function Home({
         </div>
 
         <aside className="sc-home-aside" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <ResearchPanel biblio={biblio} change={change} />
+          <ResearchPanel biblio={biblio} change={change} hDelta={hDelta} />
           <AttentionPanel
             unread={unread ?? 0}
             requests={(myRequests ?? []).length}
@@ -220,7 +226,7 @@ export default async function Home({
 }
 
 /** Citations and h-index at a glance, and what changed in the last 30 days. */
-function ResearchPanel({ biblio, change }: { biblio: Bibliometrics; change: RecentChange }) {
+function ResearchPanel({ biblio, change, hDelta }: { biblio: Bibliometrics; change: RecentChange; hDelta: number | null }) {
   const ok = biblio.state === "ok" ? biblio : null;
   return (
     <Panel>
@@ -228,10 +234,14 @@ function ResearchPanel({ biblio, change }: { biblio: Bibliometrics; change: Rece
       {ok ? (
         <>
           <div className="sc-pair" style={{ gap: 1, background: "var(--rule)", borderBottom: "1px solid var(--rule)" }}>
-            {[[ok.citations.toLocaleString("en-GB"), "citations"], [ok.hIndex, "h-index"]].map(([v, l]) => (
+            {([
+              [ok.citations.toLocaleString("en-GB"), "citations", `${ok.citationsThisYear} in ${ok.year}`],
+              [ok.hIndex, "h-index", hDelta === null ? `i10-index ${ok.i10}` : `${hDelta >= 0 ? "+" : ""}${hDelta} since ${ok.year - 1}`],
+            ] as const).map(([v, l, sub]) => (
               <div key={String(l)} style={{ background: "var(--surface)", padding: "12px 14px" }}>
                 <div style={{ font: mono(22, 700), letterSpacing: "-.02em" }}>{v}</div>
                 <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 4 }}>{l}</div>
+                <div style={{ font: mono(10), color: "var(--mute)", marginTop: 3 }}>{sub}</div>
               </div>
             ))}
           </div>
@@ -251,8 +261,11 @@ function ResearchPanel({ biblio, change }: { biblio: Bibliometrics; change: Rece
               {ok.example ? "example values · demo account" : `OpenAlex · checked ${timeAgo(ok.updated)}`}
             </div>
           </div>
-          <div style={{ padding: "0 14px 14px" }}>
-            <Link href="/you#publications" style={{ ...btn, width: "100%", justifyContent: "center" }}>Publications and citations</Link>
+          <div style={{ padding: "0 14px 14px", display: "flex", gap: 6 }}>
+            <Link href="/you#publications" style={{ ...btn, flex: 1, justifyContent: "center" }}>Publications</Link>
+            {!ok.example && (
+              <form action={syncNow}><button type="submit" style={btn} title="Check OpenAlex now">Sync now</button></form>
+            )}
           </div>
         </>
       ) : (

@@ -1,4 +1,5 @@
 import type { PubRow, RunRow } from "@/lib/openalex/store";
+import { DEMO_PER_YEAR } from "@/lib/record/demo-values";
 
 /**
  * Example publications for the demo persona, which carries ORCID's public
@@ -45,6 +46,32 @@ export function examplePublications(userId: string): PubRow[] {
   let left = 412;
   rows.forEach((r, i) => { r.cited_by_count = i === rows.length - 1 ? left : Math.round((r.cited_by_count / sum) * 412); left -= r.cited_by_count; });
   rows.forEach((r, i) => { r.prev_cited_by_count = Math.max(0, r.cited_by_count - (i % 5 === 1 ? 2 : i % 4 === 0 ? 1 : 0)); });
+  // Spread the citations over the years so they add up to the persona's
+  // per-year example counts (lib/record/bibliometrics.ts): each year's count
+  // goes to the papers that existed then, in proportion to what each still
+  // has to receive. Gives per-paper trends and an h-index history to show.
+  const perYear = DEMO_PER_YEAR;
+  const first = year - perYear.length + 1;
+  const remaining = new Map(rows.map((r) => [r.openalex_id, r.cited_by_count]));
+  const got = new Map(rows.map((r) => [r.openalex_id, new Map<number, number>()]));
+  perYear.forEach((target, i) => {
+    const y = first + i;
+    const open = rows.filter((r) => (r.year ?? year) <= y && remaining.get(r.openalex_id)! > 0);
+    const pool = open.reduce((n, r) => n + remaining.get(r.openalex_id)!, 0);
+    let rest = Math.min(target, pool);
+    open.forEach((r, k) => {
+      const n = k === open.length - 1 ? rest : Math.min(rest, Math.round((target * remaining.get(r.openalex_id)!) / pool));
+      rest -= n;
+      remaining.set(r.openalex_id, remaining.get(r.openalex_id)! - n);
+      got.get(r.openalex_id)!.set(y, (got.get(r.openalex_id)!.get(y) ?? 0) + n);
+    });
+  });
+  rows.forEach((r) => {
+    const g = got.get(r.openalex_id)!;
+    const extra = remaining.get(r.openalex_id)!;          // whatever the targets did not cover lands this year
+    if (extra > 0) g.set(year, (g.get(year) ?? 0) + extra);
+    r.counts_by_year = [...g].filter(([, n]) => n > 0).map(([y, n]) => ({ year: y, cited_by_count: n })).sort((a, b) => a.year - b.year);
+  });
   return rows;
 }
 

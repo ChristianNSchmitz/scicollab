@@ -16,6 +16,8 @@ export type PubRow = {
   user_id: string; openalex_id: string; doi: string | null; title: string; year: number | null;
   pub_date: string | null; venue: string; type: string; cited_by_count: number; prev_cited_by_count: number;
   first_seen_at: string; updated_at: string;
+  /** Citations received in each year (OpenAlex, roughly the last ten years). */
+  counts_by_year?: { year: number; cited_by_count: number }[];
 };
 export type AuthorRow = {
   user_id: string; orcid: string; openalex_id: string; display_name: string; works_count: number;
@@ -103,7 +105,7 @@ export async function writeSync(userId: string, orcid: string, a: OAAuthor, work
 
   const base = (w: OAWork) => ({
     user_id: userId, openalex_id: w.id, doi: w.doi, title: w.title, year: w.year, pub_date: w.pub_date,
-    venue: w.venue, type: w.type, cited_by_count: w.cited_by_count, updated_at: now,
+    venue: w.venue, type: w.type, cited_by_count: w.cited_by_count, counts_by_year: w.received, updated_at: now,
   });
   const fresh = works.filter((w) => !before.has(w.id)).map((w) => ({ ...base(w), prev_cited_by_count: w.cited_by_count, first_seen_at: now }));
   const known = works.filter((w) => before.has(w.id)).map((w) => ({ ...base(w), prev_cited_by_count: before.get(w.id)!.cited_by_count }));

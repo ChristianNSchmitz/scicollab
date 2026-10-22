@@ -26,8 +26,7 @@ export type Bibliometrics =
   | { state: "not-found"; orcid: string }
   | { state: "unreachable"; orcid: string; message?: string };
 
-/** Example citations per year for the demo persona, oldest first, ending this year (sum 411 of 412). */
-const DEMO_PER_YEAR = [2, 6, 14, 21, 30, 38, 47, 58, 66, 72, 57];
+import { DEMO_PER_YEAR, DEMO_H_INDEX, DEMO_I10 } from "@/lib/record/demo-values";
 
 export async function bibliometricsFor(userId: string, orcidRaw: string | null | undefined): Promise<Bibliometrics> {
   const raw = (orcidRaw ?? "").trim();
@@ -38,7 +37,7 @@ export async function bibliometricsFor(userId: string, orcidRaw: string | null |
   const year = new Date().getFullYear();
   if (!isConfigured() && orcid === DEMO_ORCID) {
     return {
-      state: "ok", citations: 412, hIndex: 11, i10: 12, works: 34, citationsThisYear: 57, year,
+      state: "ok", citations: 412, hIndex: DEMO_H_INDEX, i10: DEMO_I10, works: 34, citationsThisYear: 57, year,
       updated: new Date().toISOString(), url: `https://orcid.org/${orcid}`, example: true,
       countsByYear: DEMO_PER_YEAR.map((n, i) => ({ year: year - DEMO_PER_YEAR.length + 1 + i, cited_by_count: n })),
     };

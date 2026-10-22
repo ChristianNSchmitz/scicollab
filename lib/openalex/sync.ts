@@ -18,6 +18,9 @@ export const SYNC_INTERVAL_MS = (Number(process.env.SCICOLLAB_SYNC_INTERVAL_HOUR
 export const MANUAL_COOLDOWN_MS = Math.min(10 * 60 * 1000, SYNC_INTERVAL_MS);
 /** The works are fetched in full at least this often, even when the author looks unchanged. */
 export const FULL_REFRESH_MS = 7 * 24 * 3600 * 1000;
+/** Per-work citation history is stored from this release on. A record whose
+ *  last full fetch predates it is fetched in full once, to fill it in. */
+const PER_WORK_HISTORY_SINCE = "2026-10-22T00:00:00Z";
 /** The demo persona carries ORCID's public test record; it is never synced. */
 export const DEMO_ORCID = "0000-0002-1825-0097";
 
@@ -62,6 +65,7 @@ async function doSync(userId: string, orcidRaw: string | null | undefined, trigg
     const unchanged = sameRecord && prevAuthor
       && trigger !== "manual"
       && lastFull && Date.now() - +new Date(lastFull) < FULL_REFRESH_MS
+      && +new Date(lastFull) >= +new Date(PER_WORK_HISTORY_SINCE)
       && author.works_count === prevAuthor.works_count
       && author.cited_by_count === prevAuthor.cited_by_count
       && author.h_index === prevAuthor.h_index

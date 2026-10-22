@@ -15,10 +15,13 @@ import TimelineChart from "@/components/record/TimelineChart";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import Avatar from "@/components/Avatar";
 import { orcidUrl } from "@/lib/orcid";
+import { citationProfile, type CitationProfile } from "@/lib/record/citations";
+import YearBars from "@/components/record/YearBars";
 
-type Sort = "new" | "cited" | "change";
+type Sort = "new" | "cited" | "year" | "change";
 const SORTS: { key: Sort; label: string }[] = [
-  { key: "new", label: "Newest" }, { key: "cited", label: "Most cited" }, { key: "change", label: "Recent citations" },
+  { key: "new", label: "Newest" }, { key: "cited", label: "Most cited" },
+  { key: "year", label: "Cited this year" }, { key: "change", label: "Since last sync" },
 ];
 
 export const dynamic = "force-dynamic";
@@ -56,7 +59,8 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
   const isExample = !isConfigured() && normaliseOrcid(profile?.orcid) === DEMO_ORCID;
   const [pubs, runs] = isExample
     ? [examplePublications(user!.id), [exampleRun(user!.id)]]
-    : await Promise.all([readPublications(user!.id), lastRuns(user!.id, 5)]);
+    : await Promise.all([readPublications(user!.id), lastRuns(user!.id, 10)]);
+  const profileC = citationProfile(pubs);
 
   // Recommendations: other people endorsing your method cards.
   const cardIds = (cards ?? []).map((c) => c.id);
@@ -111,8 +115,9 @@ export default async function You({ searchParams }: { searchParams: Promise<{ ra
         {!profile?.avatar_url && <Link href="/settings#picture" style={{ font: mono(11), color: "var(--link)", marginLeft: "auto" }}>Add a picture</Link>}
       </div>
       <Headline biblio={biblio} recs={recs?.length ?? 0} recent={recent} recCards={recCards} />
+      <CitationPanel c={profileC} biblio={biblio} />
       <OverTime timeline={timeline} />
-      <Publications pubs={pubs} runs={runs} biblio={biblio} example={isExample} flash={syncFlash} sort={sort} range={range} />
+      <Publications pubs={pubs} runs={runs} biblio={biblio} example={isExample} flash={syncFlash} sort={sort} range={range} c={profileC} />
 
       <Panel style={{ marginBottom: 16 }}>
         <PanelHead>Six axes · never summed</PanelHead>
@@ -237,13 +242,15 @@ function OverTime({ timeline: t }: { timeline: Timeline }) {
 }
 
 /** Publications as last synced from OpenAlex, what changed, and when. */
-function Publications({ pubs, runs, biblio, example, flash, sort, range }: {
-  pubs: PubRow[]; runs: RunRow[]; biblio: Bibliometrics; example: boolean; flash?: string; sort: Sort; range: Range;
+function Publications({ pubs, runs, biblio, example, flash, sort, range, c }: {
+  pubs: PubRow[]; runs: RunRow[]; biblio: Bibliometrics; example: boolean; flash?: string; sort: Sort; range: Range; c: CitationProfile;
 }) {
+  const thisYear = (p: PubRow) => c.trend.get(p.openalex_id)?.at(-1) ?? 0;
   if (biblio.state === "no-orcid" || biblio.state === "invalid-orcid") return null;
   const byDate = (a: PubRow, b: PubRow) => (b.pub_date ?? `${b.year ?? 0}`).localeCompare(a.pub_date ?? `${a.year ?? 0}`);
   const sorted = [...pubs].sort((a, b) =>
     sort === "cited" ? b.cited_by_count - a.cited_by_count || byDate(a, b)
+    : sort === "year" ? thisYear(b) - thisYear(a) || b.cited_by_count - a.cited_by_count
     : sort === "change" ? (b.cited_by_count - b.prev_cited_by_count) - (a.cited_by_count - a.prev_cited_by_count) || b.cited_by_count - a.cited_by_count
     : byDate(a, b));
   const sortHref = (k: Sort) => {
@@ -280,9 +287,16 @@ function Publications({ pubs, runs, biblio, example, flash, sort, range }: {
             {[p.venue, p.year, p.type].filter(Boolean).join(" · ")}
           </div>
         </div>
+        {c.hasHistory && (c.trend.get(p.openalex_id) ?? []).some((n) => n > 0) && (
+          <div style={{ width: 72, flex: "none", alignSelf: "center" }} title={`Citations per year, ${c.trendYears[0]}–${c.year}`}>
+            <YearBars points={c.trendYears.map((y, i) => ({ year: y, value: c.trend.get(p.openalex_id)![i] }))}
+                      unit="citations" height={20} labels={false} current={c.year} />
+          </div>
+        )}
         <div style={{ textAlign: "right", whiteSpace: "nowrap" }}>
           <span style={{ font: mono(13, 600) }}>{p.cited_by_count}</span>
           <span style={{ font: mono(10.5), color: "var(--mute)" }}> citations</span>
+          {thisYear(p) > 0 && <div style={{ font: mono(10.5), color: "var(--mute)" }}>{thisYear(p)} in {c.year}</div>}
           {d !== 0 && <div style={{ font: mono(10.5), color: d > 0 ? "var(--ok)" : "var(--mute)" }}>{d > 0 ? "+" : ""}{d} since last sync</div>}
         </div>
       </div>
@@ -298,6 +312,12 @@ function Publications({ pubs, runs, biblio, example, flash, sort, range }: {
         <span style={{ font: mono(10.5), color: "var(--mute)" }}>
           {example ? "demo account, not synced" : synced ? `synced ${timeAgo(synced)} · next in ~${hours(nextIn)}` : "first sync pending"}
         </span>
+        {pubs.length > 0 && (
+          <span style={{ display: "flex", gap: 8, font: mono(11) }}>
+            <a href="/you/publications/export" download style={{ color: "var(--link)" }}>BibTeX</a>
+            <a href="/you/publications/export?format=csv" download style={{ color: "var(--link)" }}>CSV</a>
+          </span>
+        )}
         {!example && (
           <form action={syncNow}><button type="submit" style={{ ...btn, height: 28, padding: "0 10px", font: mono(11, 500) }}>Sync now</button></form>
         )}
@@ -349,8 +369,90 @@ function Publications({ pubs, runs, biblio, example, flash, sort, range }: {
           )}
         </>
       )}
+      {runs.length > 0 && !example && (
+        <details style={{ borderBottom: "1px solid var(--rule)" }}>
+          <summary style={{ padding: "10px 14px", font: mono(11), color: "var(--link)", cursor: "pointer" }}>Sync history · last {runs.length}</summary>
+          {runs.map((r) => (
+            <div key={r.id} style={{ display: "flex", gap: 10, flexWrap: "wrap", padding: "7px 14px", borderTop: "1px solid var(--rule)", font: mono(11, 400, 1.5) }}>
+              <span style={{ color: "var(--mute)", minWidth: 150 }}>{new Date(r.started_at).toISOString().slice(0, 16).replace("T", " ")} UTC</span>
+              <span style={{ color: "var(--mute)", minWidth: 64 }}>{r.trigger}</span>
+              <span style={{ flex: 1, minWidth: 200, color: r.status === "ok" ? "var(--ink)" : "var(--err)" }}>
+                {r.status === "running" ? "running…"
+                  : r.status !== "ok" ? (r.error ?? r.status)
+                  : r.initial ? "first import"
+                  : [r.citations_delta ? `${r.citations_delta > 0 ? "+" : ""}${r.citations_delta} citations` : null,
+                     r.new_works ? `${r.new_works} new publication${r.new_works > 1 ? "s" : ""}` : null,
+                     r.removed_works ? `${r.removed_works} removed` : null].filter(Boolean).join(" · ") || "no change"}
+              </span>
+            </div>
+          ))}
+        </details>
+      )}
       <div style={{ padding: "9px 14px", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
         Synced from <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID every 12 hours. If a paper is missing or wrongly attributed, it needs fixing in OpenAlex or ORCID; it will follow here on the next sync.
+      </div>
+    </Panel>
+  );
+}
+
+/** Citations per year, the h-index year by year, and this year's most cited
+ *  papers. All from the stored per-work counts; nothing is fetched here. */
+function CitationPanel({ c, biblio }: { c: CitationProfile; biblio: Bibliometrics }) {
+  if (biblio.state !== "ok") return null;
+  const perYear = biblio.countsByYear.filter((x) => x.year > c.year - 10 && x.year <= c.year)
+    .map((x) => ({ year: x.year, value: x.cited_by_count }));
+  const h = c.hIndexByYear;
+  const hLastYear = h.at(-2)?.value;
+  const cell: React.CSSProperties = { padding: "14px 16px", background: "var(--surface)", minWidth: 0 };
+  const head: React.CSSProperties = { font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", marginBottom: 10 };
+  const lastYearValue = perYear.find((x) => x.year === c.year - 1)?.value ?? 0;
+  return (
+    <Panel style={{ marginBottom: 16 }}>
+      <div className="sc-three">
+        <div style={cell}>
+          <div style={head}>Citations per year</div>
+          <YearBars points={perYear} unit="citations" current={c.year} />
+          <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
+            <b style={{ color: "var(--ink)" }}>{biblio.citationsThisYear}</b> so far in {c.year} · {lastYearValue} in {c.year - 1}
+          </div>
+        </div>
+        <div style={cell}>
+          <div style={head}>h-index by year</div>
+          {c.hasHistory && h.length > 0 ? (
+            <>
+              <YearBars points={h} unit="h-index" current={c.year} />
+              <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
+                <b style={{ color: "var(--ink)" }}>{h.at(-1)!.value}</b> now
+                {hLastYear !== undefined && <> · {h.at(-1)!.value - hLastYear >= 0 ? "+" : ""}{h.at(-1)!.value - hLastYear} since the end of {c.year - 1}</>}
+              </div>
+            </>
+          ) : (
+            <p style={{ font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+              Appears after the next full sync, which stores each paper&apos;s citations per year.
+            </p>
+          )}
+        </div>
+        <div style={cell}>
+          <div style={head}>Most cited in {c.year}</div>
+          {c.topThisYear.length === 0 ? (
+            <p style={{ font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+              {c.hasHistory ? `No citations recorded in ${c.year} yet.` : "Appears after the next full sync."}
+            </p>
+          ) : (
+            <ol style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7 }}>
+              {c.topThisYear.map((t) => (
+                <li key={t.openalex_id} style={{ display: "flex", gap: 8, font: "400 11.5px/1.4 var(--sans)" }}>
+                  <span style={{ font: mono(11, 700), minWidth: 22, textAlign: "right" }}>{t.n}</span>
+                  <span style={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{t.title}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </div>
+      <div style={{ padding: "9px 16px", borderTop: "1px solid var(--rule)", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+        Worked out from each paper&apos;s citations per year as OpenAlex reports them, which covers about the last ten years.
+        The current year is still filling and is drawn lighter.
       </div>
     </Panel>
   );
