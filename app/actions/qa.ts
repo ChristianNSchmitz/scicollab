@@ -1,5 +1,6 @@
 "use server";
 
+import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -13,6 +14,7 @@ async function me() {
 
 export async function askQuestion(form: FormData) {
   const { supabase, user } = await me();
+  if (await overLimit(supabase, "question", user.id)) redirect("/ask?limited=1");
   const card = String(form.get("method_card_id") ?? "");
   const { data, error } = await supabase
     .from("questions")
@@ -34,6 +36,7 @@ export async function postAnswer(questionId: string, form: FormData) {
   const { supabase, user } = await me();
   const body = String(form.get("body") ?? "").trim();
   if (!body) return;
+  if (await overLimit(supabase, "answer", user.id)) redirect(`/questions/${questionId}?limited=1`);
   const { error } = await supabase
     .from("answers")
     .insert({ question_id: questionId, author_id: user.id, body });

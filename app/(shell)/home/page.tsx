@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Avatar from "@/components/Avatar";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, btn, btnPrimary, mono } from "@/components/ui";
@@ -53,7 +54,7 @@ export default async function Home({
   const authorIds = [...new Set((posts ?? []).map((p: any) => p.author_id))];
   const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
   const [{ data: people }, { data: cards }] = await Promise.all([
-    authorIds.length ? supabase.from("profiles").select("id, display_name, institution").in("id", authorIds) : Promise.resolve({ data: [] as any[] }),
+    authorIds.length ? supabase.from("profiles").select("id, display_name, institution, avatar_url").in("id", authorIds) : Promise.resolve({ data: [] as any[] }),
     cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
   ]);
   const who = (id: string) => (people ?? []).find((p: any) => p.id === id);
@@ -161,8 +162,9 @@ export default async function Home({
 
                 <div style={{ padding: 14 }}>
                   <Link href={`/posts/${p.id}`} style={{ font: mono(15, 700, 1.35), color: "var(--ink)", textDecoration: "none" }}>{p.title}</Link>
-                  <div style={{ font: mono(11), color: "var(--mute)", marginTop: 5 }}>
-                    {author?.display_name ?? "Someone"}{author?.institution ? ` · ${author.institution}` : ""}
+                  <div style={{ font: mono(11), color: "var(--mute)", marginTop: 6, display: "flex", gap: 7, alignItems: "center" }}>
+                    <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={18} />
+                    <span>{author?.display_name ?? "Someone"}{author?.institution ? ` · ${author.institution}` : ""}</span>
                   </div>
                   {p.body && <p style={{ font: "400 12.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{p.body.slice(0, 280)}</p>}
 
@@ -288,7 +290,7 @@ function AttentionPanel({ unread, requests, requestPost, answers, answeredQuesti
 }) {
   const items = [
     unread > 0 && { href: "/messages", text: `${unread} unread message${unread > 1 ? "s" : ""}` },
-    requests > 0 && { href: requestPost ? `/posts/${requestPost}` : "/home", text: `${requests} data access request${requests > 1 ? "s" : ""} to decide` },
+    requests > 0 && { href: requests === 1 && requestPost ? `/posts/${requestPost}` : "/requests", text: `${requests} data access request${requests > 1 ? "s" : ""} to decide` },
     answers > 0 && { href: answeredQuestion ? `/questions/${answeredQuestion}` : "/ask#questions", text: `${answers} new answer${answers > 1 ? "s" : ""} to your questions this week` },
   ].filter(Boolean) as { href: string; text: string }[];
   return (

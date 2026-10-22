@@ -1,14 +1,16 @@
+import Avatar from "@/components/Avatar";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Page, Panel, PanelHead, Outcome, Tag, field, btn, btnPrimary, mono } from "@/components/ui";
+import { Page, LimitNotice, Panel, PanelHead, Outcome, Tag, field, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import { roomById, housesOfRoom, intentById } from "@/lib/taxonomy";
 import { attachmentsFor, pendingFor, requestAccess, decideRequest } from "@/app/actions/attachments";
 
 export const dynamic = "force-dynamic";
 
-export default async function PostDetail({ params }: { params: Promise<{ id: string }> }) {
+export default async function PostDetail({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string }> }) {
+  const { limited } = await searchParams;
   const { id } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -17,7 +19,7 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
   if (!post) notFound();
 
   const [{ data: author }, { data: card }] = await Promise.all([
-    supabase.from("profiles").select("id, display_name, institution, role_title").eq("id", post.author_id).maybeSingle(),
+    supabase.from("profiles").select("id, display_name, institution, role_title, avatar_url").eq("id", post.author_id).maybeSingle(),
     post.method_card_id
       ? supabase.from("method_cards").select("id, code, title, outcome, system, conditions, fails_under").eq("id", post.method_card_id).maybeSingle()
       : Promise.resolve({ data: null }),
@@ -40,13 +42,17 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
         !isMine ? <Link href={`/messages/${post.author_id}`} style={btn}>Message the author</Link> : undefined
       }
     >
+      <LimitNotice show={limited} />
       <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
-            <div style={{ padding: "11px 14px", borderBottom: "1px solid var(--rule)", font: mono(11), color: "var(--mute)" }}>
-              {author?.display_name ?? "Someone"}
-              {author?.role_title ? ` · ${author.role_title}` : ""}
-              {author?.institution ? ` · ${author.institution}` : ""} · {timeAgo(post.created_at)}
+            <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: mono(11), color: "var(--mute)", display: "flex", gap: 9, alignItems: "center" }}>
+              <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={24} />
+              <span>
+                {author?.display_name ?? "Someone"}
+                {author?.role_title ? ` · ${author.role_title}` : ""}
+                {author?.institution ? ` · ${author.institution}` : ""} · {timeAgo(post.created_at)}
+              </span>
             </div>
             {post.body && (
               <div style={{ padding: 14 }}>

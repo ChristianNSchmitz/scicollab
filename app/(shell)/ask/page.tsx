@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { askQuestion } from "@/app/actions/qa";
-import { Page, Panel, PanelHead, Empty, Tag, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
+import { Page, Panel, PanelHead, Empty, Tag, LimitNotice, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 /** Ask — board C1 screen 1. A question is a structured instrument, not a text
  *  box: it can carry the artifact that produced it. */
-export default async function Ask({ searchParams }: { searchParams: Promise<{ card?: string }> }) {
-  const { card } = await searchParams;
+export default async function Ask({ searchParams }: { searchParams: Promise<{ card?: string; limited?: string }> }) {
+  const { card, limited } = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const [{ data: cards }, { data: questions }, { data: answers }] = await Promise.all([
@@ -36,6 +36,7 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
 
   return (
     <Page title="Ask a question" lede="Attach the run it came from. Peers answer conditions, not paraphrases.">
+      <LimitNotice show={limited} />
       <form action={askQuestion}>
         <div className="sc-two-col">
           <Panel>

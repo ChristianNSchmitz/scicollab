@@ -1,5 +1,7 @@
 "use server";
 
+import { overLimit } from "@/lib/ratelimit";
+import { isRowId } from "@/lib/query";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -21,6 +23,8 @@ async function me() {
 export async function canMessage(recipientId: string) {
   const { supabase, user } = await me();
   if (recipientId === user.id) return { allowed: false, reason: "self" as const };
+  // The id goes into a filter string below; anything but an id is refused.
+  if (!isRowId(recipientId)) return { allowed: false, reason: "gated" as const, contributions: 0 };
 
   const { count: priorCount } = await supabase
     .from("messages")
@@ -47,6 +51,7 @@ export async function sendMessage(recipientId: string, form: FormData) {
 
   const gate = await canMessage(recipientId);
   if (!gate.allowed) throw new Error("You cannot message this person yet.");
+  if (await overLimit(supabase, "message", user.id)) redirect(`/messages/${recipientId}?limited=1`);
 
   const card = String(form.get("method_card_id") ?? "");
   const { error } = await supabase.from("messages").insert({

@@ -54,6 +54,9 @@ const MAX_WORKS = 2000;   // a guard against runaway paging on mis-merged profil
 async function get(path: string, params: Record<string, string>) {
   const q = new URLSearchParams(params);
   if (process.env.OPENALEX_API_KEY) q.set("api_key", process.env.OPENALEX_API_KEY);
+  // OpenAlex asks callers to identify themselves with a contact address;
+  // identified requests are served from its faster "polite pool".
+  if (process.env.OPENALEX_MAILTO) q.set("mailto", process.env.OPENALEX_MAILTO);
   let res: Response;
   try {
     res = await fetch(`${BASE}${path}?${q}`, { cache: "no-store", signal: AbortSignal.timeout(15000) });

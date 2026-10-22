@@ -110,3 +110,13 @@ export function Row({ href, children }: { href: string; children: ReactNode }) {
     </Link>
   );
 }
+
+/** Shown when a write was refused by the rate limit (lib/ratelimit.ts). */
+export function LimitNotice({ show }: { show?: string }) {
+  if (!show) return null;
+  return (
+    <p role="alert" style={{ font: "400 12.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
+      That was not sent: you have reached the limit for now. Please wait a few minutes and try again.
+    </p>
+  );
+}

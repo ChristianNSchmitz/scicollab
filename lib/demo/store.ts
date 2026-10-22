@@ -507,3 +507,18 @@ export const demo = {
     messages.filter((m) => m.sender_id === otherId && m.recipient_id === ME).forEach((m) => (m.read_at ??= new Date().toISOString()));
   },
 };
+
+/** Account deletion in demo mode: the sign-in, the profile and every row the
+ *  person authored or received, removed in place so other references to the
+ *  same arrays stay valid. */
+const OWNER_COLUMNS = ["author_id", "owner_id", "user_id", "sender_id", "recipient_id", "requester_id", "mentee_id", "mentor_id"];
+export function forget(id: string): void {
+  for (const [email, uid] of emailToId) if (uid === id) { emailToId.delete(email); credentials.delete(email); }
+  for (const rows of Object.values(tables)) {
+    for (let i = rows.length - 1; i >= 0; i--) {
+      const r = rows[i] as Record<string, unknown>;
+      if (rows === (tables.profiles as unknown) && r.id === id) { rows.splice(i, 1); continue; }
+      if (OWNER_COLUMNS.some((c) => r[c] === id)) rows.splice(i, 1);
+    }
+  }
+}

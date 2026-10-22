@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { saveProfile } from "@/app/actions/profile";
-import { Page, Panel, PanelHead, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
+import { Page, Panel, PanelHead, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
+import { deleteAccount } from "@/app/actions/account";
 import AvatarPicker from "@/components/settings/AvatarPicker";
 import OrcidLinker, { type LinkedSummary } from "@/components/settings/OrcidLinker";
 import { bibliometricsFor } from "@/lib/record/bibliometrics";
@@ -15,6 +16,10 @@ const FLASH: Record<string, { text: string; error?: boolean }> = {
   "orcid=linked":    { text: "ORCID linked. The first sync has started; publications appear on your profile shortly." },
   "orcid=unlinked":  { text: "ORCID unlinked. Synced publications were removed from SciCollab." },
   "orcid=invalid":   { text: "That is not a valid ORCID iD.", error: true },
+  "error=confirm":   { text: "Type DELETE to confirm deleting your account.", error: true },
+  "error=demo":      { text: "The shared demo account cannot be deleted. Create your own demo account to try it.", error: true },
+  "error=nokey":     { text: "Account deletion needs SUPABASE_SERVICE_ROLE_KEY on the server.", error: true },
+  "error=delete":    { text: "The account could not be deleted. Please try again, or contact the team.", error: true },
 };
 
 /** Settings — board B2 screen 14. Picture, profile and the ORCID link are
@@ -116,9 +121,31 @@ export default async function Settings({ searchParams }: { searchParams: Promise
             <PanelHead>Account</PanelHead>
             <div style={{ padding: 14, font: "400 12.5px/1.7 var(--sans)" }}>
               <div><span style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--mute)", marginRight: 8 }}>EMAIL</span>{user!.email ?? "—"}</div>
-              <div style={{ color: "var(--mute)", marginTop: 6 }}>
-                Changing your email or deleting the account is not available here yet.
+              <div style={{ color: "var(--mute)", marginTop: 6 }}>Changing your email is not available here yet.</div>
+
+              <div style={{ borderTop: "1px solid var(--rule)", margin: "14px -14px 0", padding: "14px 14px 0" }}>
+                <div style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--mute)", marginBottom: 6 }}>YOUR DATA</div>
+                <p style={{ margin: "0 0 10px", color: "var(--mute)" }}>
+                  Everything you wrote or that is about you: profile, cards, questions, answers, posts, messages, projects, datasets and synced publications.
+                </p>
+                <a href="/settings/export" download style={btn}>Download your data (JSON)</a>
               </div>
+
+              <details style={{ borderTop: "1px solid var(--rule)", margin: "14px -14px 0", padding: "14px 14px 0" }}>
+                <summary style={{ font: mono(11.5), color: "var(--err)", cursor: "pointer" }}>Delete your account</summary>
+                <form action={deleteAccount} style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
+                  <p style={{ margin: 0 }}>
+                    This removes your account and everything that belongs to it, permanently: your profile and picture, method cards,
+                    questions, answers, posts, messages, the projects you own and your synced publications. It cannot be undone.
+                    Download your data first if you want a copy.
+                  </p>
+                  <div>
+                    <label style={fieldLabel} htmlFor="confirm">Type DELETE to confirm</label>
+                    <input id="confirm" name="confirm" required autoComplete="off" style={{ ...field, maxWidth: 240 }} />
+                  </div>
+                  <div><button type="submit" style={{ ...btn, borderColor: "var(--err)", color: "var(--err)" }}>Delete my account</button></div>
+                </form>
+              </details>
             </div>
           </Panel>
         </section>

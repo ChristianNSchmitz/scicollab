@@ -8,7 +8,8 @@ import { isConfigured } from "@/lib/mode";
 
 /** Public front door — board B1 screen 1, rendered as designed with its own
  *  controls wired to the real routes. */
-export default async function Landing() {
+export default async function Landing({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
+  const { deleted } = await searchParams;
   // The front door is the one page that has to render even when the backend
   // is missing or asleep. A signed-in visitor is sent onward; anything going
   // wrong in that check falls through to the public page rather than a 500.
@@ -27,6 +28,11 @@ export default async function Landing() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--canvas)" }}>
       <DemoNotice />
+      {deleted && (
+        <p role="status" style={{ margin: 0, padding: "10px 16px", font: "400 13px/1.5 var(--sans)", background: "var(--surface)", borderBottom: "1px solid var(--rule)", textAlign: "center" }}>
+          Your account and everything that belonged to it have been deleted.
+        </p>
+      )}
       <MobileLanding />
       <div className="sc-land-board" style={{ padding: 24, overflowX: "auto" }}>
       <div style={{ width: 1440, margin: "0 auto" }}>

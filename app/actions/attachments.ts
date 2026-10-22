@@ -1,5 +1,6 @@
 "use server";
 
+import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -93,6 +94,7 @@ export async function requestAccess(attachmentId: string, formData: FormData) {
     .from("post_attachments").select("id, owner_id, post_id").eq("id", attachmentId).maybeSingle();
   if (!att) throw new Error("No such attachment.");
   if (att.owner_id === user.id) return;
+  if (await overLimit(supabase, "request", user.id)) redirect(`/posts/${att.post_id}?limited=1`);
 
   // status is written explicitly rather than left to the column default:
   // the demo store has no defaults, and a request that lands without a status

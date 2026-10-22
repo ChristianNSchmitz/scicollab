@@ -6,7 +6,7 @@ import { tables } from "@/lib/demo/store";
  * Why a shim rather than a data layer: every page already talks PostgREST,
  * and matching that shape here means demo mode needs no changes in any page
  * or server action. The surface implemented is exactly what this codebase
- * uses — from / select / eq / neq / in / or / is / order / limit / single /
+ * uses — from / select / eq / neq / gte / lte / in / or / is / order / limit / single /
  * maybeSingle / insert / update / delete / upsert — and nothing more. If a
  * page starts using something else it will fail loudly here rather than
  * quietly returning the wrong rows.
@@ -107,6 +107,8 @@ class Query implements PromiseLike<Result<Row[]>> {
 
   eq(col: string, val: unknown)  { this.working = this.working.filter((r) => String(r[col]) === String(val)); return this; }
   neq(col: string, val: unknown) { this.working = this.working.filter((r) => String(r[col]) !== String(val)); return this; }
+  gte(col: string, val: unknown) { this.working = this.working.filter((r) => r[col] != null && String(r[col]) >= String(val)); return this; }
+  lte(col: string, val: unknown) { this.working = this.working.filter((r) => r[col] != null && String(r[col]) <= String(val)); return this; }
   is(col: string, val: unknown)  { this.working = this.working.filter((r) => (val === null ? r[col] == null : r[col] === val)); return this; }
   in(col: string, vals: unknown[]) {
     const set = new Set(vals.map(String));

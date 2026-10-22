@@ -1,5 +1,6 @@
 "use server";
 
+import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -18,6 +19,9 @@ export type PostState = { error: string } | null;
  *  the form next to the field, not in an error boundary. */
 export async function createPost(_prev: PostState, form: FormData): Promise<PostState> {
   const { supabase, user } = await me();
+
+  const limited = await overLimit(supabase, "post", user.id);
+  if (limited) return { error: limited };
 
   const intent = String(form.get("intent") ?? "");
   const spec = intentById(intent);

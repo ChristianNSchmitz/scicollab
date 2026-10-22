@@ -1,5 +1,7 @@
 "use server";
 
+import { overLimit } from "@/lib/ratelimit";
+import { likeTerm, isRowId } from "@/lib/query";
 import { createClient } from "@/lib/supabase/server";
 import { canMessage } from "@/app/actions/messages";
 
@@ -83,7 +85,7 @@ export async function loadThread(otherId: string): Promise<{
   gated: boolean;
 }> {
   const { supabase, user } = await me();
-  if (!user) return { messages: [], who: { name: "", institution: "" }, gated: true };
+  if (!user || !isRowId(otherId)) return { messages: [], who: { name: "", institution: "" }, gated: true };
 
   const [{ data: msgs }, { data: person }, gate] = await Promise.all([
     supabase
@@ -132,6 +134,8 @@ export async function sendChat(otherId: string, body: string): Promise<{ error?:
     return { error: "You cannot message this person yet — record a method card, ask or answer a question first." };
   }
 
+  const limited = await overLimit(supabase, "message", user.id);
+  if (limited) return { error: limited };
   const { error } = await supabase
     .from("messages")
     .insert({ sender_id: user.id, recipient_id: otherId, body: text });
@@ -141,12 +145,13 @@ export async function sendChat(otherId: string, body: string): Promise<{ error?:
 /** People you could start a conversation with, for the dock's own search. */
 export async function findPeople(q: string): Promise<{ id: string; name: string; institution: string }[]> {
   const { supabase, user } = await me();
-  if (!user || q.trim().length < 2) return [];
+  const term = likeTerm(q);
+  if (!user || term.length < 2) return [];
   const { data } = await supabase
     .from("profiles")
     .select("id, display_name, institution")
     .neq("id", user.id)
-    .or(`display_name.ilike.%${q.trim()}%,institution.ilike.%${q.trim()}%`)
+    .or(`display_name.ilike.%${term}%,institution.ilike.%${term}%`)
     .limit(8);
   return (data ?? []).map((p: any) => ({ id: p.id, name: p.display_name, institution: p.institution }));
 }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { canMessage, sendMessage, markRead } from "@/app/actions/messages";
-import { Page, Panel, PanelHead, Empty, field, btnPrimary, btn, mono } from "@/components/ui";
+import { Page, LimitNotice, Panel, PanelHead, Empty, field, btnPrimary, btn, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +16,8 @@ export const dynamic = "force-dynamic";
  * and offers the routes out, because a gate with no explanation reads as
  * "you are not welcome here".
  */
-export default async function Thread({ params }: { params: Promise<{ id: string }> }) {
+export default async function Thread({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string }> }) {
+  const { limited } = await searchParams;
   const { id: otherId } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -56,6 +57,7 @@ export default async function Thread({ params }: { params: Promise<{ id: string 
       lede={[other.role_title, other.institution].filter(Boolean).join(" · ") || undefined}
       actions={<Link href="/messages" style={btn}>All messages</Link>}
     >
+      <LimitNotice show={limited} />
       <div style={{ maxWidth: 760, display: "flex", flexDirection: "column", gap: 12 }}>
         <Panel>
           <PanelHead>Conversation</PanelHead>
