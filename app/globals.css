@@ -94,6 +94,10 @@ input::placeholder, textarea::placeholder { color: #9A968E; }
 .sc-pair    { display: grid; grid-template-columns: 1fr 1fr; }
 .sc-tabbar, .sc-sheet, .sc-top-create-short, .sc-demo-short { display: none; }
 
+/* Site footer inside the app: keep its last row clear of the docked chat (38px tall). */
+.sc-footer-dock { padding-bottom: 54px !important; }
+@media (max-width: 767px) { .sc-footer-dock { padding-bottom: 14px !important; } }
+
 @media (max-width: 1100px) {
   .sc-rail { width: var(--rail-collapsed) !important; }
   .sc-rail-label, .sc-rail-collapse { display: none !important; }
@@ -104,6 +108,7 @@ input::placeholder, textarea::placeholder { color: #9A968E; }
 }
 
 @media (max-width: 760px) {
+  .sc-public-nav { display: none !important; }
   .sc-rail { display: none !important; }
   .sc-main { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 

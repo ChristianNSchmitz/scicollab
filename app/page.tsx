@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import DemoNotice from "@/components/DemoNotice";
 import Screen from "@/components/Screen";
+import SiteFooter from "@/components/SiteFooter";
 import { createClient } from "@/lib/supabase/server";
 import { isConfigured } from "@/lib/mode";
 
@@ -29,16 +30,19 @@ export default async function Landing() {
       <div style={{ width: 1440, margin: "0 auto" }}>
         <Screen
           id="b1-marketing-landing-page"
+          hideCoverage
           links={{
             "Sign in": "/login",
             "Create account": "/signup",
             "Connect ORCID → start": "/signup",
             "Book a lab pilot": "/signup",
+            "Talk to us about a pilot": "/contact?topic=pilot",
             "Method cards": "/login",
             "Pricing": "/login",
             "Docs": "/login",
           }}
         />
+        <SiteFooter width={1440} />
         </div>
       </div>
     </div>

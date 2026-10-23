@@ -30,7 +30,7 @@ export default function Designed({
         <Link href="/home" style={{ font: mono(11, 500), color: "var(--link)" }}>← Home</Link>
       </div>
       <div style={{ maxWidth: 1440, margin: "0 auto", overflowX: "auto" }}>
-        <Screen id={screen} />
+        <Screen hideCoverage id={screen} />
       </div>
     </div>
   );
