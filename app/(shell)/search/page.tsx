@@ -1,3 +1,4 @@
+import { likeTerm } from "@/lib/query";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, field, btnPrimary, mono } from "@/components/ui";
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function Search({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q = "" } = await searchParams;
   const supabase = await createClient();
-  const term = q.trim();
+  const term = likeTerm(q);
 
   let cards: any[] = [], questions: any[] = [], people: any[] = [], projects: any[] = [];
   if (term) {
@@ -35,7 +36,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
       {!term ? (
         <Panel><Empty>Type a technique, an organism, an outcome or a person.</Empty></Panel>
       ) : total === 0 ? (
-        <Panel><Empty>Nothing matches “{term}”.</Empty></Panel>
+        <Panel><Empty>Nothing matches “{q.trim()}”.</Empty></Panel>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 860 }}>
           {cards.length > 0 && (

@@ -1,8 +1,10 @@
 "use server";
 
+import { bytes } from "@/lib/format";
+import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/session";
 
 /**
  * Graduated disclosure for data and code attached to a post.
@@ -27,21 +29,11 @@ export type AttachmentView = {
   myRequest: "pending" | "granted" | "denied" | null;
 };
 
-async function me() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  return { supabase, user };
-}
 
-const kb = (n: number) =>
-  n >= 1e9 ? `${(n / 1e9).toFixed(1)} GB`
-  : n >= 1e6 ? `${(n / 1e6).toFixed(1)} MB`
-  : n >= 1e3 ? `${Math.round(n / 1e3)} kB` : `${n} B`;
 
 /** Everything a post's attachments should show to *this* viewer. */
 export async function attachmentsFor(postId: string): Promise<AttachmentView[]> {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
 
   const { data: rows } = await supabase
     .from("post_attachments").select("*").eq("post_id", postId);
@@ -78,8 +70,8 @@ export async function attachmentsFor(postId: string): Promise<AttachmentView[]> 
       projectTitle: project?.title ?? "a project",
       title: d?.title ?? f?.path ?? "Attachment",
       meta: d
-        ? [kb(d.size_bytes), d.licence].filter(Boolean).join(" · ")
-        : f ? [f.language, kb(f.size_bytes)].filter(Boolean).join(" · ") : "",
+        ? [bytes(d.size_bytes), d.licence].filter(Boolean).join(" · ")
+        : f ? [f.language, bytes(f.size_bytes)].filter(Boolean).join(" · ") : "",
       detail: unlocked ? (d?.summary || f?.last_change || "") : null,
       unlocked,
       myRequest: (req?.status as AttachmentView["myRequest"]) ?? null,
@@ -88,11 +80,12 @@ export async function attachmentsFor(postId: string): Promise<AttachmentView[]> 
 }
 
 export async function requestAccess(attachmentId: string, formData: FormData) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const { data: att } = await supabase
     .from("post_attachments").select("id, owner_id, post_id").eq("id", attachmentId).maybeSingle();
   if (!att) throw new Error("No such attachment.");
   if (att.owner_id === user.id) return;
+  if (await overLimit(supabase, "request", user.id)) redirect(`/posts/${att.post_id}?limited=1`);
 
   // status is written explicitly rather than left to the column default:
   // the demo store has no defaults, and a request that lands without a status
@@ -110,7 +103,7 @@ export async function requestAccess(attachmentId: string, formData: FormData) {
 
 /** Only the owner decides, and the policy enforces that independently. */
 export async function decideRequest(requestId: string, decision: "granted" | "denied") {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const { data: req } = await supabase
     .from("access_requests").select("id, owner_id, attachment_id").eq("id", requestId).maybeSingle();
   if (!req || req.owner_id !== user.id) throw new Error("Not yours to decide.");
@@ -128,7 +121,7 @@ export async function decideRequest(requestId: string, decision: "granted" | "de
 
 /** Pending requests on a given post, for its author. */
 export async function pendingFor(postId: string) {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
   const { data: atts } = await supabase
     .from("post_attachments").select("id").eq("post_id", postId).eq("owner_id", user.id);
   const ids = (atts ?? []).map((a: any) => a.id);

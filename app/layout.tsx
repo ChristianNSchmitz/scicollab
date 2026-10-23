@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,11 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap"
         />
         {/* Apply the stored theme before first paint so the page never flashes. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}`,
-          }}
-        />
+        <Script id="sc-theme" strategy="beforeInteractive">
+          {`try{var t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}`}
+        </Script>
       </head>
       <body>{children}</body>
     </html>

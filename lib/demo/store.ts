@@ -64,6 +64,7 @@ export type Post = {
   created_at: string;
 };
 
+export type PostReply = { id: string; post_id: string; author_id: string; body: string; created_at: string };
 
 export type Dataset = {
   id: string; owner_id: string; project_id: string; title: string; summary: string;
@@ -228,14 +229,14 @@ const messages: Message[] = [
    store has no real data in it and exists so the app runs without a backend. */
 const DEMO_PASSWORD_VALUE = DEMO_PASSWORD;
 const credentials = new Map<string, string>([
-  ["demo@scicollab.test", DEMO_PASSWORD_VALUE],
+  [DEMO_EMAIL, DEMO_PASSWORD_VALUE],
   ["okafor@scicollab.test", DEMO_PASSWORD_VALUE],
   ["lindqvist@scicollab.test", DEMO_PASSWORD_VALUE],
   ["bhatt@scicollab.test", DEMO_PASSWORD_VALUE],
   ["newcomer@scicollab.test", DEMO_PASSWORD_VALUE],
 ]);
 const emailToId = new Map<string, string>([
-  ["demo@scicollab.test", ME],
+  [DEMO_EMAIL, ME],
   ["okafor@scicollab.test", "u-okafor"],
   ["lindqvist@scicollab.test", "u-lindqvist"],
   ["bhatt@scicollab.test", "u-bhatt"],
@@ -374,6 +375,12 @@ const code_commits: CodeCommit[] = [
 /* Two attachments, one of each disclosure mode, so both halves of the rule
    are visible without creating anything: p-1's open dataset on the negative
    result, and a gated raw-data file on the question. */
+const post_replies: PostReply[] = [
+  { id: "r-1", post_id: "p-2", author_id: "u-okafor", body: "0.6% low on CO₂ shifts the medium pH by roughly 0.05. That is real, but on its own it rarely costs 30% efficiency. I would log pH directly for one run before blaming the incubator for all of it.", created_at: ago(1.5) },
+  { id: "r-2", post_id: "p-2", author_id: "u-lindqvist", body: "We saw the same drift on a sister unit. Recalibrating the sensor moved efficiency about 8 points, not more.", created_at: ago(1) },
+  { id: "r-3", post_id: "p-3", author_id: ME, body: "We went to 10% and lost about a third of the signal below 30 kDa. Recorded on the card thread.", created_at: ago(2.5) },
+];
+
 const post_attachments: PostAttachment[] = [
   { id: "pa-1", post_id: "p-1", kind: "dataset", dataset_id: "d-1", code_file_id: null,
     project_id: "p-1", access: "open", owner_id: ME, created_at: ago(11) },
@@ -412,98 +419,30 @@ export const tables: Record<string, Record<string, unknown>[]> =
     messages,
     user_rooms,
     posts,
+    post_replies,
     datasets,
     code_files,
     code_commits,
     post_attachments,
     access_requests,
   } as unknown as Record<string, Record<string, unknown>[]>);
+// A server that was already running before a table was added keeps its pinned
+// copy; add any table it is missing rather than requiring a restart.
+tables.post_replies ??= post_replies as unknown as Record<string, unknown>[];
 
-// ── accessors ────────────────────────────────────────────────────────────
-const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));
-const newId = (p: string) => `${p}-${Math.random().toString(36).slice(2, 9)}`;
 
-export const demo = {
-  me: () => clone(profiles.find((p) => p.id === ME)!),
-  profile: (id: string) => clone(profiles.find((p) => p.id === id) ?? null),
-  profiles: () => clone(profiles),
 
-  cards: () => clone([...cards].sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at))),
-  card: (id: string) => clone(cards.find((c) => c.id === id) ?? null),
-  forksOf: (id: string) => clone(cards.filter((c) => c.forked_from === id)),
-
-  questions: () => clone([...questions].sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at))),
-  question: (id: string) => clone(questions.find((q) => q.id === id) ?? null),
-  answers: (qid: string) =>
-    clone(answers.filter((a) => a.question_id === qid)
-      .sort((a, b) => Number(b.accepted) - Number(a.accepted) || +new Date(a.created_at) - +new Date(b.created_at))),
-
-  projects: () => clone([...projects].sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at))),
-  project: (id: string) => clone(projects.find((p) => p.id === id) ?? null),
-  members: (pid: string) => clone(members.filter((m) => m.project_id === pid)),
-  entries: (pid: string) =>
-    clone(entries.filter((e) => e.project_id === pid).sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at))),
-
-  messages: () => clone(messages),
-  thread: (otherId: string) =>
-    clone(messages
-      .filter((m) => (m.sender_id === ME && m.recipient_id === otherId) || (m.sender_id === otherId && m.recipient_id === ME))
-      .sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at))),
-
-  // ── writes ─────────────────────────────────────────────────────────────
-  addCard(input: Partial<Card>): Card {
-    const n = cards.length + 288;
-    const card: Card = {
-      id: newId("c"), code: `MC-0${n}`, version: 1, author_id: ME,
-      title: input.title ?? "Untitled", method: input.method ?? "", system: input.system ?? "",
-      conditions: input.conditions ?? "", outcome: (input.outcome ?? null) as Outcome,
-      outcome_detail: input.outcome_detail ?? "", fails_under: input.fails_under ?? "",
-      tags: input.tags ?? [], visibility: (input.visibility ?? "private") as Visibility,
-      forked_from: input.forked_from ?? null, reproductions: 0, created_at: new Date().toISOString(),
-    };
-    cards.unshift(card);
-    return clone(card);
-  },
-  updateCard(id: string, patch: Partial<Card>) {
-    const c = cards.find((x) => x.id === id);
-    if (c) Object.assign(c, patch);
-  },
-  deleteCard(id: string) {
-    const i = cards.findIndex((c) => c.id === id);
-    if (i >= 0) cards.splice(i, 1);
-  },
-  addQuestion(input: Partial<Question>): Question {
-    const q: Question = {
-      id: newId("q"), author_id: ME, title: input.title ?? "", body: input.body ?? "",
-      tags: input.tags ?? [], method_card_id: input.method_card_id ?? null,
-      created_at: new Date().toISOString(),
-    };
-    questions.unshift(q);
-    return clone(q);
-  },
-  addAnswer(qid: string, body: string) {
-    answers.push({ id: newId("a"), question_id: qid, author_id: ME, body, accepted: false, created_at: new Date().toISOString() });
-  },
-  acceptAnswer(qid: string, aid: string) {
-    answers.filter((a) => a.question_id === qid).forEach((a) => (a.accepted = a.id === aid));
-  },
-  addProject(input: Partial<Project>): Project {
-    const p: Project = {
-      id: newId("p"), owner_id: ME, title: input.title ?? "", summary: input.summary ?? "",
-      status: "active", tags: input.tags ?? [], visibility: (input.visibility ?? "lab") as Visibility,
-      created_at: new Date().toISOString(),
-    };
-    projects.unshift(p);
-    members.push({ project_id: p.id, user_id: ME, role: "owner" });
-    return clone(p);
-  },
-  addEntry(pid: string, body: string) {
-    entries.unshift({ id: newId("e"), project_id: pid, author_id: ME, body, created_at: new Date().toISOString() });
-  },
-  addMessage(recipientId: string, body: string, cardId: string | null) {
-    messages.push({ id: newId("m"), sender_id: ME, recipient_id: recipientId, body, method_card_id: cardId, read_at: null, created_at: new Date().toISOString() });
-  },
-  markRead(otherId: string) {
-    messages.filter((m) => m.sender_id === otherId && m.recipient_id === ME).forEach((m) => (m.read_at ??= new Date().toISOString()));
-  },
-};
+/** Account deletion in demo mode: the sign-in, the profile and every row the
+ *  person authored or received, removed in place so other references to the
+ *  same arrays stay valid. */
+const OWNER_COLUMNS = ["author_id", "owner_id", "user_id", "sender_id", "recipient_id", "requester_id", "mentee_id", "mentor_id"];
+export function forget(id: string): void {
+  for (const [email, uid] of emailToId) if (uid === id) { emailToId.delete(email); credentials.delete(email); }
+  for (const rows of Object.values(tables)) {
+    for (let i = rows.length - 1; i >= 0; i--) {
+      const r = rows[i] as Record<string, unknown>;
+      if (rows === (tables.profiles as unknown) && r.id === id) { rows.splice(i, 1); continue; }
+      if (OWNER_COLUMNS.some((c) => r[c] === id)) rows.splice(i, 1);
+    }
+  }
+}

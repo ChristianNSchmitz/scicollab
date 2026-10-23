@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 /**
- * Scheduled OpenAlex sync. Vercel Cron calls this every 12 hours (vercel.json)
+ * Scheduled OpenAlex sync. Vercel Cron calls this once a day (vercel.json)
  * with `Authorization: Bearer $CRON_SECRET`. Without CRON_SECRET set the route
  * refuses everything, so it can never be triggered by a stranger.
  */

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, Empty, Tag, btn, mono } from "@/components/ui";
-import { initialsOf } from "@/lib/format";
+import Avatar from "@/components/Avatar";
 import { nameGuide, unnameGuide } from "@/app/actions/record";
 import { ensureRecordTables } from "@/lib/record/demo-seed";
 
@@ -15,7 +15,7 @@ export default async function Network() {
   const { data: { user } } = await supabase.auth.getUser();
   const { data: people } = await supabase
     .from("profiles")
-    .select("id, display_name, institution, role_title, field, techniques")
+    .select("id, display_name, institution, role_title, field, techniques, avatar_url")
     .neq("id", user!.id)
     .order("display_name");
   // Mentoring credit is given by the person who was helped, so you name your guides here.
@@ -29,9 +29,7 @@ export default async function Network() {
           <Empty>Nobody else has an account yet.</Empty>
         ) : people!.map((p) => (
           <div key={p.id} style={{ padding: "13px 14px", borderBottom: "1px solid var(--rule)", display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ width: 34, height: 34, border: "1px solid var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", font: mono(11, 500), background: "var(--bg)", flex: "none" }}>
-              {initialsOf(p.display_name)}
-            </span>
+            <Avatar name={p.display_name} url={p.avatar_url} size={34} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ font: mono(13, 500) }}>{p.display_name || "Researcher"}</div>
               <div style={{ font: mono(11), color: "var(--mute)", marginTop: 3 }}>

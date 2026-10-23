@@ -7,7 +7,11 @@ import { NextResponse, type NextRequest } from "next/server";
    mechanics, the coverage audit and the open questions are all in there. They
    stay open in development and require a session anywhere else. */
 // /api/cron checks its own secret; it has no session to offer.
-const PUBLIC = ["/", "/login", "/signup", "/onboarding", "/api/cron"];
+const PUBLIC = [
+  "/", "/login", "/signup", "/onboarding", "/api/cron",
+  // Public information pages and the contact form (with its captcha).
+  "/about", "/faq", "/terms", "/contact", "/api/captcha",
+];
 if (process.env.NODE_ENV !== "production" || process.env.SCICOLLAB_OPEN_BOARDS === "1") {
   PUBLIC.push("/boards");
 }

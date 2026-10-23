@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { MESSAGE_PROBLEM } from "@/lib/messages";
+import type { MessageProblem } from "@/app/actions/messages";
+import Avatar from "@/components/Avatar";
 import { createClient } from "@/lib/supabase/server";
 import { canMessage, sendMessage, markRead } from "@/app/actions/messages";
-import { Page, Panel, PanelHead, Empty, field, btnPrimary, btn, mono } from "@/components/ui";
+import { Page, LimitNotice, Panel, PanelHead, Empty, field, btnPrimary, btn, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -16,14 +19,18 @@ export const dynamic = "force-dynamic";
  * and offers the routes out, because a gate with no explanation reads as
  * "you are not welcome here".
  */
-export default async function Thread({ params }: { params: Promise<{ id: string }> }) {
+export default async function Thread({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string; error?: string }> }) {
+  const { limited, error } = await searchParams;
   const { id: otherId } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  // There is no conversation with yourself; the gate would wrongly call you a stranger.
+  if (otherId === user!.id) redirect("/messages");
+  const problem = error && error in MESSAGE_PROBLEM ? MESSAGE_PROBLEM[error as MessageProblem] : null;
 
   const { data: other } = await supabase
     .from("profiles")
-    .select("id, display_name, institution, role_title")
+    .select("id, display_name, institution, role_title, avatar_url")
     .eq("id", otherId)
     .maybeSingle();
   if (!other) notFound();
@@ -56,6 +63,12 @@ export default async function Thread({ params }: { params: Promise<{ id: string 
       lede={[other.role_title, other.institution].filter(Boolean).join(" · ") || undefined}
       actions={<Link href="/messages" style={btn}>All messages</Link>}
     >
+      <LimitNotice show={limited} />
+      {problem && (
+        <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)", maxWidth: 760 }}>
+          {problem}
+        </p>
+      )}
       <div style={{ maxWidth: 760, display: "flex", flexDirection: "column", gap: 12 }}>
         <Panel>
           <PanelHead>Conversation</PanelHead>
@@ -67,16 +80,17 @@ export default async function Thread({ params }: { params: Promise<{ id: string 
               return (
                 <div key={m.id} style={{ display: "flex", justifyContent: mine ? "flex-end" : "flex-start" }}>
                   <div style={{ maxWidth: 520, border: "1px solid var(--rule)", background: mine ? "var(--bg)" : "var(--surface)", padding: "10px 12px" }}>
-                    <div style={{ font: mono(10), color: "var(--mute)", marginBottom: 5 }}>
+                    <div style={{ font: mono(10), color: "var(--mute)", marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}>
+                      {!mine && <Avatar name={other.display_name} url={other.avatar_url} size={16} />}
                       {mine ? "You" : other.display_name} · {timeAgo(m.created_at)}
                     </div>
-                    <p style={{ font: "400 13px/1.65 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
+                    <p style={{ font: "400 14px/1.65 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
                     {card && (
                       <Link
                         href={`/methods/${card.id}`}
                         style={{ display: "block", marginTop: 9, borderLeft: "3px solid var(--signal)", background: "var(--surface)", padding: "8px 10px", color: "var(--ink)" }}
                       >
-                        <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)" }}>METHOD CARD</div>
+                        <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)" }}>METHOD CARD</div>
                         <div style={{ font: mono(12, 500), marginTop: 3 }}>{card.code} — {card.title}</div>
                       </Link>
                     )}
@@ -91,7 +105,7 @@ export default async function Thread({ params }: { params: Promise<{ id: string 
           <Panel>
             <PanelHead>Reply</PanelHead>
             <form action={sendMessage.bind(null, otherId)} style={{ padding: 14 }}>
-              <textarea name="body" rows={3} required style={field} placeholder="Reply — attach the card rather than retyping the conditions." />
+              <textarea name="body" rows={3} required maxLength={4000} style={field} placeholder="Reply — attach the card rather than retyping the conditions." />
               {myCards && myCards.length > 0 && (
                 <select name="method_card_id" defaultValue="" style={{ ...field, height: 36, marginTop: 10 }}>
                   <option value="">No card attached</option>
@@ -105,23 +119,23 @@ export default async function Thread({ params }: { params: Promise<{ id: string 
           <Panel style={{ borderColor: "var(--flag)" }}>
             <PanelHead>You cannot message strangers yet</PanelHead>
             <div style={{ padding: 14 }}>
-              <p style={{ font: "400 13px/1.7 var(--sans)", margin: "0 0 14px" }}>
+              <p style={{ font: "400 14px/1.7 var(--sans)", margin: "0 0 14px" }}>
                 New accounts cannot send an unsolicited direct message. This is not about you — it is the single
                 measure that stops a research network turning into a recruiting channel.
               </p>
               <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 8 }}>
                 THE PATH TO UNLOCKING · ANY ONE OF THESE
               </div>
-              <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 12.5px/1.8 var(--sans)" }}>
+              <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 13.5px/1.8 var(--sans)" }}>
                 <li>Record one method card — including a run that did not work</li>
                 <li>Ask one question</li>
-                <li>Answer someone else&rsquo;s question</li>
+                <li>Answer someone else&rsquo;s question, or reply to a post in a room</li>
               </ul>
               <div style={{ display: "flex", gap: 8 }}>
                 <Link href="/methods/new" style={btnPrimary}>Record a method</Link>
                 <Link href="/ask" style={btn}>Ask publicly instead</Link>
               </div>
-              <p style={{ font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)", margin: "12px 0 0" }}>
+              <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "12px 0 0" }}>
                 Asking publicly is usually faster than a direct message, and others benefit from the answer.
               </p>
             </div>

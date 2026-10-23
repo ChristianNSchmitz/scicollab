@@ -23,6 +23,8 @@ export type OAAuthor = {
   i10_index: number;
   counts_by_year: { year: number; cited_by_count: number; works_count: number }[];
   updated_date: string | null;
+  institution: string;
+  orcid: string | null;
 };
 
 export type OAWork = {
@@ -52,6 +54,9 @@ const MAX_WORKS = 2000;   // a guard against runaway paging on mis-merged profil
 async function get(path: string, params: Record<string, string>) {
   const q = new URLSearchParams(params);
   if (process.env.OPENALEX_API_KEY) q.set("api_key", process.env.OPENALEX_API_KEY);
+  // OpenAlex asks callers to identify themselves with a contact address;
+  // identified requests are served from its faster "polite pool".
+  if (process.env.OPENALEX_MAILTO) q.set("mailto", process.env.OPENALEX_MAILTO);
   let res: Response;
   try {
     res = await fetch(`${BASE}${path}?${q}`, { cache: "no-store", signal: AbortSignal.timeout(15000) });
@@ -69,8 +74,12 @@ async function get(path: string, params: Record<string, string>) {
 
 export async function fetchAuthor(orcid: string): Promise<OAAuthor> {
   const a = await get(`/authors/orcid:${orcid}`, {
-    select: "id,display_name,works_count,cited_by_count,summary_stats,counts_by_year,updated_date",
+    select: "id,display_name,orcid,works_count,cited_by_count,summary_stats,counts_by_year,updated_date,last_known_institutions",
   });
+  return toAuthor(a);
+}
+
+function toAuthor(a: any): OAAuthor {
   return {
     id: short(a.id),
     display_name: a.display_name ?? "",
@@ -82,7 +91,21 @@ export async function fetchAuthor(orcid: string): Promise<OAAuthor> {
       year: c.year, cited_by_count: c.cited_by_count ?? 0, works_count: c.works_count ?? 0,
     })),
     updated_date: a.updated_date ?? null,
+    institution: a.last_known_institutions?.[0]?.display_name ?? "",
+    orcid: a.orcid ? short(a.orcid) : null,
   };
+}
+
+/** Authors with an ORCID whose name matches, best match first — for
+ *  "find my ORCID" in Settings. One request. */
+export async function searchAuthors(name: string): Promise<OAAuthor[]> {
+  const page: any = await get("/authors", {
+    search: name,
+    filter: "has_orcid:true",
+    select: "id,display_name,orcid,works_count,cited_by_count,summary_stats,counts_by_year,updated_date,last_known_institutions",
+    per_page: "8",
+  });
+  return (page.results ?? []).map(toAuthor);
 }
 
 /** All works of an author, newest first, following OpenAlex's cursor. */

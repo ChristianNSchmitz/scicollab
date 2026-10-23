@@ -1,7 +1,10 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
-import { canMessage } from "@/app/actions/messages";
+import { peopleById } from "@/lib/people";
+import { likeTerm, isRowId } from "@/lib/query";
+import { sessionUser } from "@/lib/session";
+import { canMessage, checkMessage, markRead } from "@/app/actions/messages";
+import { MESSAGE_PROBLEM } from "@/lib/messages";
 
 /**
  * Data for the docked chat.
@@ -14,7 +17,7 @@ import { canMessage } from "@/app/actions/messages";
  */
 
 export type Conversation = {
-  id: string; name: string; institution: string;
+  id: string; name: string; institution: string; avatar_url: string | null;
   last: string; at: string; unread: number;
 };
 
@@ -23,14 +26,9 @@ export type ChatMessage = {
   card: { id: string; code: string; title: string } | null;
 };
 
-async function me() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  return { supabase, user };
-}
 
 export async function listConversations(): Promise<Conversation[]> {
-  const { supabase, user } = await me();
+  const { supabase, user } = await sessionUser();
   if (!user) return [];
 
   const { data: msgs } = await supabase
@@ -49,16 +47,16 @@ export async function listConversations(): Promise<Conversation[]> {
 
   const ids = [...threads.keys()];
   if (!ids.length) return [];
-  const { data: people } = await supabase
-    .from("profiles").select("id, display_name, institution").in("id", ids);
+  const people = await peopleById(supabase, ids);
 
   return ids.map((id) => {
     const t = threads.get(id)!;
-    const p = (people ?? []).find((x: any) => x.id === id);
+    const p = people.get(id);
     return {
       id,
       name: p?.display_name ?? "Researcher",
       institution: p?.institution ?? "",
+      avatar_url: p?.avatar_url ?? null,
       last: t.last.body,
       at: t.last.created_at,
       unread: t.unread,
@@ -67,7 +65,7 @@ export async function listConversations(): Promise<Conversation[]> {
 }
 
 export async function unreadTotal(): Promise<number> {
-  const { supabase, user } = await me();
+  const { supabase, user } = await sessionUser();
   if (!user) return 0;
   const { count } = await supabase
     .from("messages")
@@ -82,8 +80,8 @@ export async function loadThread(otherId: string): Promise<{
   who: { name: string; institution: string };
   gated: boolean;
 }> {
-  const { supabase, user } = await me();
-  if (!user) return { messages: [], who: { name: "", institution: "" }, gated: true };
+  const { supabase, user } = await sessionUser();
+  if (!user || !isRowId(otherId)) return { messages: [], who: { name: "", institution: "" }, gated: true };
 
   const [{ data: msgs }, { data: person }, gate] = await Promise.all([
     supabase
@@ -101,12 +99,7 @@ export async function loadThread(otherId: string): Promise<{
     : { data: [] as any[] };
 
   // Opening a thread marks it read — the same rule the full page uses.
-  await supabase
-    .from("messages")
-    .update({ read_at: new Date().toISOString() })
-    .eq("sender_id", otherId)
-    .eq("recipient_id", user.id)
-    .is("read_at", null);
+  await markRead(otherId);
 
   return {
     messages: (msgs ?? []).map((m: any) => ({
@@ -122,31 +115,26 @@ export async function loadThread(otherId: string): Promise<{
 }
 
 export async function sendChat(otherId: string, body: string): Promise<{ error?: string }> {
-  const { supabase, user } = await me();
+  const { supabase, user } = await sessionUser();
   if (!user) return { error: "Not signed in." };
   const text = body.trim();
   if (!text) return {};
-
-  const gate = await canMessage(otherId);
-  if (!gate.allowed) {
-    return { error: "You cannot message this person yet — record a method card, ask or answer a question first." };
-  }
-
-  const { error } = await supabase
-    .from("messages")
-    .insert({ sender_id: user.id, recipient_id: otherId, body: text });
+  const problem = await checkMessage(otherId, text, null);
+  if (problem) return { error: MESSAGE_PROBLEM[problem] };
+  const { error } = await supabase.from("messages").insert({ sender_id: user.id, recipient_id: otherId, body: text });
   return error ? { error: error.message } : {};
 }
 
 /** People you could start a conversation with, for the dock's own search. */
 export async function findPeople(q: string): Promise<{ id: string; name: string; institution: string }[]> {
-  const { supabase, user } = await me();
-  if (!user || q.trim().length < 2) return [];
+  const { supabase, user } = await sessionUser();
+  const term = likeTerm(q);
+  if (!user || term.length < 2) return [];
   const { data } = await supabase
     .from("profiles")
     .select("id, display_name, institution")
     .neq("id", user.id)
-    .or(`display_name.ilike.%${q.trim()}%,institution.ilike.%${q.trim()}%`)
+    .or(`display_name.ilike.%${term}%,institution.ilike.%${term}%`)
     .limit(8);
   return (data ?? []).map((p: any) => ({ id: p.id, name: p.display_name, institution: p.institution }));
 }

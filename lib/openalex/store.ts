@@ -16,12 +16,16 @@ export type PubRow = {
   user_id: string; openalex_id: string; doi: string | null; title: string; year: number | null;
   pub_date: string | null; venue: string; type: string; cited_by_count: number; prev_cited_by_count: number;
   first_seen_at: string; updated_at: string;
+  /** Citations received in each year (OpenAlex, roughly the last ten years). */
+  counts_by_year?: { year: number; cited_by_count: number }[];
 };
 export type AuthorRow = {
   user_id: string; orcid: string; openalex_id: string; display_name: string; works_count: number;
   cited_by_count: number; h_index: number; i10_index: number;
   counts_by_year: { year: number; cited_by_count: number; works_count: number }[];
   source_updated: string | null; synced_at: string;
+  /** When the works were last fetched in full; a light sync only checks the author. */
+  works_synced_at?: string | null;
 };
 export type RunRow = {
   id: string; user_id: string; started_at: string; finished_at: string | null; trigger: string;
@@ -101,7 +105,7 @@ export async function writeSync(userId: string, orcid: string, a: OAAuthor, work
 
   const base = (w: OAWork) => ({
     user_id: userId, openalex_id: w.id, doi: w.doi, title: w.title, year: w.year, pub_date: w.pub_date,
-    venue: w.venue, type: w.type, cited_by_count: w.cited_by_count, updated_at: now,
+    venue: w.venue, type: w.type, cited_by_count: w.cited_by_count, counts_by_year: w.received, updated_at: now,
   });
   const fresh = works.filter((w) => !before.has(w.id)).map((w) => ({ ...base(w), prev_cited_by_count: w.cited_by_count, first_seen_at: now }));
   const known = works.filter((w) => before.has(w.id)).map((w) => ({ ...base(w), prev_cited_by_count: before.get(w.id)!.cited_by_count }));
@@ -109,7 +113,7 @@ export async function writeSync(userId: string, orcid: string, a: OAAuthor, work
   const author: AuthorRow = {
     user_id: userId, orcid, openalex_id: a.id, display_name: a.display_name, works_count: a.works_count,
     cited_by_count: a.cited_by_count, h_index: a.h_index, i10_index: a.i10_index,
-    counts_by_year: a.counts_by_year, source_updated: a.updated_date, synced_at: now,
+    counts_by_year: a.counts_by_year, source_updated: a.updated_date, synced_at: now, works_synced_at: now,
   };
   const snapshot = { user_id: userId, day: now.slice(0, 10), citations: a.cited_by_count, h_index: a.h_index };
 
@@ -132,6 +136,39 @@ export async function writeSync(userId: string, orcid: string, a: OAAuthor, work
   { const { error } = await db.from("openalex_authors").upsert(author, { onConflict: "user_id" }); if (error) throw new Error(error.message); }
   await db.from("citation_snapshots").upsert(snapshot, { onConflict: "user_id,day" });
   return { removed: removed.length };
+}
+
+/** A light sync found nothing new: record that it checked, and today's snapshot. */
+export async function touchSync(userId: string, a: { cited_by_count: number; h_index: number }) {
+  const now = new Date().toISOString();
+  const snapshot = { user_id: userId, day: now.slice(0, 10), citations: a.cited_by_count, h_index: a.h_index };
+  const db = admin();
+  if (!db) {
+    const t = demo();
+    const row = t.openalex_authors.find((r) => r.user_id === userId);
+    if (row) row.synced_at = now;
+    const si = t.citation_snapshots.findIndex((r) => r.user_id === userId && r.day === snapshot.day);
+    if (si >= 0) t.citation_snapshots[si] = snapshot; else t.citation_snapshots.push(snapshot);
+    return;
+  }
+  await db.from("openalex_authors").update({ synced_at: now }).eq("user_id", userId);
+  await db.from("citation_snapshots").upsert(snapshot, { onConflict: "user_id,day" });
+}
+
+/** Unlinking an ORCID removes what was synced for it. Snapshots and run
+ *  history go too: they describe a record that is no longer linked. */
+export async function clearSync(userId: string) {
+  const db = admin();
+  if (!db) {
+    if (unavailable()) return;
+    const t = demo();
+    for (const k of ["openalex_authors", "publications", "citation_snapshots", "sync_runs"]) {
+      t[k] = t[k].filter((r: any) => r.user_id !== userId);
+    }
+    return;
+  }
+  await Promise.all(["publications", "openalex_authors", "citation_snapshots", "sync_runs"].map((k) =>
+    db.from(k).delete().eq("user_id", userId)));
 }
 
 /** Researchers with an ORCID whose last sync is older than the cutoff. */

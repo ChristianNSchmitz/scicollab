@@ -5,8 +5,10 @@ import type { CSSProperties, ReactNode } from "react";
    cards, no illustration. Elevation is a border plus a background step.
    Max three signal-coloured elements per screen. Dense by default. */
 
+/** Monospace text never goes below 11px: the boards drew labels at 9–10.5px,
+ *  which is hard to read in a dense, uppercase, letter-spaced face. */
 export const mono = (size: number, weight = 400, lh = 1) =>
-  `${weight} ${size}px/${lh} var(--mono)`;
+  `${weight} ${size < 11 ? Math.min(11, size + 1.5) : size}px/${lh} var(--mono)`;
 
 export function Page({ title, lede, actions, children }: {
   title: string; lede?: string; actions?: ReactNode; children: ReactNode;
@@ -17,7 +19,7 @@ export function Page({ title, lede, actions, children }: {
         <header style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 16, marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
           <div style={{ flex: "1 1 260px", minWidth: 0 }}>
             <h1 style={{ font: mono(19, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{title}</h1>
-            {lede && <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "7px 0 0", maxWidth: "72ch" }}>{lede}</p>}
+            {lede && <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "7px 0 0", maxWidth: "72ch" }}>{lede}</p>}
           </div>
           {actions}
         </header>
@@ -45,7 +47,7 @@ export function PanelHead({ children }: { children: ReactNode }) {
 
 export function Empty({ children }: { children: ReactNode }) {
   return (
-    <div style={{ padding: "34px 16px", textAlign: "center", font: "400 12.5px/1.7 var(--sans)", color: "var(--mute)" }}>
+    <div style={{ padding: "34px 16px", textAlign: "center", font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)" }}>
       {children}
     </div>
   );
@@ -56,8 +58,8 @@ export function Outcome({ value }: { value: "success" | "partial" | "negative" |
   if (!value) return <Tag>ongoing</Tag>;
   const map = {
     success:  { label: "SUCCESS",         fg: "var(--ok)",     bd: "var(--ok)" },
-    partial:  { label: "PARTIAL",         fg: "#8A6A00",       bd: "var(--flag)" },
-    negative: { label: "NEGATIVE RESULT", fg: "var(--signal)", bd: "var(--signal)" },
+    partial:  { label: "PARTIAL",         fg: "var(--flag-ink)",       bd: "var(--flag)" },
+    negative: { label: "NEGATIVE RESULT", fg: "var(--signal-ink)", bd: "var(--signal-ink)" },
   }[value];
   return (
     <span style={{ font: mono(10, 700), letterSpacing: ".08em", color: map.fg, border: `1px solid ${map.bd}`, padding: "3px 7px", whiteSpace: "nowrap" }}>
@@ -90,7 +92,7 @@ export const btn: CSSProperties = {
 };
 
 export const btnPrimary: CSSProperties = {
-  ...btn, background: "var(--signal)", borderColor: "var(--signal)", color: "#fff",
+  ...btn, background: "var(--signal-fill)", borderColor: "var(--signal-fill)", color: "var(--on-signal)",
 };
 
 export const field: CSSProperties = {
@@ -108,5 +110,15 @@ export function Row({ href, children }: { href: string; children: ReactNode }) {
     <Link href={href} style={{ display: "block", padding: "13px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
       {children}
     </Link>
+  );
+}
+
+/** Shown when a write was refused by the rate limit (lib/ratelimit.ts). */
+export function LimitNotice({ show }: { show?: string }) {
+  if (!show) return null;
+  return (
+    <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
+      That was not sent: you have reached the limit for now. Please wait a few minutes and try again.
+    </p>
   );
 }

@@ -15,7 +15,7 @@ import { DEMO_ORCID, normaliseOrcid } from "@/lib/openalex/sync";
 
 export type Bibliometrics =
   | {
-      state: "ok"; citations: number; hIndex: number; works: number; citationsThisYear: number; year: number;
+      state: "ok"; citations: number; hIndex: number; i10: number; works: number; citationsThisYear: number; year: number;
       updated: string; url: string; example?: boolean;
       /** Citations received in each year, as OpenAlex reports them (recent years only). */
       countsByYear: { year: number; cited_by_count: number }[];
@@ -26,8 +26,7 @@ export type Bibliometrics =
   | { state: "not-found"; orcid: string }
   | { state: "unreachable"; orcid: string; message?: string };
 
-/** Example citations per year for the demo persona, oldest first, ending this year (sum 411 of 412). */
-const DEMO_PER_YEAR = [2, 6, 14, 21, 30, 38, 47, 58, 66, 72, 57];
+import { DEMO_PER_YEAR, DEMO_H_INDEX, DEMO_I10 } from "@/lib/record/demo-values";
 
 export async function bibliometricsFor(userId: string, orcidRaw: string | null | undefined): Promise<Bibliometrics> {
   const raw = (orcidRaw ?? "").trim();
@@ -38,7 +37,7 @@ export async function bibliometricsFor(userId: string, orcidRaw: string | null |
   const year = new Date().getFullYear();
   if (!isConfigured() && orcid === DEMO_ORCID) {
     return {
-      state: "ok", citations: 412, hIndex: 11, works: 34, citationsThisYear: 57, year,
+      state: "ok", citations: 412, hIndex: DEMO_H_INDEX, i10: DEMO_I10, works: 34, citationsThisYear: 57, year,
       updated: new Date().toISOString(), url: `https://orcid.org/${orcid}`, example: true,
       countsByYear: DEMO_PER_YEAR.map((n, i) => ({ year: year - DEMO_PER_YEAR.length + 1 + i, cited_by_count: n })),
     };
@@ -51,7 +50,7 @@ export async function bibliometricsFor(userId: string, orcidRaw: string | null |
   if (a && a.orcid === orcid) {
     return {
       state: "ok",
-      citations: a.cited_by_count, hIndex: a.h_index, works: a.works_count,
+      citations: a.cited_by_count, hIndex: a.h_index, i10: a.i10_index ?? 0, works: a.works_count,
       citationsThisYear: a.counts_by_year.find((c) => c.year === year)?.cited_by_count ?? 0,
       year, updated: a.synced_at, url: `https://openalex.org/${a.openalex_id}`,
       countsByYear: a.counts_by_year.map((c) => ({ year: c.year, cited_by_count: c.cited_by_count })),
@@ -65,8 +64,9 @@ export async function bibliometricsFor(userId: string, orcidRaw: string | null |
 
 // ── citation history ──────────────────────────────────────────────────────
 // OpenAlex reports citations per year only. For a weekly or monthly view,
-// SciCollab keeps its own dated snapshot of the total, at most one a day,
-// written when the owner opens their page. History starts at the first one.
+// SciCollab keeps its own dated snapshot of the total and the h-index, at
+// most one a day, written by every successful sync (lib/openalex/store.ts).
+// History starts at the first one.
 
 
 type Client = SupabaseClient<any, "public", any>;
@@ -102,4 +102,35 @@ export function cumulativeAt(b: Extract<Bibliometrics, { state: "ok" }>, d: Date
   const yearEnd = y === b.year ? Date.now() : new Date(y + 1, 0, 1).getTime();
   const frac = Math.min(1, Math.max(0, (d.getTime() - yearStart) / (yearEnd - yearStart)));
   return Math.round(atYearEnd - thisYear * (1 - frac));
+}
+
+// ── what changed recently ─────────────────────────────────────────────────
+// For the Home dashboard: citations gained over the last 30 days, and the
+// publications that arrived in that time. Both come from what the sync
+// already stored, so showing them costs no OpenAlex request.
+
+export type RecentChange = {
+  gain: number | null;          // citations gained since `since`
+  since: string | null;         // the snapshot day the gain is measured from
+  newPubs: { openalex_id: string; title: string }[];
+};
+
+export function recentChange(
+  b: Bibliometrics, snapshots: Snapshot[],
+  runs: { status: string; initial: boolean; started_at: string; changes: { openalex_id: string; title: string; new?: boolean }[] }[],
+  days = 30,
+): RecentChange {
+  if (b.state !== "ok") return { gain: null, since: null, newPubs: [] };
+  const cutoff = isoDay(new Date(Date.now() - days * 864e5));
+  // the last snapshot on or before the cutoff, or the oldest one we have
+  const before = [...snapshots].filter((s) => s.day <= cutoff).pop() ?? snapshots[0] ?? null;
+  // A snapshot from today says nothing about change; wait for history.
+  const gain = before && before.day < isoDay(new Date()) ? b.citations - before.citations : null;
+  const seen = new Set<string>();
+  const newPubs = runs
+    .filter((r) => r.status === "ok" && !r.initial && +new Date(r.started_at) >= Date.now() - days * 864e5)
+    .flatMap((r) => r.changes.filter((c) => c.new))
+    .filter((c) => !seen.has(c.openalex_id) && seen.add(c.openalex_id))
+    .map(({ openalex_id, title }) => ({ openalex_id, title }));
+  return { gain, since: gain === null ? null : before!.day, newPubs };
 }

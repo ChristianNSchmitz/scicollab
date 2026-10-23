@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -76,18 +77,19 @@ function Form() {
 
 export default function LoginPage() {
   return (
-    <div style={{ minHeight: "100vh", background: "var(--canvas)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+    <div style={{ minHeight: "100vh", background: "var(--canvas)", display: "flex", flexDirection: "column" }}>
+    <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ width: 460, background: "var(--surface)", border: "1px solid var(--ink)", padding: 32 }}>
         <Link href="/" style={{ display: "inline-flex", alignItems: "flex-end", marginBottom: 26, color: "var(--ink)" }}>
           <span style={{ position: "relative", font: "700 18px/1 var(--mono)", letterSpacing: "-.03em" }}>
             scicollab
             <span style={{ position: "absolute", left: 0, bottom: -5, width: 12, height: 3, background: "var(--signal)" }} />
           </span>
-          <span style={{ font: "700 18px/1 var(--mono)", color: "var(--signal)" }}>/</span>
+          <span style={{ font: "700 18px/1 var(--mono)", color: "var(--signal-ink)" }}>/</span>
         </Link>
 
         <h1 style={{ font: "700 20px/1.2 var(--mono)", margin: "0 0 6px", letterSpacing: "-.02em" }}>Sign in</h1>
-        <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 22px" }}>
+        <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 22px" }}>
           Institutional SSO and ORCID are designed on board B1 and are not connected yet — email and password for now.
         </p>
 
@@ -98,10 +100,12 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+    <SiteFooter />
+    </div>
   );
 }
 
 const label: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 6 };
-const labelText: React.CSSProperties = { font: "500 10px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)" };
+const labelText: React.CSSProperties = { font: "500 11px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)" };
 const input: React.CSSProperties = { height: 38, padding: "0 10px", border: "1px solid var(--rule)", background: "var(--bg)", font: "400 13px/1 var(--mono)", color: "var(--ink)" };
-const primary: React.CSSProperties = { height: 42, background: "var(--signal)", color: "#fff", border: "1px solid var(--signal)", font: "500 13px/1 var(--mono)", cursor: "pointer", marginTop: 4 };
+const primary: React.CSSProperties = { height: 42, background: "var(--signal-fill)", color: "var(--on-signal)", border: "1px solid var(--signal-fill)", font: "500 13px/1 var(--mono)", cursor: "pointer", marginTop: 4 };

@@ -8,7 +8,7 @@ import { toggleRecommendation } from "@/app/actions/record";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import { recordCardRead, viaFrom } from "@/lib/record/reads";
 import { Page, Panel, PanelHead, Outcome, Tag, Visibility, btn, btnPrimary, mono } from "@/components/ui";
-import { timeAgo } from "@/lib/format";
+import { timeAgo, plural } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -67,7 +67,7 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
               <span style={{ font: mono(11), color: "var(--mute)" }}>{card.code} · v{card.version}</span>
               <span style={{ font: mono(11), color: "var(--mute)" }}>· {timeAgo(card.created_at)}</span>
               <span style={{ marginLeft: "auto", font: mono(11), color: "var(--mute)" }}>
-                {forks?.length ?? 0} forks · {card.reproductions} reproductions · {recs?.length ?? 0} recommendations
+                {plural(forks?.length ?? 0, "fork")} · {plural(card.reproductions ?? 0, "reproduction")} · {plural(recs?.length ?? 0, "recommendation")}
               </span>
               <Visibility value={card.visibility} />
             </div>
@@ -89,9 +89,9 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
 
             {card.fails_under && (
               <div style={{ padding: 14 }}>
-                <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal)", marginBottom: 7 }}>FAILS UNDER</div>
+                <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 7 }}>FAILS UNDER</div>
                 <div style={{ borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "10px 12px" }}>
-                  <p style={{ font: "400 13px/1.65 var(--sans)", margin: 0 }}>{card.fails_under}</p>
+                  <p style={{ font: "400 14px/1.65 var(--sans)", margin: 0 }}>{card.fails_under}</p>
                 </div>
               </div>
             )}
@@ -155,7 +155,7 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
           <Panel>
             <PanelHead>Ask about this card</PanelHead>
             <div style={{ padding: 14 }}>
-              <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 11px" }}>
+              <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 11px" }}>
                 A question raised here carries the card, so nobody has to retype the conditions.
               </p>
               <Link href={`/ask?card=${card.id}`} style={{ ...btnPrimary, width: "100%", justifyContent: "center" }}>Ask with this attached</Link>
@@ -180,14 +180,14 @@ function Field({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
       <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 7 }}>{label.toUpperCase()}</div>
-      <p style={{ font: "400 13px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{value}</p>
+      <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{value}</p>
     </div>
   );
 }
 
 function Cell({ label, value, borderLeft }: { label: string; value: string; borderLeft?: boolean }) {
   return (
-    <div style={{ padding: 14, borderLeft: borderLeft ? "1px solid var(--rule)" : undefined }}>
+    <div className={borderLeft ? "sc-pair-second" : undefined} style={{ padding: 14 }}>
       <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 6 }}>{label.toUpperCase()}</div>
       <div style={{ font: mono(12.5, 400, 1.5) }}>{value || "—"}</div>
     </div>

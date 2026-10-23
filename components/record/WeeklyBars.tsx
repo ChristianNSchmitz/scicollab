@@ -49,7 +49,7 @@ export default function WeeklyBars({ values, weekStarts, unit, max: sharedMax }:
         })}
         <line x1={0} x2={W} y1={H + 0.5} y2={H + 0.5} stroke="var(--ink)" />
       </svg>
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, font: "400 10px/1.3 var(--mono)", color: "var(--mute)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, font: "400 11px/1.3 var(--mono)", color: "var(--mute)" }}>
         <span>{caption}</span>
       </div>
     </div>

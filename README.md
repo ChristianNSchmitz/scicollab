@@ -50,11 +50,23 @@ deployed site.
 
 ### Database
 
-Run `supabase/schema.sql` once in the Supabase SQL editor. It is safe to
-re-run, and it is written to work on a fresh project **or** on the project the
-previous prototype used — where a `profiles` table already exists with
-different columns, it adds what is missing rather than leaving the old shape
-in place.
+Run these in the Supabase SQL editor, in this order. Each is safe to re-run.
+
+1. `supabase/schema.sql` — the core tables. It works on a fresh project **or**
+   on the project the previous prototype used: where a `profiles` table
+   already exists with different columns, it adds what is missing rather
+   than leaving the old shape in place.
+2. `supabase/02-rooms-and-posts.sql` — rooms and the feed.
+3. `supabase/04-project-code.sql` — code inside projects.
+4. `supabase/05-post-attachments.sql` — data and code attached to posts.
+5. `supabase/06-profiles-and-citations.sql` — profile pictures (and the
+   `avatars` storage bucket), the guard on reputation counters, and the
+   columns the OpenAlex sync uses for per-paper citation history.
+6. `supabase/07-forum-and-chat.sql` — replies on posts, and a guard so the
+   recipient of a message can only mark it read, not change it.
+
+A new schema change goes in the next numbered file, so the live project
+only ever needs the files it has not run yet.
 
 Then turn **off** email confirmation in Authentication → Providers → Email,
 or the first sign-up cannot sign in.
@@ -70,10 +82,47 @@ or the first sign-up cannot sign in.
 | Projects and the append-only notebook | live |
 | Direct messages, including the reputation gate | live |
 | Search across methods, questions, people, projects | live |
+| Public pages: About, Questions (`/faq`), Terms (draft), Contact | live |
+| Contact form — captcha, e-mail to the team | live (sends once an e-mail service is set, see below) |
 | Data, Code, Write, Institution, Notifications, Help | designed, not wired |
 
 A destination that is not wired says so on the screen and names the board it
 came from, so the gap stays visible instead of looking like a broken feature.
+
+## Public pages and the contact form
+
+The landing page ends with a footer — About, Questions, Terms & Conditions,
+Contact, and Facebook / LinkedIn icons. The board's COVERAGE review strip is
+hidden on public pages (`<Screen hideCoverage />`).
+
+| Page | Content comes from |
+|---|---|
+| `/about` | the team's submitted strategic-project deck (May 2026) |
+| `/faq` | the same deck — target users, problem, competition, model |
+| `/terms` | the drafted *Contributions, Authorship & Patents* section — marked **draft, not in force** |
+| `/contact` | form → captcha → e-mail to the team |
+
+The FAQ lives at `/faq`, not `/questions`: `/questions/[id]` is the
+researchers' own Q&A and must stay behind sign-in.
+
+The Facebook and LinkedIn pages do not exist yet; their addresses are `#`
+in `components/SiteFooter.tsx` (`SOCIAL`).
+
+**Captcha.** ALTCHA, a proof-of-work check that runs on our own server — no
+third-party script, no cookie. Works with no setup on a laptop. In production
+set `ALTCHA_HMAC_SECRET` (any long random string, e.g. `openssl rand -hex 32`);
+without it the form says it is unavailable.
+
+**E-mail.** Sent through Brevo (French provider, free up to 300 e-mails a
+day). Without the three variables below, a message is fully checked and then
+written to the server log instead of being sent, and the page says so.
+
+| Variable | Needed for |
+|---|---|
+| `ALTCHA_HMAC_SECRET` | Production only. Signs captcha challenges. |
+| `BREVO_API_KEY` | Brevo → SMTP & API → API keys. |
+| `CONTACT_FROM_EMAIL` | A sender address verified in Brevo. |
+| `CONTACT_TO_EMAIL` | Who receives the messages (comma-separated). Kept out of the code on purpose. |
 
 ## OpenAlex sync
 
@@ -88,6 +137,7 @@ the person opens their You page. "Sync now" is limited to once per 10 minutes.
 | `SUPABASE_SERVICE_ROLE_KEY` | Writing synced data. Researchers cannot write it themselves. |
 | `CRON_SECRET` | The cron route. Without it the route refuses every request. |
 | `OPENALEX_API_KEY` | Optional. OpenAlex's free daily allowance is small (1,000 requests at the time of writing); a sync costs one request plus one per 200 works. |
+| `OPENALEX_MAILTO` | Optional, recommended. A contact address; OpenAlex serves identified requests from its faster pool. |
 | `SCICOLLAB_SYNC_INTERVAL_HOURS` | Optional, default 12. |
 
 Vercel's Hobby plan runs crons at most once a day; there the visit fallback
@@ -103,12 +153,13 @@ covers the second update.
 | `components/ui.tsx` | The house kit: panels, outcome and visibility chips, fields |
 | `design/screens/` | Extracted artboards + `manifest.json` |
 | `scripts/extract-screens.mjs` | Re-extracts from the design boards |
-| `supabase/schema.sql` | The whole database |
+| `supabase/*.sql` | The database: `schema.sql`, then the numbered files in order |
+| `design/boards/` | The design boards themselves (`*.dc.html`), the source for `design/screens/` |
 
 To re-extract after the boards change:
 
 ```bash
-node scripts/extract-screens.mjs ../scicollab/design/boards
+node scripts/extract-screens.mjs design/boards
 ```
 
 ## Decisions worth knowing

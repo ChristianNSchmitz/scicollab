@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Avatar from "@/components/Avatar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -9,7 +10,7 @@ import { demoSignOut, backendConfigured } from "@/app/actions/demo-auth";
 /* Top bar — board [ 003 ]: 56px, wordmark in a 200px well, search to 660px
    with its ⌘K hint, Create, notifications, avatar with a presence dot. */
 
-export default function TopBar({ initials = "··", name = "" }: { initials?: string; name?: string }) {
+export default function TopBar({ name = "", avatarUrl = null }: { name?: string; avatarUrl?: string | null }) {
   const router = useRouter();
   const [menu, setMenu] = useState(false);
   const [dark, setDark] = useState(false);
@@ -75,7 +76,7 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
           scicollab
           <span style={{ position: "absolute", left: 0, bottom: -5, width: 11, height: 3, background: "var(--signal)" }} />
         </span>
-        <span style={{ font: "700 16px/1 var(--mono)", color: "var(--signal)" }}>/</span>
+        <span style={{ font: "700 16px/1 var(--mono)", color: "var(--signal-ink)" }}>/</span>
       </Link>
 
       <Link
@@ -94,7 +95,7 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
         <span className="sc-top-search-text" style={{ font: "400 12px/1 var(--mono)", color: "var(--mute)", flex: 1 }}>
           Search people, projects, datasets, methods, discussions
         </span>
-        <span className="sc-top-kbd" style={{ font: "500 10px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
+        <span className="sc-top-kbd" style={{ font: "500 11px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
       </Link>
 
       <Link href="/methods/new" className="sc-top-create" aria-label="Create" style={{ ...ghost, borderColor: "var(--ink)", background: "var(--ink)", color: "var(--bg)", textDecoration: "none" }}>
@@ -118,14 +119,8 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
           style={{ ...ghost, display: "flex", alignItems: "center", gap: 8, padding: 4, border: "1px solid var(--rule)" }}
           aria-label="Account"
         >
-          <span
-            style={{
-              position: "relative", width: 26, height: 26, border: "1px solid var(--ink)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              font: "500 10px/1 var(--mono)", background: "var(--bg)",
-            }}
-          >
-            {initials}
+          <span style={{ position: "relative", display: "flex" }}>
+            <Avatar name={name} url={avatarUrl} size={26} />
             <span style={{ position: "absolute", right: -3, bottom: -3, width: 9, height: 9, background: "var(--ok)", border: "1px solid var(--surface)", borderRadius: "50%" }} />
           </span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" strokeWidth="1.8" strokeLinecap="round">
@@ -145,6 +140,8 @@ export default function TopBar({ initials = "··", name = "" }: { initials?: st
               <div style={{ font: "500 12px/1.3 var(--mono)" }}>{name || "Signed in"}</div>
             </div>
             <Link href="/you" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your profile</Link>
+            <Link href="/you/publications" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your publications</Link>
+            <Link href="/requests" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Access requests</Link>
             <Link href="/settings" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Settings</Link>
             <button onClick={signOut} style={{ width: "100%", textAlign: "left", padding: "9px 12px", font: "400 12px/1 var(--mono)", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", color: "var(--err)", cursor: "pointer" }}>
               Sign out

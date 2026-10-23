@@ -1,36 +1,67 @@
 "use server";
 
+import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { intentById } from "@/lib/taxonomy";
-
-async function me() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  return { supabase, user };
-}
+import { requireUser } from "@/lib/session";
+import { intentById, roomById } from "@/lib/taxonomy";
+import { isRowId } from "@/lib/query";
 
 export type PostState = { error: string } | null;
 
+const text = (form: FormData, key: string, max: number) => String(form.get(key) ?? "").trim().slice(0, max);
+
 /** Returns a message rather than throwing: a validation failure belongs on
- *  the form next to the field, not in an error boundary. */
+ *  the form next to the field, not in an error boundary. Everything the form
+ *  offers is checked again here, because the values arrive from the browser. */
 export async function createPost(_prev: PostState, form: FormData): Promise<PostState> {
-  const { supabase, user } = await me();
+  const { supabase, user } = await requireUser();
+
+  const limited = await overLimit(supabase, "post", user.id);
+  if (limited) return { error: limited };
 
   const intent = String(form.get("intent") ?? "");
   const spec = intentById(intent);
   if (!spec) return { error: "Pick what kind of post this is." };
 
+  // A room that exists, and one the author has joined: the composer only
+  // offers those, and a post anywhere else would land in a feed nobody reads.
   const room = String(form.get("room_id") ?? "");
-  if (!room) return { error: "Choose a room to post in." };
+  if (!roomById(room)) return { error: "Choose a room to post in." };
+  const { data: joined } = await supabase
+    .from("user_rooms").select("room_id").eq("user_id", user.id).eq("room_id", room).maybeSingle();
+  if (!joined) return { error: "You can only post in rooms you have joined." };
 
+  const title = text(form, "title", 200);
+  if (!title) return { error: "Give the post a title." };
+
+  // The intents that exist to carry evidence must carry it, and it must be
+  // the author's own card. This keeps the feed anchored to artifacts.
   const card = String(form.get("method_card_id") ?? "");
-  // The intents that exist to carry evidence must carry it. This is the rule
-  // that keeps the feed anchored to artifacts rather than to opinion.
   if (spec.needsArtifact && !card) {
-    return { error: `“${spec.label}” needs a method card attached. Pick one below, or choose a different kind of post.` };
+    return { error: `“${spec.label}” needs a method card attached. Pick one in the method card field, or choose a different kind of post.` };
+  }
+  if (card) {
+    const { data: own } = await supabase.from("method_cards").select("id").eq("id", card).eq("author_id", user.id).maybeSingle();
+    if (!own) return { error: "You can only attach your own method cards." };
+  }
+
+  // Optional project evidence, "<kind>:<id>". Only data or code from a
+  // project the author is on: re-sharing someone else's dataset as "open"
+  // would hand out what its owner had not.
+  const attach = String(form.get("attach") ?? "");
+  let attachment: { kind: "dataset" | "code"; id: string; project_id: string } | null = null;
+  if (attach) {
+    const [kind, refId] = attach.split(":");
+    if ((kind === "dataset" || kind === "code") && isRowId(refId)) {
+      const { data: ref } = await supabase
+        .from(kind === "dataset" ? "datasets" : "code_files").select("id, project_id").eq("id", refId).maybeSingle();
+      const { data: member } = ref?.project_id
+        ? await supabase.from("project_members").select("user_id").eq("project_id", ref.project_id).eq("user_id", user.id).maybeSingle()
+        : { data: null };
+      if (!ref || !member) return { error: "You can only attach data or code from your own projects." };
+      attachment = { kind, id: ref.id, project_id: ref.project_id };
+    }
   }
 
   const { data, error } = await supabase
@@ -39,62 +70,64 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
       author_id: user.id,
       room_id: room,
       intent,
-      title: String(form.get("title") ?? "").trim(),
-      body: String(form.get("body") ?? "").trim(),
+      title,
+      body: text(form, "body", 10000),
       method_card_id: card || null,
-      technique: String(form.get("technique") ?? "").trim(),
-      organism: String(form.get("organism") ?? "").trim(),
+      technique: text(form, "technique", 200),
+      organism: text(form, "organism", 200),
       deadline: String(form.get("deadline") ?? "") || null,
-      offer: String(form.get("offer") ?? "").trim(),
+      offer: text(form, "offer", 300),
     })
     .select("id")
     .single();
-
   if (error) return { error: error.message };
 
-  // Optional project evidence, with its disclosure setting. "attach" arrives
-  // as "<kind>:<id>" so one control can offer datasets and code together.
-  const attach = String(form.get("attach") ?? "");
-  if (attach) {
-    const [kind, refId] = attach.split(":");
-    const access = String(form.get("access") ?? "on_request") === "open" ? "open" : "on_request";
-
-    if (kind === "dataset" || kind === "code") {
-      const table = kind === "dataset" ? "datasets" : "code_files";
-      const { data: ref } = await supabase
-        .from(table).select("id, project_id").eq("id", refId).maybeSingle();
-
-      if (ref) {
-        await supabase.from("post_attachments").insert({
-          post_id: data.id,
-          kind,
-          dataset_id:   kind === "dataset" ? ref.id : null,
-          code_file_id: kind === "code"    ? ref.id : null,
-          project_id:   ref.project_id,
-          access,
-          owner_id: user.id,
-        });
-      }
-    }
+  if (attachment) {
+    await supabase.from("post_attachments").insert({
+      post_id: data.id,
+      kind: attachment.kind,
+      dataset_id:   attachment.kind === "dataset" ? attachment.id : null,
+      code_file_id: attachment.kind === "code"    ? attachment.id : null,
+      project_id:   attachment.project_id,
+      access: String(form.get("access") ?? "on_request") === "open" ? "open" : "on_request",
+      owner_id: user.id,
+    });
   }
 
   revalidatePath("/home");
   redirect(`/posts/${data.id}`);
 }
 
-/** Share an existing card into a room — the loop that puts a recorded
- *  result in front of the people who would repeat it. */
-export async function shareCardToRoom(cardId: string, roomId: string, title: string) {
-  const { supabase, user } = await me();
-  const { data, error } = await supabase
-    .from("posts")
-    .insert({
-      author_id: user.id, room_id: roomId, intent: "result",
-      title, body: "", method_card_id: cardId,
-    })
-    .select("id")
-    .single();
-  if (error) throw new Error(error.message);
+/** Only the author removes a post; its replies and attachments go with it. */
+export async function deletePost(postId: string) {
+  const { supabase, user } = await requireUser();
+  const { data } = await supabase.from("posts").delete().eq("id", postId).eq("author_id", user.id).select("id");
+  if (!data?.length) throw new Error("Only the author can delete this post.");
+  // The demo store has no cascade; the database does this itself.
+  await supabase.from("post_replies").delete().eq("post_id", postId);
   revalidatePath("/home");
-  redirect(`/posts/${data.id}`);
+  redirect("/home");
+}
+
+/** A reply stays next to the post, where the next person with the same
+ *  problem will find it — unlike a private message. */
+export async function replyToPost(postId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const body = text(form, "body", 5000);
+  if (!body) return;
+  if (await overLimit(supabase, "reply", user.id)) redirect(`/posts/${postId}?limited=1#replies`);
+  const { data: post } = await supabase.from("posts").select("id").eq("id", postId).maybeSingle();
+  if (!post) throw new Error("That post no longer exists.");
+  const { error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body });
+  if (error) throw new Error(error.message);
+  revalidatePath(`/posts/${postId}`);
+  revalidatePath("/home");
+  redirect(`/posts/${postId}#replies`);
+}
+
+export async function deleteReply(replyId: string, postId: string) {
+  const { supabase, user } = await requireUser();
+  await supabase.from("post_replies").delete().eq("id", replyId).eq("author_id", user.id);
+  revalidatePath(`/posts/${postId}`);
+  revalidatePath("/home");
 }

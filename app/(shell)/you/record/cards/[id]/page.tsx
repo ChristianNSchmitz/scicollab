@@ -76,7 +76,7 @@ export default async function CardAnalytics({ params, searchParams }: {
         <Visibility value={card.visibility} />
         <span style={{ font: mono(11), color: "var(--mute)" }}>recorded {timeAgo(card.created_at)}</span>
         {card.visibility === "private" && (
-          <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Private cards have no readers. Share it as Lab or Public to be read and reused.</span>
+          <span style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>Private cards have no readers. Share it as Lab or Public to be read and reused.</span>
         )}
       </div>
 
@@ -104,7 +104,7 @@ export default async function CardAnalytics({ params, searchParams }: {
             <WeeklyBars values={reuse} weekStarts={weekStarts} unit="reuses" max={shared} />
           </div>
         </div>
-        <div style={{ padding: "0 14px 12px", font: "400 11.5px/1.6 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: "0 14px 12px", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)" }}>
           Reads are attention; a fork, a repeat or a question that carries the card is use. A card can be read many times and used twice, and that is worth seeing.
         </div>
       </Panel>
@@ -124,7 +124,7 @@ export default async function CardAnalytics({ params, searchParams }: {
               <span>Institutions under {MIN_READERS_PER_INSTITUTION} readers in a week, or none given</span>
               <span>{stats?.below_threshold ?? 0}</span>
             </div>
-            <div style={{ padding: "9px 14px", font: "400 11px/1.6 var(--sans)", color: "var(--mute)" }}>
+            <div style={{ padding: "9px 14px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
               An institution with two readers is two people, and naming it would identify them, so it is only shown from {MIN_READERS_PER_INSTITUTION} distinct readers in the same week. All time.
             </div>
           </Panel>
@@ -146,7 +146,7 @@ export default async function CardAnalytics({ params, searchParams }: {
                     </div>
                   </div>
                 ))}
-                <div style={{ font: "400 11px/1.6 var(--sans)", color: "var(--mute)", marginTop: 10 }}>All time. Only the kind of page is kept, never the address.</div>
+                <div style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", marginTop: 10 }}>All time. Only the kind of page is kept, never the address.</div>
               </div>
             )}
           </Panel>
@@ -161,7 +161,7 @@ export default async function CardAnalytics({ params, searchParams }: {
               <Empty>No forks, repeats or questions carrying this card yet.</Empty>
             ) : reuseEvents.map((e, i) => (
               <Link key={i} href={e.href} style={{ display: "flex", gap: 12, padding: "11px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" }}>
-                <span style={{ font: "400 12.5px/1.5 var(--sans)", flex: 1, minWidth: 0 }}>{e.text}</span>
+                <span style={{ font: "400 13.5px/1.5 var(--sans)", flex: 1, minWidth: 0 }}>{e.text}</span>
                 <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(e.at)}</span>
               </Link>
             ))}
@@ -178,7 +178,7 @@ export default async function CardAnalytics({ params, searchParams }: {
                   <span>{VERDICT[v.verdict] ?? v.verdict}</span>
                   <span style={{ fontWeight: 400, color: "var(--mute)" }}>{timeAgo(v.created_at)}</span>
                 </div>
-                {v.body && <p style={{ font: "400 12px/1.55 var(--sans)", margin: "5px 0 0" }}>{v.body}</p>}
+                {v.body && <p style={{ font: "400 13px/1.55 var(--sans)", margin: "5px 0 0" }}>{v.body}</p>}
               </div>
             ))}
           </Panel>

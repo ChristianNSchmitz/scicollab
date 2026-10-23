@@ -83,7 +83,7 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
           const y = (v: number) => (s ? y0 + rowH - ((v - s.lo) / (s.hi - s.lo)) * rowH : y0 + rowH);
           return (
             <g key={r.title}>
-              <text x={0} y={y0 - 8} style={{ font: "700 10px var(--mono)", letterSpacing: ".1em", textTransform: "uppercase" }} fill="var(--mute)">
+              <text x={0} y={y0 - 8} style={{ font: "700 11px var(--mono)", letterSpacing: ".1em", textTransform: "uppercase" }} fill="var(--mute)">
                 {r.title}
               </text>
               <line x1={L} x2={w - R} y1={y0 + 0.5} y2={y0 + 0.5} stroke="var(--rule)" strokeDasharray="2 3" />
@@ -91,8 +91,8 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
               <line x1={L} x2={w - R} y1={y0 + rowH + 0.5} y2={y0 + rowH + 0.5} stroke="var(--ink)" />
               {s ? (
                 <>
-                  <text x={L - 8} y={y0 + 4} textAnchor="end" style={{ font: "400 10px var(--mono)" }} fill="var(--mute)">{s.hi.toLocaleString("en-GB")}</text>
-                  <text x={L - 8} y={y0 + rowH} textAnchor="end" style={{ font: "400 10px var(--mono)" }} fill="var(--mute)">{s.lo.toLocaleString("en-GB")}</text>
+                  <text x={L - 8} y={y0 + 4} textAnchor="end" style={{ font: "400 11px var(--mono)" }} fill="var(--mute)">{s.hi.toLocaleString("en-GB")}</text>
+                  <text x={L - 8} y={y0 + rowH} textAnchor="end" style={{ font: "400 11px var(--mono)" }} fill="var(--mute)">{s.lo.toLocaleString("en-GB")}</text>
                   <path d={path(r.values, y)} fill="none" stroke="var(--ink)" strokeWidth={2} strokeLinejoin="round" />
                   {r.values.map((v, i) => v === null || (dense && i !== at && i !== n - 1 && !(sparse(r.values, i))) ? null : (
                     <circle key={i} cx={x(i)} cy={y(v)} r={i === at ? 5 : dense ? 3 : 3.5}
@@ -111,7 +111,7 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
 
         {labels.map((l, i) => showTick(i) && (
           <text key={i} x={x(i)} y={H - 6} textAnchor={i === 0 ? "start" : i === n - 1 ? "end" : "middle"}
-                style={{ font: "400 10px var(--mono)" }} fill={i === at && hover !== null ? "var(--ink)" : "var(--mute)"}>{l}</text>
+                style={{ font: "400 11px var(--mono)" }} fill={i === at && hover !== null ? "var(--ink)" : "var(--mute)"}>{l}</text>
         ))}
 
         {/* hit targets wider than the marks */}

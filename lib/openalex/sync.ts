@@ -1,5 +1,8 @@
 import { fetchAuthor, fetchWorks, OpenAlexError } from "@/lib/openalex/client";
-import { canWrite, finishRun, readAuthor, readPublications, startRun, writeSync, staleResearchers, type RunRow } from "@/lib/openalex/store";
+import { canWrite, finishRun, readAuthor, readPublications, startRun, writeSync, touchSync, staleResearchers, type RunRow } from "@/lib/openalex/store";
+import { normaliseOrcid } from "@/lib/orcid";
+
+export { normaliseOrcid };
 
 /**
  * Sync one researcher's OpenAlex record: author summary and every work.
@@ -13,22 +16,21 @@ import { canWrite, finishRun, readAuthor, readPublications, startRun, writeSync,
 export const SYNC_INTERVAL_MS = (Number(process.env.SCICOLLAB_SYNC_INTERVAL_HOURS) || 12) * 3600 * 1000;
 /** "Sync now" at most every 10 minutes (or every interval, if that is shorter). */
 export const MANUAL_COOLDOWN_MS = Math.min(10 * 60 * 1000, SYNC_INTERVAL_MS);
-const ORCID = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/;
+/** The works are fetched in full at least this often, even when the author looks unchanged. */
+export const FULL_REFRESH_MS = 7 * 24 * 3600 * 1000;
+/** Per-work citation history is stored from this release on. A record whose
+ *  last full fetch predates it is fetched in full once, to fill it in. */
+const PER_WORK_HISTORY_SINCE = "2026-10-22T00:00:00Z";
 /** The demo persona carries ORCID's public test record; it is never synced. */
 export const DEMO_ORCID = "0000-0002-1825-0097";
 
 export type SyncResult =
-  | { status: "ok"; initial: boolean; newWorks: number; removedWorks: number; citationsDelta: number }
+  | { status: "ok"; initial: boolean; newWorks: number; removedWorks: number; citationsDelta: number; light?: boolean }
   | { status: "skipped"; reason: string }
   | { status: "error" | "rate-limited" | "not-found"; message: string };
 
 // One sync per researcher at a time, within this server process.
 const running = new Map<string, Promise<SyncResult>>();
-
-export function normaliseOrcid(raw: string | null | undefined): string | null {
-  const o = (raw ?? "").trim().replace(/^https?:\/\/orcid\.org\//, "");
-  return ORCID.test(o) ? o : null;
-}
 
 export function syncResearcher(userId: string, orcidRaw: string | null | undefined, trigger: "schedule" | "visit" | "manual"): Promise<SyncResult> {
   const existing = running.get(userId);
@@ -54,6 +56,26 @@ async function doSync(userId: string, orcidRaw: string | null | undefined, trigg
     const initial = !sameRecord;
 
     const author = await fetchAuthor(orcid);
+
+    // Light sync: one request. When the author's totals and OpenAlex's own
+    // update stamp are what we stored, the works cannot have changed in a way
+    // the page shows, so paging through them is skipped. A manual sync, a new
+    // record, or a week since the last full fetch always pages through.
+    const lastFull = prevAuthor?.works_synced_at ?? null;
+    const unchanged = sameRecord && prevAuthor
+      && trigger !== "manual"
+      && lastFull && Date.now() - +new Date(lastFull) < FULL_REFRESH_MS
+      && +new Date(lastFull) >= +new Date(PER_WORK_HISTORY_SINCE)
+      && author.works_count === prevAuthor.works_count
+      && author.cited_by_count === prevAuthor.cited_by_count
+      && author.h_index === prevAuthor.h_index
+      && (author.updated_date ?? null) === (prevAuthor.source_updated ?? null);
+    if (unchanged) {
+      await touchSync(userId, author);
+      await finishRun(runId, { status: "ok", initial: false, new_works: 0, removed_works: 0, citations_delta: 0, changes: [] });
+      return { status: "ok", initial: false, newWorks: 0, removedWorks: 0, citationsDelta: 0, light: true };
+    }
+
     const works = await fetchWorks(author.id);
     // Citations received per calendar year, summed over the works (see client.ts).
     const byYear = new Map<number, { cited_by_count: number; works_count: number }>();
