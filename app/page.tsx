@@ -3,6 +3,7 @@ import DemoNotice from "@/components/DemoNotice";
 import Link from "next/link";
 import Screen from "@/components/Screen";
 import { btn, btnPrimary, mono } from "@/components/ui";
+import SiteFooter from "@/components/SiteFooter";
 import { createClient } from "@/lib/supabase/server";
 import { isConfigured } from "@/lib/mode";
 
@@ -38,17 +39,19 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
       <div style={{ width: 1440, margin: "0 auto" }}>
         <Screen
           id="b1-marketing-landing-page"
+          hideCoverage
           links={{
             "Sign in": "/login",
             "Create account": "/signup",
             "Connect ORCID → start": "/signup",
             "Book a lab pilot": "/signup",
-            "Talk to us about a pilot": "/signup",
+            "Talk to us about a pilot": "/contact?topic=pilot",
             "Method cards": "/login",
             "Pricing": "/login",
             "Docs": "/login",
           }}
         />
+        <SiteFooter width={1440} />
         </div>
       </div>
     </div>

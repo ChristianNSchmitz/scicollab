@@ -118,10 +118,11 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 /* The second cell of a pair divides itself from the first: a rule on its
    left side by side, on its top once the pair stacks. */
 .sc-pair-second { border-left: 1px solid var(--rule); }
-/* The collapsed chat dock is a 38px bar fixed to the bottom edge; leave room
-   so the end of every page can scroll clear of it. */
-.sc-main { padding-bottom: 48px; }
 .sc-tabbar, .sc-sheet, .sc-top-create-short, .sc-demo-short, .sc-land-mobile { display: none; }
+
+/* Site footer inside the app: keep its last row clear of the docked chat (38px tall). */
+.sc-footer-dock { padding-bottom: 54px !important; }
+@media (max-width: 767px) { .sc-footer-dock { padding-bottom: 14px !important; } }
 
 @media (max-width: 1100px) {
   .sc-rail { width: var(--rail-collapsed) !important; }
@@ -139,6 +140,7 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 @media (max-width: 760px) {
   .sc-land-board { display: none; }
   .sc-land-mobile { display: block; }
+  .sc-public-nav { display: none !important; }
   .sc-rail { display: none !important; }
   .sc-main { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 

@@ -82,10 +82,47 @@ or the first sign-up cannot sign in.
 | Projects and the append-only notebook | live |
 | Direct messages, including the reputation gate | live |
 | Search across methods, questions, people, projects | live |
+| Public pages: About, Questions (`/faq`), Terms (draft), Contact | live |
+| Contact form — captcha, e-mail to the team | live (sends once an e-mail service is set, see below) |
 | Data, Code, Write, Institution, Notifications, Help | designed, not wired |
 
 A destination that is not wired says so on the screen and names the board it
 came from, so the gap stays visible instead of looking like a broken feature.
+
+## Public pages and the contact form
+
+The landing page ends with a footer — About, Questions, Terms & Conditions,
+Contact, and Facebook / LinkedIn icons. The board's COVERAGE review strip is
+hidden on public pages (`<Screen hideCoverage />`).
+
+| Page | Content comes from |
+|---|---|
+| `/about` | the team's submitted strategic-project deck (May 2026) |
+| `/faq` | the same deck — target users, problem, competition, model |
+| `/terms` | the drafted *Contributions, Authorship & Patents* section — marked **draft, not in force** |
+| `/contact` | form → captcha → e-mail to the team |
+
+The FAQ lives at `/faq`, not `/questions`: `/questions/[id]` is the
+researchers' own Q&A and must stay behind sign-in.
+
+The Facebook and LinkedIn pages do not exist yet; their addresses are `#`
+in `components/SiteFooter.tsx` (`SOCIAL`).
+
+**Captcha.** ALTCHA, a proof-of-work check that runs on our own server — no
+third-party script, no cookie. Works with no setup on a laptop. In production
+set `ALTCHA_HMAC_SECRET` (any long random string, e.g. `openssl rand -hex 32`);
+without it the form says it is unavailable.
+
+**E-mail.** Sent through Brevo (French provider, free up to 300 e-mails a
+day). Without the three variables below, a message is fully checked and then
+written to the server log instead of being sent, and the page says so.
+
+| Variable | Needed for |
+|---|---|
+| `ALTCHA_HMAC_SECRET` | Production only. Signs captcha challenges. |
+| `BREVO_API_KEY` | Brevo → SMTP & API → API keys. |
+| `CONTACT_FROM_EMAIL` | A sender address verified in Brevo. |
+| `CONTACT_TO_EMAIL` | Who receives the messages (comma-separated). Kept out of the code on purpose. |
 
 ## OpenAlex sync
 

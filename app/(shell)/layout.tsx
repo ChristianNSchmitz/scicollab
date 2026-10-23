@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import ChatDock from "@/components/ChatDock";
 import DemoNotice from "@/components/DemoNotice";
 import Rail from "@/components/Rail";
+import SiteFooter from "@/components/SiteFooter";
 import TopBar from "@/components/TopBar";
 import TabBar from "@/components/TabBar";
 import { createClient } from "@/lib/supabase/server";
@@ -31,8 +32,9 @@ export default async function ShellLayout({ children }: { children: React.ReactN
       <TopBar name={name} avatarUrl={profile?.avatar_url ?? null} />
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
         <Rail />
-        <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)" }}>
-          {children}
+        <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)", display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1 }}>{children}</div>
+          <SiteFooter clearDock />
         </main>
       </div>
       <TabBar />

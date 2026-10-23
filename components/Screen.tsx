@@ -58,14 +58,25 @@ function wire(html: string, links: Record<string, string>): string {
   );
 }
 
+/**
+ * The boards end each screen with a review strip — "COVERAGE R09 · P01 …
+ * both personas" — that maps the screen to the requirement audit. It is a
+ * note for the design review, not part of the product, so public pages drop
+ * it. Matched by its label, so it works the same on every board.
+ */
+const COVERAGE_STRIP = /<div[^>]*>\s*<span[^>]*>COVERAGE<\/span>[\s\S]*?<\/div>/g;
+
 export default function Screen({
   id,
   links = {},
   className,
+  hideCoverage = false,
 }: {
   id: string;
   links?: Record<string, string>;
   className?: string;
+  /** Remove the board's COVERAGE review strip (public pages). */
+  hideCoverage?: boolean;
 }) {
   let html: string;
   try {
@@ -78,6 +89,8 @@ export default function Screen({
       </div>
     );
   }
+
+  if (hideCoverage) html = html.replace(COVERAGE_STRIP, "");
 
   return <div className={["sc-screen", className].filter(Boolean).join(" ")} dangerouslySetInnerHTML={{ __html: wire(html, links) }} />;
 }
