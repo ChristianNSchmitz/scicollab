@@ -6,9 +6,10 @@ const nextConfig: NextConfig = {
    * imported, so nothing in the build graph references them and the serverless
    * bundle would ship without them. Trace them in explicitly, or every mounted
    * screen 404s in production while working perfectly in dev.
+   * The demo data and code files (demo-files/) are read the same way.
    */
   outputFileTracingIncludes: {
-    "/**": ["./design/screens/**"],
+    "/**": ["./design/screens/**", "./demo-files/**"],
   },
 };
 

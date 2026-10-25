@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { canMessage, sendMessage, markRead } from "@/app/actions/messages";
 import { Page, LimitNotice, Panel, PanelHead, Empty, field, btnPrimary, btn, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
+import RichText from "@/components/RichText";
 
 export const dynamic = "force-dynamic";
 
@@ -84,7 +85,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
                       {!mine && <Avatar name={other.display_name} url={other.avatar_url} size={16} />}
                       {mine ? "You" : other.display_name} · {timeAgo(m.created_at)}
                     </div>
-                    <p style={{ font: "400 14px/1.65 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
+                    <RichText body={m.body} className="" style={{ font: "400 14px/1.65 var(--sans)" }} />
                     {card && (
                       <Link
                         href={`/methods/${card.id}`}

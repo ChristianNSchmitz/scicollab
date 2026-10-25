@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { authenticate, register, emailTaken, DEMO_PASSWORD } from "@/lib/demo/store";
+import { authenticate, register, emailTaken } from "@/lib/demo/store";
 import { DEMO_COOKIE } from "@/lib/supabase/server";
 import { isConfigured } from "@/lib/mode";
 
@@ -22,7 +22,10 @@ function guard() {
 export async function demoSignIn(email: string, password: string): Promise<Res> {
   guard();
   const id = authenticate(email, password);
-  if (!id) return { ok: false, error: `No demo account matches that. Try demo@scicollab.test / ${DEMO_PASSWORD}` };
+  if (!id) return {
+    ok: false,
+    error: "No demo account matches that email and password. The demo sign-ins are listed in the README (for example lena.hofbauer@scicollab.test / bouldering).",
+  };
   (await cookies()).set(DEMO_COOKIE, id, { httpOnly: true, sameSite: "lax", path: "/" });
   return { ok: true };
 }

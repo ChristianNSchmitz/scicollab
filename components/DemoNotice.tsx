@@ -1,3 +1,5 @@
+import { isConfigured } from "@/lib/mode";
+
 /**
  * Says plainly that the content is fabricated.
  *
@@ -8,7 +10,9 @@
  * noticing a marker on an individual record.
  */
 export default function DemoNotice() {
-  if (process.env.SCICOLLAB_HIDE_DEMO_NOTICE === "1") return null;
+  // The demo store shows invented people as active members, so there the
+  // notice is not optional: anyone shown the site must see it is a demo.
+  if (process.env.SCICOLLAB_HIDE_DEMO_NOTICE === "1" && isConfigured()) return null;
   return (
     <div
       role="note"

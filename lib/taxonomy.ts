@@ -59,6 +59,11 @@ export const ROOMS: Room[] = [
   { id: "stats-and-code",   name: "Stats & code",        blurb: "Analysis choices, pipelines, and code that has to be trusted.",       houses: ["bioinformatics", "medicine", "geophysics", "materials", "biology"] },
   { id: "grants-careers",   name: "Grants & careers",    blurb: "Funding, mentorship, and moving between groups.",                     houses: HOUSES.map((h) => h.id) },
   { id: "instruments",      name: "Instruments & kit",   blurb: "Calibration, drift, booking and what broke this week.",               houses: HOUSES.map((h) => h.id) },
+
+  // Community — every house. Where people arrive, and where off-topic goes so
+  // the technical rooms stay searchable.
+  { id: "introductions",    name: "Introductions",       blurb: "Say who you are, what you work on and what you could use help with.", houses: HOUSES.map((h) => h.id) },
+  { id: "common-room",      name: "Common room",         blurb: "Off-topic, kindly — weekends, hobbies, the rest of life.",           houses: HOUSES.map((h) => h.id) },
 ];
 
 // ── lookups ───────────────────────────────────────────────────────────────

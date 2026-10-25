@@ -11,6 +11,8 @@ const PUBLIC = [
   "/", "/login", "/signup", "/onboarding", "/api/cron",
   // Public information pages and the contact form (with its captcha).
   "/about", "/faq", "/terms", "/contact", "/api/captcha",
+  // The front page's live "most active" list: public items only (lib/showcase.ts).
+  "/api/showcase",
 ];
 if (process.env.NODE_ENV !== "production" || process.env.SCICOLLAB_OPEN_BOARDS === "1") {
   PUBLIC.push("/boards");

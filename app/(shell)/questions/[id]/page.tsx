@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { postAnswer, acceptAnswer } from "@/app/actions/qa";
 import { Page, LimitNotice, Panel, PanelHead, Empty, Tag, field, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
+import RichText from "@/components/RichText";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +44,7 @@ export default async function Question({ params, searchParams }: { params: Promi
           </div>
           {q.body && (
             <div style={{ padding: 14 }}>
-              <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{q.body}</p>
+              <RichText body={q.body} />
             </div>
           )}
           {card && (
@@ -77,7 +78,7 @@ export default async function Question({ params, searchParams }: { params: Promi
                 </div>
               )}
               <div style={{ padding: 14 }}>
-                <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{a.body}</p>
+                <RichText body={a.body} />
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12, paddingTop: 10, borderTop: "1px solid var(--rule)" }}>
                   <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={22} />
                   <span style={{ font: mono(11), color: "var(--mute)" }}>

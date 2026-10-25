@@ -36,17 +36,59 @@ npm run dev     # http://localhost:4400
 
 **No credentials needed.** With no Supabase project configured the app runs
 off an in-memory store seeded with example content, and sign-in, sign-up and
-every write work normally. Use `demo@scicollab.test` / `reproduce`, or create
+every write work normally. Sign in as one of the demo members below (for
+example `lena.hofbauer@scicollab.test` / `bouldering`), or create
 an account — the invite code is not required in this mode. Everything resets
 when the server restarts.
 
 To run against the real database instead, `cp .env.example .env.local` and
 fill in the values Janmejay sends you.
 
-`SCICOLLAB_SEED_PASSWORD` is the password given to the seeded demo accounts.
-It is deliberately not in the repo: this code is mirrored into a public
-repository, and a literal password here would let anyone sign in to the
-deployed site.
+### The demo community (12 invented members)
+
+The in-memory store holds one seeded world: a small community three months
+into its beta (26 July → 23 October 2026). The five researchers written for
+the demo, the people from the design boards and the moderation team, with
+introductions, questions and answers, method cards, a code question that one
+member answers wrongly and another fixes, side talk moved to its own room by
+the moderators, private chat threads, and projects with data and code — some
+files open in the browser, some code works and some is broken on purpose.
+
+**Every invented member's name ends in `.ex`**, so nobody mistakes them for
+a real person. Sign in as any of them:
+
+| Member | Sign-in | Password |
+|---|---|---|
+| Lena Hofbauer.ex — PhD student, Heidelberg | `lena.hofbauer@scicollab.test` | `bouldering` |
+| Mateo Ruiz Calderón.ex — postdoc, Lund | `mateo.ruiz@scicollab.test` | `goalkeeper` |
+| Ingrid Sørlie.ex — group leader, Lund | `ingrid.sorlie@scicollab.test` | `birkebeiner` |
+| Priya Raman.ex — industry, Leiden | `priya.raman@scicollab.test` | `marathon` |
+| Jonas Verbeke.ex — batteries, Leuven | `jonas.verbeke@scicollab.test` | `cyclocross` |
+| Alex Rivera.ex — postdoc, Zaragoza (has the example ORCID record) | `alex.rivera@scicollab.test` (or `demo@scicollab.test`) | `reproduce` |
+| Temi Okafor.ex — group leader, Dublin | `temi.okafor@scicollab.test` | `lipofection` |
+| Maja Lindqvist.ex — research engineer, Zaragoza | `maja.lindqvist@scicollab.test` | `cytometer` |
+| Sanjana Bhatt.ex — PhD student, Liège | `sanjana.bhatt@scicollab.test` | `transfer` |
+| Jamie Newcombe.ex — first-year PhD student | `jamie.newcombe@scicollab.test` | `firstcard` |
+| Camille Laurent.ex — research operations, Lyon | `camille.laurent@scicollab.test` | `pilot` |
+| SciCollab Moderation.ex ("Clara") | `moderation@scicollab.test` | `charter` |
+
+- Everything is invented: people, institutes, materials, numbers. The data
+  files in `demo-files/` start with a line saying they are simulated. With
+  the demo store the PREVIEW banner cannot be switched off: anyone shown the
+  site must be able to see it is a demonstration, not real users.
+- Dates move forward in whole weeks with the calendar, so the latest
+  activity always looks recent and weekdays stay weekdays.
+- In memory only: what you post while playing a role stays until the server
+  restarts. These passwords exist only in this local store; never reuse them.
+- The content is `lib/demo/personas/content.json`; the people, rooms,
+  projects and record around it are in `lib/demo/personas/index.ts`.
+- Not seeded yet (the private chats mention them; post them while playing
+  the roles): Lena's batch-variability result and her method cards, Mateo's
+  negative-result post, Priya's edge-effects post and antibody question,
+  Lena's reviewer question, Mateo's careers thread, Ingrid's call for a second
+  lab, Jonas's public QC log and his two cards.
+- `scripts/seed-demo.mjs` (the live database's demo accounts) is unchanged
+  and still uses the older board names.
 
 ### Database
 

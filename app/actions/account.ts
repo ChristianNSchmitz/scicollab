@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient, DEMO_COOKIE } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isConfigured } from "@/lib/mode";
-import { ME, forget } from "@/lib/demo/store";
+import { isSeededAccount, forget } from "@/lib/demo/store";
 
 /**
  * Deleting an account (GDPR art. 17). Every table that belongs to a person
@@ -21,8 +21,8 @@ export async function deleteAccount(form: FormData) {
   if (String(form.get("confirm") ?? "").trim().toUpperCase() !== "DELETE") redirect("/settings?error=confirm#account");
 
   if (!isConfigured()) {
-    // The shared demo persona has to stay for everyone else using the demo.
-    if (user.id === ME) redirect("/settings?error=demo#account");
+    // Seeded accounts have to stay for everyone else using the demo.
+    if (isSeededAccount(user.id)) redirect("/settings?error=demo#account");
     forget(user.id);
     (await cookies()).delete(DEMO_COOKIE);
     redirect("/?deleted=1");

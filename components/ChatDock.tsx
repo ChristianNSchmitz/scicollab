@@ -9,6 +9,7 @@ import {
 import { timeAgo } from "@/lib/format";
 import { mono as kitMono } from "@/components/ui";
 import Avatar from "@/components/Avatar";
+import RichText from "@/components/RichText";
 
 /**
  * Chat, docked bottom-right on every screen.
@@ -228,7 +229,7 @@ export default function ChatDock() {
             {messages.map((m) => (
               <div key={m.id} style={{ alignSelf: m.mine ? "flex-end" : "flex-start", maxWidth: "86%" }}>
                 <div style={{ border: `1px solid ${m.mine ? "var(--ink)" : "var(--rule)"}`, background: "var(--surface)", padding: "7px 9px" }}>
-                  <p style={{ font: "400 13px/1.55 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
+                  <RichText body={m.body} className="" style={{ font: "400 13px/1.55 var(--sans)" }} />
                   {m.card && (
                     <Link href={`/methods/${m.card.id}`} style={{ display: "block", marginTop: 6, borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "5px 7px", color: "var(--ink)" }}>
                       <span style={{ font: mono(9, 700), letterSpacing: ".08em", color: "var(--signal-ink)" }}>METHOD CARD</span>

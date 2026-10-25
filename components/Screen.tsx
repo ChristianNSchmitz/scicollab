@@ -71,12 +71,16 @@ export default function Screen({
   links = {},
   className,
   hideCoverage = false,
+  transform,
 }: {
   id: string;
   links?: Record<string, string>;
   className?: string;
   /** Remove the board's COVERAGE review strip (public pages). */
   hideCoverage?: boolean;
+  /** Last edit to the artboard's HTML before it is mounted, e.g. to swap an
+   *  example block for a slot that live content fills. Must return safe HTML. */
+  transform?: (html: string) => string;
 }) {
   let html: string;
   try {
@@ -91,6 +95,7 @@ export default function Screen({
   }
 
   if (hideCoverage) html = html.replace(COVERAGE_STRIP, "");
+  if (transform) html = transform(html);
 
   return <div className={["sc-screen", className].filter(Boolean).join(" ")} dangerouslySetInnerHTML={{ __html: wire(html, links) }} />;
 }

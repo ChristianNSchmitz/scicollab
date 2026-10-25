@@ -6,6 +6,33 @@ import { btn, btnPrimary, mono } from "@/components/ui";
 import SiteFooter from "@/components/SiteFooter";
 import { createClient } from "@/lib/supabase/server";
 import { isConfigured } from "@/lib/mode";
+import LiveShowcase from "@/components/LiveShowcase";
+import { loadShowcase, type ShowItem } from "@/lib/showcase";
+
+/* The board's hero shows one invented method card. The front page shows the
+   real, public, most active items instead: the example block is swapped for
+   a slot of the same place in the layout, and the carousel mounts there. If
+   the board changes and the block is not found, the board renders as drawn. */
+const SLOT = "sc-live-showcase";
+const EXAMPLE_START = '<div style="position:relative;border:1px solid var(--ink);background:var(--surface)">';
+const EXAMPLE_END = "the conditions under which the method fails.</div>\n        </div>";
+const ESC: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+const esc = (t: string) => t.replace(/[&<>"']/g, (c) => ESC[c]);
+
+function withSlot(first: ShowItem | undefined) {
+  return (html: string) => {
+    const a = html.indexOf(EXAMPLE_START);
+    const b = a < 0 ? -1 : html.indexOf(EXAMPLE_END, a);
+    if (a < 0 || b < 0) return html;
+    // Shown until the carousel takes over (and to anyone without JavaScript).
+    const placeholder = first
+      ? `<div style="border:1px solid var(--ink);background:var(--surface);padding:16px;min-height:420px">` +
+        `<div style="font:700 10px/1 var(--mono);letter-spacing:.12em;margin-bottom:14px">LIVE · MOST ACTIVE THIS MONTH</div>` +
+        `<a href="${esc(first.href)}" style="font:500 17px/1.3 var(--mono);color:var(--ink);text-decoration:none">${esc(first.title)}</a></div>`
+      : "";
+    return html.slice(0, a) + `<div id="${SLOT}">${placeholder}</div>` + html.slice(b + EXAMPLE_END.length);
+  };
+}
 
 /** Public front door — board B1 screen 1, rendered as designed with its own
  *  controls wired to the real routes. */
@@ -26,6 +53,8 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
     if (signedIn) redirect("/home");
   }
 
+  const items = await loadShowcase();
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--canvas)" }}>
       <DemoNotice />
@@ -34,12 +63,13 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
           Your account and everything that belonged to it have been deleted.
         </p>
       )}
-      <MobileLanding />
+      <MobileLanding items={items} />
       <div className="sc-land-board" style={{ padding: 24, overflowX: "auto" }}>
       <div style={{ width: 1440, margin: "0 auto" }}>
         <Screen
           id="b1-marketing-landing-page"
           hideCoverage
+          transform={withSlot(items[0])}
           links={{
             "Sign in": "/login",
             "Create account": "/signup",
@@ -51,6 +81,7 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
             "Docs": "/login",
           }}
         />
+        <LiveShowcase initial={items} mountId={SLOT} />
         <SiteFooter width={1440} />
         </div>
       </div>
@@ -61,7 +92,7 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
 /** The board is a fixed 1440px artboard, which a phone can only show a strip
  *  of. Below 760px the same message is set in the house kit instead, so the
  *  front door still reads and both ways in stay on screen. */
-function MobileLanding() {
+function MobileLanding({ items }: { items: ShowItem[] }) {
   const point = (t: string) => (
     <li style={{ display: "flex", gap: 8, font: "400 14px/1.55 var(--sans)" }}>
       <span style={{ color: "var(--signal-ink)" }}>→</span><span>{t}</span>
@@ -90,6 +121,7 @@ function MobileLanding() {
       <p style={{ font: mono(11), color: "var(--mute)", margin: "12px 0 28px" }}>
         Free for individual researchers · institutional pilots start at one lab
       </p>
+      <div style={{ margin: "0 0 28px" }}><LiveShowcase initial={items} /></div>
       <ul style={{ listStyle: "none", padding: "18px 0 0", margin: 0, borderTop: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: 10 }}>
         {point("Ask with the data attached, not a paraphrase of it")}
         {point("Find the prior failure before you fund the repeat")}

@@ -6,6 +6,7 @@ import { addEntry, depositDataset } from "@/app/actions/projects";
 import { Page, Panel, PanelHead, Empty, Tag, Visibility, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo, bytes } from "@/lib/format";
 import Avatar from "@/components/Avatar";
+import RichText from "@/components/RichText";
 
 export const dynamic = "force-dynamic";
 
@@ -117,7 +118,7 @@ export default async function Project({
                   <div style={{ font: mono(10.5), color: "var(--mute)", marginBottom: 7 }}>
                     {new Date(e.created_at).toISOString().slice(0, 16).replace("T", " ")} · signed · {timeAgo(e.created_at)}
                   </div>
-                  <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{e.body}</p>
+                  <RichText body={e.body} />
                 </div>
               ))}
             </Panel>
@@ -137,7 +138,11 @@ export default async function Project({
                       {bytes(d.size_bytes)} · {timeAgo(d.created_at)}
                     </span>
                   </div>
-                  <div style={{ font: mono(14, 500, 1.35) }}>{d.title}</div>
+                  <div style={{ font: mono(14, 500, 1.35) }}>
+                    {d.file_path ? (
+                      <Link href={`/projects/${p.id}/files/${d.id}`} style={{ color: "var(--ink)" }}>{d.title}</Link>
+                    ) : d.title}
+                  </div>
                   {d.summary && (
                     <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>{d.summary}</p>
                   )}
@@ -192,7 +197,11 @@ export default async function Project({
                   <Empty>No code in this project yet.</Empty>
                 ) : files!.map((f: any) => (
                   <div key={f.id} style={{ display: "flex", gap: 12, alignItems: "baseline", padding: "10px 14px", borderBottom: "1px solid var(--rule)" }}>
-                    <span style={{ font: mono(12.5, 500), minWidth: 0, flex: 1, wordBreak: "break-all" }}>{f.path}</span>
+                    <span style={{ font: mono(12.5, 500), minWidth: 0, flex: 1, wordBreak: "break-all" }}>
+                      {f.file_path ? (
+                        <Link href={`/projects/${p.id}/files/${f.id}`} style={{ color: "var(--ink)" }}>{f.path}</Link>
+                      ) : f.path}
+                    </span>
                     {f.language && <Tag>{f.language}</Tag>}
                     <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{bytes(f.size_bytes)}</span>
                     <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(f.updated_at)}</span>

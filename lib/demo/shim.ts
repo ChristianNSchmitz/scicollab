@@ -206,6 +206,9 @@ export function createDemoClient(userId: string | null) {
       async getUser() {
         if (!userId) return { data: { user: null }, error: null };
         const me = (tables.profiles as Row[]).find((p) => p.id === userId);
+        // A cookie from another demo set (or a deleted account) is not a
+        // session: the person behind it does not exist in this store.
+        if (!me) return { data: { user: null }, error: null };
         return {
           data: { user: { id: userId, email: me?.email ?? "demo@scicollab.test", user_metadata: {} } },
           error: null,

@@ -27,6 +27,8 @@ export type AttachmentView = {
   detail: string | null;
   unlocked: boolean;
   myRequest: "pending" | "granted" | "denied" | null;
+  /** Where to open it, when unlocked and the demo store holds its file. */
+  href: string | null;
 };
 
 
@@ -75,6 +77,8 @@ export async function attachmentsFor(postId: string): Promise<AttachmentView[]> 
       detail: unlocked ? (d?.summary || f?.last_change || "") : null,
       unlocked,
       myRequest: (req?.status as AttachmentView["myRequest"]) ?? null,
+      href: unlocked && (d?.file_path || f?.file_path) && r.project_id
+        ? `/projects/${r.project_id}/files/${d?.id ?? f?.id}` : null,
     };
   });
 }

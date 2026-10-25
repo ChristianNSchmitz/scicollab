@@ -1,0 +1,2617 @@
+{
+ "posts": [
+  {
+   "id": "pp-start",
+   "room_id": "introductions",
+   "author_id": "u-mod",
+   "intent": "general",
+   "title": "Start here: say hello — and the five rules of this place",
+   "body": "Welcome to the SciCollab beta. It's invite-only for now, so this room will stay small for a while. That's on purpose.\n\nPlease start by saying hello here, in a post of your own:\n- who you are and where you work\n- what you're working on at the moment\n- what you'd like help with (and, if you like, what you can help others with)\n\nA few lines is plenty. Nobody needs your CV.\n\nThe five rules of this place:\n1. Be kind and be specific. \"Which lot, which passage, which day did it change?\" helps more than \"works fine for us\".\n2. Credit people. If someone's reply, card or code helped you, say so by name and link it.\n3. Nothing patentable or confidential in public rooms. In Europe, posting an invention publicly can cost you the patent. When in doubt, keep it private and ask your tech-transfer office first.\n4. No patient or personal data, anywhere: not in public rooms, not in private projects, not in messages.\n5. Off-topic is fine, in moderation. We're people, not lab notebooks. If a side conversation grows, we may suggest a better home for it.\n\nQuestions about the site, something broken, or something that worries you: reply to this post or send a message to SciCollab Moderation. A person reads every message, usually the same working day.\n\n— Clara, for the moderation team",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-07-20 10:00"
+  },
+  {
+   "id": "pp-i-lena",
+   "room_id": "introductions",
+   "author_id": "u-lena",
+   "intent": "general",
+   "title": "Hello from Heidelberg — iPSC-derived dopaminergic neurons, and a lot of batches",
+   "body": "Hello everyone, I am Lena, PhD student at NIBR in Heidelberg. I make midbrain dopaminergic neurons from iPSCs with a floor-plate protocol, and since two years a big part of my work is the variabilty between batches. The TH+ yield was going up and down very much, and for a long time I had no explanation.\n\nWe understand it a bit better now, but the preprint is under review somewhere, so I don't want to say too much yet, sorry.\n\nWhat I would like to learn here is how other people handle batch-to-batch variability, in neurons but also in other systems. Until now I mostly tried to solve things alone, which was maybe not the best idea.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-07-27 23:20"
+  },
+  {
+   "id": "pp-i-ingrid",
+   "room_id": "introductions",
+   "author_id": "u-ingrid",
+   "intent": "general",
+   "title": "Ingrid Sørlie — Lund, lysosomes and Parkinson's cell models",
+   "body": "I lead a group at Öresund University Hospital in Lund and work one day a week as a neurologist in the movement-disorders clinic. The lab studies lysosomal function in iPSC-derived dopaminergic neurons from people with Parkinson's disease, mainly GBA1 carriers, and how the phenotype changes as the neurons mature.\n\nI can help with lysosomal and GCase assays, α-synuclein readouts, long maturation cultures (to day 100, and what tends to go wrong on the way), and the clinical side of a cell-model question. I am also glad to read an experimental design before the experiment rather than after it.\n\nWhat I care about: failed runs should be recorded with their likely cause and kept next to the successful ones. In my lab a failed differentiation goes in the same table as one that worked. It is the most useful table we have, and without it that knowledge leaves with whoever ran the experiments.\n\nI was asked to be one of the \"lab champions\" for this beta, which in practice means I will ask people to write things down.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-08-03 07:05"
+  },
+  {
+   "id": "pp-i-jonas",
+   "room_id": "introductions",
+   "author_id": "u-jonas",
+   "intent": "general",
+   "title": "Hi from Leuven — a battery person among biologists",
+   "body": "Hello all. Jonas, senior researcher at FIAM in Leuven, an applied-research institute. I work on solid-state batteries, mostly sulfide electrolytes. These react with moisture in the air (you notice it by the smell: H₂S), so a large part of my working life happens in a dry room or a glovebox.\n\nWhy a battery person on a platform full of biologists? I came across a post arguing that failed batches deserve a home, and recognised every line. Over about a year we had 23 batches out of spec: moisture, contamination, a slow drift nobody saw. What finally found the cause was boring: log everything, failures included, and look at them together. I suspect that looks exactly the same in a cell-culture lab.\n\nI can help with impedance spectroscopy (EIS) and fitting, XRD on air-sensitive samples, dry-room and glovebox practice, batch QC and logging, and the Python around all of that.\n\nOne caveat up front: my actual work is mostly for an industrial partner, and some of it sits close to patents. So sometimes I'll write \"I can't go into the process step, but…\". That's not me being difficult, it's me keeping my job.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-08-19 12:31"
+  },
+  {
+   "id": "pp-i-mateo",
+   "room_id": "introductions",
+   "author_id": "u-mateo",
+   "intent": "general",
+   "title": "Hello! Mateo, postdoc in Lund (mitochondria, Seahorse)",
+   "body": "Hello everyone! I am Mateo, from Galicia in Spain, and actually postdoc at Öresund University Hospital in Lund. I work on mitochondria in iPSC-derived dopaminergic neurons, mostly with the Seahorse XF: how much oxygen the neurons consume, how much glycolysis they do, and how this change during maturation and with Parkinson's mutations (now mainly GBA1).\n\nI came to science late, after eight years on a fishing boat, so my English also arrived a bit late haha.\n\nIf you have Seahorse problems (plating neurons, FCCP titration, normalisation, plates that look strange) I am happy to help. I did many mistakes already, so maybe I can save you some.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-08-25 21:30"
+  },
+  {
+   "id": "pp-i-priya",
+   "room_id": "introductions",
+   "author_id": "u-priya",
+   "intent": "general",
+   "title": "Priya Raman — in vitro pharmacology, Leiden (industry)",
+   "body": "Hi all. Priya, Associate Director of In Vitro Pharmacology at Halcyon Neurotherapeutics, a biotech in Leiden. My team runs iPSC-derived neuron assays for drug discovery: cell supply, high-content imaging, plate QC, and the call on whether an assay is fit-for-purpose before anyone screens on it.\n\nTo save everyone the awkward question, I checked with our legal team before joining:\n- I can share: assay methods, plate QC and robustness metrics, failure modes, failed runs, how we validate and transfer assays.\n- I can't share: compound structures or data, targets, anything about our pipeline.\n\nInterested in: assay robustness and reproducibility across labs; lot-to-lot variability (cells, reagents, fibrils); where academic and industry practice differ. Academia does some of this better than we do, and I'd like to know which parts.\n\nHappy to take questions on Z', plate drift, edge effects and assay transfer to CROs. I'm on here during office hours, so evening questions get a morning answer.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-09-09 14:40"
+  },
+  {
+   "id": "pp-instr-jonas",
+   "room_id": "instruments",
+   "author_id": "u-jonas",
+   "intent": "general",
+   "title": "Glovebox O₂ sensor: how often do you cross-check against a second sensor?",
+   "body": "A question for anyone who runs a glovebox, or any experiment that depends on a single gas sensor.\n\nOur argon gloveboxes for sulfide electrolytes each have an O₂ and an H₂O sensor, read out by the purifier controller. Most days the display says below 0.5 ppm for both. I've started to wonder what that number is worth:\n- the O₂ sensor is electrochemical, and our boxes see traces of H₂S from the sulfides, which I'd expect to age it faster than the manual assumes;\n- the \"calibration\" in the manual is essentially an air point and a zero, which says little about accuracy at 1 ppm.\n\nWhat we do now: borrow a portable analyser from another lab every few months, when someone remembers. That's a habit, not a procedure.\n\nSo, to anyone who has done this properly:\n1. How often do you cross-check against an independent sensor?\n2. What do you use as the reference: a second calibrated analyser, span gas, a chilled-mirror hygrometer for H₂O, the old light-bulb test?\n3. What drift did you actually see before you swapped or recalibrated?\n\nGloveboxes are the obvious case, but anaerobic chambers, hypoxia incubators, anything where one sensor is trusted with the whole experiment: I suspect the answers are similar, so all fields welcome.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-09-13 19:40"
+  },
+  {
+   "id": "pp-common-jonas",
+   "room_id": "common-room",
+   "author_id": "u-jonas",
+   "intent": "general",
+   "title": "Weekend thread: mud, goals and kilometres",
+   "body": "As suggested: one thread for whatever you did at the weekend that wasn't work.\n\nI'll start. Cyclocross season opened yesterday. Club race, 45 minutes, on what was mostly a field someone had kindly ploughed for us. On the ground twice in the first lap, finished in the bottom half, which for an opening race I'll take. The bike is clean again. I am mostly clean again.\n\nMateo already reported his 4–1. Who else? Goals, kilometres, a quiet Sunday: all count.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-10-05 20:40"
+  },
+  {
+   "id": "pp-common-lena",
+   "room_id": "common-room",
+   "author_id": "u-lena",
+   "intent": "general",
+   "title": "Anyone else still developing film at home?",
+   "body": "Saturday in the lab, the cells are fed and I have 40 minutes until the next step, so a question for the common room: does anybody else still develop film at home?\n\nI shoot black and white, mostly 400 film, and develop in the bathroom of my flat with a changing bag and one small tank. My flatmates accept it as long as the fixer is not next to the toothbrushes.\n\nLast week I finally developed two rolls from the summer and one was completely clear. The edge numbers were there, so the chemistry was fine, the film just never moved in the camera. I was more calm about it than about any failed differentiation, I am not sure what this says about me.\n\nIf someone scans their negatives: how do you deal with the dust? I have a second-hand scanner and the dust is making me crazy.",
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-10-17 16:20"
+  },
+  {
+   "id": "pp-stats-mateo",
+   "room_id": "stats-and-code",
+   "author_id": "u-mateo",
+   "intent": "data_question",
+   "title": "After normalising OCR to nuclei counts I lose two thirds of my wells",
+   "body": "Hello everyone,\n\nI have a problem with pandas and I think it is something stupid, but I don't see it.\n\nI have 6 Seahorse XFe96 plates from a GBA1 maturation series (day 35, 60 and 100, two plates each). From Wave I export the rates, one row per well and measurement (12 measurements). From the imager I export the Hoechst nuclei per well (we put Hoechst in port C together with rot/AA, it is in MC-1187). Then I merge both tables to have OCR per 1,000 nuclei. This is the part of normalise_ocr.py that does it (the whole script is attached):\n\n```python\nimport pandas as pd\n\nxf = pd.read_csv(\"data/xf_exports_6plates.csv\", comment=\"#\")\nnuclei = pd.read_csv(\"data/nuclei_counts_6plates.csv\", comment=\"#\")\n\ndf = pd.merge(xf, nuclei, left_on=[\"plate\", \"well\"], right_on=[\"plate\", \"Well\"])\nprint(len(xf), len(df))\nprint(df.groupby(\"plate\")[\"well\"].nunique())\n\n# background wells have no cells\ndf = df[df[\"group\"] != \"background\"].copy()\n# some wells have only 8 of 9 fields (autofocus), scale to 9\ndf[\"nuclei\"] = df[\"nuclei_count\"] * 9 / df[\"fields_imaged\"]\ndf[\"OCR_per_1000_nuclei\"] = df[\"OCR_pmol_min\"] / df[\"nuclei\"] * 1000\n```\n\nAnd this is what I get:\n\n```\n6912 1728\nplate\nP1    24\nP2    24\nP3    24\nP4    24\nP5    24\nP6    24\nName: well, dtype: int64\n```\n\nSo before the merge I have 6912 rows (576 wells × 12 measurements) and after the merge only 1728. On every plate only 24 wells survive, and always the same ones: A10, A11, A12, B10 … H12, so only the columns 10 to 12. No error, no warning. The nuclei file is complete, I checked it in Excel: 576 wells, all with a count.\n\nMy plate map has the three lines in alternate columns, so I lose a part of every group: the n goes from 15–16 wells per group and plate to 3–4, and every line comes only from one column. Like this I cannot use it for the thesis chapter it is for.\n\nFirst I thought the imager reads the plate rotated, but then I would have wrong wells, not missing wells, no? Can somebody explain me what I am doing wrong? The XF export is attached too (on request, it is unpublished data of our lab).\n\nThanks!\nMateo",
+   "method_card_id": "pc-1187",
+   "project_id": "pj-mateo",
+   "technique": "Seahorse XF",
+   "organism": "Human iPSC-derived neurons",
+   "deadline": null,
+   "offer": "",
+   "at": "2026-09-21 20:40"
+  },
+  {
+   "method_card_id": "c-0412",
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "p-1",
+   "author_id": "u-rivera",
+   "room_id": "negative-results",
+   "intent": "result",
+   "at": "2026-10-13 22:35",
+   "title": "Transfection efficiency falls off a cliff above passage 18, not a slope",
+   "body": "Posting the negative result rather than sitting on it. Three biological replicates, two reagent lots. The shape matters: it is not gradual, which is why people keep blaming the reagent."
+  },
+  {
+   "method_card_id": "c-0602",
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "p-2",
+   "author_id": "u-rivera",
+   "room_id": "cell-culture",
+   "intent": "data_question",
+   "at": "2026-10-22 13:40",
+   "title": "Is my CO₂ drift big enough to explain a 30% efficiency loss?",
+   "body": "Bay 3 under-reads by 0.6%. I can see it affecting things but I cannot tell if it accounts for the whole loss or only part of it. Card has the logging run."
+  },
+  {
+   "method_card_id": "c-0517",
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "p-3",
+   "author_id": "u-bhatt",
+   "room_id": "western-blot",
+   "intent": "data_question",
+   "at": "2026-10-20 18:20",
+   "title": "High-MW bands gone at 20% methanol — how far down can I go?",
+   "body": "Everything below 100 kDa is clean. Standard advice is to drop the methanol but nobody records what it costs at the low end."
+  },
+  {
+   "method_card_id": "c-0288",
+   "project_id": null,
+   "technique": "Lipofection",
+   "organism": "HEK293T",
+   "deadline": "2026-12-08",
+   "offer": "Co-authorship, reagents covered, analysis shared",
+   "id": "p-4",
+   "author_id": "u-okafor",
+   "room_id": "transfection",
+   "intent": "collab",
+   "at": "2026-10-16 11:30",
+   "title": "Looking for a second lab to run the passage comparison independently",
+   "body": "We have the protocol and the analysis; what we do not have is an independent replication. Happy to co-author, and happy for the null result if that is what comes out."
+  },
+  {
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "p-5",
+   "author_id": "u-lindqvist",
+   "room_id": "grants-careers",
+   "intent": "general",
+   "at": "2026-10-16 12:10",
+   "title": "Has anyone moved from a research-engineer post into a staff-scientist track?",
+   "body": "Asking for the practical version rather than the official one — what actually counted when you applied."
+  },
+  {
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "pp-i-okafor",
+   "author_id": "u-okafor",
+   "room_id": "introductions",
+   "intent": "general",
+   "at": "2026-08-24 10:20",
+   "title": "Temi Okafor — Dublin, transfection and the passage problem",
+   "body": "Hello. I run a molecular biology group at the Liffey Centre for Molecular Medicine in Dublin: lipofection, CRISPR, a lot of imaging.\n\nWhy I joined: we keep a lab book of every transfection we have ever run, including the bad weeks, and almost none of it is anywhere a person outside the group could find it. I would like to put our best-characterised method here as a card and see whether it holds in someone else's hands.\n\nIf you ever replicate one of our methods and it fails, please say so in public. I would rather have a failed replication on record than a quiet success."
+  },
+  {
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "pp-i-rivera",
+   "author_id": "u-rivera",
+   "room_id": "introductions",
+   "intent": "general",
+   "at": "2026-09-01 22:20",
+   "title": "Alex Rivera — Zaragoza, transfection, flow cytometry and stubborn incubators",
+   "body": "Hi all, Alex, postdoc at the Ebro Institute of Cell Biology in Zaragoza. Cell biology: transfection, flow cytometry, qPCR.\n\nMost of my last year went into one question — why our transfection efficiency drops off at higher passage — and I have more negative results than positive ones on it. I am going to put them here as cards, failures first.\n\nHappy to help with flow gating, qPCR standard curves, and checking whether your incubator is lying to you."
+  },
+  {
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "pp-i-bhatt",
+   "author_id": "u-bhatt",
+   "room_id": "introductions",
+   "intent": "general",
+   "at": "2026-09-23 18:45",
+   "title": "Sanjana — PhD student in Liège, western blots above 100 kDa",
+   "body": "Hello! I'm Sanjana, second-year PhD student in biochemistry at the Ardennes Institute of Biochemistry in Liège. I spend more time on transfer conditions than I would like to admit: my proteins are big and they do not like leaving the gel.\n\nI'm here to learn how other labs handle high-molecular-weight blots, and to stop repeating things someone already tried."
+  },
+  {
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "pp-i-lindqvist",
+   "author_id": "u-lindqvist",
+   "room_id": "introductions",
+   "intent": "general",
+   "at": "2026-09-28 09:30",
+   "title": "Maja — research engineer, flow cytometry and automation (Zaragoza)",
+   "body": "Hej. Maja, research engineer at the Ebro Institute of Cell Biology — same institute as Alex. I look after the flow cytometers and the liquid handler, and I write the scripts that turn instrument exports into something people can use.\n\nInterested in instrument QC, logging, and anything that makes a protocol survive the person who wrote it."
+  },
+  {
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "pp-i-laurent",
+   "author_id": "u-laurent",
+   "room_id": "introductions",
+   "intent": "general",
+   "at": "2026-10-05 10:20",
+   "title": "Camille Laurent — research operations, Lyon (not a bench scientist)",
+   "body": "Hello everyone. I lead research operations at the Institut Saône-Rhône des Sciences du Vivant in Lyon — onboarding, equipment, data policy, the things that sit around the science.\n\nI'm not here to post results. I'm here to understand how labs keep their methods when people move on, and whether a shared record like this one helps. If you have strong opinions about onboarding or lab knowledge that walked out of the door, I would like to hear them."
+  },
+  {
+   "method_card_id": null,
+   "project_id": null,
+   "technique": "",
+   "organism": "",
+   "deadline": null,
+   "offer": "",
+   "id": "pp-i-newcombe",
+   "author_id": "u-newcomer",
+   "room_id": "introductions",
+   "intent": "general",
+   "at": "2026-10-12 10:40",
+   "title": "First-year PhD student — not sure what to post yet",
+   "body": "Hi, I'm Jamie, I started my PhD two weeks ago (cell biology, Zaragoza). My supervisor said to look around here before asking the lab the same questions everyone asks in their first month, so here I am.\n\nI don't have results yet. I do have a lot of questions about incubators."
+  }
+ ],
+ "replies": [
+  {
+   "id": "r-A-001",
+   "post_id": "pp-i-lena",
+   "author_id": "u-mod",
+   "body": "Welcome, Lena, and thank you for posting. You're one of the first beta members, so you get to set the tone here, and it's a good one.\n\nBatch-to-batch variability is exactly what this place is for. Two pointers, only if useful:\n- A method card is a good home for \"what we changed and what happened\", including what didn't work. You can keep it private while the paper is under review and make it public whenever you're ready.\n- #reproducibility is where variability questions tend to land. Quiet for now, but not for long.\n\nGlad you're here.\n\n— Clara, for the moderation team",
+   "at": "2026-07-30 09:35"
+  },
+  {
+   "id": "r-A-002",
+   "post_id": "pp-i-lena",
+   "author_id": "u-ingrid",
+   "body": "Welcome, Lena. Batch-to-batch variability in floor-plate differentiations is common and rarely written up, so I am glad someone is starting.\n\nOne question, if you can answer it before the paper is out: when the yield dropped, was it the whole plate, or only some wells or regions? In our hands those two patterns usually have different causes.\n\nAnd most of us tried to solve it alone the first time. It is not a good method, but it is a common one.",
+   "at": "2026-08-04 06:50"
+  },
+  {
+   "id": "r-A-003",
+   "post_id": "pp-i-jonas",
+   "author_id": "u-ingrid",
+   "body": "Welcome, Jonas. I think you are right that failed batches look much the same everywhere.\n\nA question back, from the cell-culture side: in your pilot line, who decides that a batch has failed — a written specification, or a person on the day? With us it is too often a person, and then the failure is often not written down at all.",
+   "at": "2026-08-20 06:55"
+  },
+  {
+   "id": "r-A-004",
+   "post_id": "pp-i-jonas",
+   "author_id": "u-jonas",
+   "body": "A specification, written before the batch exists: phase purity by XRD, ionic conductivity inside a window, and an H₂S release test. Fail one and the batch is out, no discussion. It goes in the log with dew point, operator and exposure times.\n\nWhere a person still decides is the \"probable cause\" column. That's the column I trust least.",
+   "at": "2026-08-20 12:40"
+  },
+  {
+   "id": "r-A-005",
+   "post_id": "pp-i-lena",
+   "author_id": "u-lena",
+   "body": "Thank you both for the welcome, and sorry Ingrid for answering so late. It was always the whole plate, never only some wells, which fits with what we found I think.\n\nI have a question, sorry if it is a stupid one and maybe this is not the right place for it: I would like to put the raw data of my preprint here, the batch table and the cell counts and maybe later the images, but my institute is quite careful about where data is stored, as far as I understand it should stay in Europe, and I also read something about CC0 in the terms and I was not sure if this is also for the data in my own project, and because the paper is under review I really don't want to break anything before the reviews come back and I have to do the revision. Is it possible to put it here only for me first, or is it better to wait?",
+   "at": "2026-08-22 16:05"
+  },
+  {
+   "id": "r-A-006",
+   "post_id": "pp-i-jonas",
+   "author_id": "u-lena",
+   "body": "Welcome Jonas, I like very much the sentence that failed batches look the same everywhere, for me it took 14 batches before I understood anything. And the \"probable cause\" column, I know this column too well, in my notebook it says \"seeding density?\" for half a year.",
+   "at": "2026-08-22 16:20"
+  },
+  {
+   "id": "r-A-007",
+   "post_id": "pp-i-jonas",
+   "author_id": "u-jonas",
+   "body": "Fourteen is respectable. We needed 23 before anyone let me call it a pattern.\n\nIf you like, we could eventually compare how we each log them. I'd bet half the columns are the same, and the \"probable cause\" column is equally optimistic in both.",
+   "at": "2026-08-23 19:20"
+  },
+  {
+   "id": "r-A-008",
+   "post_id": "pp-i-lena",
+   "author_id": "u-mod",
+   "body": "Not a stupid question at all, Lena. It's exactly the one to ask before uploading anything, and the short answer is: yes, you can, on your terms.\n\n- It stays yours. Putting data in your project doesn't transfer ownership to us or to anyone else.\n- Visibility: private means only you; lab means you and the people you add to your project; public means everyone on SciCollab. You can deposit it as private now and switch later.\n- No patient or personal data, in any of the three, private included. For iPSC work that means nothing that could identify a donor.\n- Before anything goes public, check NIBR's data policy and what your journal allows while the paper is under review (some journals have embargo rules).\n- The CC0 default in the terms only applies to what you contribute to other people's public threads. It doesn't apply to your own project: there, you choose the licence.\n- Storage: SciCollab is a European company, and our rule is EU-only storage for project data. Before public launch, all project data moves to an EU-owned hosting provider. The beta isn't there yet, so if NIBR requires EU-only storage today, keep the dataset entry here private and leave the files in NIBR's repository, linked from the entry. That's fully supported, and you can upload later.\n\nThe details are on the Terms page (/terms). It's still marked draft, so if your data office reads it and something is unclear, please tell us. That's the feedback we need most right now.\n\n— Clara, for the moderation team",
+   "at": "2026-08-24 10:20"
+  },
+  {
+   "id": "r-A-009",
+   "post_id": "pp-i-lena",
+   "author_id": "u-lena",
+   "body": "Thank you very much Clara, this is much more clear now. I will ask our data office this week which parts I can upload, and until then everything stays private. The images stay at NIBR in any case, they are 412 GB and I don't think anybody wants them on a server here.",
+   "at": "2026-08-24 22:40"
+  },
+  {
+   "id": "r-A-010",
+   "post_id": "pp-i-mateo",
+   "author_id": "u-ingrid",
+   "body": "Welcome, Mateo. For transparency, since the same hospital is on both our profiles: Mateo is a postdoc in my group. So I will leave the compliments to others and ask a question instead, for the room: what is the most common mistake you see when people plate neurons for the Seahorse?",
+   "at": "2026-08-26 06:40"
+  },
+  {
+   "id": "r-A-011",
+   "post_id": "pp-i-mateo",
+   "author_id": "u-jonas",
+   "body": "Welcome. Honest question from outside the field: if I understand it right, the Seahorse measures oxygen in a very small volume just above the cells. How do you know the sensor itself isn't drifting during a run? Occupational deformation: I don't trust a sensor until I've seen it checked.",
+   "at": "2026-08-26 12:50"
+  },
+  {
+   "id": "r-A-012",
+   "post_id": "pp-i-mateo",
+   "author_id": "u-lena",
+   "body": "Welcome Mateo, I also make dopaminergic neurons (floor-plate protocol, in Heidelberg), but I never did Seahorse on them, only imaging and qPCR untill now. Maybe I will ask you some questions one day, if this is ok.",
+   "at": "2026-08-26 23:05"
+  },
+  {
+   "id": "r-A-013",
+   "post_id": "pp-i-mateo",
+   "author_id": "u-mateo",
+   "body": "Thank you Ingrid, Jonas and Lena for the welcome!\n\nIngrid: the most common mistake is uneven plating. The neurons go to the border of the well or they make clumps, and then the OCR depends on how many cells are under the sensor and not on the biology. Plate slowly in the centre, let the plate rest 30-60 min at room temperature before the incubator, and normalise to nuclei counts after the assay, not only to the number of cells you plated.\n\nJonas: good question. The cartridge is hydrated the night before, and the instrument calibrates every sensor at the start of the run. Then we keep background wells without cells on every plate, they show the drift from temperature or from the sensor, and the software subtract them. The sensors are very sensible to temperature, so we let everything equilibrate before. If the background wells move too much, I don't trust the plate.\n\nLena: of course, ask me when you want.",
+   "at": "2026-08-27 12:15"
+  },
+  {
+   "id": "r-A-014",
+   "post_id": "pp-i-priya",
+   "author_id": "u-ingrid",
+   "body": "Welcome, Priya. For the others: Priya and I worked together on a pS129 α-synuclein assay that was published last year, and her plate-QC habits changed how my lab runs plates. Your list of what you can and cannot share is a good model for anyone joining from industry.\n\nIf you ever write up what breaks first when an assay moves to a CRO, I would read it.",
+   "at": "2026-09-10 06:35"
+  },
+  {
+   "id": "r-A-015",
+   "post_id": "pp-i-priya",
+   "author_id": "u-mateo",
+   "body": "Welcome Priya! Thank you also for your comment on my high glucose post this morning. I did not know galactose screens are so common in industry, I learned it the slow way.\n\nIf you ever need help with Seahorse on neurons I am here (no compound data needed).",
+   "at": "2026-09-10 12:20"
+  },
+  {
+   "id": "r-A-016",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-mateo",
+   "body": "Not a glovebox, but a similar problem with the CO2 sensor of our incubators. The display said 5.0 % for months, but the medium was getting more purple every week (higher pH), so the real CO2 was lower. We borrowed a handheld analyser from the core facility and it measured 4.3 %. Since then we check every incubator once per month with the handheld one, and after big experiment days, when the door is open many times, we don't trust the display for one hour.\n\nThe colour of the medium was our light-bulb test. Not precise, but it showed that something was wrong before the number did.",
+   "at": "2026-09-14 12:20"
+  },
+  {
+   "id": "r-A-017",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-priya",
+   "body": "Gloveboxes aren't my world, but the cadence question isn't field-specific. What works for us:\n- Every environmental sensor (incubators, cold rooms, freezers, the imager's environmental chamber) logs continuously to one monitoring system, not only to its own display.\n- Monthly cross-check against an independent, calibrated reference probe. The reference itself goes out for calibration once a year, with a certificate.\n- Acceptance limits defined per sensor in advance, so it's a go/no-go, not a judgement call on the day. Outside the limit: recalibrate or replace, logged as a deviation with the date.\n- The real value is the trend. Slow drift shows up in the log weeks before it fails a spot check.\n\nDrift we've actually seen: CO2 sensors, a few tenths of a percent over a few months (Mateo's 0.7 % is on the high side, not shocking). And one fridge probe that read 2 °C low for who knows how long, caught only because the reference disagreed.\n\nI can't share our SOPs as documents, but happy to describe the structure in more detail.",
+   "at": "2026-09-15 10:15"
+  },
+  {
+   "id": "r-A-018",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-lena",
+   "body": "Sorry, this is not about gloveboxes, but maybe it is useful anyway. Two years ago one of our incubators failed over a weekend and I lost a running differentation, and the worst part was that the display still showed 37.0 when we came in on Monday. Since then we have a small independent temperature logger in every incubator, a cheap one with its own battery and not connected to the incubator at all, so if the incubator is wrong the logger is not wrong in the same way. We read them every Monday. It is not a real reference like Priya describes, but it would have saved me one differentiation.",
+   "at": "2026-09-15 23:10"
+  },
+  {
+   "id": "r-A-019",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-jonas",
+   "body": "Update, for whoever finds this thread later. Thanks to Mateo, Priya and Lena: we took Priya's monthly cadence and Lena's \"the display still showed 37.0\" more or less literally.\n\nFirst proper cross-check (calibrated portable analyser, sampling line into the box, 30 minutes to settle):\n- O₂: box sensor 0.4 ppm, reference 2.1 ppm. Sensor swapped this week; the new one agrees with the reference within 0.2 ppm.\n- H₂O: within 0.3 ppm of the reference. No action.\n- The old O₂ sensor was a bit over three years old, in a box that has seen a lot of sulfide work. H₂S ageing is my main suspect, but I can't prove it.\n- I went back through the batch QC log: nothing out of spec lines up with the drift period. So we were lucky, not good.\n\nNew rule: monthly cross-check, logged next to the batch QC, action limit 1 ppm difference. And a light bulb in the drawer for the weeks the analyser is away.\n\nUnrelated: first cross race of the season today. Mud 1 – Jonas 0.",
+   "at": "2026-10-04 20:05"
+  },
+  {
+   "id": "r-A-020",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-mateo",
+   "body": "Very useful numbers, 0.4 against 2.1 is a big difference.\nHere the football season is almost finished, and yesterday we lost 4-1. I am the goalkeeper, so it's my fault haha",
+   "at": "2026-10-05 12:10"
+  },
+  {
+   "id": "r-A-021",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-jonas",
+   "body": "Four goals is never only the keeper. In cyclocross there's no defence to blame, just the mud, and it doesn't take criticism.",
+   "at": "2026-10-05 12:35"
+  },
+  {
+   "id": "r-A-022",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-lena",
+   "body": "No match for me this weekend, only cells, and the score was cells 1 - Lena 0.",
+   "at": "2026-10-05 12:50"
+  },
+  {
+   "id": "r-A-023",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-mod",
+   "body": "Jonas, thank you for coming back with real numbers. A 0.4 vs 2.1 ppm gap, a swapped sensor and a new rule is exactly the kind of update that makes a thread worth finding.\n\nWe love the energy in the last few replies too. The thing is, this is where people will land when they search for glovebox or O₂ sensor advice, so we'd like to keep this thread about sensors.\n\nSo, as of today, there's a new room: #common-room. Off-topic, kindly: races, matches, weekend scores of every kind. Please carry on there, and the first thread is up for grabs.\n\n— Clara, for the moderation team",
+   "at": "2026-10-05 14:20"
+  },
+  {
+   "id": "r-A-024",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-jonas",
+   "body": "Fair point — moving the mud.",
+   "at": "2026-10-05 20:30"
+  },
+  {
+   "id": "r-A-025",
+   "post_id": "pp-common-jonas",
+   "author_id": "u-mateo",
+   "body": "Thank you for open the room. For the record, one of the four goals was a penalty, so only three are my fault. Next Sunday is the last match of the season, after that I go into hibernation like everybody in Sweden.",
+   "at": "2026-10-05 20:55"
+  },
+  {
+   "id": "r-A-026",
+   "post_id": "pp-common-jonas",
+   "author_id": "u-ingrid",
+   "body": "Nothing to report yet. The ski season starts in my head in October; the snow arrives later.",
+   "at": "2026-10-06 06:30"
+  },
+  {
+   "id": "r-A-027",
+   "post_id": "pp-instr-jonas",
+   "author_id": "u-priya",
+   "body": "Back to sensors: thanks for posting the numbers, Jonas. Reading low is the worst direction to drift in, because nothing alarms and everything looks fine. One thing we added after a similar swap: re-check the new sensor against the reference after about a month, not only at install. We had one that agreed on day one and was out of limits by week four.",
+   "at": "2026-10-06 09:20"
+  },
+  {
+   "id": "r-A-028",
+   "post_id": "pp-common-jonas",
+   "author_id": "u-priya",
+   "body": "Kilometres, then: I ran a marathon the Sunday before last. Legs are fine now, though the office stairs on day two were humbling. Back to easy runs before work.\n\nJonas, respect for doing any of that voluntarily in mud.",
+   "at": "2026-10-06 13:05"
+  },
+  {
+   "id": "r-A-029",
+   "post_id": "pp-common-jonas",
+   "author_id": "u-lena",
+   "body": "No sport from me, I was in the lab the whole weekend. But Jonas, does somebody take photos at these races? I shoot black and white film and I think mud must look really good in b/w, much more photogenic than my cells :)",
+   "at": "2026-10-06 23:15"
+  },
+  {
+   "id": "r-A-030",
+   "post_id": "pp-common-lena",
+   "author_id": "u-jonas",
+   "body": "Not me, I'm afraid. But \"the edge numbers were there, so the chemistry was fine\" is the cleanest root-cause analysis I've read on this site all month.\n\nOn the dust: a good part of it is static, and static gets worse when the air is dry. Same fight we have with powders in the dry room. Anti-static brush, cotton gloves, and blow the strip off just before it goes into the holder. If it gets worse in winter, eventually a humidifier in the room while you scan.",
+   "at": "2026-10-18 19:10"
+  },
+  {
+   "id": "r-A-031",
+   "post_id": "pp-common-lena",
+   "author_id": "u-mateo",
+   "body": "I don't develop, but at home in Galicia there is a box of old negatives that nobody ever scanned. Now I know who to ask haha. The story of the clear roll is very sad and very calm at the same time, I like it.",
+   "at": "2026-10-19 21:00"
+  },
+  {
+   "id": "r-C-001",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-lena",
+   "at": "2026-09-22 23:10",
+   "body": "Hi Mateo, sorry if this is not helpful, I am not really a code person and I only joined this room tonight becuase of your post, but I had something similar once with a plate reader export and I think I know what happens. pd.merge is an inner merge by default, which means pandas only keeps the rows that are in both tables, so if a well is missing or different in one of the files it just disappears, without any warning. Two things you could try:\n\n1) use how=\"outer\", then you don't lose anything, and afterwards you drop the incomplete rows with dropna(), so only the complete wells stay:\n\n```python\ndf = pd.merge(xf, nuclei, left_on=[\"plate\", \"well\"], right_on=[\"plate\", \"Well\"], how=\"outer\")\ndf = df.dropna(subset=[\"OCR_pmol_min\", \"nuclei_count\"])\n```\n\n2) or a trick an other student at our institute showed me: because both files are the same 96-well plates, you can sort both tables by plate and well and put the counts next to the OCR by position, then you don't depend on the well names at all. You have 12 measurements per well, so every count has to be repeated 12 times:\n\n```python\nxf = xf.sort_values([\"plate\", \"well\", \"measurement\"]).reset_index(drop=True)\nnuc = nuclei.sort_values([\"plate\", \"Well\"]).reset_index(drop=True)\nxf[\"nuclei_count\"] = nuc[\"nuclei_count\"].repeat(12).to_numpy()\nxf[\"OCR_per_1000_nuclei\"] = xf[\"OCR_pmol_min\"] / xf[\"nuclei_count\"] * 1000\n```\n\nThe second one should give you all 576 wells back. I hope one of them helps, and sorry for the long answer :)"
+  },
+  {
+   "id": "r-C-002",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-mateo",
+   "at": "2026-09-23 12:25",
+   "body": "Thank you Lena for the fast answer! I tried both in my lunch break.\n\n1) With how=\"outer\" I get NaN in nuclei_count for 432 wells (72 on every plate), and also 432 new rows that have a nuclei count but no OCR and no group. After dropna() I am back to 144 wells, the same as before.\n\n2) The sorting gives a number in every row: no NaN, all 576 wells. But some things are strange. A04 and H04 get the count of the background wells A12 and H12, so they are inf, or 56,250 on P2 where A12 has 1 object (normal is around 1.7). And when I check by hand, A02 has the count of A10, A03 the count of A11, A05 the count of A2 … only column 1 has its own count. Also the CV of basal OCR between replicate wells is around 20 %, and without normalising it was 14 %. Normalising should make it smaller, not bigger.\n\nSo I think 2) is wrong, and 1) is the same problem as before. Now I am more lost than before haha"
+  },
+  {
+   "id": "r-C-003",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-jonas",
+   "at": "2026-09-23 20:55",
+   "body": "Mateo, Lena: I think I see it. A small correction to the title first: you lose three quarters, not two thirds. 24 of 96 wells per plate, and 24 is exactly 3 columns × 8 rows. That number is the clue.\n\nYour Seahorse export writes the wells as \"A01\", \"A02\" … \"H12\". Your imager writes \"A1\", \"A2\" … \"H12\". For pandas \"A01\" and \"A1\" are two different keys. The only wells that are spelled the same in both files are the two-digit columns, A10 to H12. An inner merge keeps those 144 and drops the other 432 without a word.\n\nLena's outer merge was actually the right first step: it is what made the NaNs visible. Look at the rows it adds. The 432 without OCR all have Well = \"A1\", \"A2\" …, and the 432 without a count have well = \"A01\", \"A02\" … Same wells, two spellings. Only the dropna() afterwards takes you back to the 144.\n\nThe sorting trick is the dangerous one, and that is not Lena's fault, it is how text sorting works. Sorted as text, the imager wells go A1, A10, A11, A12, A2, A3 … and the Seahorse wells go A01, A02, A03 … So position 2 is A02 in one table and A10 in the other, and the concatenation glues them together without asking. Only column 1 lines up, which is exactly what you found. No error, no NaN, plausible numbers: the worst kind of wrong. Your CV going up from 14 to 20 % was the only alarm, and only because you know what a normal CV looks like. A merge on a key either matches or tells you it didn't; a position never complains.\n\nThe fix: bring both IDs to one form, then let pandas check the result for you.\n\n```python\nimport re\n\ndef well_id(w):\n    \"\"\"'A1', 'a01', ' A01' -> 'A01'. Anything else is an error, not a guess.\"\"\"\n    m = re.fullmatch(r\"\\s*([A-Ha-h])\\s*0*([1-9]|1[0-2])\\s*\", str(w))\n    if m is None:\n        raise ValueError(f\"unexpected well id: {w!r}\")\n    return f\"{m.group(1).upper()}{int(m.group(2)):02d}\"\n\nxf[\"well\"] = xf[\"well\"].map(well_id)          # no-op today, but both go through the same door\nnuclei[\"well\"] = nuclei[\"Well\"].map(well_id)\n\n# one row per well on each side: every well must match exactly once\nwells = xf[[\"plate\", \"well\"]].drop_duplicates()\ncheck = wells.merge(nuclei[[\"plate\", \"well\", \"nuclei_count\", \"fields_imaged\"]],\n                    on=[\"plate\", \"well\"], how=\"outer\",\n                    validate=\"one_to_one\", indicator=True)\nunmatched = check[check[\"_merge\"] != \"both\"]\nassert unmatched.empty, f\"{len(unmatched)} well IDs found on one side only:\\n{unmatched}\"\n\ndf = xf.merge(check.drop(columns=\"_merge\"), on=[\"plate\", \"well\"], validate=\"many_to_one\")\n```\n\nvalidate= makes pandas raise if a well appears twice where it should appear once; indicator=True tells you for every well whether it was found left, right or in both. With your actual files this gives 576 of 576. And the next export that writes wells differently stops the script instead of quietly cutting your n.\n\n(Batteries have the same problem with cell IDs from two different cyclers. I have made this mistake myself, more than once.)"
+  },
+  {
+   "id": "r-C-004",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-lena",
+   "at": "2026-09-23 23:20",
+   "body": "Oh no, I am really sorry Mateo, my second suggestion was bad, I did not think about how the sorting works with the names and it could have given you numbers that look correct but are wrong, which is much worse than missing wells. Please don't use my sorting code for anything! Thank you Jonas for explaining it so clearly, I learned something tonight, and I think I have to check some of my own scripts now."
+  },
+  {
+   "id": "r-C-005",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-mateo",
+   "at": "2026-09-24 12:10",
+   "body": "It works!! 576/576 wells, 96/96 on every plate, and the assert says nothing :) The n per group is 15–16 again and the CV of basal OCR is ~7 %. Day 100 goes in the same direction as with the few wells, but now every line comes from four columns and not from one, so I can trust it.\n\nThank you Jonas, now I understand the why and not only the fix, so I will not do it again. And thank you Lena, without your outer merge I would not have looked at the NaN rows at all. I will add \"check that every well matched\" also in MC-1187, because many people export from Wave and from an imager and they can have the same problem."
+  },
+  {
+   "id": "r-C-006",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-jonas",
+   "at": "2026-09-24 12:40",
+   "body": "Good. Keep the assert, also on the days it is annoying: the day it fires, it saves you a week. If you want, I can eventually put it in your project as a proper commit, so the fix does not only live in a forum thread."
+  },
+  {
+   "id": "r-C-007",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-lena",
+   "at": "2026-09-24 22:30",
+   "body": "Thank you both, and Mateo I am happy it works now. I think the \"something similar\" I mentioned was exactly this: last year I had a plate reader export for a small viability test, and after the merge with my plate map most of the wells were gone, I never understood why and in the end I typed the values by hand. Tonight I looked again and yes, the plate reader writes A1 and my plate map A01 :) So now I finally know, since one year I was wondering."
+  },
+  {
+   "id": "r-1",
+   "post_id": "p-2",
+   "author_id": "u-okafor",
+   "at": "2026-10-22 15:10",
+   "body": "0.6% low on CO₂ shifts the medium pH by roughly 0.05. That is real, but on its own it rarely costs 30% efficiency. I would log pH directly for one run before blaming the incubator for all of it."
+  },
+  {
+   "id": "r-2",
+   "post_id": "p-2",
+   "author_id": "u-lindqvist",
+   "at": "2026-10-23 09:40",
+   "body": "We saw the same drift on a sister unit. Recalibrating the sensor moved efficiency about 8 points, not more."
+  },
+  {
+   "id": "r-3",
+   "post_id": "p-3",
+   "author_id": "u-rivera",
+   "at": "2026-10-21 13:40",
+   "body": "We went to 10% and lost about a third of the signal below 30 kDa. Recorded on the card thread."
+  },
+  {
+   "id": "r-M-001",
+   "post_id": "pp-i-okafor",
+   "author_id": "u-ingrid",
+   "at": "2026-08-25 06:50",
+   "body": "Welcome, Temi. Do you record the passage number on every run in that lab book? We started doing it for our iPSC lines and it changed what we thought was noise."
+  },
+  {
+   "id": "r-M-002",
+   "post_id": "pp-i-okafor",
+   "author_id": "u-okafor",
+   "at": "2026-08-25 10:05",
+   "body": "Every run since 2021, yes — and it is exactly where our strangest results came from. I will put it on the card."
+  },
+  {
+   "id": "r-M-003",
+   "post_id": "pp-i-rivera",
+   "author_id": "u-jonas",
+   "at": "2026-09-02 12:40",
+   "body": "Failures first: good order. Welcome. If the incubator turns out to be the culprit, I want to read that card."
+  },
+  {
+   "id": "r-M-004",
+   "post_id": "pp-i-bhatt",
+   "author_id": "u-lena",
+   "at": "2026-09-23 23:15",
+   "body": "Welcome Sanjana, an other PhD student :) My proteins are small but my cells are difficult, so I understand the feeling. #reproducibility is a good room to start."
+  },
+  {
+   "id": "r-M-005",
+   "post_id": "pp-stats-mateo",
+   "author_id": "u-rivera",
+   "at": "2026-09-24 13:40",
+   "body": "Same trap in our flow exports: the cytometer writes A1, our plate map A01. We found it the slow way. I'm copying Jonas's check (validate + indicator + assert) into our gating script today. Thanks for posting the whole thing, Mateo."
+  },
+  {
+   "id": "r-M-006",
+   "post_id": "pp-i-laurent",
+   "author_id": "u-ingrid",
+   "at": "2026-10-06 06:45",
+   "body": "Welcome, Camille. Knowledge leaving with people is the reason my lab is here. Send me a message if it would help to hear how we use it day to day."
+  },
+  {
+   "id": "r-M-007",
+   "post_id": "pp-i-newcombe",
+   "author_id": "u-rivera",
+   "at": "2026-10-12 13:40",
+   "body": "Welcome Jamie! Incubator questions are the right questions. Ask them in #cell-culture so the answers stay findable — and find me at the cytometer on Thursday."
+  }
+ ],
+ "questions": [
+  {
+   "id": "q-2291",
+   "author_id": "u-rivera",
+   "title": "Transfection efficiency collapses above passage 18 — is this receptor loss or something I am doing?",
+   "body": "Three biological replicates, two reagent lots, fresh medium each time. MC-0288 holds perfectly below p12 and falls apart above p18. Reagent lot is not the variable — S. Bhatt ran TL3-2251 at p10 and got normal numbers.\n\nIs this a known receptor-density effect, or am I missing a step?",
+   "tags": [
+    "transfection",
+    "HEK293T",
+    "passage number"
+   ],
+   "method_card_id": "c-0412",
+   "views": 64,
+   "at": "2026-10-14 13:50"
+  },
+  {
+   "id": "q-2304",
+   "author_id": "u-bhatt",
+   "title": "High-MW transfer: how far down can methanol go before the low-MW bands suffer?",
+   "body": "Following MC-0517. Dropping to 10% methanol is the standard advice but I cannot find anyone who recorded what it costs below 50 kDa.",
+   "tags": [
+    "western blot",
+    "transfer"
+   ],
+   "method_card_id": "c-0517",
+   "views": 23,
+   "at": "2026-10-21 21:15"
+  },
+  {
+   "id": "q-2350",
+   "author_id": "u-newcomer",
+   "title": "Is an independent CO₂ meter worth it for a single incubator?",
+   "body": "Following MC-0602. We only have one incubator, so there is nothing to compare it against.",
+   "tags": [
+    "equipment",
+    "quality control"
+   ],
+   "method_card_id": "c-0602",
+   "views": 17,
+   "at": "2026-10-20 11:05"
+  },
+  {
+   "id": "q-2361",
+   "author_id": "u-lindqvist",
+   "title": "qPCR efficiency above 105% — inhibition or pipetting?",
+   "body": "Two of our primer pairs read 108% on the standard curve.",
+   "tags": [
+    "qPCR"
+   ],
+   "method_card_id": null,
+   "views": 9,
+   "at": "2026-10-22 10:30"
+  }
+ ],
+ "answers": [
+  {
+   "id": "a-1",
+   "question_id": "q-2291",
+   "author_id": "u-okafor",
+   "accepted": true,
+   "votes": 6,
+   "at": "2026-10-15 10:20",
+   "body": "Receptor loss, and it is cooperative — which is why it looks like a cliff rather than a slope. We characterised it on MC-0288 and it is not recoverable by reagent change.\n\nTwo things worth logging before you conclude anything: CO₂ drift below 4.5% produces almost exactly the same curve, and so does carrying serum-free medium through incubation. Rule both out first."
+  },
+  {
+   "id": "a-r3",
+   "question_id": "q-2291",
+   "author_id": "u-rivera",
+   "accepted": false,
+   "votes": 2,
+   "at": "2026-10-16 13:55",
+   "body": "Logged CO₂ for 72 h: bay 3 under-reads by 0.6%, which does not explain a cliff on its own."
+  },
+  {
+   "id": "a-2",
+   "question_id": "q-2291",
+   "author_id": "u-lindqvist",
+   "accepted": false,
+   "votes": 3,
+   "at": "2026-10-16 15:40",
+   "body": "Adding the CO₂ drift case to the card cost us two months of misattribution, so I would check the incubator before the cells. Your MC-0602 is exactly the right shape for that."
+  },
+  {
+   "id": "a-r2",
+   "question_id": "q-2350",
+   "author_id": "u-rivera",
+   "accepted": false,
+   "votes": 1,
+   "at": "2026-10-21 08:50",
+   "body": "Yes — the incubator's own sensor drifts with it. A meter is cheaper than one lost week."
+  },
+  {
+   "id": "a-r1",
+   "question_id": "q-2304",
+   "author_id": "u-rivera",
+   "accepted": true,
+   "votes": 4,
+   "at": "2026-10-22 13:45",
+   "body": "We went to 10% methanol and lost about a third of the signal below 30 kDa. Recorded on MC-0517's thread."
+  }
+ ],
+ "messages": [
+  {
+   "id": "m-E-001",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "Mateo, I have sent you an invitation to SciCollab, the beta I mentioned on Friday. People share methods and failed runs there before they publish. Your Seahorse protocol would be useful to more labs than ours. Have a look when the plates allow; no obligation.",
+   "method_card_id": null,
+   "at": "2026-08-24 06:55",
+   "read": true
+  },
+  {
+   "id": "m-E-002",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "Thank you Ingrid! I made the account now in the lunch. Tonight after the plates I write my presentation.",
+   "method_card_id": null,
+   "at": "2026-08-25 12:24",
+   "read": true
+  },
+  {
+   "id": "m-E-003",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "One suggestion. The four months of high-glucose runs in your PhD, before galactose: would you post them in #negative-results? It is worth it. Someone is losing the same months right now.",
+   "method_card_id": null,
+   "at": "2026-08-26 06:45",
+   "read": true
+  },
+  {
+   "id": "m-E-004",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "I was thinking about it today. But it is old, from 2022, and the solution is already in paper A. Is not a bit strange to post it now like a negative result? Maybe nobody needs it anymore.",
+   "method_card_id": null,
+   "at": "2026-08-26 21:50",
+   "read": true
+  },
+  {
+   "id": "m-E-005",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "Not strange. Paper A has the answer. It does not have the four months before it: the flat traces, the controls you added, what you checked first and why it did not help. What would you have wanted to read in December 2021?",
+   "method_card_id": null,
+   "at": "2026-08-27 06:40",
+   "read": true
+  },
+  {
+   "id": "m-E-006",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "Ok, it is posted, with the card. It took me all the evening haha. You were right, and writing the four months was good for me also.",
+   "method_card_id": "pc-1188",
+   "at": "2026-09-03 21:45",
+   "read": true
+  },
+  {
+   "id": "m-E-007",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "I have added you to the lab project as a contributor. Would you link your Seahorse card there as the lab's reference method, with yourself as owner and a named backup? Same rule for every method in the lab.",
+   "method_card_id": null,
+   "at": "2026-09-07 06:45",
+   "read": true
+  },
+  {
+   "id": "m-E-008",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "Done, I linked it and put Elin as backup. She realizes the assay better than me now haha",
+   "method_card_id": "pc-1187",
+   "at": "2026-09-07 12:20",
+   "read": true
+  },
+  {
+   "id": "m-E-009",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "I read the merge thread. It was good that you asked publicly. The A1/A01 problem is probably in other scripts in this lab too, and now there is an answer we can point to. Would you show the check at Monday's lab meeting? Five minutes is enough.",
+   "method_card_id": null,
+   "at": "2026-09-25 06:40",
+   "read": true
+  },
+  {
+   "id": "m-E-010",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "Yes, I can show it on Monday. Honestly I was a bit ashamed to ask in public, at the end it was such a small thing. But Jonas explained me very well, also why the other way was dangerous, and he was kind with Lena. I will show his version and say it is his.",
+   "method_card_id": null,
+   "at": "2026-09-25 12:25",
+   "read": true
+  },
+  {
+   "id": "m-E-011",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "I have made a lab fork of Lena's titration card for our runs, with the day-11 readout. It names you as the one who proposed testing her protocol in Lund, because you did. Could you log your reproduction on her card once your numbers are in?",
+   "method_card_id": "pc-1226",
+   "at": "2026-10-12 07:35",
+   "read": true
+  },
+  {
+   "id": "m-E-012",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "Thank you Ingrid, it was not necessary. The last counts are tomorow morning, then I log the reproduction. If it holds I tell Lena first, she will be happy.",
+   "method_card_id": null,
+   "at": "2026-10-12 12:45",
+   "read": true
+  },
+  {
+   "id": "m-E-013",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "About November. Would you like the lab meeting on Monday 26 October for a full practice talk? Oskar and I could do a chalk-talk hour with you on Thursday 29 October at 14:00. If other dates suit you better, say so; it is your interview.",
+   "method_card_id": null,
+   "at": "2026-10-19 06:35",
+   "read": true
+  },
+  {
+   "id": "m-E-014",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "Yes, both, thank you! To be honest I am more afraid of the questions than of the talk. The first rejection said \"limited evidence of independence\" and i still dont know how to answer this in a room, in English, fast. And one thing: can I take two days after the interview to visit my parents in Burela?",
+   "method_card_id": null,
+   "at": "2026-10-19 20:20",
+   "read": true
+  },
+  {
+   "id": "m-E-015",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-mateo",
+   "body": "Of course, take the days. I will ask Hanna to cover the feeding.\n\nThen we spend most of Thursday on questions. Write down the three you fear most and bring them. On independence: the galactose medium was your idea, the late chaperone arm was your idea, and the Seahorse method in this lab is yours. Say it plainly. Short, true sentences work in any language.",
+   "method_card_id": null,
+   "at": "2026-10-20 06:30",
+   "read": true
+  },
+  {
+   "id": "m-E-016",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-ingrid",
+   "body": "I wrote the three questions already. The worst one: \"what will you do that you cannot do in Ingrid's lab?\" haha. Monday the talk, Thursday the questions. And thank you for the days.",
+   "method_card_id": null,
+   "at": "2026-10-22 12:15",
+   "read": true
+  },
+  {
+   "id": "m-E-017",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-priya",
+   "body": "Priya, I have sent you an invitation to SciCollab, a beta for sharing methods and failed runs before publication. Last night a PhD student in Heidelberg posted how GSK3-inhibitor lots explained TH+ yields swinging from 8 to 61 %. That is your territory. Halcyon will want to know what is visible to whom, I assume. Would your legal team let you post methods?",
+   "method_card_id": null,
+   "at": "2026-08-31 07:05",
+   "read": true
+  },
+  {
+   "id": "m-E-018",
+   "sender_id": "u-priya",
+   "recipient_id": "u-ingrid",
+   "body": "Joined this morning. Sorry for the week of silence: I ran it past legal first, and their turnaround is a week on a good day. Their answer, close to verbatim: methods yes, compounds no.\n\n- assay set-up, plate QC, lot QC, failure modes: fine\n- anything with a HAL number, structures, SAR, targets: never\n\nWhich is how I work anyway. Read the Heidelberg post. I'll reply there when I have something better to say than \"been there\".",
+   "method_card_id": null,
+   "at": "2026-09-08 10:14",
+   "read": true
+  },
+  {
+   "id": "m-E-019",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-priya",
+   "body": "Welcome. That line is the right one, and it is easier to keep once it is written down.\n\nSeparate matter: Hanna has the Lund seeding results for your new fibril lot. Shall we go through them with Ruben before the next shipment? I am in clinic on Tuesdays; other days after 14:00 work.",
+   "method_card_id": null,
+   "at": "2026-09-10 06:42",
+   "read": true
+  },
+  {
+   "id": "m-E-020",
+   "sender_id": "u-priya",
+   "recipient_id": "u-ingrid",
+   "body": "Yes, please. Thu 17 Sep, 14:00, 45 min?\n\nAgenda from our side:\n- new lot vs current: fragment length (ours), seeding (both labs)\n- retire the oldest lot or keep it as reference\n- next shipment date (our dry-ice slots are Mondays)\n\nRuben joins for the first 20 min.",
+   "method_card_id": null,
+   "at": "2026-09-10 09:05",
+   "read": true
+  },
+  {
+   "id": "m-E-021",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-priya",
+   "body": "Thursday 14:00 is in my calendar, and Hanna will join. I would add one point: what each of us does when a lot fails. We have never written that down together.",
+   "method_card_id": null,
+   "at": "2026-09-11 06:30",
+   "read": true
+  },
+  {
+   "id": "m-E-022",
+   "sender_id": "u-priya",
+   "recipient_id": "u-ingrid",
+   "body": "Thanks for today. Decisions as I have them:\n- new lot accepted for seeding; the oldest stays as reference until the new one has two passing runs in both labs\n- next shipment Mon 28 Sep\n- lot-failure rule: Daan drafts, you and Hanna edit, both labs sign off\n\nShout if I got anything wrong.",
+   "method_card_id": null,
+   "at": "2026-09-17 15:30",
+   "read": true
+  },
+  {
+   "id": "m-E-023",
+   "sender_id": "u-priya",
+   "recipient_id": "u-ingrid",
+   "body": "Posted a question on pS129 antibody lot acceptance criteria. You've seen more lots than we have. If you have five minutes, I'd rather have your answer there than here, so the next person finds it.",
+   "method_card_id": null,
+   "at": "2026-09-30 11:40",
+   "read": true
+  },
+  {
+   "id": "m-E-024",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-priya",
+   "body": "Answered there. One thing I left out on purpose: vendor names. The lot we rejected in 2024 passed on western blot and failed on PFF-seeded neurons. If yours behaved the same way, I can tell you which vendor on the phone.",
+   "method_card_id": null,
+   "at": "2026-10-01 06:50",
+   "read": true
+  },
+  {
+   "id": "m-E-025",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-priya",
+   "body": "I have posted a collaboration call in #cell-culture: a second lab with a GBA1 N370S line, to cross-check our maturation effects. I assume Halcyon cannot share lines, but I would rather ask than assume.",
+   "method_card_id": null,
+   "at": "2026-10-12 07:12",
+   "read": true
+  },
+  {
+   "id": "m-E-026",
+   "sender_id": "u-priya",
+   "recipient_id": "u-ingrid",
+   "body": "Correct, I can't. And I can't say which lines we hold either; that alone says too much about programmes. What I can do is point you to the biobank route we used for our own lines. I'll put it in a reply on your post tomorrow so others can use it too.",
+   "method_card_id": null,
+   "at": "2026-10-12 13:25",
+   "read": true
+  },
+  {
+   "id": "m-E-027",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-priya",
+   "body": "Thank you for the reply on the post, and for putting the route where others can find it. We will write to the biobank this week.",
+   "method_card_id": null,
+   "at": "2026-10-14 06:40",
+   "read": true
+  },
+  {
+   "id": "m-E-028",
+   "sender_id": "u-priya",
+   "recipient_id": "u-ingrid",
+   "body": "Two things, no rush:\n- my contact at the biobank says they can help academic requesters with GBA1 N370S lines. Happy to introduce you.\n- saw the maturation paper went online on Friday. Congratulations to the whole team. The failed-differentiation table is going to my team as the example of how to do it.",
+   "method_card_id": null,
+   "at": "2026-10-20 16:40",
+   "read": false
+  },
+  {
+   "id": "m-E-029",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-lena",
+   "body": "Lena, one offer, with no obligation: when your response to the reviewers is drafted, I would be glad to read it before you send it. A second reader often sees what the editor will see. If the journal is one where I handle manuscripts, I will tell you and step back. Either way it stays between us.",
+   "method_card_id": null,
+   "at": "2026-09-21 07:20",
+   "read": true
+  },
+  {
+   "id": "m-E-030",
+   "sender_id": "u-lena",
+   "recipient_id": "u-ingrid",
+   "body": "Dear Ingrid, thank you so much, also for your answer to my question, I read it many times. I would like this very much, but honestly I am a bit afraid to take your time, and I think I have to ask Matthias (my supervisor) first if it is ok to show the draft to someone outside our group. I am working on the answers since two weeks and they are not good yet. Is it ok if I come back to you when I asked him? Sorry for the slow answer.",
+   "method_card_id": null,
+   "at": "2026-09-22 22:40",
+   "read": true
+  },
+  {
+   "id": "m-E-031",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-lena",
+   "body": "Of course. Asking him first is right. The offer does not expire.",
+   "method_card_id": null,
+   "at": "2026-09-23 06:35",
+   "read": true
+  },
+  {
+   "id": "m-E-032",
+   "sender_id": "u-lena",
+   "recipient_id": "u-ingrid",
+   "body": "Matthias said yes, he said it is very kind of you (and that I should apologise less, so I try). The journal is not one where you are editor, I checked the board :) The draft will be ready in about two weeks, after the last revision batch. Is that still ok?",
+   "method_card_id": null,
+   "at": "2026-10-03 22:15",
+   "read": true
+  },
+  {
+   "id": "m-E-033",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-lena",
+   "body": "Yes. When you send it, put each reviewer comment above your answer, so I read it the way the editor will. Send it when it is ready, not when it is perfect.",
+   "method_card_id": null,
+   "at": "2026-10-05 06:35",
+   "read": true
+  },
+  {
+   "id": "m-E-034",
+   "sender_id": "u-lena",
+   "recipient_id": "u-ingrid",
+   "body": "Small problem: today one of the revision batches detached, the cells came of the plates as one sheet. So the response will be a few days later. I am not sure if I should even mention this batch in the response, I don't think it was a GKi-209 problem, more the coating or my handling. Sorry, I know you did not ask for updates.",
+   "method_card_id": null,
+   "at": "2026-10-10 22:05",
+   "read": true
+  },
+  {
+   "id": "m-E-035",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-lena",
+   "body": "I am sorry. Long cultures detach; it happens in every lab that keeps them that long. Write down what you saw and when, while you still remember it. As for the response: if a reviewer learned about this batch later, what would they conclude?",
+   "method_card_id": null,
+   "at": "2026-10-13 06:30",
+   "read": true
+  },
+  {
+   "id": "m-E-036",
+   "sender_id": "u-lena",
+   "recipient_id": "u-ingrid",
+   "body": "Here it is, finally. I sent the file to your hospital e-mail, because Matthias prefers that unpublished manuscripts are not uploaded anywhere yet.\n\nIt is 7 pages, each reviewer comment in grey and my answer below, like you said. The main new thing is the day-11 FOXA2/LMX1A flow from the revision batches (from your answer to my question, I hope I did it right). I also added acceptance criteria for the reporter assay, written before the runs. The detached batch is in, but only in a footnote. I was not brave enough for more.\n\nPlease don't feel you have to read every page.",
+   "method_card_id": null,
+   "at": "2026-10-19 22:30",
+   "read": true
+  },
+  {
+   "id": "m-E-037",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-lena",
+   "body": "I have read it twice. It is a careful, honest response. Three comments, in order of importance.\n\n1. Lead with the new orthogonal readout. The day-11 FOXA2/LMX1A flow is the strongest new evidence you have, and it first appears on page 5. Put it at the start of your answer on floor-plate identity, and name it in your opening summary to the editor.\n\n2. Report the detached batch in the text, not in a footnote: the date, what you saw, that it was lost before the final readout, and that it stays in the batch log. A reviewer who sees one documented failure trusts the other batches more, not less.\n\n3. Separate what the data show from what you believe. In your answer on mechanism, the link between yield and stock handling and your freeze-thaw explanation share one sentence. Give the numbers first; then, marked as interpretation, what you think explains them and which experiment would test it.\n\nMatthias has the last word on all of it.",
+   "method_card_id": null,
+   "at": "2026-10-21 06:40",
+   "read": true
+  },
+  {
+   "id": "m-E-038",
+   "sender_id": "u-lena",
+   "recipient_id": "u-ingrid",
+   "body": "Thank you so much, Ingrid. I read your comments three times and then I changed everything tonight. The flow is now on the first page, and the detached batch is a real paragraph, with the date and that it stays in the log. It is strange, I feel better with it in, not worse. And \"we think\" comes only after the numbers now, it reads much calmer, like someone who knows what she has. Matthias reads it tomorrow. I left you a small mentorship note, I hope that is ok.",
+   "method_card_id": null,
+   "at": "2026-10-21 23:15",
+   "read": true
+  },
+  {
+   "id": "m-E-039",
+   "sender_id": "u-priya",
+   "recipient_id": "u-lena",
+   "body": "Hi Lena, Priya (Halcyon, Leiden). Just replied on your batch post. Your card mentions a reporter readout to check GKi-209 activity per lot, and I'm curious how you set it up:\n- which readout (TCF/LEF?)\n- how you normalise potency between lots\n- what counts as a pass\n\nWe QC small-molecule lots with a reporter before they touch cells, so happy to compare. Nothing compound-related from my side, obviously.",
+   "method_card_id": "pc-1203",
+   "at": "2026-09-16 11:25",
+   "read": true
+  },
+  {
+   "id": "m-E-040",
+   "sender_id": "u-lena",
+   "recipient_id": "u-priya",
+   "body": "Hi Priya, thank you for your message and for the reply on my post, it is really good to hear that you do this in industry too. The reporter is a TCF/LEF luciferase reporter in a cell line that is easy to grow, nothing special. I treat it with a dilution series of each GKi-209 stock next to our reference stock on the same plate, read after 24 h and compare the EC50 to the reference. I am doing it like this since one year, but I have no real pass criterion, I just look if it is \"close\", sorry.\n\nThe construct itself and the exact cell line I cannot share yet, I am really sorry. It is not published and my supervisor wants to keep it until the revision is accepted. I hope this is ok, I don't want to be impolite.",
+   "method_card_id": null,
+   "at": "2026-09-16 23:30",
+   "read": true
+  },
+  {
+   "id": "m-E-041",
+   "sender_id": "u-priya",
+   "recipient_id": "u-lena",
+   "body": "Completely fine. Unpublished is unpublished, and I'm the last person who'd push on that. Forget the construct question.\n\nWhat you describe is already most of a lot QC assay. The missing piece is the pass criterion, and that's exactly where reviewers push. Happy to share how I'd frame it for a response letter, if useful.\n\nI'll also leave a short review on the card with what a reader would need to repeat it. \"Unclear\" in that form just means \"couldn't repeat it from the text alone\", not a verdict on the science.",
+   "method_card_id": null,
+   "at": "2026-09-17 09:15",
+   "read": true
+  },
+  {
+   "id": "m-E-042",
+   "sender_id": "u-lena",
+   "recipient_id": "u-priya",
+   "body": "Thank you for the review, it is fair, I think I wrote the card for myself and not for someone who was not in my head :) I will add the passage range and the normalisation tomorrow.\n\nAnd yes please, about the response letter. One reviewer asks exactly this: how do we know that the reporter reflects the activity in the differentiation and not only in the reporter cells. I have an answer in my head but it is not convincing yet.",
+   "method_card_id": null,
+   "at": "2026-09-18 23:10",
+   "read": true
+  },
+  {
+   "id": "m-E-043",
+   "sender_id": "u-priya",
+   "recipient_id": "u-lena",
+   "body": "Here's how I'd frame it. No compound specifics, so all yours:\n- Write pass/fail criteria before the next runs: reference-stock EC50 within a set window of its historical value, a minimum signal-to-background, a CV limit on replicate wells.\n- Date the document and keep it with the data. That's your pre-registration. A rule that predates the data is very hard for a reviewer to argue with.\n- Report every run, including any that fail QC, and what you did about it.\n- For the \"does it reflect the differentiation\" question: plot each stock's reporter EC50 against the TH+ yield that stock gave. If the rank order holds, that's your link, and it uses data you already have.\n\nThe frame is fit-for-purpose: the reporter doesn't have to explain the biology, it has to predict which lots will fail.",
+   "method_card_id": null,
+   "at": "2026-09-21 13:20",
+   "read": true
+  },
+  {
+   "id": "m-E-044",
+   "sender_id": "u-lena",
+   "recipient_id": "u-priya",
+   "body": "I wrote the criteria today, before the new lots arrive next week, and dated it. It was a strange feeling to write rules for my own experiment before I see the data, but also good, like the experiment cannot argue with me later.\n\nOne question: for the EC50 window I wrote 2-fold. Is this too generous? I really don't know what is normal. And I made your plot with the old stocks. It looks promising, but I want to be careful before I say more.",
+   "method_card_id": null,
+   "at": "2026-09-26 17:10",
+   "read": true
+  },
+  {
+   "id": "m-E-045",
+   "sender_id": "u-priya",
+   "recipient_id": "u-lena",
+   "body": "2-fold is a common starting point for a cell-based potency assay, so not unusual. What makes it defensible is deriving it from your own data: take the reference stock's run-to-run spread on your existing plates, set the window from that, and state the reasoning in one sentence.\n\nAlso decide now what happens to a run that fails. We repeat once; if it fails again, the lot is flagged and doesn't go on cells.\n\nCareful is the right instinct with the plot. Write down what would count as \"the rank order holds\" before the new lots come in.",
+   "method_card_id": null,
+   "at": "2026-09-28 09:35",
+   "read": true
+  },
+  {
+   "id": "m-E-046",
+   "sender_id": "u-lena",
+   "recipient_id": "u-priya",
+   "body": "Thank you, I did it like this. The spread of the reference on the old plates is smaller than I thought, so 2-fold is ok, and I wrote one sentence why.\n\nCan I say something not about science? It helps me a lot to see that in industry this is a normal problem with normal rules. For a long time I thought the batches were my fault, that I did something wrong with my hands, and I did not ask anyone for months. Sorry if this is too personal for here.",
+   "method_card_id": null,
+   "at": "2026-10-04 22:05",
+   "read": true
+  },
+  {
+   "id": "m-E-047",
+   "sender_id": "u-priya",
+   "recipient_id": "u-lena",
+   "body": "Not too personal at all. And it wasn't your hands. Small-molecule lots and DMSO stocks are a classic failure mode. In my first year here we lost a differentiation at patterning to a stock that had been thawed once too often. The only difference in industry is that after the first time, someone writes the rule down so the next person doesn't relearn it. You just did that.",
+   "method_card_id": null,
+   "at": "2026-10-05 10:05",
+   "read": true
+  },
+  {
+   "id": "m-E-048",
+   "sender_id": "u-lena",
+   "recipient_id": "u-priya",
+   "body": "Small news: the lots for the revision both passed the criteria, one quite close to the limit. I was nervous when I calculated it. Before, I would have used it and hoped. Now I know why I use it. (One differentiation detached on Saturday, but that is an other story.)",
+   "method_card_id": null,
+   "at": "2026-10-12 23:15",
+   "read": true
+  },
+  {
+   "id": "m-E-049",
+   "sender_id": "u-priya",
+   "recipient_id": "u-lena",
+   "body": "Close to the limit is still a pass. That's the whole point of writing the limit down first. A pass you defined before you saw the data is one of the strongest sentences you can put in a response letter.\n\nSorry about the detached one. Log it like any other run.",
+   "method_card_id": null,
+   "at": "2026-10-14 13:10",
+   "read": true
+  },
+  {
+   "id": "m-E-050",
+   "sender_id": "u-lena",
+   "recipient_id": "u-priya",
+   "body": "The response is finished (the draft at least). I wrote the reporter part like you said: the criteria with the date, the repeat rule, your plot, and that one lot was close to the limit but passed. It feels much more solid now. Before it was more like \"please believe me\".",
+   "method_card_id": null,
+   "at": "2026-10-19 23:20",
+   "read": true
+  },
+  {
+   "id": "m-E-051",
+   "sender_id": "u-lena",
+   "recipient_id": "u-priya",
+   "body": "Oh, and can I thank you in the acknowledgements? Only if it is ok for your company, I dont want to make problems for you.",
+   "method_card_id": null,
+   "at": "2026-10-19 23:26",
+   "read": true
+  },
+  {
+   "id": "m-E-052",
+   "sender_id": "u-priya",
+   "recipient_id": "u-lena",
+   "body": "Checked with our comms team, to be safe: yes, by name only, no affiliation. Something like \"We thank Priya Raman for discussions on assay acceptance criteria\" is fine.\n\nGood luck with the resubmission. Once it's accepted and the reporter is public, let's do a 30-minute call. I'd like to compare it with our lot QC properly. Send me two slots that work for you.",
+   "method_card_id": null,
+   "at": "2026-10-21 10:40",
+   "read": true
+  },
+  {
+   "id": "m-E-053",
+   "sender_id": "u-priya",
+   "recipient_id": "u-jonas",
+   "body": "Hi Jonas, Priya here (in vitro pharmacology, Leiden). Different field, same problem, I suspect. I've been looking through your public QC log; 112 batches, in public, is rare.\n\nQuestion: do you run control charts on lot QC? We chart every release assay, Shewhart-style, with a couple of run rules on top. They flag drift weeks before a lot actually fails spec. Would that help your pilot batches, or is it already standard in batteries?",
+   "method_card_id": null,
+   "at": "2026-10-13 10:20",
+   "read": true
+  },
+  {
+   "id": "m-E-054",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-priya",
+   "body": "Hi Priya. Partly. We have control limits on ionic conductivity (EIS, fixed stack pressure), calculated from the in-spec batches since mid-2023. Before that the process was different enough that limits would have been fiction. No run rules: a batch is in or out.\n\nI can't go into the process step, but I'm happy to compare notes on what we chart and how. Which rules do you use? Eventually we could add one or two without a big discussion.",
+   "method_card_id": null,
+   "at": "2026-10-13 12:40",
+   "read": true
+  },
+  {
+   "id": "m-E-055",
+   "sender_id": "u-priya",
+   "recipient_id": "u-jonas",
+   "body": "Two that earn their keep for us:\n- 8 points in a row on one side of the centre line → a shift\n- 6 points in a row steadily rising or falling → a drift\nPlus the basic one: any point beyond 3σ.\n\nThe bigger win was charting the reference material separately from the product. If the reference drifts, it's the instrument or the method, not the lot. Do you measure a reference pellet on a schedule?",
+   "method_card_id": null,
+   "at": "2026-10-13 15:10",
+   "read": true
+  },
+  {
+   "id": "m-E-056",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-priya",
+   "body": "We do: one reference pellet a week, same press, same cell, as in the actual SOP. And of course it lives in a different spreadsheet from the batches, so nobody ever plotted the two together. I did that tonight. Nothing dramatic, but there is a stretch of a few weeks where the reference and the batches dip together, and at the time we blamed the powder. Annoying and useful, in that order.\n\nQuestion back: when do you recompute your limits? After every process change, or on a calendar?",
+   "method_card_id": null,
+   "at": "2026-10-13 21:20",
+   "read": true
+  },
+  {
+   "id": "m-E-057",
+   "sender_id": "u-priya",
+   "recipient_id": "u-jonas",
+   "body": "Only after a documented change: new SOP, new instrument, new reference lot. We want 20–25 points before new limits go live, and until then we run on provisional limits and label them that way. Never because the chart looks inconvenient. That last rule is on a sticky note above Ruben's screen.",
+   "method_card_id": null,
+   "at": "2026-10-14 09:30",
+   "read": true
+  },
+  {
+   "id": "m-E-058",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-priya",
+   "body": "\"Never because the chart looks inconvenient\" is going on the dry-room door. Thanks, this was more useful than most of my project meetings this month. If you ever need someone to explain why sulfide electrolytes smell of rotten eggs, you know where to find me.",
+   "method_card_id": null,
+   "at": "2026-10-15 12:35",
+   "read": true
+  },
+  {
+   "id": "m-F-001",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Hi Lena, I write here because it is maybe too detailed for the thread. Last year in Lund we stopped two batches at day 11, they were caudalised, HOXA2 positive, and we never understood why. They are in our failed list since then. After your post I think maybe it was also the GSK3 inhibitor. Can you explain me how you do the titration? How many concentrations, which readout, and you do it for every new lot or for every new vial?",
+   "method_card_id": null,
+   "at": "2026-09-01 12:20",
+   "read": true
+  },
+  {
+   "id": "m-F-002",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Hi Mateo, thank you for writing, and sorry that my answer in the thread was so short, I was very tired yesterday. Everything is in the card, I attach it here, but in short: every time I open a new vial of GKi-209 or make a new stock, I run one small differentiation with five concentrations around the nominal one, and the next batches get the best one. I decide only at the end, on the TH yield together with the regional qPCR, so one titration costs me five weeks.\n\nYour HOX batches could be the other side of the medal. My bad batches had too little effective inhibitor, because they came from an old stock that I had thawed again and again. If your concentration was set on a tired stock and then you open a fresh vial, the effective concentration jumps up and the cells go caudal. Did your HOX batches come after a new vial? Sorry if this is obvious for you.",
+   "method_card_id": "pc-1203",
+   "at": "2026-09-01 22:45",
+   "read": true
+  },
+  {
+   "id": "m-F-003",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Not obvious at all!! This morning I checked the notebook: both HOX batches were the first ones after a new vial. One year in our failed list and nobody saw this. Thank you.\n\nIn Lund we check at day 11: FOXA2 and LMX1A staining, and a small qPCR with HOXA2, GBX2 and FOXG1. The qPCR is very sensible for HOX, so if it goes caudal you see it already at day 11, you don't need to wait five weeks. Maybe it makes your titration faster?\n\nAnd how you make the aliquots? I think Hanna makes one tube for all the month. How many freeze–thaw cycles is ok for you?",
+   "method_card_id": null,
+   "at": "2026-09-02 12:40",
+   "read": true
+  },
+  {
+   "id": "m-F-004",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Day 11, I never thought to decide so early, I always waited for the TH because that is what I count in the end, but if HOXA2 is already visible at day 11 it would save me weeks for every titration, I will think about it.\n\nThe aliquots: I make the stock from a new vial in fresh anhydrous DMSO and split it the same day into single-use aliquots, 10 µl in amber tubes, lot and date on every tube, at −80 °C. One aliquot is thawed once, used for one medium change, and the rest goes away. So my honest answer to the freeze–thaw question is zero. Before, I had one big tube that I thawed maybe ten times in two months, and DMSO takes water from the air every time you open it. In the retrospective the low batches were all from stocks that were thawed many times, but with 14 batches I could not proof a clean threshold, so I stopped looking for a number and just do single use.\n\nI could count the thaws only because I had written every one in my notebook, it is the first time in my life that being pedantic paid back :)",
+   "method_card_id": null,
+   "at": "2026-09-02 23:20",
+   "read": true
+  },
+  {
+   "id": "m-F-005",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Very clear, thank you. I explained Hanna this morning, she was not happy about so many small tubes haha, but she agrees. Monday we realize a differentiation with our usual concentration and two lower ones, all from fresh aliquots, and we check at day 11. I will tell you.\n\nAlso tonight I post my old negative result from the PhD in negative-results. Ingrid say it is worth it. It is a bit like your story, four months of nothing.",
+   "method_card_id": null,
+   "at": "2026-09-03 12:30",
+   "read": true
+  },
+  {
+   "id": "m-F-006",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "I just read your post. I had four months like this, from January to April last year, with the yields jumping, and I told nobody until May, not even my supervisor. Reading that it happened also to someone who is now a postdoc in Lund helps more than you think. I will write somethign in the thread tomorrow, now I am too tired to write it properly.",
+   "method_card_id": null,
+   "at": "2026-09-03 23:50",
+   "read": true
+  },
+  {
+   "id": "m-F-007",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Four months alone is too long, I know it very well. Next time you write me before, not in May. Monday we start, I tell you at day 11.",
+   "method_card_id": null,
+   "at": "2026-09-04 12:20",
+   "read": true
+  },
+  {
+   "id": "m-F-008",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Day 11 today! Our usual concentration: a little HOXA2, and FOXA2/LMX1A not so nice. Minus 20 %: very clean, the best staining we have since long time. Minus 40 %: a bit too anterior in the qPCR. So our usual concentration is too high for the vial we use actually. Exactly your story. Now we wait for TH, day 35 is 12 October.",
+   "method_card_id": null,
+   "at": "2026-09-18 12:35",
+   "read": true
+  },
+  {
+   "id": "m-F-009",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "This is so good to read, I was smiling the whole evening yesterday. And it helps me also now, because the reviewers came back: major revision, they want more independent replicates and an orthogonal readout for floor-plate identity, so today I posted a question about flow or qPCR. Your day 11 is maybe exactly what they want. More replicates means three more differentiations of five weeks each, I counted the weeks on a paper and then I did not sleep so well.",
+   "method_card_id": null,
+   "at": "2026-09-19 22:10",
+   "read": true
+  },
+  {
+   "id": "m-F-010",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "I wrote an answer in your question, but read Ingrid's first, she answered this morning and hers is better than mine haha. Day-11 flow for FOXA2/LMX1A, that is what we do when it is important. Three differentiations is a lot, but with day 11 you know early which ones are worth to continue, so you lose less weeks.",
+   "method_card_id": null,
+   "at": "2026-09-21 12:26",
+   "read": true
+  },
+  {
+   "id": "m-F-011",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "I wrote it also in the thread, but I want to say it here too: I am really sorry. I was so sure about the concatenating, and if you had not looked at A1, you would have normalised every well with the nuclei of an other well and maybe never noticed it. I should have tried it on a small table before I wrote it so confident. Jonas was very kind about it, but I feel realy stupid.",
+   "method_card_id": null,
+   "at": "2026-09-23 23:40",
+   "read": true
+  },
+  {
+   "id": "m-F-012",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Lena, no no. You answered the same night, when nobody answered, and your outer merge showed me the 72 NaN. Without the NaN Jonas has nothing to look at, he said it also. And the bug was mine, I wrote it. Now 96 of 96 wells. Really, thank you.",
+   "method_card_id": null,
+   "at": "2026-09-24 12:25",
+   "read": true
+  },
+  {
+   "id": "m-F-013",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Thank you, this helps more than you know. I will write to Jonas too, I want to understand how he thinks, because something like this will happen to me again for sure.",
+   "method_card_id": null,
+   "at": "2026-09-24 22:50",
+   "read": true
+  },
+  {
+   "id": "m-F-014",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "I accepted Ingrid's answer today: day-11 flow for FOXA2/LMX1A in every revision batch. So you told me this weeks before the reviewers made me ask. The flow facility has a waiting list of two weeks, so I booked slots for the whole October today, the technician thinks I am crazy.",
+   "method_card_id": null,
+   "at": "2026-09-26 22:40",
+   "read": true
+  },
+  {
+   "id": "m-F-015",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Booking everything before is not crazy, it is experience. Here also three groups fight for one flow cytometer. And sleep a little, the revision is a marathon, not a sprint.",
+   "method_card_id": null,
+   "at": "2026-09-28 12:30",
+   "read": true
+  },
+  {
+   "id": "m-F-016",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Can I complain a little? The point-by-point table has almost 40 rows now, I am in the lab every day from 8 for the feeding, at night I write answers, and my supervisor says all of this is normal. Is it normal? Sorry, you don't have to answer, I only needed to write it to someone who knows.",
+   "method_card_id": null,
+   "at": "2026-10-04 22:45",
+   "read": true
+  },
+  {
+   "id": "m-F-017",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Yes it is normal, and also it is too much. In my first revision I made one table and every day I answered three rows, not more, the easy ones first, so the table gets short fast and you feel better. And eat something that is not from the machine haha. You are doing it well, really.",
+   "method_card_id": null,
+   "at": "2026-10-05 21:40",
+   "read": true
+  },
+  {
+   "id": "m-F-018",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Today my revision batch detached. After almost four weeks of feeding the cells came off like a carpet when I changed the medium, four of six wells. I know it happens, but why now. Sorry for writing on a Saturday night, you don't have to answer, I know you are not here at weekends.",
+   "method_card_id": null,
+   "at": "2026-10-10 22:15",
+   "read": true
+  },
+  {
+   "id": "m-F-019",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Oh no, Lena, I am sorry, four weeks is a lot. This happens to us too, around day 25–30 the dense cultures pull themselves off. Hanna replates at lower density and coats double, since then it happens less, not never. And put it in the failed table of the revision, reviewers like honest tables, Ingrid says it always.",
+   "method_card_id": null,
+   "at": "2026-10-12 12:15",
+   "read": true
+  },
+  {
+   "id": "m-F-020",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Thank you. I started a new one today with my backup cells, so day 11 is Firday the 23rd, and the failed one is in the table now, with a photo of the carpet. I read your message in the lunch break and it helped.",
+   "method_card_id": null,
+   "at": "2026-10-12 23:30",
+   "read": true
+  },
+  {
+   "id": "m-F-021",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "News from Lund: TH at day 35 is counted, and minus 20 % has clearly more TH than our usual concentration, and no HOX. So I registered a reproduction on your card: it held! Ingrid also made a Lund version of the card for our lab, with the day-11 check, and it says 'forked from MC-1203', so your name is on it. Thank you, really.",
+   "method_card_id": "pc-1203",
+   "at": "2026-10-13 12:44",
+   "read": true
+  },
+  {
+   "id": "m-F-022",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "I read it three times. It is the first time that someone did my protocol in an other lab and it worked, and after this week I needed it very much. Thank you for doing it so carefully, and please thank Hanna from me, for all the small tubes.",
+   "method_card_id": null,
+   "at": "2026-10-13 23:20",
+   "read": true
+  },
+  {
+   "id": "m-F-023",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Small news: the paper with Elin and Ingrid is online today. Elin is first author, I am second, the Seahorse part is mine. I don't make a post, it is Elin's paper. But I wanted to tell you.",
+   "method_card_id": null,
+   "at": "2026-10-16 12:40",
+   "read": true
+  },
+  {
+   "id": "m-F-024",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Mateo, this is not small news! Congratulations. I read your Seahorse methods during an incubation today, it is the clearest methods part I read this year, I could do the assay tomorrow from it. And why no post? The Seahorse part is yours, you are allowed to say it.",
+   "method_card_id": null,
+   "at": "2026-10-16 23:10",
+   "read": true
+  },
+  {
+   "id": "m-F-025",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Thank you!! Elin worked very hard, it is her moment, she posts if she wants. And other news, this one makes me nervous: in November I have an interview for a junior group leader position, in Spain, closer to my parents. After two 'no' this year I don't know how to prepare without being nervous haha.",
+   "method_card_id": null,
+   "at": "2026-10-19 12:30",
+   "read": true
+  },
+  {
+   "id": "m-F-026",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "That is wonderful news, and of course you are nervous, I would be too. But you will be good, because you explain complicated things simple and in the right order, you did it for me with day 11 and for Hanna with the tubes. If you want to practise the talk in English with someone who is also not native, I am awake at night anyway. I just sent my response letter to Ingrid and I feel like I gave her my diary.",
+   "method_card_id": null,
+   "at": "2026-10-19 23:05",
+   "read": true
+  },
+  {
+   "id": "m-F-027",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Thank you Lena, this helps. I practise in Spanish and in English, in Spanish I speak too fast and in Englsh too slow. Ingrid gives me time in the lab meeting to practise. And don't worry for the letter, she reads very carefully but she is never hard, I promise.",
+   "method_card_id": null,
+   "at": "2026-10-20 21:15",
+   "read": true
+  },
+  {
+   "id": "m-F-028",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "You were right. Three comments this morning, kind and very concrete, and one of them changes how I answer the first reviewer completely. While I rewrote the answers I saw that I start almost every one with an apology, so now the sorrys go out. I think this is maybe a lesson for more than the letter.",
+   "method_card_id": null,
+   "at": "2026-10-21 23:30",
+   "read": true
+  },
+  {
+   "id": "m-F-029",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-lena",
+   "body": "Yes, no sorry! You did the experiments, you can say it strong. Ingrid did the same with my MSCA application, she cut all my long sentences in half and it got much better. At the end the letter is yours, not hers, you will see.",
+   "method_card_id": null,
+   "at": "2026-10-22 12:20",
+   "read": true
+  },
+  {
+   "id": "m-F-030",
+   "sender_id": "u-lena",
+   "recipient_id": "u-mateo",
+   "body": "Day 11 of the new batch today: the flow is done, and both lots, R-21A and R-23B, look the same at their titrated concentration, clean FOXA2/LMX1A. The qPCR I run tomorrow, but I am not afraid of it anymore. First time in this revision that something simply worked, and I wanted to tell it first to the person who told me to look at day 11. I also put your name and Ingrid's in the aknowledgements draft, only if you are ok with it, tell me when you have time. Good night, and please don't rehearse until two in the morning, they will like you also with sleep.",
+   "method_card_id": null,
+   "at": "2026-10-23 23:40",
+   "read": false
+  },
+  {
+   "id": "m-F-031",
+   "sender_id": "u-lena",
+   "recipient_id": "u-jonas",
+   "body": "Hello Jonas, I hope it is ok that I write here. I wanted to thank you for the explanation in Mateo's thread, and for being so kind about my suggestion, which was really wrong. Can I ask how you learned to debug like this? You saw in one evening what I did not understand in a whole year with my plate reader files, and I would like to learn the way of thinking, not only the fix.",
+   "method_card_id": null,
+   "at": "2026-09-24 23:00",
+   "read": true
+  },
+  {
+   "id": "m-F-032",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-lena",
+   "body": "Of course it's ok. Honest answer: mostly by being wrong, slowly, with a log. We once had 23 electrolyte batches fail in one year, and the only thing that worked was writing down every failure with the boring details until the pattern showed. Code is the easy version of that: it fails the same way every time, if you let it.\n\nThree habits I'd keep:\n- count rows before and after every merge; if the number changes, something is wrong until proven otherwise\n- make the code complain (validate=, indicator=True, assert) instead of quietly producing numbers\n- distrust results that look better than expected. Mateo's \"too good\" was the best clue in the whole thread.\n\nThe log is in this card, if you want to see what \"slowly, with a log\" looks like in my field. Everything is in there except one process step that belongs to a partner contract.",
+   "method_card_id": "pc-1196",
+   "at": "2026-09-25 21:05",
+   "read": true
+  },
+  {
+   "id": "m-F-033",
+   "sender_id": "u-lena",
+   "recipient_id": "u-jonas",
+   "body": "Thank you, I read the card twice, and the table of the 23 batches looks like my notebook from last year, only you wrote it down properly and in public. Today I checked my old plate reader analysis your way: normalised the well names, merged with indicator=True, and all 96 wells were 'both', with the same values as before. So last year the two files were simply in the same order, I was lucky and not clever. From now on I count rows, I promise.",
+   "method_card_id": null,
+   "at": "2026-09-26 22:05",
+   "read": true
+  },
+  {
+   "id": "m-F-034",
+   "sender_id": "u-lena",
+   "recipient_id": "u-jonas",
+   "body": "Sorry to bother you again with code. Yesterday my revision batch detached, so today I wanted to do something that cannot fail, the figures. Of course it failed. The journal wants a requirements file for the revision, so I wrote matplotlib>=3.7 in it, because that is what my old environment has, and made a fresh environment to test that everything runs from zero. Now make_figures.py stops at the style line:\n\n```python\nplt.style.use(\"seaborn\")\n# OSError: 'seaborn' is not a valid package style, path of style file, URL of style file, or library style name (library styles are listed in `style.available`)\n```\n\nIn the old environment it still runs. I did not change the script, only the requirements. Do you have an idea?",
+   "method_card_id": null,
+   "at": "2026-10-11 22:20",
+   "read": true
+  },
+  {
+   "id": "m-F-035",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-lena",
+   "body": "Sorry about the batch. The figures, at least, are fixable.\n\nNothing is wrong with your script; the world moved under it. Matplotlib renamed its built-in seaborn styles in 3.6: \"seaborn\" became \"seaborn-v0_8\", because they no longer matched what the seaborn package itself looks like. The old name kept working with a deprecation warning, and in 3.8 it was removed. Your old environment is 3.7, so it has been warning you on every run. \">=3.7\" is a floor, not a pin: in a fresh environment pip takes the newest matplotlib, and there the old name is gone.\n\nPick one:\n\n```python\nimport matplotlib.pyplot as plt\n\n# 1. same look as before, new name\nplt.style.use(\"seaborn-v0_8\")\n\n# 2. or delete the style line and live with matplotlib's defaults\n\n# 3. or let the seaborn package set its own (newer) theme\nimport seaborn as sns\nsns.set_theme()\n```\n\nOption 1 gives you the same figures as before: it's the same style file under a new name.",
+   "method_card_id": null,
+   "at": "2026-10-12 12:40",
+   "read": true
+  },
+  {
+   "id": "m-F-036",
+   "sender_id": "u-lena",
+   "recipient_id": "u-jonas",
+   "body": "It works! I took the first way, and the figures look exactly like before, I compared them side by side. And you are right, the old environment prints a deprecation warning on every run, since years. I never read it, I think I believed warnings are for other people. But now I am afraid of my requirements file: should I write == for everything? The reviewers may run the code in a year and I don't want that it breaks again.",
+   "method_card_id": null,
+   "at": "2026-10-12 22:55",
+   "read": true
+  },
+  {
+   "id": "m-F-037",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-lena",
+   "body": "For the paper: yes, exact versions. In the environment that actually made the figures, run pip freeze > requirements-lock.txt and put that file next to the code. That's what a reviewer needs to get the same figures, and so do you, in a year. Keep the short requirements.txt with >= for people who only want to reuse the scripts. And read the warnings now and then: they're letters from the future.",
+   "method_card_id": null,
+   "at": "2026-10-13 20:30",
+   "read": true
+  },
+  {
+   "id": "m-F-038",
+   "sender_id": "u-lena",
+   "recipient_id": "u-jonas",
+   "body": "Done, the lock file is next to the code on my computer. In the project I will update everything together after the resubmission, my supervisor wants to see the code befor. 'Letters from the future' is now on a post-it above my desk.",
+   "method_card_id": null,
+   "at": "2026-10-13 23:45",
+   "read": true
+  },
+  {
+   "id": "m-F-039",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-lena",
+   "body": "Didn't want to turn your film thread into my family history, so here: my father has been developing his own black-and-white film in the back room of his bike shop in Ghent since before I was born. Half the walls are prints of bikes he rebuilt. I showed him your thread after the race today. He wanted to know which developer you use, and was disappointed that I didn't know.",
+   "method_card_id": null,
+   "at": "2026-10-18 19:25",
+   "read": true
+  },
+  {
+   "id": "m-F-040",
+   "sender_id": "u-lena",
+   "recipient_id": "u-jonas",
+   "body": "This is the nicest thing I read this week. I develop in the bathroom of a shared flat, my flatmates learned to knock :) Tell your father: a very dilute one-shot developer, stand development for one hour, because I am always doing something else in between. And I would like to see a print of one of his bikes one day.",
+   "method_card_id": null,
+   "at": "2026-10-18 21:15",
+   "read": true
+  },
+  {
+   "id": "m-F-041",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-lena",
+   "body": "He'll approve. He says stand development is for people with patience or with other plans. He's talking about retiring next year, and the real family question isn't the shop, it's who gets the enlarger. If you're ever near Ghent, bring a roll.",
+   "method_card_id": null,
+   "at": "2026-10-18 21:25",
+   "read": true
+  },
+  {
+   "id": "m-F-042",
+   "sender_id": "u-lena",
+   "recipient_id": "u-jonas",
+   "body": "If I come to Ghent, I bring a roll and a bottle of fixer. Thank you again for the matplotlib help, all figures for the revision are done now, only the text is left, which is the part where nobody can write an assert for me.",
+   "method_card_id": null,
+   "at": "2026-10-18 23:05",
+   "read": true
+  },
+  {
+   "id": "m-F-043",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "One more thing, outside the thread: if it helps, I'm happy to look at the rest of the script. Where there's one join on well IDs there's usually a second, and the second one hides better. No pressure. It beats the budget tables I'm supposed to be writing.",
+   "method_card_id": null,
+   "at": "2026-09-23 21:30",
+   "read": true
+  },
+  {
+   "id": "m-F-044",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "Jonas it works!! 96 of 96 wells, I just wrote in the thread. Yes please, look at everything, I am not proud of this script. Tonight I add you to the project.",
+   "method_card_id": null,
+   "at": "2026-09-24 12:16",
+   "read": true
+  },
+  {
+   "id": "m-F-045",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "Done, you are in the project now. One request: the fix is only in my computer, can you make the commit? It is your fix, I want your name in the history. There is also seahorse_qc.R, but that one is from my time in A Coruña, please don't look haha.",
+   "method_card_id": null,
+   "at": "2026-09-24 21:07",
+   "read": true
+  },
+  {
+   "id": "m-F-046",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "That's generous, thank you. I'll commit it tomorrow at lunch, with a message that explains the A01/A1 business, so whoever opens the history in two years knows why the regex is there. Not looking at the R file: noted. Not promised.",
+   "method_card_id": null,
+   "at": "2026-09-24 21:40",
+   "read": true
+  },
+  {
+   "id": "m-F-047",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "Pushed. The commit message is longer than the fix, as it should be. Same numbers as yesterday, just four times more of them.\n\nAnd I looked. seahorse_qc.R reads everything from \"C:/Users/mateo/…\". A beautiful path, but it exists on exactly one computer in the world. It also loads plyr, which isn't in the project environment. Not urgent; it's only the QC step.",
+   "method_card_id": null,
+   "at": "2026-09-25 12:46",
+   "read": true
+  },
+  {
+   "id": "m-F-048",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "haha I knew you look. This script I wrote in A Coruña on my old laptop, and I copied it here without thinking. Elin changes the path by hand every time, she never said nothing, she is too polite. Please don't fix it, I want to do it myself, I need to learn R properly and not only copy-paste. And thank you for the commit, I read your fix line by line, now I understand the regex.",
+   "method_card_id": null,
+   "at": "2026-09-25 20:05",
+   "read": true
+  },
+  {
+   "id": "m-F-049",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "Deal. Two hints, then I'm quiet: paths relative to the project folder instead of your C: drive, and whatever plyr does in there, dplyr or base R can do; plyr has been retired for years. When it's done I can eventually have a look, if you want a second pair of eyes.",
+   "method_card_id": null,
+   "at": "2026-09-25 20:35",
+   "read": true
+  },
+  {
+   "id": "m-F-050",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "haha Clara is right, we made your O2 sensor thread a football field. Sorry, my 4–1 was not very useful for the sensors.",
+   "method_card_id": null,
+   "at": "2026-10-05 20:15",
+   "read": true
+  },
+  {
+   "id": "m-F-051",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "My fault, I opened with the mud. It's moved to the common room now, and you're officially invited to bring the 4–1, with the full goalkeeper's analysis.",
+   "method_card_id": null,
+   "at": "2026-10-05 20:45",
+   "read": true
+  },
+  {
+   "id": "m-F-052",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "Weekend news: we won 3–2!! I stopped a penalty, with the knee, not elegant but it counts haha. And the mud?",
+   "method_card_id": null,
+   "at": "2026-10-12 20:05",
+   "read": true
+  },
+  {
+   "id": "m-F-053",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "Congratulations, knees count double. The mud won again, but only on points this time: 34th of 61, which in my category is called building for next season. Bram says I came home looking like a ploughed field. How's the C: drive?",
+   "method_card_id": null,
+   "at": "2026-10-12 20:40",
+   "read": true
+  },
+  {
+   "id": "m-F-054",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "The C: drive is stil alive. This week I have Seahorse every day, after that I do it, I promise.",
+   "method_card_id": null,
+   "at": "2026-10-12 21:00",
+   "read": true
+  },
+  {
+   "id": "m-F-055",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "Small news, I tell only you and Lena: the paper with Elin and Ingrid is online today. Elin is first author, I am second, the Seahorse part is mine. I don't make a post, it is Elin's paper. But I wanted to tell someone who knows how much work is one normalisation.",
+   "method_card_id": null,
+   "at": "2026-10-16 20:15",
+   "read": true
+  },
+  {
+   "id": "m-F-056",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "That's not small news. Congratulations, properly. (Professional pessimist's question, sorry: the paper's numbers never went through the old merge?)",
+   "method_card_id": null,
+   "at": "2026-10-16 20:40",
+   "read": true
+  },
+  {
+   "id": "m-F-057",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "haha no no. For the paper Elin and I matched the wells by hand, plate by plate, in one big spreadsheet. Many evenings. The script is so nobody does that again. And I re-ran two plates from the paper with your fix, to be sure: same numbers as our hand version. So I sleep well.",
+   "method_card_id": null,
+   "at": "2026-10-16 21:05",
+   "read": true
+  },
+  {
+   "id": "m-F-058",
+   "sender_id": "u-mateo",
+   "recipient_id": "u-jonas",
+   "body": "Can I ask you something about careers, more private than the thread? In November I have an interview, junior group leader, in a research institute in Spain. In March one application said 'limited evidence of independence' and I still don't know what they want to see. You wrote about project leadership in applied research. How do you judge independence at FIAM when you hire someone? I have the galactose story, and I taught Elin Seahorse, now she teaches the master students without me. Is that independence, or only being useful?",
+   "method_card_id": null,
+   "at": "2026-10-20 20:50",
+   "read": true
+  },
+  {
+   "id": "m-F-059",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "Good question, and not a small one. I'd rather answer it properly than between two budget tables: the proposal goes into internal review on Thursday. Thursday evening, then. Short version for now: it's not 'only being useful'.",
+   "method_card_id": null,
+   "at": "2026-10-20 21:20",
+   "read": true
+  },
+  {
+   "id": "m-F-060",
+   "sender_id": "u-jonas",
+   "recipient_id": "u-mateo",
+   "body": "As promised. In my actual unit, when we hire someone senior, nobody asks 'independent from whom?'. We ask: what exists because you decided it? A method you chose that others now run. A budget you defended, or cut. A partner who calls you and not your boss. A 'no' you said for a good reason.\n\nYour galactose switch is the textbook case: flat data, the library, a paper from another field, a changed medium, a result. Tell it in that order, and with 'I decided', not 'we observed'.\n\nElin teaching Seahorse without you is not 'only being useful'. It's a method that survived its owner, which is rarer than a first-author paper, and any institute that has ever lost a method with a person will understand that immediately.\n\nSecond author is fine if you can say which decisions in that paper were yours. Panels can't read that from the author list; you have to hand it to them.\n\nIf it helps, I can eventually play the difficult panel member over video next week. I'm told it comes naturally.\n\nP.S. The C: drive is still there. I've grown fond of it.",
+   "method_card_id": null,
+   "at": "2026-10-22 21:10",
+   "read": false
+  },
+  {
+   "id": "m-1",
+   "sender_id": "u-okafor",
+   "recipient_id": "u-rivera",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-14 21:50",
+   "body": "Saw your null result on MC-0412. We are about to run the same passage comparison — can I see the raw gating before we start?"
+  },
+  {
+   "id": "m-2",
+   "sender_id": "u-rivera",
+   "recipient_id": "u-okafor",
+   "method_card_id": "c-0412",
+   "read": true,
+   "at": "2026-10-14 22:40",
+   "body": "Yes — here is the card. The raw gating sits in our lab project; when I post the data with my next question I'll put it 'on request', so I can grant it to you as an individual, not to your whole group."
+  },
+  {
+   "id": "m-3",
+   "sender_id": "u-okafor",
+   "recipient_id": "u-rivera",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-15 09:40",
+   "body": "Perfect. I will record our run against it either way, including if it disagrees with yours."
+  },
+  {
+   "id": "m-M-001",
+   "sender_id": "u-laurent",
+   "recipient_id": "u-ingrid",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-06 10:30",
+   "body": "Thank you for the welcome, and for the offer. We are preparing a pilot proposal for three labs in Lyon, and yours is the only group I have seen use this as a lab rather than as individuals. How did you introduce it to your group?"
+  },
+  {
+   "id": "m-M-002",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-laurent",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-07 06:40",
+   "body": "One rule, not a platform: every method has an owner and a named backup, and its card exists before the owner leaves. The site only made the rule cheap to keep. What does your institute want to solve first?"
+  },
+  {
+   "id": "m-M-003",
+   "sender_id": "u-laurent",
+   "recipient_id": "u-ingrid",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-07 14:20",
+   "body": "Onboarding. New staff take months to find out what a lab already knows, and our exit interviews never capture methods. Did your group resist?"
+  },
+  {
+   "id": "m-M-004",
+   "sender_id": "u-ingrid",
+   "recipient_id": "u-laurent",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-08 06:50",
+   "body": "The senior people did; the newest did not. What worked: I wrote the first cards myself, including a failed one. Would it help if one of your PIs spoke to Mateo, who owns our Seahorse method? He explains it better than I do."
+  },
+  {
+   "id": "m-M-005",
+   "sender_id": "u-laurent",
+   "recipient_id": "u-ingrid",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-08 15:05",
+   "body": "Yes, very much — I will ask our neuroscience PI to write to him. And I am keeping 'the first card is a failed one'. That is not something I would have thought of from an office."
+  },
+  {
+   "id": "m-M-006",
+   "sender_id": "u-laurent",
+   "recipient_id": "u-ingrid",
+   "method_card_id": null,
+   "read": true,
+   "at": "2026-10-19 11:10",
+   "body": "A short update: I will present the idea to our steering committee in November, with your rule on the first slide. Thank you for your time."
+  }
+ ],
+ "cards": [
+  {
+   "id": "pc-1187",
+   "code": "MC-1187",
+   "version": 2,
+   "author_id": "u-mateo",
+   "title": "Seahorse XF mito stress test on iPSC-derived DA neurons: plating, FCCP titration, nuclei normalisation",
+   "method": "Plate (XF96 cell culture plate; background wells A1, A12, H1, H12 are coated but get no cells)\n1. Coat with poly-L-ornithine 15 µg/mL (50 µL/well, overnight at 37 °C), wash 3× with sterile water, then LamCoat-511 5 µg/mL in PBS with Ca²⁺/Mg²⁺ (40 µL/well, at least 2 h at 37 °C). Never let the wells dry.\n2. Day 25 of differentiation: dissociate the progenitors to single cells (papain), count, and seed 60,000 cells/well in 80 µL maturation medium with ROCK inhibitor (10 µM, first 24 h only). The well is 0.106 cm², so this is ≈ 570,000 cells/cm². Pipette against the wall, not onto the bottom, and leave the plate 1 h in the hood before the incubator so the cells settle evenly.\n3. Next day top up to 200 µL. Half medium change (100 µL) three times a week. The neurons stay in this plate until the assay (day 35, 60 or 100).\n\nDay before\n4. Hydrate the sensor cartridge in XF calibrant overnight at 37 °C in a non-CO₂ incubator. Look at the cell plate under the microscope and write down wells with holes or clumps now, not after the run.\n\nAssay day\n5. Assay medium: bicarbonate-free DMEM-based XF medium, pH 7.4, with 10 mM glucose, 1 mM pyruvate and 2 mM glutamine, warmed to 37 °C. (Galactose version: MC-1188.)\n6. Exchange the medium twice, leaving ~20 µL in the well each time (neurons lift off if you aspirate to dry), and finish at 180 µL. 45–60 min at 37 °C without CO₂.\n7. Load the ports at 10× in assay medium: A 20 µL oligomycin 15 µM (→ 1.5 µM); B 22 µL FCCP 10 µM (→ 1.0 µM, see titration); C 25 µL rotenone + antimycin A 5 µM each (→ 0.5 µM) with Hoechst 33342 20 µM (→ 2 µM). Load every port you use in every well, background wells included, or the injection is uneven.\n8. Protocol: 3 measurement cycles at baseline and 3 after each injection; mix 3 min, wait 0 min, measure 3 min (12 measurements, about 75 min).\n\nFCCP titration (once per line and maturation stage, one plate)\n9. 0.25 / 0.5 / 0.75 / 1.0 / 1.5 / 2.0 µM final, at least 12 wells each. Take the lowest concentration that gives the maximal OCR; above it OCR falls again. For our neurons this was 1.0 µM at day 35, 60 and 100.\n\nNormalisation\n10. Image right after the run (the Hoechst came with port C): 9 fields (3 × 3) at 10× cover the well bottom. Count nuclei with Cellpose, the same model and settings for every plate. Export plate, well, nuclei count and fields imaged.\n11. OCR per 1,000 nuclei = OCR / nuclei × 1,000. If a field failed autofocus, scale the count to 9 fields. Background wells are not normalised. Flag wells with less than 40 % of the plate median nuclei (cells lifted off).\n12. (v2) Before normalising, CHECK THAT EVERY WELL MATCHED. Wave writes A01, many imagers write A1, and an inner merge silently keeps only columns 10–12. Bring both IDs to one form, merge with a check (pandas: validate=\"one_to_one\", indicator=True) and stop if anything is unmatched: 96/96 per plate. Never align the two tables by row position: text sorting puts A10 before A2.\n13. Parameters (as in the Wave report): non-mitochondrial = minimum after rot/AA; basal = measurement 3 − non-mito; ATP-linked = measurement 3 − minimum after oligomycin; maximal = maximum after FCCP − non-mito; spare = maximal − basal.",
+   "system": "Human iPSC-derived midbrain dopaminergic neurons (floor-plate protocol), day 35 to 100. Lines in our hands: OUH-GBA03 (GBA1 N370S), isogenic OUH-GBA03-GC, reference line EUREF-1. Seahorse XFe96; widefield imager for the Hoechst image; Cellpose and Python/pandas for counting and normalisation.",
+   "conditions": "XF96 cell culture plate; PLO 15 µg/mL + LamCoat-511 5 µg/mL; 60,000 cells/well at day 25 (≈ 570,000/cm²); assay medium pH 7.4 with 10 mM glucose, 1 mM pyruvate, 2 mM glutamine; oligomycin 1.5 µM, FCCP 1.0 µM (titrated 0.25–2.0 µM), rotenone/antimycin A 0.5 µM each; Hoechst 33342 2 µM in port C; 37 °C, no CO₂.",
+   "outcome": "success",
+   "outcome_detail": "In use in our lab since autumn 2024; two other people run it on their own. Typical values on our 2026 plates: 33,000 nuclei per well at day 35, 25,000 at day 100; basal OCR 30–65 pmol/min per well; in the control lines basal 1.4–1.6 and maximal 2.4–3.1 pmol O₂/min per 1,000 nuclei. Nuclei normalisation halves the spread between replicate wells: median CV of basal OCR 14 % per well, 7 % per 1,000 nuclei.\n\nv2 (24 Sep 2026): added step 12. An ID mismatch between the two exports (\"A01\" vs \"A1\") dropped 432 of 576 wells in our script without any error. The whole story is in #stats-and-code (\"After normalising OCR to nuclei counts I lose two thirds of my wells\"). Thanks to Jonas Verbeke for the fix and to Lena Hofbauer for the first step.",
+   "fails_under": "Clumped neurons (Cellpose undercounts clusters, so OCR per nucleus goes up). Aspirating to dry during the medium exchange: neurons lift off, those wells show less than 40 % of the median nuclei. FCCP above the peak: maximal and spare capacity look smaller than they are. A port left empty in some wells. High-glucose assay medium can hide an OXPHOS defect (see MC-1188). Two exports with different well ID formats merged without a check (step 12).",
+   "tags": [
+    "Seahorse XF",
+    "mitochondrial respiration",
+    "iPSC-derived neurons",
+    "dopaminergic neurons",
+    "FCCP titration",
+    "normalisation"
+   ],
+   "visibility": "public",
+   "forked_from": null,
+   "reproductions": 0,
+   "at": "2026-08-27 21:10",
+   "updated_at": "2026-09-24 21:20"
+  },
+  {
+   "id": "pc-1188",
+   "code": "MC-1188",
+   "version": 1,
+   "author_id": "u-mateo",
+   "title": "High-glucose medium hides an OXPHOS deficit in LRRK2 G2019S DA neurons",
+   "method": "Seahorse XF mito stress test (plating, injections and normalisation as in MC-1187), run in two media side by side, same differentiation, same plate, half of the wells each:\n(a) High glucose: cells kept in the usual high-glucose maturation medium; assay in XF medium pH 7.4 with 25 mM glucose, 1 mM pyruvate, 2 mM glutamine.\n(b) Galactose: 48 h before the assay change these wells to glucose-free maturation medium with 10 mM galactose and 1 mM pyruvate; assay in XF medium pH 7.4 with 10 mM galactose, 1 mM pyruvate, 2 mM glutamine and no glucose.\nSame injections in both arms (oligomycin 1.5 µM, FCCP titrated for each line and medium, rotenone/antimycin A 0.5 µM). Normalise to nuclei counts and check the counts: galactose must not kill the neurons, or you measure survival and not respiration. Record ECAR too, it shows the glycolytic compensation directly.",
+   "system": "Human iPSC-derived midbrain dopaminergic neurons, day 35. LRRK2 G2019S patient lines CAN-PD07 and CAN-PD12, gene-corrected isogenic control CAN-PD07-GC; three unrelated healthy-donor lines in the first runs. Seahorse XFe96.",
+   "conditions": "High glucose: 25 mM glucose. Galactose: 10 mM galactose, no glucose, for 48 h before and during the assay. Both with 1 mM pyruvate and 2 mM glutamine, pH 7.4, 37 °C.",
+   "outcome": "negative",
+   "outcome_detail": "The negative part: four months (Nov 2021 – Feb 2022, three differentiations, 2 patient lines against 3 unrelated control lines) of high-glucose runs without any OXPHOS phenotype. Maximal OCR of the G2019S lines was within ±6 % of the controls, and the spread between control lines was bigger than any genotype effect. It was not a technical failure: with high glucose the neurons compensate with glycolysis (ECAR about 20 % higher in G2019S).\n\nIn galactose, against the isogenic control: maximal respiration −31 % and spare capacity −48 % in CAN-PD07 (3 differentiations), same direction in CAN-PD12. Full data in our 2024 paper in Cellular Models of Neurodegeneration (doi:10.0000/demo.cmn.2024.0117). I post the four negative months because nobody wrote them down for us when we needed it.",
+   "fails_under": "Unrelated control lines instead of an isogenic pair: the line-to-line spread hides the effect. Galactose much longer than 48 h in young neurons (before day 30): survival drops, check the nuclei counts. Galactose medium without pyruvate. Normalising to total protein in neuron cultures with variable debris. Comparing the two media on different plates or differentiations.",
+   "tags": [
+    "Seahorse XF",
+    "LRRK2",
+    "galactose",
+    "glycolytic compensation",
+    "negative result",
+    "dopaminergic neurons"
+   ],
+   "visibility": "public",
+   "forked_from": null,
+   "reproductions": 0,
+   "at": "2026-09-03 20:50",
+   "updated_at": "2026-09-03 20:50"
+  },
+  {
+   "id": "pc-1219",
+   "code": "MC-1219",
+   "version": 2,
+   "author_id": "u-mateo",
+   "title": "GBA1 N370S maturation series — respiration at day 35, 60 and 100",
+   "method": "Seahorse XF mito stress test as in MC-1187 (FCCP 1.0 µM, nuclei normalisation with the well-matching check). One differentiation (started 8 Jun 2026), re-plated at day 25 on six XF96 plates; assays at day 35 (P1–P2), day 60 (P3–P4) and day 100 (P5–P6). Same plate map on every plate: lines interleaved by column (1-4-7-10 OUH-GBA03, 2-5-8-11 OUH-GBA03-GC, 3-6-9-12 EUREF-1), rows A–D vehicle, rows E–H OUH-GC12 10 µM for the 14 days before each assay. Wells with less than 40 % of the plate median nuclei are left out (3 of 552). Analysis: normalise_ocr.py and plot_mito_stress.py in the project \"GBA1 maturation series — Seahorse analysis\".",
+   "system": "Human iPSC-derived midbrain dopaminergic neurons. OUH-GBA03 (GBA1 N370S, heterozygous), isogenic gene-corrected OUH-GBA03-GC, reference line EUREF-1. Seahorse XFe96.",
+   "conditions": "Assay medium pH 7.4 with 10 mM glucose, 1 mM pyruvate, 2 mM glutamine; oligomycin 1.5 µM, FCCP 1.0 µM, rotenone/antimycin A 0.5 µM; OUH-GC12 10 µM or vehicle (0.1 % DMSO) for the 14 days before each assay; n = 29–32 wells per group and day, from 2 plates.",
+   "outcome": "partial",
+   "outcome_detail": "Per 1,000 nuclei, OUH-GBA03 against its isogenic control (vehicle):\n- day 35: no difference (basal +1 %, maximal 0 %, spare capacity −2 %)\n- day 60: maximal −9 %, spare capacity −17 %\n- day 100: basal −8 %, maximal −26 %, spare capacity −45 % (0.85 vs 1.54 pmol O₂/min per 1,000 nuclei). Both plates agree (spare −47 % on P5, −41 % on P6). EUREF-1 stays close to the corrected line (spare −7 %).\n\nOUH-GC12 at day 100: the spare-capacity gap between the two lines (same treatment) goes from −45 % to −30 %, but part of this is a small drop in the corrected line with OUH-GC12 (−10 %). We do not call it a rescue.\n\nOUH-GBA03 also keeps fewer neurons: −21 % nuclei per well at day 100. Without nuclei normalisation the maximal would look −42 %, so the normalisation matters here.\n\nWhy partial: one differentiation, so the two plates per day are technical, not biological, replicates. It needs at least a second differentiation and ideally a second lab with an independent GBA1 N370S line.\n\nv1 (15 Sep): plan, day 35 and 60 from Wave. v2 (1 Oct): day 100 added; all six plates re-analysed with the fixed script (576/576 wells).",
+   "fails_under": "Only one differentiation so far. Plate effects are large (P6 reads about 20 % lower than P5 in every line), so compare lines within a plate. Wells where the neurons lifted off. The first version of the analysis script merged only 144 of 576 wells (fixed 25 Sep, see MC-1187 v2).",
+   "tags": [
+    "GBA1",
+    "Seahorse XF",
+    "maturation",
+    "dopaminergic neurons",
+    "OUH-GC12",
+    "mitochondrial respiration"
+   ],
+   "visibility": "lab",
+   "forked_from": null,
+   "reproductions": 0,
+   "at": "2026-09-15 20:40",
+   "updated_at": "2026-10-01 20:05"
+  },
+  {
+   "id": "c-0288",
+   "code": "MC-0288",
+   "version": 6,
+   "author_id": "u-okafor",
+   "title": "Lipofection of HEK293T at low passage",
+   "method": "TransLipo-3 lipid reagent, 2.5 µg donor plasmid in 25 µL reduced-serum medium. Serum-free at the dilution step only — carrying serum-free through incubation is the most common way to break this.",
+   "system": "H. sapiens · HEK293T (CVCL_0063)",
+   "conditions": "37 °C · 5% CO₂ · 48 h",
+   "outcome": "success",
+   "outcome_detail": "41 ± 3% at p < 12, across eight recorded runs.",
+   "fails_under": "Passage above 18 — efficiency falls to 4 ± 1%, and it is not recoverable by changing reagent lot. Serum-free medium carried through incubation drops it below 5%. CO₂ drift below 4.5% mimics the passage effect.",
+   "tags": [
+    "transfection",
+    "lipofection",
+    "HEK293T"
+   ],
+   "visibility": "public",
+   "forked_from": null,
+   "at": "2026-09-15 10:40",
+   "updated_at": "2026-10-09 15:20"
+  },
+  {
+   "id": "c-0412",
+   "code": "MC-0412",
+   "version": 4,
+   "author_id": "u-rivera",
+   "title": "Lipofection at high passage — efficiency collapse",
+   "method": "As MC-0288, run deliberately at p19–p24 to characterise the failure rather than avoid it.",
+   "system": "HEK293T · p19–p24",
+   "conditions": "37 °C · 5% CO₂ · 48 h",
+   "outcome": "negative",
+   "outcome_detail": "38% ± 6 at p12 falling to 4 ± 1% by p19. Below target in every replicate.",
+   "fails_under": "Passage above 18, or serum-free medium at transfection. Both tried, both below 5%. Recorded so nobody in this lab loses another week to it.",
+   "tags": [
+    "transfection",
+    "HEK293T",
+    "passage number"
+   ],
+   "visibility": "public",
+   "forked_from": "c-0288",
+   "at": "2026-10-06 22:30",
+   "updated_at": "2026-10-13 22:20"
+  },
+  {
+   "id": "c-0517",
+   "code": "MC-0517",
+   "version": 1,
+   "author_id": "u-bhatt",
+   "title": "Anti-GFP western blot — signal loss above 100 kDa",
+   "method": "Wet transfer, 100 V for 60 min, 20% methanol in the transfer buffer.",
+   "system": "HEK293T lysate",
+   "conditions": "pH 8.3 · 20% MeOH · 60 min 100 V",
+   "outcome": "partial",
+   "outcome_detail": "Bands below 100 kDa are clean. Everything above is faint or absent.",
+   "fails_under": "20% methanol at high molecular weight. Untested below 10%.",
+   "tags": [
+    "western blot",
+    "transfer"
+   ],
+   "visibility": "public",
+   "forked_from": null,
+   "at": "2026-10-20 18:10",
+   "updated_at": "2026-10-20 18:10"
+  },
+  {
+   "id": "c-0602",
+   "code": "MC-0602",
+   "version": 2,
+   "author_id": "u-rivera",
+   "title": "CO₂ incubator drift check before blaming the cells",
+   "method": "Independent CO₂ meter logged hourly for 72 h against the incubator's own readout.",
+   "system": "Incubator · bay 3",
+   "conditions": "target 5% CO₂",
+   "outcome": "success",
+   "outcome_detail": "Incubator under-reads by 0.6% consistently. Logged before every transfection now.",
+   "fails_under": "Only valid for bay 3. The two other incubators drift the other way.",
+   "tags": [
+    "equipment",
+    "quality control"
+   ],
+   "visibility": "public",
+   "forked_from": null,
+   "at": "2026-10-16 13:50",
+   "updated_at": "2026-10-22 13:35"
+  },
+  {
+   "id": "c-0733",
+   "code": "MC-0733",
+   "version": 1,
+   "author_id": "u-rivera",
+   "title": "Plasmid prep endotoxin threshold — unfinished",
+   "method": "Comparing two prep kits at matched yield.",
+   "system": "E. coli DH5α",
+   "conditions": "—",
+   "outcome": "null",
+   "outcome_detail": "",
+   "fails_under": "",
+   "tags": [
+    "plasmid prep"
+   ],
+   "visibility": "private",
+   "forked_from": null,
+   "at": "2026-10-23 08:50",
+   "updated_at": "2026-10-23 08:50"
+  },
+  {
+   "id": "c-0355",
+   "code": "MC-0355",
+   "version": 2,
+   "author_id": "u-rivera",
+   "title": "Serum-free medium through incubation — below 5% at every passage",
+   "method": "As MC-0288, with serum-free medium carried through the 48 h incubation.",
+   "system": "HEK293T · p8–p14",
+   "conditions": "37 °C · 5% CO₂ · 48 h",
+   "outcome": "negative",
+   "outcome_detail": "3.1–4.8% across six runs, independent of passage.",
+   "fails_under": "Serum-free at incubation, at any passage tried.",
+   "tags": [
+    "transfection",
+    "HEK293T"
+   ],
+   "visibility": "public",
+   "forked_from": null,
+   "at": "2026-09-02 22:15",
+   "updated_at": "2026-09-09 22:40"
+  },
+  {
+   "id": "c-0391",
+   "code": "MC-0391",
+   "version": 1,
+   "author_id": "u-rivera",
+   "title": "qPCR primer validation across two cDNA kits",
+   "method": "Standard curve over five 4-fold dilutions, both kits, same RNA.",
+   "system": "HEK293T total RNA",
+   "conditions": "60 °C anneal · 40 cycles",
+   "outcome": "success",
+   "outcome_detail": "Efficiency 94–102% for 11 of 12 pairs on both kits.",
+   "fails_under": "GAPDH pair drops to 81% on kit B. Not used for normalisation since.",
+   "tags": [
+    "qPCR"
+   ],
+   "visibility": "lab",
+   "forked_from": null,
+   "at": "2026-09-23 22:20",
+   "updated_at": "2026-09-23 22:20"
+  },
+  {
+   "id": "c-0670",
+   "code": "MC-0670",
+   "version": 1,
+   "author_id": "u-okafor",
+   "title": "Passage cliff — independent repeat, Okafor group",
+   "method": "MC-0412 run at p12, p16, p20 with our own reagent lot.",
+   "system": "HEK293T · p12–p20",
+   "conditions": "37 °C · 5% CO₂ · 48 h",
+   "outcome": "negative",
+   "outcome_detail": "Cliff between p16 and p20, matching MC-0412.",
+   "fails_under": "Passage above 18.",
+   "tags": [
+    "transfection",
+    "passage number"
+   ],
+   "visibility": "public",
+   "forked_from": "c-0412",
+   "at": "2026-10-19 11:20",
+   "updated_at": "2026-10-19 11:20"
+  },
+  {
+   "id": "c-0688",
+   "code": "MC-0688",
+   "version": 1,
+   "author_id": "u-lindqvist",
+   "title": "CO₂ drift check — bays 1 and 2",
+   "method": "MC-0602 repeated on the other two incubators.",
+   "system": "Incubators · bays 1–2",
+   "conditions": "target 5% CO₂",
+   "outcome": "success",
+   "outcome_detail": "Both over-read by 0.3–0.4%.",
+   "fails_under": "",
+   "tags": [
+    "equipment"
+   ],
+   "visibility": "lab",
+   "forked_from": "c-0602",
+   "at": "2026-10-23 11:40",
+   "updated_at": "2026-10-23 11:40"
+  }
+ ],
+ "entries": [
+  {
+   "id": "e-C-001",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Project started. Here I keep the Seahorse analysis of the GBA1 maturation series for Elin's next chapter.\n\nLines: OUH-GBA03 (GBA1 N370S), isogenic OUH-GBA03-GC, and EUREF-1 as reference. Vehicle or OUH-GC12 10 µM for the 14 days before each assay. One differentiation (started 8 Jun), re-plated at day 25 on XF96 plates, 60,000 cells/well. Protocol: MC-1187.\n\nPlates: P1–P2 day 35 (13 Jul, realized by Elin), P3–P4 day 60 (7 Aug), P5–P6 day 100 on Wed 16 Sep.\nPlate map is the same for all plates: lines in alternate columns (1-4-7-10 GBA03, 2-5-8-11 GC, 3-6-9-12 EUREF-1), rows A–D vehicle, E–H OUH-GC12, background A1, A12, H1, H12.\n\nFor P1–P4 I normalised by hand in Wave. When day 100 is done I want one script for the six plates, so every plate is treated the same and the analysis stays in the lab.",
+   "at": "2026-08-27 12:50"
+  },
+  {
+   "id": "e-C-002",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Day 100 plates realized (P5, P6). Cartridge hydrated in calibrant overnight, FCCP 1.0 µM as in the titration, Hoechst with rot/AA in port C.\n\nBefore the run: P5 D07 and P6 G03 have big holes, the neurons lifted off in the wash. I keep them in the export and write it here, the QC will flag them.\n\nRun OK, traces look normal. Imaged both plates directly after the run (9 fields, 10×). Counting with Cellpose tomorrow, same model as for P1–P4.",
+   "at": "2026-09-16 19:45"
+  },
+  {
+   "id": "e-C-003",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Problem. normalise_ocr.py (Friday version) gives only 1728 rows from 6912: 144 of 576 wells, 24 per plate, always columns 10–12. The nuclei file and the XF file are both complete. No error message.\n\nI don't understand it, so I asked in #stats-and-code. Until this is solved I don't use any normalised number.",
+   "at": "2026-09-21 20:30"
+  },
+  {
+   "id": "e-C-004",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Solved, thanks to Jonas (and Lena) in the thread. The Seahorse export writes the wells A01…H12, the imager writes A1…H12. Only A10–H12 are written the same, so the merge kept only columns 10–12.\n\nFix: pad both IDs to the A01 form, merge with validate=\"one_to_one\" and indicator=True, and assert that every well matched. Result: 576/576 wells, 96 per plate. CV of basal OCR back to ~7 %.\n\nAdded Jonas to the project (21:05), he will commit the fix tomorrow. MC-1187 updated to v2 with the check.",
+   "at": "2026-09-24 21:15"
+  },
+  {
+   "id": "e-C-005",
+   "project_id": "pj-mateo",
+   "author_id": "u-ingrid",
+   "body": "Read the thread in #stats-and-code. Two questions, so that the answer is written here and not only in someone's memory: did any number from the 18 Sep version of normalise_ocr.py go into a figure, a slide or to Elin? And are the day 35 and 60 values in Elin's draft the Wave-normalised ones?",
+   "at": "2026-09-25 07:05"
+  },
+  {
+   "id": "e-C-006",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Answer to Ingrid: no. The 18 Sep version ran only on 21 Sep, and the tests on 23 Sep were only for the thread. Nothing from it went into a figure, a slide or to Elin. The day 35 and 60 values in Elin's draft are from Wave, normalised by hand with the same nuclei counts, before the script existed.\n\nJonas committed the fix today at 12:40. The wrong output file is overwritten; the old code stays in the history.",
+   "at": "2026-09-25 12:55"
+  },
+  {
+   "id": "e-C-007",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Re-analysis of all six plates with the fixed script. 576/576 wells. 3 wells flagged low nuclei and left out (P2 B05, P5 D07, P6 G03, the ones with holes); 5 wells with a missing field are scaled to 9 fields.\n\nCheck against my Wave normalisation for P1–P4: same values, only rounding, except P1 C09 and P2 G05, where the script scales the count to 9 fields and in Wave I had typed the raw count. So the numbers in Elin's draft hold; only those two wells were about 12 % too high there (the group means change less than 1 %).\n\nDay 35: no difference between the lines. Day 60: GBA03 maximal −9 %, spare −17 % against the corrected line. Day 100 next.",
+   "at": "2026-09-28 20:20"
+  },
+  {
+   "id": "e-C-008",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Day 100 (P5, P6), per 1,000 nuclei, GBA03 against the corrected line (vehicle): basal −8 %, maximal −26 %, spare capacity −45 %. Both plates agree (spare −47 % on P5, −41 % on P6). EUREF-1 is close to the corrected line.\n\nGBA03 also has fewer nuclei at day 100 (−21 %). Without the normalisation the maximal looks −42 %, so here it really matters. With the old merge the direction was the same, but each line came from one single column, so line and position on the plate were mixed.\n\nOUH-GC12: the spare gap goes from −45 % to −30 %, but the corrected line also drops a bit with OUH-GC12 (−10 %). I don't call it a rescue. MC-1219 updated to v2. It is one differentiation, so we need a second one, and ideally a second lab.",
+   "at": "2026-10-01 20:15"
+  },
+  {
+   "id": "e-C-009",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Figure for Elin's chapter: day-100 traces (plot_mito_stress.py --day 100), mean ± SD, both plates pooled, 3 lines × 2 treatments, injections marked, 300 dpi. Colours checked for colour-blind readers, and the treatment is also shown with dashed lines and square markers. Sent to Elin together with mito_summary.csv, so the numbers in the text come from the same file as the figure.",
+   "at": "2026-10-14 20:50"
+  },
+  {
+   "id": "e-C-010",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "body": "Plan for the next weeks:\n- second differentiation for a biological replicate of day 100: start Mon 2 Nov, so day 100 is Wed 10 Feb.\n- seahorse_qc.R actually only runs on my laptop (Windows path, plyr). TODO: port the QC to Python next to normalise_ocr.py. Jonas offered to have a look.\n- second lab: Ingrid asked in #cell-culture for a lab with an independent GBA1 N370S line.\n\nREADME updated yesterday with how to run everything.",
+   "at": "2026-10-21 20:30"
+  },
+  {
+   "id": "e-1",
+   "project_id": "p-1",
+   "author_id": "u-rivera",
+   "at": "2026-10-15 17:20",
+   "body": "p19 run, triplicate. 4.2%, 3.8%, 4.4%. Matches p21 from last week — the cliff is real and it is not gradual."
+  },
+  {
+   "id": "e-2",
+   "project_id": "p-1",
+   "author_id": "u-rivera",
+   "at": "2026-10-16 18:05",
+   "body": "Swapped to lot TL3-2251 at p19 to rule out reagent. 4.1%. Reagent is not the variable."
+  },
+  {
+   "id": "e-3",
+   "project_id": "p-2",
+   "author_id": "u-rivera",
+   "at": "2026-10-22 11:30",
+   "body": "Bay 3 under-reads by 0.6% against the independent meter, stable across 72 h. Bays 1 and 2 drift the other way."
+  }
+ ],
+ "datasets": [
+  {
+   "id": "pd-mateo-xf",
+   "owner_id": "u-mateo",
+   "project_id": "pj-mateo",
+   "title": "Seahorse XF exports — 6 plates, GBA1 maturation series",
+   "summary": "Mito stress test exports from Wave (Seahorse XFe96), one row per well and measurement: 6 plates (P1–P2 day 35, P3–P4 day 60, P5–P6 day 100), 96 wells × 12 measurements = 6,912 rows. Lines OUH-GBA03 (GBA1 N370S), isogenic OUH-GBA03-GC and EUREF-1; vehicle or OUH-GC12 (10 µM, 14 days before the assay). Measurements 1–3 basal, 4–6 oligomycin 1.5 µM, 7–9 FCCP 1.0 µM, 10–12 rotenone/antimycin A 0.5 µM. OCR (pmol O₂/min), ECAR (mpH/min) and PER (pmol H⁺/min) per well, not normalised. Background wells A01, A12, H01, H12. Well IDs as Wave exports them (A01–H12). Protocol: MC-1187.",
+   "doi": null,
+   "licence": "CC BY 4.0",
+   "visibility": "lab",
+   "file": "pj-mateo/data/xf_exports_6plates.csv",
+   "size_bytes": 369750,
+   "at": "2026-09-17 20:10"
+  },
+  {
+   "id": "pd-mateo-nuclei",
+   "owner_id": "u-mateo",
+   "project_id": "pj-mateo",
+   "title": "Hoechst nuclei counts per well — 6 plates",
+   "summary": "Nuclei per well from the Hoechst image taken right after each Seahorse run (Hoechst 33342 in port C with rotenone/antimycin A): 9 fields per well at 10×, counted with Cellpose, same model and settings for all plates. 576 rows: plate, Well, nuclei_count, fields_imaged. fields_imaged < 9 means a field failed autofocus. Background wells have 0–2 objects (debris). Well IDs as the imager exports them (A1–H12).",
+   "doi": null,
+   "licence": "CC BY 4.0",
+   "visibility": "lab",
+   "file": "pj-mateo/data/nuclei_counts_6plates.csv",
+   "size_bytes": 8237,
+   "at": "2026-09-18 12:25"
+  },
+  {
+   "id": "d-1",
+   "owner_id": "u-rivera",
+   "project_id": "p-1",
+   "title": "Transfection efficiency by passage number (p8–p24)",
+   "summary": "Flow cytometry readings, three biological replicates per passage, two reagent lots. The source for MC-0412.",
+   "doi": null,
+   "licence": "CC BY 4.0",
+   "visibility": "public",
+   "size_bytes": 48200000,
+   "file": null,
+   "at": "2026-10-13 22:25"
+  },
+  {
+   "id": "d-2",
+   "owner_id": "u-rivera",
+   "project_id": "p-1",
+   "title": "Raw flow cytometry · run 14–16",
+   "summary": "Unprocessed .fcs files behind the p19 replicates. Gating strategy is in the notebook entry of the same date.",
+   "doi": null,
+   "licence": "CC BY 4.0",
+   "visibility": "lab",
+   "size_bytes": 1240000000,
+   "file": null,
+   "at": "2026-10-15 17:30"
+  },
+  {
+   "id": "d-3",
+   "owner_id": "u-rivera",
+   "project_id": "p-1",
+   "title": "Reagent lot comparison — TL3-2251 vs TL3-1980",
+   "summary": "The control that ruled reagent out as the variable.",
+   "doi": null,
+   "licence": "CC BY 4.0",
+   "visibility": "lab",
+   "size_bytes": 3100000,
+   "file": null,
+   "at": "2026-10-16 18:10"
+  },
+  {
+   "id": "d-4",
+   "owner_id": "u-rivera",
+   "project_id": "p-2",
+   "title": "CO₂ logging · all three bays · 72 h",
+   "summary": "Independent meter against each incubator's own readout, logged hourly.",
+   "doi": null,
+   "licence": "CC0 1.0",
+   "visibility": "lab",
+   "size_bytes": 820000,
+   "file": null,
+   "at": "2026-10-16 14:10"
+  }
+ ],
+ "code_files": [
+  {
+   "id": "pf-m1",
+   "project_id": "pj-mateo",
+   "path": "README.md",
+   "language": "Markdown",
+   "file": "pj-mateo/README.md",
+   "last_change": "README: how to run, the well-ID check, R script only runs on my laptop",
+   "at": "2026-08-27 13:05",
+   "updated_at": "2026-10-20 20:45",
+   "size_bytes": 3041
+  },
+  {
+   "id": "pf-m2",
+   "project_id": "pj-mateo",
+   "path": "analysis/normalise_ocr.py",
+   "language": "Python",
+   "file": "pj-mateo/analysis/normalise_ocr.py",
+   "last_change": "Pad well IDs to A01 form before merging; fail loudly on unmatched wells",
+   "at": "2026-09-18 12:40",
+   "updated_at": "2026-09-25 12:40",
+   "size_bytes": 4261
+  },
+  {
+   "id": "pf-m3",
+   "project_id": "pj-mateo",
+   "path": "analysis/plot_mito_stress.py",
+   "language": "Python",
+   "file": "pj-mateo/analysis/plot_mito_stress.py",
+   "last_change": "plot: --day option for Elin's chapter figure (SD bars, injection lines, 300 dpi)",
+   "at": "2026-08-31 20:40",
+   "updated_at": "2026-10-14 20:40",
+   "size_bytes": 4745
+  },
+  {
+   "id": "pf-m4",
+   "project_id": "pj-mateo",
+   "path": "analysis/seahorse_qc.R",
+   "language": "R",
+   "file": "pj-mateo/analysis/seahorse_qc.R",
+   "last_change": "Add seahorse_qc.R: CV of basal OCR per group, flags for strange wells",
+   "at": "2026-08-27 21:30",
+   "updated_at": "2026-08-27 21:30",
+   "size_bytes": 2501
+  },
+  {
+   "id": "pf-m5",
+   "project_id": "pj-mateo",
+   "path": "requirements.txt",
+   "language": "Text",
+   "file": "pj-mateo/requirements.txt",
+   "last_change": "Add README and requirements.txt",
+   "at": "2026-08-27 13:05",
+   "updated_at": "2026-08-27 13:05",
+   "size_bytes": 82
+  },
+  {
+   "id": "cf-1",
+   "project_id": "p-1",
+   "path": "README.md",
+   "language": "Markdown",
+   "size_bytes": 2400,
+   "file": null,
+   "last_change": "Document the gating strategy",
+   "at": "2026-09-24 22:40",
+   "updated_at": "2026-10-16 18:00"
+  },
+  {
+   "id": "cf-2",
+   "project_id": "p-1",
+   "path": "analysis/gating.py",
+   "language": "Python",
+   "size_bytes": 11800,
+   "file": null,
+   "last_change": "Exclude doublets before the live gate",
+   "at": "2026-09-25 22:10",
+   "updated_at": "2026-10-16 18:00"
+  },
+  {
+   "id": "cf-3",
+   "project_id": "p-1",
+   "path": "analysis/passage_curve.py",
+   "language": "Python",
+   "size_bytes": 8300,
+   "file": null,
+   "last_change": "Fit a sigmoid rather than a line — the drop is not gradual",
+   "at": "2026-09-30 22:30",
+   "updated_at": "2026-10-19 18:30"
+  },
+  {
+   "id": "cf-4",
+   "project_id": "p-1",
+   "path": "analysis/figures.R",
+   "language": "R",
+   "size_bytes": 5100,
+   "file": null,
+   "last_change": "Error bars are SD across biological replicates, not technical",
+   "at": "2026-10-05 22:15",
+   "updated_at": "2026-10-19 11:15"
+  },
+  {
+   "id": "cf-5",
+   "project_id": "p-1",
+   "path": "notebooks/exploration.ipynb",
+   "language": "Jupyter",
+   "size_bytes": 412000,
+   "file": null,
+   "last_change": "First pass over the p19 data",
+   "at": "2026-09-25 22:30",
+   "updated_at": "2026-10-15 17:40"
+  },
+  {
+   "id": "cf-6",
+   "project_id": "p-1",
+   "path": "environment.yml",
+   "language": "YAML",
+   "size_bytes": 940,
+   "file": null,
+   "last_change": "Pin scipy — the fit changed between versions",
+   "at": "2026-09-24 22:40",
+   "updated_at": "2026-10-19 18:40"
+  },
+  {
+   "id": "cf-7",
+   "project_id": "p-2",
+   "path": "logger/read_meter.py",
+   "language": "Python",
+   "size_bytes": 3600,
+   "file": null,
+   "last_change": "Poll every hour instead of every minute",
+   "at": "2026-10-16 14:20",
+   "updated_at": "2026-10-22 11:40"
+  },
+  {
+   "id": "cf-8",
+   "project_id": "p-2",
+   "path": "logger/plot_drift.R",
+   "language": "R",
+   "size_bytes": 2200,
+   "file": null,
+   "last_change": "Plot all three bays on one axis",
+   "at": "2026-10-19 13:50",
+   "updated_at": "2026-10-22 11:40"
+  }
+ ],
+ "commits": [
+  {
+   "id": "k-C-001",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "5065e52cae",
+   "message": "Add README and requirements.txt",
+   "files": 2,
+   "at": "2026-08-27 13:05"
+  },
+  {
+   "id": "k-C-002",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "0b98572b69",
+   "message": "Add seahorse_qc.R: CV of basal OCR per group, flags for strange wells",
+   "files": 1,
+   "at": "2026-08-27 21:30"
+  },
+  {
+   "id": "k-C-003",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "fc1e3df1cd",
+   "message": "Add plot_mito_stress.py: mean OCR traces per group and day",
+   "files": 1,
+   "at": "2026-08-31 20:40"
+  },
+  {
+   "id": "k-C-004",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "972eb7e21a",
+   "message": "Normalise OCR to nuclei counts",
+   "files": 1,
+   "at": "2026-09-18 12:40"
+  },
+  {
+   "id": "k-C-005",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "049629b360",
+   "message": "Print rows and wells per plate after the merge (debug)",
+   "files": 1,
+   "at": "2026-09-21 20:15"
+  },
+  {
+   "id": "k-C-006",
+   "project_id": "pj-mateo",
+   "author_id": "u-jonas",
+   "sha": "069f01a828",
+   "message": "Pad well IDs to A01 form before merging; fail loudly on unmatched wells",
+   "files": 1,
+   "at": "2026-09-25 12:40"
+  },
+  {
+   "id": "k-C-007",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "51bdc0e850",
+   "message": "plot: use OCR per 1,000 nuclei from out/ocr_normalised.csv, add summary table",
+   "files": 1,
+   "at": "2026-09-28 20:05"
+  },
+  {
+   "id": "k-C-008",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "d53be5a73e",
+   "message": "plot: --day option for Elin's chapter figure (SD bars, injection lines, 300 dpi)",
+   "files": 1,
+   "at": "2026-10-14 20:40"
+  },
+  {
+   "id": "k-C-009",
+   "project_id": "pj-mateo",
+   "author_id": "u-mateo",
+   "sha": "9826cac71d",
+   "message": "README: how to run, the well-ID check, R script only runs on my laptop",
+   "files": 1,
+   "at": "2026-10-20 20:45"
+  },
+  {
+   "id": "cc-1",
+   "project_id": "p-1",
+   "author_id": "u-rivera",
+   "sha": "a3f91c4e2b",
+   "files": 2,
+   "message": "Fit a sigmoid rather than a line — the drop is not gradual",
+   "at": "2026-10-19 18:30"
+  },
+  {
+   "id": "cc-2",
+   "project_id": "p-1",
+   "author_id": "u-lindqvist",
+   "sha": "7d2e88b104",
+   "files": 1,
+   "message": "Error bars are SD across biological replicates",
+   "at": "2026-10-19 11:15"
+  },
+  {
+   "id": "cc-3",
+   "project_id": "p-1",
+   "author_id": "u-rivera",
+   "sha": "c914aa7f30",
+   "files": 3,
+   "message": "Exclude doublets before the live gate",
+   "at": "2026-10-16 18:00"
+  },
+  {
+   "id": "cc-4",
+   "project_id": "p-1",
+   "author_id": "u-rivera",
+   "sha": "0b55e1d9a8",
+   "files": 1,
+   "message": "Pin scipy — the fit changed between versions",
+   "at": "2026-10-19 18:40"
+  },
+  {
+   "id": "cc-5",
+   "project_id": "p-2",
+   "author_id": "u-rivera",
+   "sha": "e81c30fa55",
+   "files": 2,
+   "message": "Poll every hour instead of every minute",
+   "at": "2026-10-22 11:40"
+  }
+ ]
+}

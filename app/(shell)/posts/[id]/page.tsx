@@ -8,6 +8,7 @@ import { timeAgo } from "@/lib/format";
 import { roomById, housesOfRoom, intentById } from "@/lib/taxonomy";
 import { attachmentsFor, pendingFor, requestAccess, decideRequest } from "@/app/actions/attachments";
 import { replyToPost, deleteReply, deletePost } from "@/app/actions/posts";
+import RichText from "@/components/RichText";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +62,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             </div>
             {post.body && (
               <div style={{ padding: 14 }}>
-                <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{post.body}</p>
+                <RichText body={post.body} />
               </div>
             )}
 
@@ -117,6 +118,11 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                     <div style={{ marginTop: 11, font: mono(10.5), color: "var(--ok)" }}>
                       {a.access === "open" ? "OPEN — anyone reading this post can open it" : "YOU HAVE ACCESS"}
                     </div>
+                    {a.href && (
+                      <Link href={a.href} style={{ ...btn, marginTop: 11, textDecoration: "none" }}>
+                        Open {a.kind === "dataset" ? "the data" : "the code"}
+                      </Link>
+                    )}
                   </>
                 ) : (
                   <>
@@ -187,7 +193,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                       </form>
                     )}
                   </div>
-                  <p className="sc-prose" style={{ font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap" }}>{r.body}</p>
+                  <RichText body={r.body} />
                 </div>
               );
             })}

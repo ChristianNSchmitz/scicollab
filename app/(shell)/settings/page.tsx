@@ -17,7 +17,7 @@ const FLASH: Record<string, { text: string; error?: boolean }> = {
   "orcid=unlinked":  { text: "ORCID unlinked. Synced publications were removed from SciCollab." },
   "orcid=invalid":   { text: "That is not a valid ORCID iD.", error: true },
   "error=confirm":   { text: "Type DELETE to confirm deleting your account.", error: true },
-  "error=demo":      { text: "The shared demo account cannot be deleted. Create your own demo account to try it.", error: true },
+  "error=demo":      { text: "Seeded demo accounts cannot be deleted — other people use them. Create your own demo account to try it.", error: true },
   "error=nokey":     { text: "Account deletion needs SUPABASE_SERVICE_ROLE_KEY on the server.", error: true },
   "error=delete":    { text: "The account could not be deleted. Please try again, or contact the team.", error: true },
 };
