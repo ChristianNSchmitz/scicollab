@@ -9,7 +9,10 @@ import { demoSignIn, backendConfigured } from "@/app/actions/demo-auth";
 
 function Form() {
   const router = useRouter();
-  const next = useSearchParams().get("next") ?? "/home";
+  // Only a path on this site: "/login?next=https://elsewhere" must not send
+  // someone off-site the moment they sign in.
+  const raw = useSearchParams().get("next") ?? "";
+  const next = raw.startsWith("/") && !raw.startsWith("//") && !raw.startsWith("/\\") ? raw : "/home";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
