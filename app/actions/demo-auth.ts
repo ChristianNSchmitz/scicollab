@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { authenticate, register, emailTaken } from "@/lib/demo/store";
-import { DEMO_COOKIE } from "@/lib/supabase/server";
+import { DEMO_COOKIE, createClient } from "@/lib/supabase/server";
 import { isConfigured } from "@/lib/mode";
 
 /**
@@ -43,6 +43,17 @@ export async function demoSignUp(
 
 export async function demoSignOut(): Promise<void> {
   (await cookies()).delete(DEMO_COOKIE);
+}
+
+/**
+ * Sign out on the server, for either backend. Doing it here rather than
+ * with the browser Supabase client keeps that library (about 67 KB
+ * compressed) out of every signed-in page: the top bar was its only user.
+ */
+export async function signOut(): Promise<void> {
+  if (!isConfigured()) { (await cookies()).delete(DEMO_COOKIE); return; }
+  const supabase = await createClient();
+  await supabase.auth.signOut();
 }
 
 /** Lets a client component decide which auth path to take. */

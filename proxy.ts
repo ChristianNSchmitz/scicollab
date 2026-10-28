@@ -50,7 +50,13 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  // getClaims() verifies the session token locally (with asymmetric signing
+  // keys) instead of a round trip to Supabase Auth on every request,
+  // prefetches included, and still refreshes an expired session. With a
+  // legacy symmetric secret it falls back to asking the Auth server.
+  // Pages and actions still confirm the user with getUser() before writing.
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims?.sub ?? null;
   if (!user && !isPublic) {
     const to = request.nextUrl.clone();
     to.pathname = "/login";

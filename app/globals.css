@@ -25,8 +25,8 @@
   --flag-ink:    #8A6A00;  /* "partial" and other flag text    */
   --placeholder: #6F6B63;
 
-  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
-  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: var(--font-mono), ui-monospace, Menlo, monospace;
+  --sans: var(--font-sans), system-ui, -apple-system, sans-serif;
 
   /* shell geometry — board [ 003 ] navigation shell */
   --top: 56px;

@@ -40,7 +40,10 @@ function useVisiblePoll(fn: () => void, ms: number, enabled = true) {
   }, [fn, ms, enabled]);
 }
 
+/** An open conversation refreshes quickly; the unread badge on the closed
+ *  dock does not need to, and every check is a request to the server. */
 const POLL_MS = 8000;
+const BADGE_MS = 30000;
 
 export default function ChatDock() {
   // On a phone the bottom tab bar owns this corner, and a floating panel over
@@ -69,7 +72,7 @@ export default function ChatDock() {
 
   // Badge count, whether the dock is open or shut.
   const refreshUnread = useCallback(() => { unreadTotal().then(setUnread).catch(() => {}); }, []);
-  useVisiblePoll(refreshUnread, POLL_MS, !phone);
+  useVisiblePoll(refreshUnread, open ? POLL_MS : BADGE_MS, !phone);
 
   const refreshList = useCallback(() => {
     listConversations().then(setConvos).catch(() => {});

@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { isConfigured } from "@/lib/mode";
 import { createDemoClient } from "@/lib/demo/shim";
 
@@ -18,16 +19,7 @@ export const DEMO_COOKIE = "sc-demo";
 // to `never` and breaks inference at the call sites.
 type Client = SupabaseClient<any, "public", any>;
 
-export async function createClient(): Promise<Client> {
-  const store = await cookies();
-
-  // The shim mirrors the query surface this codebase uses, not all of
-  // PostgREST, so it is asserted into the real client's type rather than
-  // pretending to implement it.
-  if (!isConfigured()) {
-    return createDemoClient(store.get(DEMO_COOKIE)?.value ?? null) as unknown as Client;
-  }
-
+function realClient(store: Awaited<ReturnType<typeof cookies>>): Client {
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -40,4 +32,32 @@ export async function createClient(): Promise<Client> {
       },
     }
   ) as Client;
+}
+
+/**
+ * The signed-in user, asked of Supabase Auth once per server render.
+ *
+ * getUser() is a network call to the Auth server. The layout, the page and
+ * the helpers it uses each asked again, three to five times for one page.
+ * React's cache() shares one answer across a single render; in a server
+ * action it does not memoise, which is right there, since a sign-in or
+ * sign-out can change the answer mid-action.
+ */
+const userForRender = cache(async () => realClient(await cookies()).auth.getUser());
+
+export async function createClient(): Promise<Client> {
+  const store = await cookies();
+
+  // The shim mirrors the query surface this codebase uses, not all of
+  // PostgREST, so it is asserted into the real client's type rather than
+  // pretending to implement it.
+  if (!isConfigured()) {
+    return createDemoClient(store.get(DEMO_COOKIE)?.value ?? null) as unknown as Client;
+  }
+
+  const client = realClient(store);
+  const uncached = client.auth.getUser.bind(client.auth);
+  // With a token argument it is a different question; only the plain call is shared.
+  client.auth.getUser = ((jwt?: string) => (jwt ? uncached(jwt) : userForRender())) as typeof client.auth.getUser;
+  return client;
 }

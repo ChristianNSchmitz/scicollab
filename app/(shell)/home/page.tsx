@@ -33,73 +33,81 @@ export default async function Home({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: mine } = await supabase
-    .from("user_rooms").select("room_id").eq("user_id", user!.id);
+  // Everything below needs only the user, so it is fetched in three chains
+  // that run side by side: the feed, the citation tracker, and "Waiting on
+  // you". Against the real database each await is a network round trip;
+  // run one after another they were about eleven, now the longest chain is
+  // about four.
+  ensureRecordSeed();
+  const empty = Promise.resolve({ data: [] as any[] });
+  const [{ data: mine }, { data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }, { data: myPosts }] =
+    await Promise.all([
+      supabase.from("user_rooms").select("room_id").eq("user_id", user!.id),
+      supabase.from("profiles").select("orcid").eq("id", user!.id).maybeSingle(),
+      supabase.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", user!.id).is("read_at", null),
+      supabase.from("access_requests").select("id, attachment_id, created_at").eq("owner_id", user!.id).eq("status", "pending"),
+      supabase.from("questions").select("id, title").eq("author_id", user!.id),
+      supabase.from("posts").select("id").eq("author_id", user!.id),
+    ]);
   const myRooms = (mine ?? []).map((r: { room_id: string }) => r.room_id);
 
   // A new account with no rooms gets the picker, never an empty page.
   if (myRooms.length === 0) redirect("/welcome");
 
-  let q = supabase
-    .from("posts")
-    .select("id, author_id, room_id, intent, title, body, method_card_id, technique, organism, deadline, offer, created_at")
-    .in("room_id", room ? [room] : myRooms)
-    .order("created_at", { ascending: false })
-    .limit(40);
-  if (intent) q = q.eq("intent", intent);
-  const { data: posts } = await q;
+  const feed = (async () => {
+    let q = supabase
+      .from("posts")
+      .select("id, author_id, room_id, intent, title, body, method_card_id, technique, organism, deadline, offer, created_at")
+      .in("room_id", room ? [room] : myRooms)
+      .order("created_at", { ascending: false })
+      .limit(40);
+    if (intent) q = q.eq("intent", intent);
+    const { data: posts } = await q;
+    const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
+    const postIds = (posts ?? []).map((p: any) => p.id);
+    const [people, { data: cards }, { data: feedReplies }] = await Promise.all([
+      peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
+      cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : empty,
+      postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : empty,
+    ]);
+    return { posts, people, cards, feedReplies };
+  })();
 
-  const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
-  const [people, { data: cards }] = await Promise.all([
-    peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
-    cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
-  ]);
-  const who = (id: string) => people.get(id);
-
-  // ── the dashboard column: your research, and what is waiting on you ──
-  ensureRecordSeed();
-  const [{ data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }] = await Promise.all([
-    supabase.from("profiles").select("orcid").eq("id", user!.id).maybeSingle(),
-    supabase.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", user!.id).is("read_at", null),
-    supabase.from("access_requests").select("id, attachment_id, created_at").eq("owner_id", user!.id).eq("status", "pending"),
-    supabase.from("questions").select("id, title").eq("author_id", user!.id),
-  ]);
-  // An overdue OpenAlex sync runs after the page is sent; the next visit shows it.
-  await syncIfDue(user!.id, me?.orcid, { waitForFirst: false });
-  const [biblio, { pubs, runs }] = await Promise.all([
-    bibliometricsFor(user!.id, me?.orcid),
-    loadPublications(user!.id, me?.orcid, 20),
-  ]);
-  const snapshots = await loadSnapshots(supabase, user!.id, biblio);
-  const change = recentChange(biblio, snapshots, runs);
-  const citations = citationProfile(pubs);
+  const research = (async () => {
+    // An overdue OpenAlex sync runs after the page is sent; the next visit shows it.
+    await syncIfDue(user!.id, me?.orcid, { waitForFirst: false });
+    const [biblio, { pubs, runs }] = await Promise.all([
+      bibliometricsFor(user!.id, me?.orcid),
+      loadPublications(user!.id, me?.orcid, 20),
+    ]);
+    const snapshots = await loadSnapshots(supabase, user!.id, biblio);
+    return { biblio, pubs, change: recentChange(biblio, snapshots, runs), citations: citationProfile(pubs) };
+  })();
 
   const requestAtts = [...new Set((myRequests ?? []).map((r: any) => r.attachment_id))];
-  const { data: atts } = requestAtts.length
-    ? await supabase.from("post_attachments").select("id, post_id").in("id", requestAtts)
-    : { data: [] as any[] };
-  const requestPosts = [...new Set((atts ?? []).map((a: any) => a.post_id))];
-
   const qIds = (myQuestions ?? []).map((q: any) => q.id);
-  const { data: qAnswers } = qIds.length
-    ? await supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds)
-    : { data: [] as any[] };
-  const freshAnswers = (qAnswers ?? []).filter((a: any) => a.author_id !== user!.id && Date.now() - +new Date(a.created_at) < 7 * 864e5);
-  const answeredQ = [...new Set(freshAnswers.map((a: any) => a.question_id))];
-  const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
-
-  // Reply counts for the posts on screen, and replies by others to my posts.
-  const postIds = (posts ?? []).map((p: any) => p.id);
-  const [{ data: feedReplies }, { data: myPosts }] = await Promise.all([
-    postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : Promise.resolve({ data: [] as any[] }),
-    supabase.from("posts").select("id").eq("author_id", user!.id),
-  ]);
-  const replyCount = (id: string) => (feedReplies ?? []).filter((r: any) => r.post_id === id).length;
   const myPostIds = (myPosts ?? []).map((p: any) => p.id);
-  const { data: repliesToMe } = myPostIds.length
-    ? await supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", myPostIds)
-    : { data: [] as any[] };
-  const freshReplies = (repliesToMe ?? []).filter((r: any) => r.author_id !== user!.id && Date.now() - +new Date(r.created_at) < 7 * 864e5);
+
+  const [
+    { posts, people, cards, feedReplies },
+    { biblio, pubs, change, citations },
+    { data: atts }, { data: qAnswers }, { data: repliesToMe },
+  ] = await Promise.all([
+    feed,
+    research,
+    requestAtts.length ? supabase.from("post_attachments").select("id, post_id").in("id", requestAtts) : empty,
+    qIds.length ? supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds) : empty,
+    myPostIds.length ? supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", myPostIds) : empty,
+  ]);
+
+  const who = (id: string) => people.get(id);
+  const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
+  const replyCount = (id: string) => (feedReplies ?? []).filter((r: any) => r.post_id === id).length;
+  const requestPosts = [...new Set((atts ?? []).map((a: any) => a.post_id))];
+  const week = 7 * 864e5;
+  const freshAnswers = (qAnswers ?? []).filter((a: any) => a.author_id !== user!.id && Date.now() - +new Date(a.created_at) < week);
+  const answeredQ = [...new Set(freshAnswers.map((a: any) => a.question_id))];
+  const freshReplies = (repliesToMe ?? []).filter((r: any) => r.author_id !== user!.id && Date.now() - +new Date(r.created_at) < week);
   const repliedPosts = [...new Set(freshReplies.map((r: any) => r.post_id))];
 
   const qs = (patch: Record<string, string | undefined>) => {

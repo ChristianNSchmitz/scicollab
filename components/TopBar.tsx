@@ -4,8 +4,7 @@ import Link from "next/link";
 import Avatar from "@/components/Avatar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { demoSignOut, backendConfigured } from "@/app/actions/demo-auth";
+import { signOut as serverSignOut } from "@/app/actions/demo-auth";
 
 /* Top bar — board [ 003 ]: 56px, wordmark in a 200px well, search to 660px
    with its ⌘K hint, Create, notifications, avatar with a presence dot. */
@@ -42,8 +41,7 @@ export default function TopBar({ name = "", avatarUrl = null }: { name?: string;
   }
 
   async function signOut() {
-    if (await backendConfigured()) await createClient().auth.signOut();
-    else await demoSignOut();
+    await serverSignOut();
     router.push("/");
     router.refresh();
   }
