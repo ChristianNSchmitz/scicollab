@@ -27,6 +27,7 @@ export async function saveProfile(form: FormData) {
       role_title:   String(form.get("role_title") ?? "").trim().slice(0, 120),
       field:        String(form.get("field") ?? "").trim().slice(0, 120),
       techniques:   String(form.get("techniques") ?? "").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 30),
+      bio:          String(form.get("bio") ?? "").trim().slice(0, 600),
     })
     .eq("id", user.id);
 
@@ -90,4 +91,16 @@ export async function uploadAvatar(form: FormData) {
   if (error) return { error: error.message };
   refreshEverywhere();
   return { ok: true as const, url };
+}
+
+/** Who can see your profile, and whether the weekly summary is e-mailed. */
+export async function savePrivacy(form: FormData) {
+  const { supabase, user } = await requireUser();
+  const { error } = await supabase
+    .from("profiles")
+    .update({ public_profile: form.get("public_profile") === "on", weekly_digest: form.get("weekly_digest") === "on" })
+    .eq("id", user.id);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/people/${user.id}`);
+  redirect("/settings?saved=privacy#privacy");
 }

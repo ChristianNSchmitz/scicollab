@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { saveProfile } from "@/app/actions/profile";
+import { saveProfile, savePrivacy } from "@/app/actions/profile";
 import { Page, Panel, PanelHead, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { deleteAccount } from "@/app/actions/account";
 import AvatarPicker from "@/components/settings/AvatarPicker";
@@ -12,6 +12,7 @@ export const dynamic = "force-dynamic";
 
 const FLASH: Record<string, { text: string; error?: boolean }> = {
   "saved=profile":   { text: "Profile saved." },
+  "saved=privacy":   { text: "Privacy settings saved." },
   "error=name":      { text: "A display name is needed. It is how people find and credit you.", error: true },
   "orcid=linked":    { text: "ORCID linked. The first sync has started; publications appear on your profile shortly." },
   "orcid=unlinked":  { text: "ORCID unlinked. Synced publications were removed from SciCollab." },
@@ -47,10 +48,10 @@ export default async function Settings({ searchParams }: { searchParams: Promise
 
   const flashKey = Object.keys(FLASH).find((k) => { const [key, v] = k.split("="); return sp[key] === v; });
   const flash = flashKey ? FLASH[flashKey] : null;
-  const nav = [["#picture", "Picture"], ["#profile", "Profile"], ["#orcid", "ORCID & publications"], ["#account", "Account"]];
+  const nav = [["#picture", "Picture"], ["#profile", "Profile"], ["#orcid", "ORCID & publications"], ["#privacy", "Privacy & e-mail"], ["#account", "Account"]];
 
   return (
-    <Page title="Settings" lede="Your picture, profile and ORCID link. Per-field visibility controls are designed on board B2 and are not connected yet.">
+    <Page title="Settings" lede="Your picture, profile, ORCID link, who can see your profile and which e-mails you get.">
       <div style={{ maxWidth: 720 }}>
         <nav aria-label="Settings sections" style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
           {nav.map(([href, label]) => (
@@ -94,6 +95,10 @@ export default async function Settings({ searchParams }: { searchParams: Promise
                   </div>
                 </div>
                 <div>
+                  <label style={fieldLabel} htmlFor="bio">About you: what you work on and what you can help with</label>
+                  <textarea id="bio" name="bio" rows={3} maxLength={600} defaultValue={p?.bio ?? ""} style={field} placeholder="Postdoc working on transfection in HEK293T; happy to compare passage data." />
+                </div>
+                <div>
                   <label style={fieldLabel} htmlFor="field">Field</label>
                   <input id="field" name="field" maxLength={120} defaultValue={p?.field ?? ""} style={field} placeholder="Cell biology" />
                 </div>
@@ -114,6 +119,29 @@ export default async function Settings({ searchParams }: { searchParams: Promise
               <OrcidLinker linked={linked} defaultName={p?.display_name ?? ""} />
             </div>
           </Panel>
+        </section>
+
+        <section id="privacy" style={{ scrollMarginTop: 72, marginBottom: 14 }}>
+          <form action={savePrivacy}>
+            <Panel>
+              <PanelHead>Privacy &amp; e-mail</PanelHead>
+              <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 12, font: "400 13.5px/1.6 var(--sans)" }}>
+                <p style={{ margin: 0, color: "var(--mute)" }}>
+                  <a href={`/people/${user!.id}`} style={{ color: "var(--link)" }}>Your profile</a> is always visible to signed-in members.
+                  Who follows whom is only ever shown to the two people involved.
+                </p>
+                <label style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <input type="checkbox" name="public_profile" defaultChecked={!!p?.public_profile} style={{ marginTop: 4 }} />
+                  <span>Show my profile to visitors who are not signed in, and allow previews when it is shared on other sites. Only your name, role, institution, about text, techniques, public method cards and publications are shown.</span>
+                </label>
+                <label style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <input type="checkbox" name="weekly_digest" defaultChecked={p?.weekly_digest ?? true} style={{ marginTop: 4 }} />
+                  <span>E-mail me a weekly summary of my notifications (only when something happened).</span>
+                </label>
+                <div><button type="submit" style={{ ...btnPrimary, height: 38 }}>Save</button></div>
+              </div>
+            </Panel>
+          </form>
         </section>
 
         <section id="account" style={{ scrollMarginTop: 72 }}>

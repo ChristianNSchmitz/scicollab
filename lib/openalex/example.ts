@@ -20,6 +20,18 @@ const TOPICS = [
   "Serum-free conditions during lipofection",
   "Automated logging of incubator conditions",
 ];
+/* Bylines. Some co-authors are members of the demo (their example author ids
+   are mapped to them in lib/social/coauthors.ts), some are not: those are the
+   people the co-author suggestions offer to invite. All invented. */
+const SELF = { id: "A-example-self", name: "Alex Rivera.ex", orcid: null };
+const COAUTHORS = [
+  { id: "A-example-u-lindqvist", name: "Maja Lindqvist.ex", orcid: null },
+  { id: "A-example-u-okafor", name: "Temi Okafor.ex", orcid: null },
+  { id: "A-example-n1", name: "Lucía Navarro.ex", orcid: null },
+  { id: "A-example-n2", name: "Pablo Esteban.ex", orcid: null },
+  { id: "A-example-u-bhatt", name: "Sanjana Bhatt.ex", orcid: null },
+  { id: "A-example-n3", name: "Hannah Weiss.ex", orcid: null },
+];
 const VENUES = ["Example Journal of Cell Methods", "Example Reports in Biology", "Example Protocols", "Example Preprint Server"];
 
 export function examplePublications(userId: string): PubRow[] {
@@ -36,6 +48,7 @@ export function examplePublications(userId: string): PubRow[] {
       year: y, pub_date: `${y}-${String(1 + Math.floor(rnd() * 12)).padStart(2, "0")}-15`,
       venue: VENUES[Math.floor(rnd() * VENUES.length)], type: i % 7 === 3 ? "preprint" : "article",
       cited_by_count: 0, prev_cited_by_count: 0,
+      authors: [SELF, ...COAUTHORS.filter((_, k) => (i + k) % 3 === 0 || (k === 0 && i % 2 === 0))],
       first_seen_at: new Date(Date.now() - (i === 0 ? 2 : 400) * 864e5).toISOString(),
       updated_at: new Date().toISOString(),
     });

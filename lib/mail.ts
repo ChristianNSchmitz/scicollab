@@ -1,5 +1,6 @@
 /**
- * Outgoing e-mail for the contact form, through Brevo's HTTP API.
+ * Outgoing e-mail, through Brevo's HTTP API: the contact form (to the team)
+ * and the weekly notification digest (to members, lib/social/digest.ts).
  *
  * Why Brevo: a French company (formerly Sendinblue) with EU data processing,
  * a free tier of 300 e-mails a day, and a plain HTTPS API — no extra package.
@@ -45,6 +46,29 @@ export async function sendMail(mail: Mail): Promise<{ ok: true } | { ok: false; 
     signal: AbortSignal.timeout(10_000),
   }).catch(() => null);
 
+  if (!res) return { ok: false, error: "unreachable" };
+  if (!res.ok) return { ok: false, error: `brevo-${res.status}` };
+  return { ok: true };
+}
+
+/** Mail to one member, from the verified sender. Needs BREVO_API_KEY and CONTACT_FROM_EMAIL. */
+export function memberMailConfigured(): boolean {
+  return Boolean(process.env.BREVO_API_KEY && process.env.CONTACT_FROM_EMAIL);
+}
+
+export async function sendToMember(to: { email: string; name: string }, subject: string, text: string): Promise<{ ok: true } | { ok: false; error: string }> {
+  if (!memberMailConfigured()) return { ok: false, error: "not-configured" };
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: { "api-key": process.env.BREVO_API_KEY!, "content-type": "application/json", accept: "application/json" },
+    body: JSON.stringify({
+      sender: { name: "SciCollab", email: process.env.CONTACT_FROM_EMAIL },
+      to: [{ email: to.email, name: to.name }],
+      subject,
+      textContent: text,
+    }),
+    signal: AbortSignal.timeout(10_000),
+  }).catch(() => null);
   if (!res) return { ok: false, error: "unreachable" };
   if (!res.ok) return { ok: false, error: `brevo-${res.status}` };
   return { ok: true };

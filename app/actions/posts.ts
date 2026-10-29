@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { intentById, roomById } from "@/lib/taxonomy";
 import { isRowId } from "@/lib/query";
+import { recordMentions } from "@/lib/social/mentions";
 
 export type PostState = { error: string } | null;
 
@@ -94,6 +95,7 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
     });
   }
 
+  await recordMentions(supabase, user.id, "post", data.id, `/posts/${data.id}`, `${title}\n${text(form, "body", 10000)}`);
   revalidatePath("/home");
   redirect(`/posts/${data.id}`);
 }
@@ -118,8 +120,9 @@ export async function replyToPost(postId: string, form: FormData) {
   if (await overLimit(supabase, "reply", user.id)) redirect(`/posts/${postId}?limited=1#replies`);
   const { data: post } = await supabase.from("posts").select("id").eq("id", postId).maybeSingle();
   if (!post) throw new Error("That post no longer exists.");
-  const { error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body });
+  const { data: reply, error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body }).select("id").single();
   if (error) throw new Error(error.message);
+  await recordMentions(supabase, user.id, "reply", reply.id, `/posts/${postId}#replies`, body);
   revalidatePath(`/posts/${postId}`);
   revalidatePath("/home");
   redirect(`/posts/${postId}#replies`);

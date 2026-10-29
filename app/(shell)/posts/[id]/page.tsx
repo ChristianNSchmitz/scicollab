@@ -1,5 +1,6 @@
 import { peopleById } from "@/lib/people";
 import Avatar from "@/components/Avatar";
+import PersonLink from "@/components/social/PersonLink";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -9,6 +10,10 @@ import { roomById, housesOfRoom, intentById } from "@/lib/taxonomy";
 import { attachmentsFor, pendingFor, requestAccess, decideRequest } from "@/app/actions/attachments";
 import { replyToPost, deleteReply, deletePost } from "@/app/actions/posts";
 import RichText from "@/components/RichText";
+import MentionTextarea from "@/components/social/MentionTextarea";
+import Reactions from "@/components/social/Reactions";
+import { mentionsIn } from "@/lib/social/mentions";
+import { reactionsFor } from "@/lib/social/reactions";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +38,12 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
     pendingFor(post.id),
     supabase.from("post_replies").select("id, author_id, body, created_at").eq("post_id", post.id).order("created_at"),
   ]);
-  const repliers = await peopleById(supabase, (replies ?? []).map((r: any) => r.author_id));
+  const [repliers, postMentions, replyMentions, reactions] = await Promise.all([
+    peopleById(supabase, (replies ?? []).map((r: any) => r.author_id)),
+    mentionsIn(supabase, "post", [post.id]),
+    mentionsIn(supabase, "reply", (replies ?? []).map((r: any) => r.id)),
+    reactionsFor(supabase, "post", [post.id], user!.id),
+  ]);
   const replier = (id: string) => repliers.get(id);
 
   const room = roomById(post.room_id);
@@ -55,16 +65,19 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: mono(11), color: "var(--mute)", display: "flex", gap: 9, alignItems: "center" }}>
               <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={24} />
               <span>
-                {author?.display_name ?? "Someone"}
+                <PersonLink id={post.author_id}>{author?.display_name ?? "Someone"}</PersonLink>
                 {author?.role_title ? ` · ${author.role_title}` : ""}
                 {author?.institution ? ` · ${author.institution}` : ""} · {timeAgo(post.created_at)}
               </span>
             </div>
             {post.body && (
               <div style={{ padding: 14 }}>
-                <RichText body={post.body} />
+                <RichText body={post.body} mentions={postMentions.get(post.id)} />
               </div>
             )}
+            <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)" }}>
+              <Reactions kind="post" targetId={post.id} summary={reactions.get(post.id)} own={isMine} path={`/posts/${post.id}`} />
+            </div>
 
             {post.intent === "collab" && (
               <div style={{ padding: 14, borderTop: "1px solid var(--rule)" }}>
@@ -154,7 +167,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               <PanelHead>Access requests · {pending.length}</PanelHead>
               {pending.map((r) => (
                 <div key={r.id} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
-                  <div style={{ font: mono(12.5, 500) }}>{r.who.display_name}</div>
+                  <div style={{ font: mono(12.5, 500) }}><PersonLink id={r.requester_id}>{r.who.display_name}</PersonLink></div>
                   <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 3 }}>
                     {r.who.institution || "—"} · {timeAgo(r.created_at)}
                   </div>
@@ -184,7 +197,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                   <div style={{ display: "flex", gap: 9, alignItems: "center", font: mono(11), color: "var(--mute)", marginBottom: 7 }}>
                     <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={22} />
                     <span style={{ flex: 1 }}>
-                      {who?.display_name ?? "Someone"}{who?.institution ? ` · ${who.institution}` : ""} · {timeAgo(r.created_at)}
+                      <PersonLink id={r.author_id}>{who?.display_name ?? "Someone"}</PersonLink>{who?.institution ? ` · ${who.institution}` : ""} · {timeAgo(r.created_at)}
                       {r.author_id === post.author_id && <span style={{ marginLeft: 6, color: "var(--ink)" }}>· author</span>}
                     </span>
                     {r.author_id === user!.id && (
@@ -193,13 +206,13 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                       </form>
                     )}
                   </div>
-                  <RichText body={r.body} />
+                  <RichText body={r.body} mentions={replyMentions.get(r.id)} />
                 </div>
               );
             })}
             <form action={replyToPost.bind(null, post.id)} style={{ padding: 14 }}>
-              <textarea name="body" rows={3} required maxLength={5000} style={field}
-                        placeholder={isMine ? "Add to your post, or answer someone below." : "What you saw, and under which conditions."} />
+              <MentionTextarea name="body" rows={3} required maxLength={5000} style={field} aria-label="Your reply"
+                        placeholder={isMine ? "Add to your post, or answer someone below. Type @ to mention someone." : "What you saw, and under which conditions. Type @ to mention someone."} />
               <button type="submit" style={{ ...btnPrimary, marginTop: 10 }}>Reply</button>
             </form>
           </Panel>

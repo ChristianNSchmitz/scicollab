@@ -53,6 +53,7 @@ export function register(email: string, password: string, display_name: string, 
   (tables.profiles as Record<string, unknown>[]).push({
     id, display_name: display_name || addr.split("@")[0], institution,
     role_title: "", field: "", orcid: null, techniques: [], email: addr,
+    bio: "", notifications_seen_at: null, weekly_digest: true, public_profile: false, avatar_url: null,
     created_at: new Date().toISOString(),
   });
   credentials.set(addr, password);
@@ -81,7 +82,8 @@ export const tables: Record<string, Record<string, unknown>[]> =
 /** Account deletion in demo mode: the sign-in, the profile and every row the
  *  person authored or received, removed in place so other references to the
  *  same arrays stay valid. */
-const OWNER_COLUMNS = ["author_id", "owner_id", "user_id", "sender_id", "recipient_id", "requester_id", "mentee_id", "mentor_id"];
+const OWNER_COLUMNS = ["author_id", "owner_id", "user_id", "sender_id", "recipient_id", "requester_id", "mentee_id", "mentor_id",
+  "follower_id", "followee_id", "mentioned_id", "created_by", "added_by"];
 export function forget(id: string): void {
   for (const [email, uid] of emailToId) if (uid === id) { emailToId.delete(email); credentials.delete(email); }
   for (const rows of Object.values(tables)) {

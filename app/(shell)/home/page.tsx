@@ -1,6 +1,7 @@
 import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
+import PersonLink from "@/components/social/PersonLink";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, Tag, btn, btnPrimary, mono } from "@/components/ui";
@@ -12,6 +13,13 @@ import { loadPublications, syncIfDue } from "@/lib/record/publications";
 import CitationTracker from "@/components/record/CitationTracker";
 import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
+import { followingOf } from "@/lib/social/follows";
+import { activityOf, activityOnMine } from "@/lib/social/activity";
+import { coauthorsOf } from "@/lib/social/coauthors";
+import { reactionsFor } from "@/lib/social/reactions";
+import ActivityList from "@/components/social/ActivityList";
+import FollowButton from "@/components/social/FollowButton";
+import { ReactionCounts } from "@/components/social/Reactions";
 
 export const dynamic = "force-dynamic";
 
@@ -28,8 +36,11 @@ const INTENT_COLOUR: Record<string, string> = {
  */
 export default async function Home({
   searchParams,
-}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string }> }) {
-  const { intent, room, sync } = await searchParams;
+}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string }> }) {
+  const { intent, room: roomParam, sync, feed: feedParam } = await searchParams;
+  // "following": posts and activity from the people you follow, from any room.
+  const feedMode = feedParam === "following" ? "following" : "rooms";
+  const room = feedMode === "rooms" ? roomParam : undefined;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -40,7 +51,7 @@ export default async function Home({
   // about four.
   ensureRecordSeed();
   const empty = Promise.resolve({ data: [] as any[] });
-  const [{ data: mine }, { data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }, { data: myPosts }] =
+  const [{ data: mine }, { data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }, { data: myPosts }, following] =
     await Promise.all([
       supabase.from("user_rooms").select("room_id").eq("user_id", user!.id),
       supabase.from("profiles").select("orcid").eq("id", user!.id).maybeSingle(),
@@ -48,29 +59,34 @@ export default async function Home({
       supabase.from("access_requests").select("id, attachment_id, created_at").eq("owner_id", user!.id).eq("status", "pending"),
       supabase.from("questions").select("id, title").eq("author_id", user!.id),
       supabase.from("posts").select("id").eq("author_id", user!.id),
+      followingOf(supabase, user!.id),
     ]);
+  const followed = [...following];
   const myRooms = (mine ?? []).map((r: { room_id: string }) => r.room_id);
 
   // A new account with no rooms gets the picker, never an empty page.
   if (myRooms.length === 0) redirect("/welcome");
 
   const feed = (async () => {
+    if (feedMode === "following" && !followed.length) {
+      return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>> };
+    }
     let q = supabase
       .from("posts")
-      .select("id, author_id, room_id, intent, title, body, method_card_id, technique, organism, deadline, offer, created_at")
-      .in("room_id", room ? [room] : myRooms)
-      .order("created_at", { ascending: false })
-      .limit(40);
+      .select("id, author_id, room_id, intent, title, body, method_card_id, technique, organism, deadline, offer, created_at");
+    q = feedMode === "following" ? q.in("author_id", followed) : q.in("room_id", room ? [room] : myRooms);
+    q = q.order("created_at", { ascending: false }).limit(40);
     if (intent) q = q.eq("intent", intent);
     const { data: posts } = await q;
     const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
     const postIds = (posts ?? []).map((p: any) => p.id);
-    const [people, { data: cards }, { data: feedReplies }] = await Promise.all([
+    const [people, { data: cards }, { data: feedReplies }, reactions] = await Promise.all([
       peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
       cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : empty,
       postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : empty,
+      reactionsFor(supabase, "post", postIds, user!.id),
     ]);
-    return { posts, people, cards, feedReplies };
+    return { posts, people, cards, feedReplies, reactions };
   })();
 
   const research = (async () => {
@@ -88,17 +104,28 @@ export default async function Home({
   const qIds = (myQuestions ?? []).map((q: any) => q.id);
   const myPostIds = (myPosts ?? []).map((p: any) => p.id);
 
+  // What people you follow did besides posting, and what happened to your
+  // own work; co-authors here you do not follow yet.
+  const social = Promise.all([
+    feedMode === "following" ? activityOf(supabase, followed, { viewer: user!.id, limit: 12 }) : Promise.resolve([]),
+    activityOnMine(supabase, user!.id),
+    coauthorsOf(supabase, user!.id, me?.orcid, following),
+  ]);
+
   const [
-    { posts, people, cards, feedReplies },
+    { posts, people, cards, feedReplies, reactions },
     { biblio, pubs, change, citations },
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
+    [followActivity, onMine, co],
   ] = await Promise.all([
     feed,
     research,
     requestAtts.length ? supabase.from("post_attachments").select("id, post_id").in("id", requestAtts) : empty,
     qIds.length ? supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds) : empty,
     myPostIds.length ? supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", myPostIds) : empty,
+    social,
   ]);
+  const suggestions = co.members.filter((m) => !m.following).slice(0, 3);
 
   const who = (id: string) => people.get(id);
   const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
@@ -112,7 +139,7 @@ export default async function Home({
 
   const qs = (patch: Record<string, string | undefined>) => {
     const sp = new URLSearchParams();
-    const merged = { intent, room, ...patch };
+    const merged = { feed: feedMode === "following" ? "following" : undefined, intent, room, ...patch };
     Object.entries(merged).forEach(([k, v]) => { if (v) sp.set(k, v); });
     const s = sp.toString();
     return s ? `/home?${s}` : "/home";
@@ -127,7 +154,9 @@ export default async function Home({
   return (
     <Page
       title="Feed"
-      lede="Posts from the rooms you have joined. Every post states what it is, and the two that carry evidence carry a method card."
+      lede={feedMode === "following"
+        ? "Posts, papers, answers and methods from the people you follow, from every room."
+        : "Posts from the rooms you have joined. Every post states what it is, and the two that carry evidence carry a method card."}
       actions={<Link href="/post" style={btnPrimary}>New post</Link>}
     >
       {sync && SYNC_FLASH[sync] && (
@@ -135,6 +164,31 @@ export default async function Home({
       )}
       <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <nav aria-label="Feed" style={{ display: "flex", gap: 0 }}>
+            {([["rooms", "Your rooms"], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => (
+              <Link key={k} href={k === "rooms" ? "/home" : "/home?feed=following"} aria-current={feedMode === k ? "page" : undefined}
+                style={{ flex: 1, textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", color: feedMode === k ? "var(--ink)" : "var(--mute)", borderBottom: feedMode === k ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          {feedMode === "following" && followed.length === 0 && (
+            <Panel>
+              <Empty>
+                You do not follow anyone yet. Follow people from their profile or from the{" "}
+                <Link href="/network" style={{ color: "var(--link)" }}>Network</Link> page; your co-authors are suggested there.
+              </Empty>
+            </Panel>
+          )}
+
+          {feedMode === "following" && followActivity.filter((a) => a.kind !== "post").length > 0 && (
+            <Panel>
+              <PanelHead>Papers, answers and methods</PanelHead>
+              <ActivityList items={followActivity.filter((a) => a.kind !== "post").slice(0, 8)} empty="" />
+            </Panel>
+          )}
+
           {/* Filters sit directly under the composer entry, as designed. */}
           <Panel style={{ padding: 12 }}>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", marginBottom: 9 }}>
@@ -144,16 +198,16 @@ export default async function Home({
                 <Link key={i.id} href={qs({ intent: i.id })} style={pill(intent === i.id)}>{i.label}</Link>
               ))}
             </div>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+            {feedMode === "rooms" && <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
               <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginRight: 4 }}>ROOM</span>
               <Link href={qs({ room: undefined })} style={pill(!room)}>All yours</Link>
               {myRooms.map((r) => (
                 <Link key={r} href={qs({ room: r })} style={pill(room === r)}>#{r}</Link>
               ))}
-            </div>
+            </div>}
           </Panel>
 
-          {(posts?.length ?? 0) === 0 && (
+          {(posts?.length ?? 0) === 0 && (feedMode === "rooms" || followed.length > 0) && (
             <Panel>
               <Empty>
                 Nothing here yet. <Link href="/post" style={{ color: "var(--link)" }}>Post something</Link>, or{" "}
@@ -183,7 +237,7 @@ export default async function Home({
                   <Link href={`/posts/${p.id}`} style={{ font: mono(15, 700, 1.35), color: "var(--ink)", textDecoration: "none" }}>{p.title}</Link>
                   <div style={{ font: mono(11), color: "var(--mute)", marginTop: 6, display: "flex", gap: 7, alignItems: "center" }}>
                     <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={18} />
-                    <span>{author?.display_name ?? "Someone"}{author?.institution ? ` · ${author.institution}` : ""}</span>
+                    <span><PersonLink id={p.author_id}>{author?.display_name ?? "Someone"}</PersonLink>{author?.institution ? ` · ${author.institution}` : ""}</span>
                   </div>
                   {p.body && <p className="sc-prose" style={{ font: "400 13.5px/1.65 var(--sans)", margin: "10px 0 0" }}>{excerpt(p.body, 280)}</p>}
 
@@ -209,8 +263,9 @@ export default async function Home({
                     </div>
                   )}
                 </div>
-                <Link href={`/posts/${p.id}#replies`} style={{ display: "block", padding: "9px 14px", borderTop: "1px solid var(--rule)", font: mono(11, 500), color: "var(--mute)", textDecoration: "none" }}>
-                  {replyCount(p.id) === 0 ? "Reply →" : `${replyCount(p.id)} ${replyCount(p.id) === 1 ? "reply" : "replies"} →`}
+                <Link href={`/posts/${p.id}#replies`} style={{ display: "flex", gap: 12, flexWrap: "wrap", padding: "9px 14px", borderTop: "1px solid var(--rule)", font: mono(11, 500), color: "var(--mute)", textDecoration: "none" }}>
+                  <span>{replyCount(p.id) === 0 ? "Reply →" : `${replyCount(p.id)} ${replyCount(p.id) === 1 ? "reply" : "replies"} →`}</span>
+                  <ReactionCounts summary={reactions.get(p.id)} />
                 </Link>
               </Panel>
             );
@@ -228,6 +283,25 @@ export default async function Home({
             replies={freshReplies.length}
             repliedPost={repliedPosts.length === 1 ? repliedPosts[0] : null}
           />
+          {onMine.length > 0 && (
+            <Panel>
+              <PanelHead>Your work, used by others</PanelHead>
+              <ActivityList items={onMine.slice(0, 5)} empty="" />
+            </Panel>
+          )}
+          {suggestions.length > 0 && (
+            <Panel>
+              <PanelHead>Co-authors on SciCollab</PanelHead>
+              {suggestions.map((m) => (
+                <div key={m.person.id} style={{ display: "flex", alignItems: "center", gap: 9, padding: "9px 14px", borderBottom: "1px solid var(--rule)" }}>
+                  <Avatar name={m.person.display_name} url={m.person.avatar_url} size={24} />
+                  <Link href={`/people/${m.person.id}`} style={{ flex: 1, minWidth: 0, font: mono(12, 500), color: "var(--ink)" }}>{m.person.display_name}</Link>
+                  <FollowButton personId={m.person.id} following={false} compact />
+                </div>
+              ))}
+              <Link href="/network" style={{ display: "block", padding: "9px 14px", font: mono(11, 500), color: "var(--link)" }}>All suggestions and invitations →</Link>
+            </Panel>
+          )}
           <div className="sc-hide-narrow" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
             <PanelHead>Your rooms · {myRooms.length}</PanelHead>

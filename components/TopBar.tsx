@@ -2,15 +2,25 @@
 
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { signOut as serverSignOut } from "@/app/actions/demo-auth";
+import { unseenNotifications } from "@/app/actions/social";
 
 /* Top bar — board [ 003 ]: 56px, wordmark in a 200px well, search to 660px
    with its ⌘K hint, Create, notifications, avatar with a presence dot. */
 
-export default function TopBar({ name = "", avatarUrl = null }: { name?: string; avatarUrl?: string | null }) {
+export default function TopBar({ name = "", avatarUrl = null, userId = "" }: { name?: string; avatarUrl?: string | null; userId?: string }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [unseen, setUnseen] = useState(0);
+
+  // The badge is fetched after the page is shown, so it never slows a page
+  // down; it refreshes on each navigation, and clears on Notifications.
+  useEffect(() => {
+    if (pathname === "/notifications") { setUnseen(0); return; }
+    unseenNotifications().then(setUnseen).catch(() => {});
+  }, [pathname]);
   const [menu, setMenu] = useState(false);
   const [dark, setDark] = useState(false);
 
@@ -105,10 +115,16 @@ export default function TopBar({ name = "", avatarUrl = null }: { name?: string;
         {dark ? "light" : "dark"}
       </button>
 
-      <Link href="/notifications" style={{ position: "relative", display: "flex", alignItems: "center", padding: 6, color: "var(--ink)" }} aria-label="Notifications">
+      <Link href="/notifications" style={{ position: "relative", display: "flex", alignItems: "center", padding: 6, color: "var(--ink)" }} aria-label={unseen ? `Notifications, ${unseen} new` : "Notifications"}>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
           <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M13.7 21a2 2 0 0 1-3.4 0" />
         </svg>
+        {unseen > 0 && (
+          <span aria-hidden="true" style={{
+            position: "absolute", top: 0, right: -2, minWidth: 16, height: 16, padding: "0 4px", borderRadius: 8,
+            background: "var(--signal-fill)", color: "var(--on-signal)", font: "700 10px/16px var(--mono)", textAlign: "center",
+          }}>{unseen > 99 ? "99+" : unseen}</span>
+        )}
       </Link>
 
       <div style={{ position: "relative" }}>
@@ -137,7 +153,9 @@ export default function TopBar({ name = "", avatarUrl = null }: { name?: string;
             <div style={{ padding: "10px 12px", borderBottom: "1px solid var(--rule)" }}>
               <div style={{ font: "500 12px/1.3 var(--mono)" }}>{name || "Signed in"}</div>
             </div>
-            <Link href="/you" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your profile</Link>
+            <Link href={userId ? `/people/${userId}` : "/you"} onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your profile</Link>
+            <Link href="/you" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your record</Link>
+            <Link href="/groups" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your groups</Link>
             <Link href="/you/publications" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your publications</Link>
             <Link href="/requests" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Access requests</Link>
             <Link href="/settings" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Settings</Link>

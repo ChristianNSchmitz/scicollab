@@ -49,8 +49,10 @@ const CACHE_MS = 30_000;
 type Row = Record<string, any>;
 type Client = SupabaseClient<any, "public", any>;
 
-/** Server-side reader. Null when no safe reader exists (a live site without its service key). */
-function reader(): Client | null {
+/** Server-side reader for pages signed-out visitors see. Null when no safe
+ *  reader exists (a live site without its service key). Whoever uses it is
+ *  the only gate: select named columns and filter to what is public. */
+export function publicReader(): Client | null {
   if (!isConfigured()) {
     ensureRecordSeed();                       // the demo store's record tables
     return createDemoClient(null) as unknown as Client;
@@ -208,7 +210,7 @@ const g = globalThis as { __scShowcase?: { at: number; items: ShowItem[] } };
 export async function loadShowcase(): Promise<ShowItem[]> {
   const hit = g.__scShowcase;
   if (hit && Date.now() - hit.at < CACHE_MS) return hit.items;
-  const db = reader();
+  const db = publicReader();
   if (!db) return [];
   try {
     const items = await compute(db);

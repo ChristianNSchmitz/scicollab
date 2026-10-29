@@ -20,6 +20,7 @@ const PRIMARY: Item[] = [
   { href: "/methods",   label: "Methods",  d: "M9 3v6l-5 9a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3l-5-9V3M8 3h8M7.5 14h9" },
   { href: "/projects",  label: "Projects", d: "M3 7a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" },
   { href: "/write",     label: "Write",    d: "M4 20h4l10-10a2.8 2.8 0 0 0-4-4L4 16zM13 6l4 4" },
+  { href: "/groups",    label: "Groups",   d: "M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M21 20a6 6 0 0 0-4-5.6" },
   { href: "/network",   label: "Network",  d: "M12 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM5 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm14 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM10.5 7 6.5 16m7-9 4 9" },
   { href: "/you",       label: "You",      d: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0" },
 ];

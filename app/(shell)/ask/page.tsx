@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { askQuestion } from "@/app/actions/qa";
 import { Page, Panel, PanelHead, Empty, Tag, LimitNotice, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
+import MentionTextarea from "@/components/social/MentionTextarea";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +49,7 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
               </div>
               <div>
                 <label style={fieldLabel} htmlFor="body">What you have tried</label>
-                <textarea id="body" name="body" rows={8} style={field} placeholder="Three biological replicates, two reagent lots, fresh medium each time…" />
+                <MentionTextarea id="body" name="body" rows={8} style={field} placeholder="Three biological replicates, two reagent lots, fresh medium each time… Type @ to ask someone directly." />
               </div>
               <div>
                 <label style={fieldLabel} htmlFor="tags">Tags — comma separated</label>

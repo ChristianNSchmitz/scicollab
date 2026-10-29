@@ -5,6 +5,7 @@ import { startTransition, useActionState, useState, type FormEvent } from "react
 import { createPost, type PostState } from "@/app/actions/posts";
 import { INTENTS, type Intent } from "@/lib/taxonomy";
 import { Panel, PanelHead, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
+import MentionTextarea from "@/components/social/MentionTextarea";
 
 type Room = { id: string; name: string };
 type Card = { id: string; code: string; title: string };
@@ -100,7 +101,7 @@ export default function PostComposer({
           </div>
           <div>
             <label style={fieldLabel} htmlFor="body">Detail</label>
-            <textarea id="body" name="body" rows={6} style={field} placeholder="What you did, what you saw, and what you want from the room." />
+            <MentionTextarea id="body" name="body" rows={6} style={field} placeholder="What you did, what you saw, and what you want from the room. Type @ to mention someone." />
           </div>
           <div>
             <label style={fieldLabel} htmlFor="method_card_id">

@@ -63,7 +63,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
             <Panel>
               <PanelHead>People · {people.length}</PanelHead>
               {people.map((x) => (
-                <Link key={x.id} href={`/messages/${x.id}`} style={{ display: "block", padding: "11px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
+                <Link key={x.id} href={`/people/${x.id}`} style={{ display: "block", padding: "11px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
                   <span style={{ font: mono(12.5, 500) }}>{x.display_name}</span>
                   <span style={{ font: mono(10.5), color: "var(--mute)", marginLeft: 8 }}>{[x.institution, x.field].filter(Boolean).join(" · ")}</span>
                 </Link>

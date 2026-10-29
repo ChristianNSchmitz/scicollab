@@ -4,6 +4,7 @@ import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { recordMentions } from "@/lib/social/mentions";
 
 
 export async function askQuestion(form: FormData) {
@@ -22,6 +23,7 @@ export async function askQuestion(form: FormData) {
     .select("id")
     .single();
   if (error) throw new Error(error.message);
+  await recordMentions(supabase, user.id, "question", data.id, `/questions/${data.id}`, String(form.get("body") ?? ""));
   revalidatePath("/home");
   redirect(`/questions/${data.id}`);
 }
@@ -31,16 +33,21 @@ export async function postAnswer(questionId: string, form: FormData) {
   const body = String(form.get("body") ?? "").trim();
   if (!body) return;
   if (await overLimit(supabase, "answer", user.id)) redirect(`/questions/${questionId}?limited=1`);
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("answers")
-    .insert({ question_id: questionId, author_id: user.id, body });
+    .insert({ question_id: questionId, author_id: user.id, body })
+    .select("id")
+    .single();
   if (error) throw new Error(error.message);
+  await recordMentions(supabase, user.id, "answer", data.id, `/questions/${questionId}`, body);
   revalidatePath(`/questions/${questionId}`);
 }
 
 /** Only the person who asked can accept, and only one answer can hold it. */
 export async function acceptAnswer(questionId: string, answerId: string) {
-  const { supabase } = await requireUser();
+  const { supabase, user } = await requireUser();
+  const { data: q } = await supabase.from("questions").select("author_id").eq("id", questionId).maybeSingle();
+  if (q?.author_id !== user.id) throw new Error("Only the person who asked can accept an answer.");
   await supabase.from("answers").update({ accepted: false }).eq("question_id", questionId);
   await supabase.from("answers").update({ accepted: true }).eq("id", answerId);
   revalidatePath(`/questions/${questionId}`);

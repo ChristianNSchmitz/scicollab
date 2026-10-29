@@ -11,7 +11,9 @@ const START = [
   { href: "/settings#orcid", label: "Link your ORCID", text: "Your publications, citations and h-index are then kept up to date for you." },
   { href: "/methods/new", label: "Record a method", text: "A method card is the core of SciCollab: what you did and what came out, including null results." },
   { href: "/ask", label: "Ask or answer", text: "Questions stay public and findable, so the next person with the same problem finds the answer." },
-  { href: "/network", label: "Find people", text: "See who works on the same techniques and send them a message." },
+  { href: "/network", label: "Follow people", text: "Your co-authors who are here are suggested first. Their posts, papers and answers then appear under Following on Home." },
+  { href: "/groups", label: "Join or start a group", text: "A group is your lab, consortium or journal club: its members, shared projects and what they did lately." },
+  { href: "/settings#privacy", label: "Choose who sees your profile", text: "Members always can; visitors only if you make it public. Type @ and a name to bring someone into a post or answer." },
 ];
 
 const MORE = [

@@ -13,7 +13,21 @@ const PUBLIC = [
   "/about", "/faq", "/terms", "/contact", "/api/captcha",
   // The front page's live "most active" list: public items only (lib/showcase.ts).
   "/api/showcase",
+  // Public profiles and method cards, for visitors (app/open/*).
+  "/open",
 ];
+
+/* A signed-out visitor following a link to a profile or a method card gets
+   the public version at the same address, instead of the sign-in page. The
+   public page itself decides what is public (404 otherwise). */
+const SHAREABLE = /^\/(people|methods)\/([A-Za-z0-9-]{1,64})$/;
+function openVersion(request: NextRequest) {
+  const m = request.nextUrl.pathname.match(SHAREABLE);
+  if (!m || m[2] === "new") return null;
+  const to = request.nextUrl.clone();
+  to.pathname = `/open/${m[1]}/${m[2]}`;
+  return NextResponse.rewrite(to);
+}
 if (process.env.NODE_ENV !== "production" || process.env.SCICOLLAB_OPEN_BOARDS === "1") {
   PUBLIC.push("/boards");
 }
@@ -29,6 +43,7 @@ export async function proxy(request: NextRequest) {
     // Without a backend there is no session to check. In development that
     // should not stand in the way; in production it must not fail open, or a
     // misconfigured deploy silently publishes everything behind the gate.
+    if (!request.cookies.get("sc-demo")) { const open = openVersion(request); if (open) return open; }
     if (process.env.NODE_ENV !== "production" || isPublic) return response;
     const to = request.nextUrl.clone();
     to.pathname = "/login";
@@ -57,6 +72,7 @@ export async function proxy(request: NextRequest) {
   // Pages and actions still confirm the user with getUser() before writing.
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims?.sub ?? null;
+  if (!user) { const open = openVersion(request); if (open) return open; }
   if (!user && !isPublic) {
     const to = request.nextUrl.clone();
     to.pathname = "/login";

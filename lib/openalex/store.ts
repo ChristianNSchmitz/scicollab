@@ -3,7 +3,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { isConfigured } from "@/lib/mode";
 import { tables } from "@/lib/demo/store";
 import { ensureRecordTables } from "@/lib/record/demo-seed";
-import type { OAAuthor, OAWork } from "@/lib/openalex/client";
+import type { CoAuthor, OAAuthor, OAWork } from "@/lib/openalex/client";
 
 /**
  * Where synced OpenAlex data is written. Against a real project this is the
@@ -18,6 +18,8 @@ export type PubRow = {
   first_seen_at: string; updated_at: string;
   /** Citations received in each year (OpenAlex, roughly the last ten years). */
   counts_by_year?: { year: number; cited_by_count: number }[];
+  /** The byline from OpenAlex (supabase/08-social.sql). */
+  authors?: CoAuthor[];
 };
 export type AuthorRow = {
   user_id: string; orcid: string; openalex_id: string; display_name: string; works_count: number;
@@ -105,7 +107,7 @@ export async function writeSync(userId: string, orcid: string, a: OAAuthor, work
 
   const base = (w: OAWork) => ({
     user_id: userId, openalex_id: w.id, doi: w.doi, title: w.title, year: w.year, pub_date: w.pub_date,
-    venue: w.venue, type: w.type, cited_by_count: w.cited_by_count, counts_by_year: w.received, updated_at: now,
+    venue: w.venue, type: w.type, cited_by_count: w.cited_by_count, counts_by_year: w.received, authors: w.authors, updated_at: now,
   });
   const fresh = works.filter((w) => !before.has(w.id)).map((w) => ({ ...base(w), prev_cited_by_count: w.cited_by_count, first_seen_at: now }));
   const known = works.filter((w) => before.has(w.id)).map((w) => ({ ...base(w), prev_cited_by_count: before.get(w.id)!.cited_by_count }));
@@ -197,4 +199,13 @@ export async function lastRuns(userId: string, n: number): Promise<RunRow[]> {
   if (!db) return demo().sync_runs.filter((r) => r.user_id === userId).slice(0, n) as RunRow[];
   const { data } = await db.from("sync_runs").select("*").eq("user_id", userId).order("started_at", { ascending: false }).limit(n);
   return (data ?? []) as RunRow[];
+}
+
+/** Which OpenAlex author is which member, for matching co-authors to people here. */
+export async function memberAuthorIds(): Promise<{ user_id: string; openalex_id: string; orcid: string }[]> {
+  if (unavailable()) return [];
+  const db = admin();
+  if (!db) return demo().openalex_authors.map((a: any) => ({ user_id: a.user_id, openalex_id: a.openalex_id, orcid: a.orcid }));
+  const { data } = await db.from("openalex_authors").select("user_id, openalex_id, orcid");
+  return (data ?? []) as { user_id: string; openalex_id: string; orcid: string }[];
 }

@@ -1,3 +1,4 @@
+import PersonLink from "@/components/social/PersonLink";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -73,7 +74,7 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
             </div>
 
             <div style={{ padding: 14, borderBottom: "1px solid var(--rule)", font: mono(11.5), color: "var(--mute)" }}>
-              {author?.display_name ?? "Unknown"}
+              <PersonLink id={card.author_id}>{author?.display_name ?? "Unknown"}</PersonLink>
               {author?.institution ? ` · ${author.institution}` : ""}
               {parent && (
                 <> · forked from <Link href={`/methods/${parent.id}`} style={{ color: "var(--link)" }}>{parent.code}</Link></>

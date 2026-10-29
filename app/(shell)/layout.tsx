@@ -29,7 +29,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--bg)" }}>
       <DemoNotice />
-      <TopBar name={name} avatarUrl={profile?.avatar_url ?? null} />
+      <TopBar name={name} avatarUrl={profile?.avatar_url ?? null} userId={user.id} />
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
         <Rail />
         <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)", display: "flex", flexDirection: "column" }}>

@@ -1,4 +1,5 @@
-import type { CSSProperties } from "react";
+import Link from "next/link";
+import type { CSSProperties, ReactNode } from "react";
 
 /**
  * User-written text with one piece of structure: fenced code blocks.
@@ -8,6 +9,8 @@ import type { CSSProperties } from "react";
  * indentation it stops being readable, and in Python stops being correct.
  * Everything outside a ``` fence renders exactly as before (plain text,
  * line breaks kept). Nothing is interpreted as HTML: the text stays text.
+ * The one exception: "@Name" of a person the text mentions (stored when it
+ * was saved, lib/social/mentions.ts) links to their profile.
  */
 
 type Part = { code: false; text: string } | { code: true; lang: string; text: string };
@@ -29,8 +32,32 @@ export function splitFences(body: string): Part[] {
     .filter((p) => p.code || p.text.length > 0);
 }
 
-export default function RichText({ body, style, className = "sc-prose" }: {
-  body: string; style?: CSSProperties; className?: string;
+export type Mention = { id: string; name: string };
+
+/** Plain text with each "@Name" of a mentioned person turned into a link. */
+function withMentions(text: string, mentions: Mention[]): ReactNode {
+  if (!mentions.length) return text;
+  const byName = [...mentions].sort((a, b) => b.name.length - a.name.length);
+  const out: ReactNode[] = [];
+  let rest = text, k = 0;
+  while (rest) {
+    const lower = rest.toLowerCase();
+    let best: { at: number; m: Mention } | null = null;
+    for (const m of byName) {
+      const at = lower.indexOf("@" + m.name.toLowerCase());
+      if (at >= 0 && (!best || at < best.at)) best = { at, m };
+    }
+    if (!best) { out.push(rest); break; }
+    if (best.at > 0) out.push(rest.slice(0, best.at));
+    const len = best.m.name.length + 1;
+    out.push(<Link key={k++} href={`/people/${best.m.id}`} style={{ color: "var(--link)", fontWeight: 500 }}>{rest.slice(best.at, best.at + len)}</Link>);
+    rest = rest.slice(best.at + len);
+  }
+  return out;
+}
+
+export default function RichText({ body, style, className = "sc-prose", mentions = [] }: {
+  body: string; style?: CSSProperties; className?: string; mentions?: Mention[];
 }) {
   const parts = splitFences(body ?? "");
   const text: CSSProperties = { font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap", ...style };
@@ -50,7 +77,7 @@ export default function RichText({ body, style, className = "sc-prose" }: {
             <code>{p.text}</code>
           </pre>
         ) : (
-          <p key={i} className={className} style={text}>{p.text}</p>
+          <p key={i} className={className} style={text}>{withMentions(p.text, mentions)}</p>
         )
       )}
     </div>

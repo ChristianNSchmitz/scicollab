@@ -88,6 +88,7 @@ const profile = (
 ) => ({
   id, display_name: name + INVENTED_SUFFIX, institution, role_title, field, techniques,
   orcid, avatar_url: null, email: emailOf(id),
+  bio: "", notifications_seen_at: null, weekly_digest: true, public_profile: false,
   created_at: at(joined),
 });
 
@@ -114,6 +115,16 @@ const profiles = [
   profile("u-newcomer", "Jamie Newcombe",    "", "PhD student", "", [], "2026-10-12 10:30"),
   profile("u-laurent", "Camille Laurent",    "Institut Saône-Rhône des Sciences du Vivant (ISRSV), Lyon", "Head of research operations", "", [], "2026-10-05 10:15"),
 ];
+
+/* A line in their own words, and whether signed-out visitors may see the
+   profile. Only those who wrote a bio said yes. */
+const BIOS: Record<string, string> = {
+  "u-rivera": "Postdoc in Zaragoza. I record every transfection run, including the ones that fail, and I am happy to compare passage data with anyone.",
+  "u-okafor": "Group leader in Dublin. Lipofection, CRISPR and imaging. Looking for a second lab to repeat our passage comparison.",
+  "u-ingrid": "Neurologist and group leader in Lund. iPSC models of Parkinson's disease; methods that outlast the people who wrote them.",
+  "u-mateo": "MSCA fellow in Lund working on mitochondrial bioenergetics in dopaminergic neurons. Seahorse questions welcome.",
+};
+for (const p of profiles) if (BIOS[p.id]) Object.assign(p, { bio: BIOS[p.id], public_profile: true });
 
 // ── rooms joined ──────────────────────────────────────────────────────────
 const ROOMS_JOINED: [string, string, string][] = [
@@ -309,6 +320,48 @@ function cardReads(cards: { id: string; visibility: string; created_at: string }
   return out;
 }
 
+// ── the social layer (supabase/08-social.sql) ────────────────────────────
+/* Who follows whom. Mostly people who already work together or answered
+   each other; nobody follows everyone. */
+const follows = [
+  ["u-rivera", "u-okafor", "2026-09-03 10:00"], ["u-rivera", "u-lindqvist", "2026-09-29 09:00"],
+  ["u-rivera", "u-mateo", "2026-10-15 12:00"],  ["u-okafor", "u-rivera", "2026-09-04 11:20"],
+  ["u-lindqvist", "u-rivera", "2026-09-28 10:00"], ["u-bhatt", "u-rivera", "2026-10-15 19:00"],
+  ["u-newcomer", "u-rivera", "2026-10-13 09:30"], ["u-mateo", "u-ingrid", "2026-08-26 08:00"],
+  ["u-lena", "u-ingrid", "2026-07-27 21:00"],    ["u-ingrid", "u-mateo", "2026-08-27 07:10"],
+  ["u-mateo", "u-jonas", "2026-09-20 21:00"],    ["u-priya", "u-ingrid", "2026-09-09 10:00"],
+].map(([follower_id, followee_id, t]) => ({ follower_id, followee_id, created_at: at(t) }));
+
+const groups = [
+  { id: "gr-ebro", name: "Rivera–Lindqvist bench, EICB", access: "closed", created_by: "u-rivera", created: "2026-09-29 10:00",
+    institution: "Ebro Institute of Cell Biology (EICB), Zaragoza", description: "Transfection, flow cytometry and the incubator log. Two people, one bench, every run recorded." },
+  { id: "gr-lund", name: "Sørlie group, Lund", access: "closed", created_by: "u-ingrid", created: "2026-08-04 08:00",
+    institution: "Öresund University Hospital, Lund", description: "Parkinson's disease cell models: iPSC-derived dopaminergic neurons, lysosomes, mitochondria." },
+  { id: "gr-transfection", name: "Transfection journal club", access: "open", created_by: "u-okafor", created: "2026-09-10 09:00",
+    institution: "", description: "One paper or one failed run every second Thursday. Anyone who transfects anything is welcome." },
+].map(({ created, ...g }) => ({ ...g, created_at: at(created) }));
+
+const group_members = [
+  ["gr-ebro", "u-rivera", "owner", "2026-09-29 10:00"], ["gr-ebro", "u-lindqvist", "member", "2026-09-29 10:05"],
+  ["gr-lund", "u-ingrid", "owner", "2026-08-04 08:00"], ["gr-lund", "u-mateo", "member", "2026-08-26 08:30"],
+  ["gr-transfection", "u-okafor", "owner", "2026-09-10 09:00"], ["gr-transfection", "u-rivera", "member", "2026-09-11 10:00"],
+  ["gr-transfection", "u-bhatt", "member", "2026-09-24 18:00"], ["gr-transfection", "u-lindqvist", "member", "2026-10-01 09:00"],
+].map(([group_id, user_id, role, t]) => ({ group_id, user_id, role, joined_at: at(t) }));
+
+const group_projects = [
+  ["gr-ebro", "p-1", "u-rivera", "2026-09-29 10:10"], ["gr-ebro", "p-2", "u-rivera", "2026-09-29 10:10"],
+  ["gr-lund", "pj-mateo", "u-mateo", "2026-08-28 09:00"], ["gr-lund", "pj-ingrid", "u-ingrid", "2026-08-05 07:00"],
+].map(([group_id, project_id, added_by, t]) => ({ group_id, project_id, added_by, added_at: at(t) }));
+
+const reactions = [
+  ["u-okafor", "post", "p-1", "seen", "2026-09-20 11:00"], ["u-lindqvist", "post", "p-1", "useful", "2026-09-29 09:10"],
+  ["u-mateo", "post", "p-1", "seen", "2026-10-14 12:25"],  ["u-okafor", "post", "p-2", "can_help", "2026-10-17 10:00"],
+  ["u-lindqvist", "post", "p-2", "useful", "2026-10-17 15:00"], ["u-rivera", "post", "p-4", "can_help", "2026-10-18 09:00"],
+  ["u-rivera", "post", "p-3", "useful", "2026-10-15 20:00"],  ["u-ingrid", "post", "pp-stats-mateo", "useful", "2026-10-10 07:00"],
+  ["u-rivera", "answer", "a-1", "useful", "2026-09-22 10:00"], ["u-bhatt", "answer", "a-r1", "useful", "2026-10-15 19:10"],
+  ["u-mateo", "answer", "a-1", "seen", "2026-10-14 12:30"],   ["u-okafor", "answer", "a-r3", "useful", "2026-10-19 11:30"],
+].map(([user_id, target_kind, target_id, kind, t], i) => ({ id: `rx-${i}`, user_id, target_kind, target_id, kind, created_at: at(t) }));
+
 // ── the written content ───────────────────────────────────────────────────
 type Row = Record<string, any>;
 const C = content as unknown as Record<string, Row[]>;
@@ -396,6 +449,10 @@ function build() {
     recommendations: onCard(recommendations),
     mentorships,
     card_reads: cardReads(method_cards),
+    follows, groups, group_members,
+    group_projects: group_projects.filter((g) => projectIds.has(g.project_id)),
+    reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
+    mentions: [],
     citation_snapshots: [], openalex_authors: [], publications: [], sync_runs: [],
   } as unknown as Record<string, Record<string, unknown>[]>;
 }

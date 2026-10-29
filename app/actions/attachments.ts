@@ -143,6 +143,7 @@ export async function pendingFor(postId: string) {
     id: r.id,
     message: r.message as string,
     created_at: r.created_at as string,
+    requester_id: r.requester_id as string,
     who: (people ?? []).find((p: any) => p.id === r.requester_id) ?? { display_name: "Someone", institution: "" },
   }));
 }

@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { decideRequest } from "@/app/actions/attachments";
 import { Page, Panel, PanelHead, Empty, Tag, btn, mono } from "@/components/ui";
 import Avatar from "@/components/Avatar";
+import PersonLink from "@/components/social/PersonLink";
 import { timeAgo } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -60,7 +61,7 @@ export default async function Requests() {
         <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={32} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-            <span style={{ font: mono(12.5, 500) }}>{p?.display_name ?? "Someone"}</span>
+            <span style={{ font: mono(12.5, 500) }}><PersonLink id={p?.id}>{p?.display_name ?? "Someone"}</PersonLink></span>
             {p?.institution && <span style={{ font: mono(10.5), color: "var(--mute)" }}>{p.institution}</span>}
             <span style={{ marginLeft: "auto", font: mono(10.5), color: "var(--mute)" }}>{timeAgo(r.created_at)}</span>
             {r.status !== "pending" && statusTag(r.status)}

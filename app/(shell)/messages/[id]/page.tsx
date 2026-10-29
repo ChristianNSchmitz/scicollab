@@ -62,7 +62,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
     <Page
       title={other.display_name || "Researcher"}
       lede={[other.role_title, other.institution].filter(Boolean).join(" · ") || undefined}
-      actions={<Link href="/messages" style={btn}>All messages</Link>}
+      actions={<div style={{ display: "flex", gap: 8 }}><Link href={`/people/${other.id}`} style={btn}>Profile</Link><Link href="/messages" style={btn}>All messages</Link></div>}
     >
       <LimitNotice show={limited} />
       {problem && (

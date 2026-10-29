@@ -38,7 +38,13 @@ export type OAWork = {
   cited_by_count: number;
   /** Citations this work received in each year (OpenAlex covers roughly the last 14 years). */
   received: { year: number; cited_by_count: number }[];
+  /** Everyone on the byline, at most MAX_AUTHORS; used to suggest co-authors who are members. */
+  authors: CoAuthor[];
 };
+
+export type CoAuthor = { id: string; name: string; orcid: string | null };
+/** Consortium papers list hundreds of names; the first ones are enough to find colleagues. */
+const MAX_AUTHORS = 40;
 
 export class OpenAlexError extends Error {
   constructor(public kind: "not-found" | "rate-limited" | "unreachable", message: string, public retryAfter?: number) {
@@ -115,7 +121,7 @@ export async function fetchWorks(authorId: string): Promise<OAWork[]> {
   while (cursor && out.length < MAX_WORKS) {
     const page: any = await get("/works", {
       filter: `author.id:${authorId}`,
-      select: "id,doi,display_name,publication_year,publication_date,cited_by_count,type,primary_location,counts_by_year",
+      select: "id,doi,display_name,publication_year,publication_date,cited_by_count,type,primary_location,counts_by_year,authorships",
       sort: "publication_date:desc",
       per_page: "200",
       cursor,
@@ -131,6 +137,9 @@ export async function fetchWorks(authorId: string): Promise<OAWork[]> {
         type: w.type ?? "",
         cited_by_count: w.cited_by_count ?? 0,
         received: (w.counts_by_year ?? []).map((c: any) => ({ year: c.year, cited_by_count: c.cited_by_count ?? 0 })),
+        authors: (w.authorships ?? []).slice(0, MAX_AUTHORS).map((a: any) => ({
+          id: short(a.author?.id), name: a.author?.display_name ?? "", orcid: a.author?.orcid ? short(a.author.orcid) : null,
+        })).filter((a: CoAuthor) => a.id),
       });
     }
     cursor = (page.results?.length ?? 0) > 0 ? page.meta?.next_cursor ?? null : null;
