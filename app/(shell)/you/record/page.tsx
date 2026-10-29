@@ -79,13 +79,7 @@ export default async function RecordPage({ searchParams }: {
                 <div style={{ font: mono(10.5), color: a.recent ? "var(--ok)" : "var(--mute)", textAlign: "right", margin: "2px 0 10px" }}>
                   {a.recent ? `+${a.recent}` : "none"} in {weeks} weeks
                 </div>
-                {a.key === "data" ? (
-                  <div style={{ height: 71, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed var(--rule)", font: mono(10.5), color: "var(--mute)" }}>
-                    deposits are not wired yet
-                  </div>
-                ) : (
-                  <WeeklyBars values={a.weekly} weekStarts={weekStarts} unit={a.unit} />
-                )}
+                <WeeklyBars values={a.weekly} weekStarts={weekStarts} unit={a.unit} />
                 <div style={{ marginTop: 10, paddingTop: 8, borderTop: "1px solid var(--rule)" }}>
                   {a.facts.map(([k, v]) => (
                     <div key={k} style={{ display: "flex", justifyContent: "space-between", gap: 8, font: mono(10.5, 400, 1.8), color: "var(--mute)" }}>

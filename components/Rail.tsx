@@ -24,8 +24,10 @@ const PRIMARY: Item[] = [
   { href: "/you",       label: "You",      d: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0" },
 ];
 
+/* The institution console (/institution) is left out until it works: it
+   needs SSO and a tenant model, and every member clicking into a mock-up is a
+   dead end. The page itself still shows the design board. */
 export const SECONDARY: Item[] = [
-  { href: "/institution", label: "Institution", d: "M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6" },
   { href: "/settings",    label: "Settings",    d: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7.5 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3 14.5H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 7.5l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 9.5 3V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.3z" },
   { href: "/help",        label: "Help",        d: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.4 9a2.6 2.6 0 0 1 5 .9c0 1.8-2.6 2.6-2.6 2.6M12 17h.01" },
 ];

@@ -1,11 +1,55 @@
-import Designed from "@/components/Designed";
+import Link from "next/link";
+import { Page, Panel, PanelHead, mono } from "@/components/ui";
+
+/**
+ * Help: how to get going, and where to go when something is unclear. A full
+ * help centre with a support channel (R10 in the coverage audit) does not
+ * exist yet; until it does, questions go through the contact form.
+ */
+const START = [
+  { href: "/rooms", label: "Join rooms", text: "Rooms are where posts appear. Join the ones for your techniques and organisms." },
+  { href: "/settings#orcid", label: "Link your ORCID", text: "Your publications, citations and h-index are then kept up to date for you." },
+  { href: "/methods/new", label: "Record a method", text: "A method card is the core of SciCollab: what you did and what came out, including null results." },
+  { href: "/ask", label: "Ask or answer", text: "Questions stay public and findable, so the next person with the same problem finds the answer." },
+  { href: "/network", label: "Find people", text: "See who works on the same techniques and send them a message." },
+];
+
+const MORE = [
+  { href: "/faq", label: "Frequently asked questions" },
+  { href: "/about", label: "About SciCollab" },
+  { href: "/terms", label: "Terms & conditions" },
+  { href: "/settings#account", label: "Download or delete your data" },
+  { href: "/contact", label: "Contact the team" },
+];
+
 export default function Help() {
   return (
-    <Designed
-      screen="b1-onboarding-checklist-progressive-unlocks"
-      board="B1"
-      title="Help and onboarding"
-      missing="The coverage audit lists R10, a help centre and support channel, as a genuine omission — there is no board for it yet."
-    />
+    <Page title="Help" lede="How to get started, and where to look when something is unclear. Press ⌘K (Ctrl K on Windows) anywhere to search.">
+      <div className="sc-pair" style={{ gap: 14, alignItems: "start" }}>
+        <Panel>
+          <PanelHead>Getting started</PanelHead>
+          {START.map((s, i) => (
+            <Link key={s.href} href={s.href} style={{ display: "flex", gap: 12, padding: "11px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" }}>
+              <span style={{ font: mono(12, 700), color: "var(--signal-ink)" }}>{i + 1}</span>
+              <span>
+                <span style={{ font: mono(12.5, 700) }}>{s.label}</span>
+                <span style={{ display: "block", font: "400 13px/1.55 var(--sans)", color: "var(--mute)", marginTop: 2 }}>{s.text}</span>
+              </span>
+            </Link>
+          ))}
+        </Panel>
+        <Panel>
+          <PanelHead>More help</PanelHead>
+          {MORE.map((m) => (
+            <Link key={m.href} href={m.href} style={{ display: "flex", gap: 8, padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13.5px/1.5 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>
+              <span style={{ color: "var(--signal-ink)" }}>→</span>{m.label}
+            </Link>
+          ))}
+          <p style={{ margin: 0, padding: "10px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
+            Something broken or missing? Tell us through the contact form; there is no help desk yet.
+          </p>
+        </Panel>
+      </div>
+    </Page>
   );
 }

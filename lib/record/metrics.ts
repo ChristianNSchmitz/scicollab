@@ -85,7 +85,7 @@ export async function loadRecord(supabase: Client, me: string, weeks: number): P
     supabase.from("method_cards").select("id, code, title, outcome, visibility, tags, created_at").eq("author_id", me),
     supabase.from("questions").select("id, title, created_at").eq("author_id", me),
     supabase.from("answers").select("id, question_id, accepted, created_at").eq("author_id", me),
-    supabase.from("datasets").select("id, title, created_at").eq("owner_id", me),
+    supabase.from("datasets").select("id, title, project_id, created_at").eq("owner_id", me),
     supabase.from("profiles").select("techniques").eq("id", me).maybeSingle(),
     supabase.from("reproductions").select("id, card_id, outcome, created_at").eq("user_id", me),
     supabase.from("reviews").select("id, card_id, verdict, created_at").eq("reviewer_id", me),
@@ -172,7 +172,7 @@ export async function loadRecord(supabase: Client, me: string, weeks: number): P
       text: `${who(r.user_id)} reproduced ${codeOf(r.card_id)}, ${r.outcome === "held" ? "it held" : "it failed"}`,
       href: `/methods/${r.card_id}`, reuse: true,
     })),
-    ...datasets.map((d): Event => ({ at: d.created_at, axis: "data", text: `Deposited ${d.title}`, href: "/data", reuse: false })),
+    ...datasets.map((d): Event => ({ at: d.created_at, axis: "data", text: `Deposited ${d.title}`, href: d.project_id ? `/projects/${d.project_id}?tab=data` : "/projects", reuse: false })),
   ].sort((a, b) => +new Date(b.at) - +new Date(a.at));
 
   // ── weekly buckets ───────────────────────────────────────────────────────
@@ -200,7 +200,7 @@ export async function loadRecord(supabase: Client, me: string, weeks: number): P
     reviews:      [["cards reviewed", String(uniq(list(myReviews).map((r) => r.card_id)).length)], ["said clear to run", String(list(myReviews).filter((r) => r.verdict === "clear").length)]],
     mentoring:    [["named by them, not you", String(list(mentees).length)], ["visible to", "the two of you"]],
     reuse:        [["forks · questions carrying", `${list(forks).length} · ${list(carried).length}`], ["reproductions held", ofN(heldBy(list(reprosOnMine)), list(reprosOnMine).length)]],
-    data:         [["deposit flow", "designed, not wired"], ["see", "board E1"]],
+    data:         [["in projects", String(uniq(datasets.map((d) => d.project_id).filter(Boolean)).length)], ["deposit from", "a project's Data tab"]],
   };
 
   const axes: AxisSummary[] = AXES.map((a) => {
