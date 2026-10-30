@@ -10,11 +10,12 @@ import { roomById, housesOfRoom, INTENTS, intentById } from "@/lib/taxonomy";
 import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibliometrics";
 import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue } from "@/lib/record/publications";
-import CitationTracker from "@/components/record/CitationTracker";
+import Highlights, { type NewPaper } from "@/components/dashboard/Highlights";
 import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import { followingOf } from "@/lib/social/follows";
-import { activityOf, activityOnMine } from "@/lib/social/activity";
+import { activityOf, activityOnMine, newPapers } from "@/lib/social/activity";
+import { peopleYouMayKnow } from "@/lib/social/contacts";
 import { coauthorsOf } from "@/lib/social/coauthors";
 import { reactionsFor } from "@/lib/social/reactions";
 import ActivityList from "@/components/social/ActivityList";
@@ -133,14 +134,16 @@ export default async function Home({
   const social = Promise.all([
     feedMode === "following" ? activityOf(supabase, followed, { viewer: me_, limit: 12 }) : Promise.resolve([]),
     activityOnMine(supabase, me_),
-    coauthorsOf(supabase, me_, me?.orcid, following),
+    coauthorsOf(supabase, me_, me?.orcid, following)
+      .then((co) => peopleYouMayKnow(supabase, me_, { coauthors: co.members, following, myRooms, limit: 4 })),
+    newPapers(supabase, followed.slice(0, 30), new Date(Date.now() - 30 * 864e5).toISOString()),
   ]);
 
   const [
     { posts, people, cards, feedReplies, reactions, images },
     { biblio, pubs, change, citations },
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
-    [followActivity, onMine, co],
+    [followActivity, onMine, contacts, theirPapers],
     { groups: groupList, joinable },
   ] = await Promise.all([
     feed,
@@ -151,7 +154,17 @@ export default async function Home({
     social,
     groupsPanel,
   ]);
-  const suggestions = co.members.filter((m) => !m.following).slice(0, 3);
+  // New papers: yours from the last syncs, then those of people you follow.
+  const names = await peopleById(supabase, theirPapers.map((p) => p.user));
+  const year = new Date().getFullYear();
+  const mineNew = [
+    ...change.newPubs.map((n) => pubs.find((p) => p.openalex_id === n.openalex_id)).filter(Boolean),
+    ...pubs.filter((p) => Date.now() - +new Date(p.first_seen_at) < 30 * 864e5 && (p.year ?? 0) >= year - 1),
+  ].filter((p, i, all) => all.findIndex((x) => x!.openalex_id === p!.openalex_id) === i) as typeof pubs;
+  const papers: NewPaper[] = [
+    ...mineNew.map((p) => ({ title: p.title, who: null, href: p.doi ? `https://doi.org/${p.doi}` : "/you/publications" })),
+    ...theirPapers.sort((a, b) => b.at.localeCompare(a.at)).map((p) => ({ title: p.title, who: names.get(p.user)?.display_name ?? null, href: p.href })),
+  ];
 
   const who = (id: string) => people.get(id);
   const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
@@ -181,7 +194,7 @@ export default async function Home({
   return (
     <Page
       title="Feed"
-      lede="Your dashboard first: your citations, what is waiting on you and your groups. Then the posts from your topic groups and the people you follow."
+      lede="What is new for you at a glance, then the posts from your topic groups and the people you follow."
       actions={<a href="#compose" style={btnPrimary}>New post</a>}
     >
       {sync && SYNC_FLASH[sync] && (
@@ -189,61 +202,34 @@ export default async function Home({
       )}
 
       {/* ── dashboard ─────────────────────────────────────────────────── */}
+      <Highlights biblio={biblio} change={change} pubs={pubs} papers={papers} contacts={contacts} />
       <section aria-label="Dashboard" className="sc-dash">
-        <CitationTracker biblio={biblio} change={change} c={citations} pubs={pubs} />
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: 0 }}>
-          <AttentionPanel
-            unread={unread ?? 0}
-            requests={(myRequests ?? []).length}
-            requestPost={requestPosts[0] ?? null}
-            answers={freshAnswers.length}
-            answeredQuestion={answeredQ.length === 1 ? answeredQ[0] : null}
-            replies={freshReplies.length}
-            repliedPost={repliedPosts.length === 1 ? repliedPosts[0] : null}
-          />
-          <Panel>
-            <PanelHead>Your groups · {groupList.length}</PanelHead>
-            {groupList.length === 0 ? (
-              <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
-                No groups yet. <Link href="/groups" style={{ color: "var(--link)" }}>Join or start one</Link> for your lab or journal club.
-              </div>
-            ) : groupList.map((g: any) => (
-              <Link key={g.id} href={`/groups/${g.id}`} style={{ display: "flex", gap: 8, padding: "9px 14px", borderBottom: "1px solid var(--rule)", font: mono(12, 500), color: "var(--ink)", textDecoration: "none" }}>
-                <span style={{ flex: 1 }}>{g.name}</span>
-                {joinable.get(g.id) ? <span style={{ color: "var(--signal-ink)" }}>{joinable.get(g.id)} project{joinable.get(g.id)! > 1 ? "s" : ""} to join</span> : null}
-              </Link>
-            ))}
-          </Panel>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: 0 }}>
-          {onMine.length > 0 && (
-            <Panel>
-              <PanelHead>Your work, used by others</PanelHead>
-              <ActivityList items={onMine.slice(0, 4)} empty="" />
-            </Panel>
-          )}
-          {suggestions.length > 0 && (
-            <Panel>
-              <PanelHead>Co-authors on SciCollab</PanelHead>
-              {suggestions.map((m) => (
-                <div key={m.person.id} style={{ display: "flex", alignItems: "center", gap: 9, padding: "9px 14px", borderBottom: "1px solid var(--rule)" }}>
-                  <Avatar name={m.person.display_name} url={m.person.avatar_url} size={24} />
-                  <Link href={`/people/${m.person.id}`} style={{ flex: 1, minWidth: 0, font: mono(12, 500), color: "var(--ink)" }}>{m.person.display_name}</Link>
-                  <FollowButton personId={m.person.id} following={false} compact />
-                </div>
-              ))}
-              <Link href="/network" style={{ display: "block", padding: "9px 14px", font: mono(11, 500), color: "var(--link)" }}>All suggestions and invitations →</Link>
-            </Panel>
-          )}
-          {onMine.length === 0 && suggestions.length === 0 && (
-            <Panel>
-              <PanelHead>Your record</PanelHead>
-              <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
-                When others reproduce or fork your method cards, it shows here. <Link href="/you" style={{ color: "var(--link)" }}>See your record →</Link>
-              </div>
-            </Panel>
-          )}
-        </div>
+        <AttentionPanel
+          unread={unread ?? 0}
+          requests={(myRequests ?? []).length}
+          requestPost={requestPosts[0] ?? null}
+          answers={freshAnswers.length}
+          answeredQuestion={answeredQ.length === 1 ? answeredQ[0] : null}
+          replies={freshReplies.length}
+          repliedPost={repliedPosts.length === 1 ? repliedPosts[0] : null}
+        />
+        <Panel>
+          <PanelHead>Your groups · {groupList.length}</PanelHead>
+          {groupList.length === 0 ? (
+            <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
+              No groups yet. <Link href="/groups" style={{ color: "var(--link)" }}>Join or start one</Link> for your lab or journal club.
+            </div>
+          ) : groupList.map((g: any) => (
+            <Link key={g.id} href={`/groups/${g.id}`} style={{ display: "flex", gap: 8, padding: "9px 14px", borderBottom: "1px solid var(--rule)", font: mono(12, 500), color: "var(--ink)", textDecoration: "none" }}>
+              <span style={{ flex: 1 }}>{g.name}</span>
+              {joinable.get(g.id) ? <span style={{ color: "var(--signal-ink)" }}>{joinable.get(g.id)} project{joinable.get(g.id)! > 1 ? "s" : ""} to join</span> : null}
+            </Link>
+          ))}
+        </Panel>
+        <Panel>
+          <PanelHead>Your work, used by others</PanelHead>
+          <ActivityList items={onMine.slice(0, 2)} empty="When others reproduce or fork your method cards, it shows here." />
+        </Panel>
       </section>
 
       {/* ── feed ──────────────────────────────────────────────────────── */}

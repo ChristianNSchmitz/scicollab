@@ -96,7 +96,7 @@ export async function activityOnMine(supabase: Client, me: string, days = 60): P
 
 /** Publications that are new: first seen recently and published this year
  *  or last, so the first sync of an old record is not reported as news. */
-async function newPapers(supabase: Client, people: string[], since: string) {
+export async function newPapers(supabase: Client, people: string[], since: string) {
   const { data: profiles } = people.length ? await supabase.from("profiles").select("id, orcid").in("id", people) : { data: [] };
   const withOrcid = (profiles ?? []).filter((p: any) => p.orcid);
   const year = new Date().getFullYear();

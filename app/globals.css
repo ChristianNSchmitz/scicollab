@@ -114,6 +114,17 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
    !important for that reason only.
    ───────────────────────────────────────────────────────────────────────── */
 .sc-two-col { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+/* The highlight tiles at the top of the landing page: one big number each. */
+.sc-hl        { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 12px; margin-bottom: 12px; }
+.sc-hl-tile   { display: flex; flex-direction: column; padding: 14px 16px 12px; background: var(--surface); border: 1px solid var(--ink); border-top: 4px solid var(--ink); min-height: 190px; transition: transform .15s ease; }
+.sc-hl-tile:hover { transform: translateY(-2px); }
+.sc-hl-big    { font: 700 44px/1 var(--mono); letter-spacing: -.04em; }
+.sc-hl-foot   { margin-top: 12px; padding-top: 9px; border-top: 1px solid var(--rule); font: 500 11.5px/1 var(--mono); }
+.sc-hl-foot a { color: var(--link); text-decoration: none; }
+.sc-hl-dot    { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); animation: sc-hl-pulse 1.8s ease-in-out infinite; }
+@media (max-width: 760px) { .sc-hl-tile { min-height: 0; padding: 12px 14px 10px; } .sc-hl-big { font-size: 34px; } }
+@keyframes sc-hl-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .sc-hl-dot { animation: none; } .sc-hl-tile { transition: none; } .sc-hl-tile:hover { transform: none; } }
 /* The dashboard on the landing page: three columns on a wide screen, then two, then one. */
 .sc-dash    { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; align-items: start; }
 .sc-pair    { display: grid; grid-template-columns: 1fr 1fr; }
