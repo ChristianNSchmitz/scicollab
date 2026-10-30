@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createGroup } from "@/app/actions/groups";
 import { Page, Panel, PanelHead, Empty, Tag, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
+import TopicGroups from "@/components/social/TopicGroups";
 
 export const dynamic = "force-dynamic";
 
@@ -10,16 +11,23 @@ const FLASH: Record<string, { text: string; error?: boolean }> = {
   "deleted=1":  { text: "The group was deleted." },
 };
 
-/** Groups: labs, consortia, journal clubs. Yours first, then the rest. */
+/**
+ * Groups, of two kinds on one page. People groups (a lab, a consortium, a
+ * journal club) have members, owners and shared projects. Topic groups (one
+ * per technique or shared problem, "rooms" in the code) are where posts are
+ * filed; joining one puts its posts in your feed.
+ */
 export default async function Groups({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const sp = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const [{ data: groups }, { data: members }] = await Promise.all([
+  const [{ data: groups }, { data: members }, { data: rooms }] = await Promise.all([
     supabase.from("groups").select("id, name, description, institution, access, created_at").order("name"),
     supabase.from("group_members").select("group_id, user_id, role"),
+    supabase.from("user_rooms").select("room_id").eq("user_id", user!.id),
   ]);
+  const joinedTopics = new Set((rooms ?? []).map((r: { room_id: string }) => r.room_id));
   const count = (id: string) => (members ?? []).filter((m: any) => m.group_id === id).length;
   const mine = new Map((members ?? []).filter((m: any) => m.user_id === user!.id).map((m: any) => [m.group_id, m.role as string]));
   const yours = (groups ?? []).filter((g: any) => mine.has(g.id));
@@ -44,11 +52,16 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
   );
 
   return (
-    <Page title="Groups" lede="Labs, consortia and journal clubs: the people you actually work with, their members and shared projects in one place. Rooms are for topics; groups are for people.">
+    <Page title="Groups" lede="Two kinds. Your groups are the people you work with, a lab, a consortium or a journal club, with members and shared projects you can join. Topic groups are one per technique or shared problem: join them to see their posts in your feed.">
       {flash && (
         <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
       )}
-      <div className="sc-two-col">
+      <nav aria-label="Group kinds" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+        <a href="#people" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--ink)", color: "var(--ink)" }}>Your groups · {yours.length}</a>
+        <a href="#topics" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Topic groups · {joinedTopics.size} joined</a>
+        <a href="#new" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Start a group</a>
+      </nav>
+      <div id="people" className="sc-two-col" style={{ scrollMarginTop: 72 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
             <PanelHead>Your groups · {yours.length}</PanelHead>
@@ -87,6 +100,13 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
           </form>
         </aside>
       </div>
+      <section id="topics" style={{ scrollMarginTop: 72, marginTop: 26 }}>
+        <h2 style={{ font: mono(15, 700), margin: "0 0 4px" }}>Topic groups</h2>
+        <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 12px", maxWidth: "72ch" }}>
+          Every post is filed in one topic group. A topic group sits under every field it belongs to, because the same method fails the same way in different fields.
+        </p>
+        <TopicGroups joined={joinedTopics} />
+      </section>
     </Page>
   );
 }

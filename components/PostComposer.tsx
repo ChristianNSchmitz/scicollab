@@ -6,6 +6,7 @@ import { createPost, type PostState } from "@/app/actions/posts";
 import { INTENTS, type Intent } from "@/lib/taxonomy";
 import { Panel, PanelHead, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
 import MentionTextarea from "@/components/social/MentionTextarea";
+import ImagePicker from "@/components/feed/ImagePicker";
 
 type Room = { id: string; name: string };
 type Card = { id: string; code: string; title: string };
@@ -86,12 +87,12 @@ export default function PostComposer({
           <div>
             <label style={fieldLabel} htmlFor="room_id">Room</label>
             <select id="room_id" name="room_id" required defaultValue={defaultRoom ?? ""} style={{ ...field, height: 38 }}>
-              <option value="" disabled>Choose a room you have joined</option>
+              <option value="" disabled>Choose a topic group you have joined</option>
               {rooms.map((r) => <option key={r.id} value={r.id}>#{r.id} — {r.name}</option>)}
             </select>
             {rooms.length === 0 && (
               <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--signal-ink)", margin: "6px 0 0" }}>
-                You have not joined any rooms yet. <Link href="/rooms" style={{ color: "var(--link)" }}>Join some first</Link> and this list fills up.
+                You have not joined any topic groups yet. <Link href="/groups#topics" style={{ color: "var(--link)" }}>Join some first</Link> and this list fills up.
               </p>
             )}
           </div>
@@ -101,7 +102,11 @@ export default function PostComposer({
           </div>
           <div>
             <label style={fieldLabel} htmlFor="body">Detail</label>
-            <MentionTextarea id="body" name="body" rows={6} style={field} placeholder="What you did, what you saw, and what you want from the room. Type @ to mention someone." />
+            <MentionTextarea id="body" name="body" rows={6} style={field} placeholder="What you did, what you saw, and what you want from the group. Type @ to mention someone. Paste a link and a preview is added." />
+          </div>
+          <div>
+            <span style={fieldLabel}>Images</span>
+            <ImagePicker />
           </div>
           <div>
             <label style={fieldLabel} htmlFor="method_card_id">
@@ -164,7 +169,7 @@ export default function PostComposer({
                       <input type="radio" name="access" value="on_request" defaultChecked style={{ marginRight: 8 }} />
                       <span style={{ font: mono(12.5, 500) }}>Request access</span>
                       <span style={{ display: "block", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
-                        The room sees what it is — title, kind, size, licence — and has to ask you.
+                        The topic group sees what it is — title, kind, size, licence — and has to ask you.
                         You approve one researcher at a time.
                       </span>
                     </label>
@@ -214,7 +219,7 @@ export default function PostComposer({
       )}
 
       <button type="submit" disabled={pending} style={{ ...btnPrimary, height: 42 }}>
-        {pending ? "Posting…" : "Post to the room"}
+        {pending ? "Posting…" : "Post"}
       </button>
     </form>
   );

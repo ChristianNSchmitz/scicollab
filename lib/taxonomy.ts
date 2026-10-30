@@ -86,13 +86,14 @@ export const isShared = (roomId: string) => (roomById(roomId)?.houses.length ?? 
  * tagging: a tagging chore at the moment of posting is where people give up.
  * Topic comes from the room and from whatever artifact is attached.
  */
-export type Intent = "result" | "data_question" | "general" | "collab";
+export type Intent = "update" | "result" | "data_question" | "general" | "collab";
 
 export const INTENTS: { id: Intent; label: string; hint: string; needsArtifact: boolean }[] = [
   { id: "result",        label: "A result worth sharing",   hint: "Something worked, partly worked, or failed — and the card is attached.", needsArtifact: true },
   { id: "data_question", label: "A question about my data", hint: "You are stuck on your own run and the card comes with the question.",    needsArtifact: true },
   { id: "general",       label: "A general question",       hint: "Grants, mentorship, careers, or how other groups do something.",         needsArtifact: false },
   { id: "collab",        label: "A call for collaborators", hint: "What you need, what you offer, and by when.",                            needsArtifact: false },
+  { id: "update",        label: "News or an update",        hint: "A paper out, a talk, a picture from the bench, a link worth reading.",   needsArtifact: false },
 ];
 
 export const intentById = (id: string) => INTENTS.find((i) => i.id === id) ?? null;

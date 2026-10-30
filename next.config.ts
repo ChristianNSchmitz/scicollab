@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/**": ["./design/screens/**", "./demo-files/**"],
   },
+  /**
+   * A post can carry up to four images. The browser scales each to at most
+   * 1600 px before sending (components/feed/ImagePicker.tsx), so four fit
+   * well under this; Vercel itself refuses request bodies over 4.5 MB.
+   */
+  experimental: {
+    serverActions: { bodySizeLimit: "4mb" },
+  },
 };
 
 export default nextConfig;

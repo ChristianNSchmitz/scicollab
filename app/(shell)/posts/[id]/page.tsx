@@ -12,6 +12,8 @@ import { replyToPost, deleteReply, deletePost } from "@/app/actions/posts";
 import RichText from "@/components/RichText";
 import MentionTextarea from "@/components/social/MentionTextarea";
 import Reactions from "@/components/social/Reactions";
+import { PostImages, LinkCard } from "@/components/feed/PostMedia";
+import { imageUrls } from "@/lib/posts/images";
 import { mentionsIn } from "@/lib/social/mentions";
 import { reactionsFor } from "@/lib/social/reactions";
 
@@ -44,6 +46,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
     mentionsIn(supabase, "reply", (replies ?? []).map((r: any) => r.id)),
     reactionsFor(supabase, "post", [post.id], user!.id),
   ]);
+  const images = await imageUrls(supabase, [post]);
   const replier = (id: string) => repliers.get(id);
 
   const room = roomById(post.room_id);
@@ -73,6 +76,12 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             {post.body && (
               <div style={{ padding: 14 }}>
                 <RichText body={post.body} mentions={postMentions.get(post.id)} />
+              </div>
+            )}
+            {(images.get(post.id) || post.link_preview) && (
+              <div style={{ padding: "0 14px 14px" }}>
+                <PostImages urls={images.get(post.id)} title={post.title} />
+                <LinkCard preview={post.link_preview} />
               </div>
             )}
             <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)" }}>
@@ -189,7 +198,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
           <Panel>
             <div id="replies" style={{ scrollMarginTop: 72 }}><PanelHead>Replies · {replies?.length ?? 0}</PanelHead></div>
             {(replies?.length ?? 0) === 0 ? (
-              <Empty>No replies yet. If you have run into this, say what you saw: the room keeps the answer next to the question.</Empty>
+              <Empty>No replies yet. If you have run into this, say what you saw: the topic group keeps the answer next to the question.</Empty>
             ) : replies!.map((r: any) => {
               const who = replier(r.author_id);
               return (
@@ -220,7 +229,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
 
         <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
-            <PanelHead>Room</PanelHead>
+            <PanelHead>Topic group</PanelHead>
             <div style={{ padding: 14 }}>
               <Link href={`/home?room=${post.room_id}`} style={{ font: mono(13.5, 500), color: "var(--ink)" }}>#{post.room_id}</Link>
               <p style={{ font: "400 13px/1.55 var(--sans)", color: "var(--mute)", margin: "6px 0 10px" }}>{room?.blurb}</p>

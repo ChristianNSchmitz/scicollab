@@ -9,8 +9,10 @@ import type { CSSProperties, ReactNode } from "react";
  * indentation it stops being readable, and in Python stops being correct.
  * Everything outside a ``` fence renders exactly as before (plain text,
  * line breaks kept). Nothing is interpreted as HTML: the text stays text.
- * The one exception: "@Name" of a person the text mentions (stored when it
- * was saved, lib/social/mentions.ts) links to their profile.
+ * Two exceptions: web addresses become links (opening in a new tab, marked
+ * as user content for search engines), and "@Name" of a person the text
+ * mentions (stored when it was saved, lib/social/mentions.ts) links to
+ * their profile.
  */
 
 type Part = { code: false; text: string } | { code: true; lang: string; text: string };
@@ -56,6 +58,27 @@ function withMentions(text: string, mentions: Mention[]): ReactNode {
   return out;
 }
 
+const URL_RE = /\bhttps?:\/\/[^\s<>"']+[^\s<>"'().,;:!?]/gi;
+
+/** Web addresses as links, the text around them with mentions. */
+function linkify(text: string, mentions: Mention[]): ReactNode {
+  const out: ReactNode[] = [];
+  let last = 0;
+  for (const m of text.matchAll(URL_RE)) {
+    const at = m.index ?? 0;
+    if (at > last) out.push(<span key={`t${at}`}>{withMentions(text.slice(last, at), mentions)}</span>);
+    out.push(
+      <a key={`u${at}`} href={m[0]} target="_blank" rel="noopener noreferrer nofollow ugc" style={{ color: "var(--link)", wordBreak: "break-all" }}>
+        {m[0].replace(/^https?:\/\/(www\.)?/, "").slice(0, 60)}{m[0].replace(/^https?:\/\/(www\.)?/, "").length > 60 ? "…" : ""}
+      </a>,
+    );
+    last = at + m[0].length;
+  }
+  if (!out.length) return withMentions(text, mentions);
+  if (last < text.length) out.push(<span key="end">{withMentions(text.slice(last), mentions)}</span>);
+  return out;
+}
+
 export default function RichText({ body, style, className = "sc-prose", mentions = [] }: {
   body: string; style?: CSSProperties; className?: string; mentions?: Mention[];
 }) {
@@ -77,7 +100,7 @@ export default function RichText({ body, style, className = "sc-prose", mentions
             <code>{p.text}</code>
           </pre>
         ) : (
-          <p key={i} className={className} style={text}>{withMentions(p.text, mentions)}</p>
+          <p key={i} className={className} style={text}>{linkify(p.text, mentions)}</p>
         )
       )}
     </div>

@@ -130,7 +130,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
               <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 13.5px/1.8 var(--sans)" }}>
                 <li>Record one method card — including a run that did not work</li>
                 <li>Ask one question</li>
-                <li>Answer someone else&rsquo;s question, or reply to a post in a room</li>
+                <li>Answer someone else&rsquo;s question, or reply to a post in a topic group</li>
               </ul>
               <div style={{ display: "flex", gap: 8 }}>
                 <Link href="/methods/new" style={btnPrimary}>Record a method</Link>

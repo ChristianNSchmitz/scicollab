@@ -116,7 +116,7 @@ export default function ProfileBody({ d, publicView = false, side }: { d: Profil
           )}
           {d.sharedRooms.length > 0 && (
             <Panel>
-              <PanelHead>Rooms you share</PanelHead>
+              <PanelHead>Topic groups you share</PanelHead>
               <div style={{ padding: "10px 14px", display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {d.sharedRooms.map((r) => (
                   <Link key={r.id} href={`/home?room=${r.id}`} style={{ font: mono(12, 500), color: "var(--ink)" }}>#{r.label}</Link>

@@ -6,6 +6,7 @@ import { peopleById } from "@/lib/people";
 import { followingOf } from "@/lib/social/follows";
 import { activityOf } from "@/lib/social/activity";
 import { joinGroup, removeMember, addMember, addGroupProject, removeGroupProject, updateGroup, deleteGroup } from "@/app/actions/groups";
+import { joinProject } from "@/app/actions/projects";
 import { Page, Panel, PanelHead, Empty, Tag, btn, btnPrimary, field, fieldLabel, mono } from "@/components/ui";
 import Avatar from "@/components/Avatar";
 import FollowButton from "@/components/social/FollowButton";
@@ -54,6 +55,7 @@ export default async function Group({ params, searchParams }: { params: Promise<
     activityOf(supabase, memberIds, { viewer: me, limit: 12 }),
     isOwner ? supabase.from("profiles").select("id, display_name, institution").order("display_name").limit(1000) : Promise.resolve({ data: [] as any[] }),
   ]);
+  const onProject = new Set((myProjects ?? []).map((p: any) => p.project_id));
   const shared = (gp ?? []).map((p: any) => ({ ...p, project: (projects ?? []).find((x: any) => x.id === p.project_id) })).filter((p: any) => p.project);
   const addable = (myProjects ?? []).map((p: any) => (projects ?? []).find((x: any) => x.id === p.project_id))
     .filter((p: any) => p && !shared.some((s: any) => s.project_id === p.id));
@@ -103,8 +105,12 @@ export default async function Group({ params, searchParams }: { params: Promise<
                   <Link href={`/projects/${s.project_id}`} style={{ font: mono(13, 600), color: "var(--ink)" }}>{s.project.title}</Link>
                   {s.project.summary && <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{String(s.project.summary).slice(0, 160)}</div>}
                 </div>
+                {myRole && !onProject.has(s.project_id) && (
+                  <form action={joinProject.bind(null, s.project_id)}><button type="submit" style={{ ...small, background: "var(--ink)", color: "var(--bg)" }}>Join project</button></form>
+                )}
+                {onProject.has(s.project_id) && <span style={{ font: mono(10.5), color: "var(--ok)" }}>you are on it</span>}
                 {(s.added_by === me || isOwner) && (
-                  <form action={removeGroupProject.bind(null, id, s.project_id)}><button type="submit" style={small}>Remove</button></form>
+                  <form action={removeGroupProject.bind(null, id, s.project_id)}><button type="submit" style={small}>Unshare</button></form>
                 )}
               </div>
             ))}
@@ -115,6 +121,7 @@ export default async function Group({ params, searchParams }: { params: Promise<
                   {addable.map((p: any) => <option key={p.id} value={p.id}>{p.title}</option>)}
                 </select>
                 <button type="submit" style={btn}>Share with the group</button>
+                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members of the group can then see it and join it.</span>
               </form>
             )}
             {myRole && addable.length === 0 && (myProjects ?? []).length === 0 && (

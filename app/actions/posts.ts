@@ -7,6 +7,8 @@ import { requireUser } from "@/lib/session";
 import { intentById, roomById } from "@/lib/taxonomy";
 import { isRowId } from "@/lib/query";
 import { recordMentions } from "@/lib/social/mentions";
+import { storeImages, removeImages, MAX_IMAGES, IMAGE_TYPES, MAX_IMAGE_BYTES } from "@/lib/posts/images";
+import { firstUrl, linkPreview } from "@/lib/posts/link-preview";
 
 export type PostState = { error: string } | null;
 
@@ -35,6 +37,11 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
 
   const title = text(form, "title", 200);
   if (!title) return { error: "Give the post a title." };
+
+  const images = form.getAll("images").filter((f): f is File => f instanceof File && f.size > 0);
+  if (images.length > MAX_IMAGES) return { error: `At most ${MAX_IMAGES} images per post.` };
+  if (images.some((f) => !IMAGE_TYPES.includes(f.type))) return { error: "Images must be JPEG, PNG or WebP." };
+  if (images.some((f) => f.size > MAX_IMAGE_BYTES)) return { error: "An image is too large even after scaling. Try a smaller one." };
 
   // The intents that exist to carry evidence must carry it, and it must be
   // the author's own card. This keeps the feed anchored to artifacts.
@@ -95,16 +102,31 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
     });
   }
 
-  await recordMentions(supabase, user.id, "post", data.id, `/posts/${data.id}`, `${title}\n${text(form, "body", 10000)}`);
+  // Images and the preview of the first link are added once the post exists:
+  // the image paths include its id, and a slow website must not lose the post.
+  const body = text(form, "body", 10000);
+  const url = firstUrl(body);
+  const [stored, preview] = await Promise.all([
+    images.length ? storeImages(supabase, user.id, data.id, images) : Promise.resolve([]),
+    url ? linkPreview(url).catch(() => null) : Promise.resolve(null),
+  ]);
+  if (stored.length || preview) {
+    await supabase.from("posts").update({ ...(stored.length ? { images: stored } : {}), ...(preview ? { link_preview: preview } : {}) }).eq("id", data.id);
+  }
+
+  await recordMentions(supabase, user.id, "post", data.id, `/posts/${data.id}`, `${title}\n${body}`);
   revalidatePath("/home");
+  // Posted from the feed: stay on the feed, at the new post.
+  if (form.get("return_to") === "feed") redirect(`/home?posted=1#post-${data.id}`);
   redirect(`/posts/${data.id}`);
 }
 
 /** Only the author removes a post; its replies and attachments go with it. */
 export async function deletePost(postId: string) {
   const { supabase, user } = await requireUser();
-  const { data } = await supabase.from("posts").delete().eq("id", postId).eq("author_id", user.id).select("id");
+  const { data } = await supabase.from("posts").delete().eq("id", postId).eq("author_id", user.id).select("id, images");
   if (!data?.length) throw new Error("Only the author can delete this post.");
+  await removeImages(supabase, data[0].images);
   // The demo store has no cascade; the database does this itself.
   await supabase.from("post_replies").delete().eq("post_id", postId);
   revalidatePath("/home");

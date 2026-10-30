@@ -7,7 +7,7 @@ import { Page, Panel, PanelHead, mono } from "@/components/ui";
  * exist yet; until it does, questions go through the contact form.
  */
 const START = [
-  { href: "/rooms", label: "Join rooms", text: "Rooms are where posts appear. Join the ones for your techniques and organisms." },
+  { href: "/groups#topics", label: "Join topic groups", text: "Every post is filed in a topic group. Join the ones for your techniques, and their posts appear in your feed." },
   { href: "/settings#orcid", label: "Link your ORCID", text: "Your publications, citations and h-index are then kept up to date for you." },
   { href: "/methods/new", label: "Record a method", text: "A method card is the core of SciCollab: what you did and what came out, including null results." },
   { href: "/ask", label: "Ask or answer", text: "Questions stay public and findable, so the next person with the same problem finds the answer." },

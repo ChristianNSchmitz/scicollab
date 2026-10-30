@@ -114,6 +114,8 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
    !important for that reason only.
    ───────────────────────────────────────────────────────────────────────── */
 .sc-two-col { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+/* The dashboard on the landing page: three columns on a wide screen, then two, then one. */
+.sc-dash    { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; align-items: start; }
 .sc-pair    { display: grid; grid-template-columns: 1fr 1fr; }
 /* The second cell of a pair divides itself from the first: a rule on its
    left side by side, on its top once the pair stacks. */

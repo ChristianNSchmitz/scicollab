@@ -69,3 +69,37 @@ export async function depositDataset(projectId: string, form: FormData) {
   revalidatePath("/post");
   redirect(`/projects/${projectId}?tab=data`);
 }
+
+/**
+ * Join a project that someone shared with one of your groups. The database
+ * checks the same thing (supabase/09-feed-and-group-projects.sql); this
+ * gives a sentence instead of an error.
+ */
+export async function joinProject(projectId: string) {
+  const { supabase, user } = await requireUser();
+  const { data: shares } = await supabase.from("group_projects").select("group_id").eq("project_id", projectId);
+  const groupIds = (shares ?? []).map((s: { group_id: string }) => s.group_id);
+  const { data: mine } = groupIds.length
+    ? await supabase.from("group_members").select("group_id").eq("user_id", user.id).in("group_id", groupIds)
+    : { data: [] };
+  if (!mine?.length) throw new Error("You can join a project once it is shared with a group you are in.");
+  const { data: already } = await supabase.from("project_members").select("user_id").eq("project_id", projectId).eq("user_id", user.id).maybeSingle();
+  if (!already) {
+    const { error } = await supabase.from("project_members").insert({ project_id: projectId, user_id: user.id, role: "contributor" });
+    if (error) throw new Error(error.message);
+  }
+  revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/projects");
+  revalidatePath("/groups", "layout");
+}
+
+/** Leave a project you joined. The owner stays: a project always has one. */
+export async function leaveProject(projectId: string) {
+  const { supabase, user } = await requireUser();
+  const { data: p } = await supabase.from("projects").select("owner_id").eq("id", projectId).maybeSingle();
+  if (p?.owner_id === user.id) throw new Error("The owner cannot leave their own project.");
+  await supabase.from("project_members").delete().eq("project_id", projectId).eq("user_id", user.id);
+  revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/projects");
+  redirect("/projects");
+}

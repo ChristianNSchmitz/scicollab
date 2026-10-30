@@ -10,14 +10,14 @@ export async function joinRoom(roomId: string) {
   const { supabase, user } = await requireUser();
   if (!roomById(roomId)) return;   // only rooms that exist in the taxonomy
   await supabase.from("user_rooms").insert({ user_id: user.id, room_id: roomId });
-  revalidatePath("/rooms");
+  revalidatePath("/groups");
   revalidatePath("/home");
 }
 
 export async function leaveRoom(roomId: string) {
   const { supabase, user } = await requireUser();
   await supabase.from("user_rooms").delete().eq("user_id", user.id).eq("room_id", roomId);
-  revalidatePath("/rooms");
+  revalidatePath("/groups");
   revalidatePath("/home");
 }
 

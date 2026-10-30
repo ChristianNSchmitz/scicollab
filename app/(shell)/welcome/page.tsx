@@ -25,11 +25,11 @@ export default async function Welcome({ searchParams }: { searchParams: Promise<
   return (
     <Page
       title="Pick your houses"
-      lede="A house is a broad discipline. Choosing one joins you to the rooms inside it, and you can prune or add later. Most researchers pick two or three — the cross-disciplinary rooms are where the useful surprises are."
+      lede="A house is a broad discipline. Choosing one joins you to the topic groups inside it, and you can prune or add later. Most researchers pick two or three — the cross-disciplinary topic groups are where the useful surprises are."
     >
       {error === "none" && (
         <p role="alert" style={{ maxWidth: 900, font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
-          Pick at least one house. Your feed is built from the rooms inside the houses you choose.
+          Pick at least one house. Your feed is built from the topic groups inside the houses you choose.
         </p>
       )}
       <form action={joinHouses} style={{ maxWidth: 900 }}>
@@ -55,7 +55,7 @@ export default async function Welcome({ searchParams }: { searchParams: Promise<
           })}
         </div>
         <button type="submit" style={{ ...btnPrimary, marginTop: 14, height: 42 }}>
-          Join these rooms →
+          Join these topic groups →
         </button>
       </form>
     </Page>

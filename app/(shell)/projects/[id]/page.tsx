@@ -2,7 +2,7 @@ import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { addEntry, depositDataset } from "@/app/actions/projects";
+import { addEntry, depositDataset, joinProject, leaveProject } from "@/app/actions/projects";
 import { Page, Panel, PanelHead, Empty, Tag, Visibility, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo, bytes } from "@/lib/format";
 import Avatar from "@/components/Avatar";
@@ -58,6 +58,18 @@ export default async function Project({
   const people = await peopleById(supabase, [...ids, ...(commits ?? []).map((c: any) => c.author_id)]);
   const nameOf = (uid: string) => people.get(uid)?.display_name ?? "Someone";
 
+  // Shared with a group you are in: you may join it from here.
+  const { data: shares } = await supabase.from("group_projects").select("group_id").eq("project_id", id);
+  const shareIds = (shares ?? []).map((s: { group_id: string }) => s.group_id);
+  const [{ data: myShareGroups }, { data: shareGroups }] = shareIds.length
+    ? await Promise.all([
+        supabase.from("group_members").select("group_id").eq("user_id", user!.id).in("group_id", shareIds),
+        supabase.from("groups").select("id, name").in("id", shareIds),
+      ])
+    : [{ data: [] as any[] }, { data: [] as any[] }];
+  const canJoin = !isMember && (myShareGroups?.length ?? 0) > 0;
+  const isOwner = p.owner_id === user?.id;
+
   const counts: Record<Tab, number> = {
     notebook: entries?.length ?? 0,
     data: datasets?.length ?? 0,
@@ -65,7 +77,21 @@ export default async function Project({
   };
 
   return (
-    <Page title={p.title} lede={p.summary || undefined}>
+    <Page
+      title={p.title}
+      lede={p.summary || undefined}
+      actions={canJoin ? (
+        <form action={joinProject.bind(null, p.id)}><button type="submit" style={btnPrimary}>Join this project</button></form>
+      ) : isMember && !isOwner ? (
+        <form action={leaveProject.bind(null, p.id)}><button type="submit" style={btn}>Leave project</button></form>
+      ) : undefined}
+    >
+      {canJoin && (
+        <p style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 14px", padding: "10px 12px", border: "1px solid var(--signal)", background: "var(--surface)" }}>
+          Shared with {(shareGroups ?? []).filter((g: any) => (myShareGroups ?? []).some((m: any) => m.group_id === g.id)).map((g: any) => g.name).join(", ")}.
+          Join to read and add to its notebook, data and code.
+        </p>
+      )}
       {/* The three ways into a project. */}
       <nav
         aria-label="Project sections"
@@ -248,13 +274,21 @@ export default async function Project({
             </div>
           </Panel>
 
+          {(shareGroups?.length ?? 0) > 0 && (
+            <Panel>
+              <PanelHead>Shared with</PanelHead>
+              <div style={{ padding: "10px 14px", display: "flex", flexDirection: "column", gap: 6 }}>
+                {shareGroups!.map((g: any) => <Link key={g.id} href={`/groups/${g.id}`} style={{ font: mono(12, 500), color: "var(--ink)" }}>{g.name}</Link>)}
+              </div>
+            </Panel>
+          )}
           <Panel>
             <PanelHead>People · {members?.length ?? 0}</PanelHead>
             <div style={{ padding: 14, font: mono(12, 400, 1.8), display: "flex", flexDirection: "column", gap: 6 }}>
               {(members ?? []).map((m: any) => (
                 <div key={m.user_id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <Avatar name={nameOf(m.user_id)} url={people.get(m.user_id)?.avatar_url} size={22} />
-                  <span>{nameOf(m.user_id)} <span style={{ color: "var(--mute)" }}>· {m.role}</span></span>
+                  <span><Link href={`/people/${m.user_id}`} style={{ color: "var(--ink)" }}>{nameOf(m.user_id)}</Link> <span style={{ color: "var(--mute)" }}>· {m.role}</span></span>
                 </div>
               ))}
             </div>

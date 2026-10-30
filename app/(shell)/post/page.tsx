@@ -40,7 +40,7 @@ export default async function Compose({
     .map((r) => ({ id: r!.id, name: r!.name }));
 
   return (
-    <Page title="New post" lede="Pick what kind of post this is. It decides how the room can filter it, and whether it has to carry evidence.">
+    <Page title="New post" lede="Pick what kind of post this is. It decides how the topic group can filter it, and whether it has to carry evidence.">
       <PostComposer
         rooms={rooms}
         cards={(cards ?? []) as { id: string; code: string; title: string }[]}
