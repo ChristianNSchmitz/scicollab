@@ -4,13 +4,13 @@ import Avatar from "@/components/Avatar";
 import PersonLink from "@/components/social/PersonLink";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Page, Panel, PanelHead, Empty, Outcome, Tag, btn, btnPrimary, mono } from "@/components/ui";
+import { Panel, PanelHead, Empty, Outcome, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import { roomById, housesOfRoom, INTENTS, intentById } from "@/lib/taxonomy";
 import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibliometrics";
 import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue } from "@/lib/record/publications";
-import Highlights, { type NewPaper } from "@/components/dashboard/Highlights";
+import Highlights, { type NewPaper, type Nudge } from "@/components/dashboard/Highlights";
 import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import { followingOf } from "@/lib/social/follows";
@@ -27,6 +27,9 @@ import RichText from "@/components/RichText";
 import { imageUrls } from "@/lib/posts/images";
 
 export const dynamic = "force-dynamic";
+
+/** Short names for the filter pills; the full name is the tooltip. */
+const SHORT: Record<string, string> = { result: "Results", data_question: "Data questions", general: "Questions", collab: "Collaborators", update: "News" };
 
 const INTENT_COLOUR: Record<string, string> = {
   result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal-ink)", update: "var(--ink)",
@@ -191,49 +194,30 @@ export default async function Home({
     color: active ? "var(--bg)" : "var(--ink)", textDecoration: "none", whiteSpace: "nowrap",
   });
 
+  // What is waiting on you, as one row of chips under the tiles.
+  const nudges = [
+    unread ? { href: "/messages", text: `${unread} unread message${unread > 1 ? "s" : ""}` } : null,
+    (myRequests ?? []).length ? { href: (myRequests ?? []).length === 1 && requestPosts[0] ? `/posts/${requestPosts[0]}` : "/requests", text: `${(myRequests ?? []).length} data request${(myRequests ?? []).length > 1 ? "s" : ""} to decide` } : null,
+    freshReplies.length ? { href: repliedPosts.length === 1 ? `/posts/${repliedPosts[0]}#replies` : "/notifications", text: `${freshReplies.length} new repl${freshReplies.length > 1 ? "ies" : "y"} to your posts` } : null,
+    freshAnswers.length ? { href: answeredQ.length === 1 ? `/questions/${answeredQ[0]}` : "/notifications", text: `${freshAnswers.length} new answer${freshAnswers.length > 1 ? "s" : ""} to your questions` } : null,
+    ...groupList.filter((g: any) => joinable.get(g.id)).map((g: any) => ({ href: `/groups/${g.id}`, text: `${g.name}: ${joinable.get(g.id)} project${joinable.get(g.id)! > 1 ? "s" : ""} to join` })),
+    onMine.length ? { href: "/you/record", text: `${onMine.length} reproduction${onMine.length > 1 ? "s and forks" : " or fork"} of your work` } : null,
+  ].filter(Boolean) as Nudge[];
+
+  // No page heading: the dashboard is the top of the page, and the feed
+  // starts right under it, on the first screen.
   return (
-    <Page
-      title="Feed"
-      lede="What is new for you at a glance, then the posts from your topic groups and the people you follow."
-      actions={<a href="#compose" style={btnPrimary}>New post</a>}
-    >
+    <div style={{ padding: "18px 16px 64px" }}>
+      <div style={{ maxWidth: "var(--content-max)", margin: "0 auto" }}>
+      <h1 className="sr-only">Feed</h1>
       {sync && SYNC_FLASH[sync] && (
         <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sync]}</p>
       )}
 
-      {/* ── dashboard ─────────────────────────────────────────────────── */}
-      <Highlights biblio={biblio} change={change} pubs={pubs} papers={papers} contacts={contacts} />
-      <section aria-label="Dashboard" className="sc-dash">
-        <AttentionPanel
-          unread={unread ?? 0}
-          requests={(myRequests ?? []).length}
-          requestPost={requestPosts[0] ?? null}
-          answers={freshAnswers.length}
-          answeredQuestion={answeredQ.length === 1 ? answeredQ[0] : null}
-          replies={freshReplies.length}
-          repliedPost={repliedPosts.length === 1 ? repliedPosts[0] : null}
-        />
-        <Panel>
-          <PanelHead>Your groups · {groupList.length}</PanelHead>
-          {groupList.length === 0 ? (
-            <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
-              No groups yet. <Link href="/groups" style={{ color: "var(--link)" }}>Join or start one</Link> for your lab or journal club.
-            </div>
-          ) : groupList.map((g: any) => (
-            <Link key={g.id} href={`/groups/${g.id}`} style={{ display: "flex", gap: 8, padding: "9px 14px", borderBottom: "1px solid var(--rule)", font: mono(12, 500), color: "var(--ink)", textDecoration: "none" }}>
-              <span style={{ flex: 1 }}>{g.name}</span>
-              {joinable.get(g.id) ? <span style={{ color: "var(--signal-ink)" }}>{joinable.get(g.id)} project{joinable.get(g.id)! > 1 ? "s" : ""} to join</span> : null}
-            </Link>
-          ))}
-        </Panel>
-        <Panel>
-          <PanelHead>Your work, used by others</PanelHead>
-          <ActivityList items={onMine.slice(0, 2)} empty="When others reproduce or fork your method cards, it shows here." />
-        </Panel>
-      </section>
+      <Highlights biblio={biblio} change={change} pubs={pubs} papers={papers} contacts={contacts} nudges={nudges} />
 
       {/* ── feed ──────────────────────────────────────────────────────── */}
-      <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "26px auto 0", display: "flex", flexDirection: "column", gap: 12, scrollMarginTop: 72 }}>
+      <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12, scrollMarginTop: 72 }}>
         {posted && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Posted.</p>}
         <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} />
 
@@ -263,21 +247,21 @@ export default async function Home({
         )}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+          <div className="sc-filter" role="group" aria-label="Kind of post">
             <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginRight: 4 }}>KIND</span>
             <Link href={qs({ intent: undefined })} style={pill(!intent)}>All</Link>
             {INTENTS.map((i) => (
-              <Link key={i.id} href={qs({ intent: i.id })} style={pill(intent === i.id)}>{i.label}</Link>
+              <Link key={i.id} href={qs({ intent: i.id })} style={pill(intent === i.id)} title={i.label}>{SHORT[i.id] ?? i.label}</Link>
             ))}
           </div>
           {feedMode === "topics" && (
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+            <div className="sc-filter" role="group" aria-label="Topic group">
               <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginRight: 4 }}>TOPIC</span>
               <Link href={qs({ room: undefined })} style={pill(!room)}>All yours</Link>
               {myRooms.map((r) => (
                 <Link key={r} href={qs({ room: r })} style={pill(room === r)}>#{r}</Link>
               ))}
-              <Link href="/groups#topics" style={{ font: mono(11, 500), color: "var(--link)", marginLeft: 4 }}>more topic groups →</Link>
+              <Link href="/groups#topics" style={{ font: mono(11, 500), color: "var(--link)", marginLeft: 4, whiteSpace: "nowrap" }}>more →</Link>
             </div>
           )}
         </div>
@@ -353,32 +337,8 @@ export default async function Home({
           );
         })}
       </section>
-    </Page>
-  );
-}
-
-/** Only what is waiting on you, each with the way to deal with it. */
-function AttentionPanel({ unread, requests, requestPost, answers, answeredQuestion, replies, repliedPost }: {
-  unread: number; requests: number; requestPost: string | null; answers: number; answeredQuestion: string | null;
-  replies: number; repliedPost: string | null;
-}) {
-  const items = [
-    unread > 0 && { href: "/messages", text: `${unread} unread message${unread > 1 ? "s" : ""}` },
-    requests > 0 && { href: requests === 1 && requestPost ? `/posts/${requestPost}` : "/requests", text: `${requests} data access request${requests > 1 ? "s" : ""} to decide` },
-    replies > 0 && { href: repliedPost ? `/posts/${repliedPost}#replies` : "/home", text: `${replies} new ${replies === 1 ? "reply" : "replies"} to your posts this week` },
-    answers > 0 && { href: answeredQuestion ? `/questions/${answeredQuestion}` : "/ask#questions", text: `${answers} new answer${answers > 1 ? "s" : ""} to your questions this week` },
-  ].filter(Boolean) as { href: string; text: string }[];
-  return (
-    <Panel>
-      <PanelHead>Waiting on you</PanelHead>
-      {items.length === 0 ? (
-        <div style={{ padding: 14, font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>Nothing right now.</div>
-      ) : items.map((i) => (
-        <Link key={i.text} href={i.href} style={{ display: "flex", gap: 8, padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13.5px/1.5 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>
-          <span style={{ color: "var(--signal-ink)" }}>→</span>{i.text}
-        </Link>
-      ))}
-    </Panel>
+      </div>
+    </div>
   );
 }
 

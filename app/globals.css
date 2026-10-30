@@ -114,17 +114,38 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
    !important for that reason only.
    ───────────────────────────────────────────────────────────────────────── */
 .sc-two-col { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
-/* The highlight tiles at the top of the landing page: one big number each. */
-.sc-hl        { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 12px; margin-bottom: 12px; }
-.sc-hl-tile   { display: flex; flex-direction: column; padding: 14px 16px 12px; background: var(--surface); border: 1px solid var(--ink); border-top: 4px solid var(--ink); min-height: 190px; transition: transform .15s ease; }
-.sc-hl-tile:hover { transform: translateY(-2px); }
-.sc-hl-big    { font: 700 44px/1 var(--mono); letter-spacing: -.04em; }
-.sc-hl-foot   { margin-top: 12px; padding-top: 9px; border-top: 1px solid var(--rule); font: 500 11.5px/1 var(--mono); }
-.sc-hl-foot a { color: var(--link); text-decoration: none; }
-.sc-hl-dot    { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); animation: sc-hl-pulse 1.8s ease-in-out infinite; }
-@media (max-width: 760px) { .sc-hl-tile { min-height: 0; padding: 12px 14px 10px; } .sc-hl-big { font-size: 34px; } }
+/* The dashboard band on top of the feed: three slim tiles, then a row of chips. */
+.sc-hl        { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.sc-hl-tile   { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--ink); min-width: 0; transition: border-color .15s ease; }
+.sc-hl-tile:hover { border-color: var(--ink); }
+.sc-hl-main   { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; color: var(--ink); text-decoration: none; }
+.sc-hl-kicker { display: flex; align-items: center; gap: 6px; font: 700 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+.sc-hl-num    { display: flex; align-items: baseline; gap: 6px; }
+.sc-hl-big    { font: 700 28px/1 var(--mono); letter-spacing: -.04em; }
+.sc-hl-unit   { font: 400 12px/1.2 var(--sans); color: var(--mute); }
+.sc-hl-detail { font: 400 12px/1.35 var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-hl-aside  { flex: none; }
+.sc-hl-dot    { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); animation: sc-hl-pulse 1.8s ease-in-out infinite; }
+.sc-chips     { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.sc-chip      { font: 500 11.5px/1 var(--mono); padding: 7px 10px; border: 1px solid var(--signal); color: var(--ink); background: var(--surface); text-decoration: none; white-space: nowrap; }
+.sc-chip:hover { background: var(--bg); }
+.sc-filter    { display: flex; gap: 6px; align-items: center; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.sc-filter > * { flex: none; }
+.sc-short     { display: none; }
+.sr-only      { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* Phone: three numbers side by side, no detail lines; chips scroll sideways. */
+@media (max-width: 760px) {
+  .sc-hl         { gap: 6px; }
+  .sc-hl-tile    { padding: 8px 9px; border-top-width: 2px; }
+  .sc-hl-detail, .sc-hl-aside, .sc-hl-unit, .sc-long { display: none; }
+  .sc-short      { display: inline; }
+  .sc-filter     { margin-right: -16px; padding-right: 16px; }
+  .sc-hl-kicker  { font-size: 9px; letter-spacing: .06em; white-space: nowrap; overflow: hidden; }
+  .sc-hl-big     { font-size: 22px; }
+  .sc-chips      { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; }
+}
 @keyframes sc-hl-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
-@media (prefers-reduced-motion: reduce) { .sc-hl-dot { animation: none; } .sc-hl-tile { transition: none; } .sc-hl-tile:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sc-hl-dot { animation: none; } }
 /* The dashboard on the landing page: three columns on a wide screen, then two, then one. */
 .sc-dash    { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; align-items: start; }
 .sc-pair    { display: grid; grid-template-columns: 1fr 1fr; }
