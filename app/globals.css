@@ -246,8 +246,9 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   PROTOTYPE · "glass" look (html[data-look="glass"], switched in the account
-   menu or with ?look=glass). A preview of a softer, Apple-like redesign:
+   THE GLASS LOOK — the default (html[data-look="glass"], set in
+   app/layout.tsx; "Switch to classic look" in the account menu, or
+   ?look=classic, brings back the square monospace one). Softer, Apple-like:
    - glass (blur + translucency + a light edge) only on what floats over
      content: the top bar, the phone tab bar, the chat dock, menus;
    - content stays on near-solid cards, because text on glass reads worse;
@@ -258,6 +259,11 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
    ───────────────────────────────────────────────────────────────────────── */
 html[data-look="glass"] {
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-sans), system-ui, sans-serif;
+  /* Labels, codes and numbers that were monospaced take the system font too;
+     only real code (code blocks, the file viewer) stays monospaced. */
+  --mono: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-sans), system-ui, sans-serif;
+  --code: ui-monospace, "SF Mono", var(--font-mono), Menlo, monospace;
+  --canvas: transparent;
   --bg: #F4F3F7;            /* still the colour of text on dark buttons; the page itself shows the colour field */
   --surface: rgba(255, 255, 255, .82);
   --rule: rgba(60, 60, 67, .12);
@@ -364,6 +370,60 @@ html[data-look="glass"] .sc-top-search { border-radius: 12px !important; backgro
 html[data-look="glass"] .sc-avatar { border-radius: 50% !important; border-color: transparent !important; box-shadow: 0 0 0 1px var(--rule); }
 html[data-look="glass"] .sc-prose, html[data-look="glass"] article a[href^="/posts/"] { font-family: var(--sans) !important; }
 html[data-look="glass"] article a[href^="/posts/"] { font-weight: 650 !important; letter-spacing: -.01em; }
+
+/* Link-styled buttons (Analytics, Profile, Message…) round like real buttons. */
+html[data-look="glass"] a[style*="border:1px solid var(--ink)"],
+html[data-look="glass"] a[style*="border:1px solid var(--signal-fill)"],
+html[data-look="glass"] a[style*="border: 1px solid var(--ink)"],
+html[data-look="glass"] a[style*="border: 1px solid var(--signal-fill)"],
+html[data-look="glass"] label[style*="border:1px solid var(--ink)"] { border-radius: 999px !important; }
+
+/* The footer: quiet small print on the page, not a black bar. */
+html[data-look="glass"] .sc-footer { background: transparent !important; border-top: 1px solid var(--rule) !important; color: var(--mute) !important; letter-spacing: 0 !important; }
+html[data-look="glass"] .sc-footer a, html[data-look="glass"] .sc-footer a span:not([style*="#FF5A14"]) { color: var(--ink) !important; }
+
+/* Real code stays monospaced. */
+html[data-look="glass"] pre, html[data-look="glass"] pre *, html[data-look="glass"] code { font-family: var(--code) !important; }
+html[data-look="glass"] .sc-hl-big { font-variant-numeric: tabular-nums; }
+
+/* Page titles: large and quiet, no rule under them. */
+html[data-look="glass"] .sc-page-head { border-bottom: 0 !important; padding-bottom: 4px !important; }
+html[data-look="glass"] .sc-title { font: 700 28px/1.15 var(--sans) !important; letter-spacing: -.025em !important; }
+
+/* Badges (outcome, visibility, kind of post, tags): soft capsules. */
+html[data-look="glass"] .sc-badge {
+  border-radius: 999px; padding: 3px 9px !important; letter-spacing: .02em !important;
+  font-weight: 600 !important; background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+/* Segmented control, as in iOS: the feed's "Your topic groups / Following". */
+html[data-look="glass"] .sc-seg { background: rgba(118, 118, 128, .12); border-radius: 12px; padding: 3px; gap: 3px !important; }
+html[data-look="glass"] .sc-seg a {
+  border: 0 !important; border-radius: 9px; padding: 7px 12px !important;
+  font: 600 13px/1.2 var(--sans) !important; color: var(--mute) !important;
+}
+html[data-look="glass"] .sc-seg a[aria-current="page"] { background: var(--surface); color: var(--ink) !important; box-shadow: 0 1px 3px rgba(0, 0, 0, .10), 0 1px 1px rgba(0, 0, 0, .04); }
+
+html[data-look="glass"][data-theme="dark"] .sc-seg a[aria-current="page"] { background: rgba(255, 255, 255, .16); }
+
+/* Inputs: filled, borderless until focused. */
+html[data-look="glass"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+html[data-look="glass"] select, html[data-look="glass"] textarea {
+  background: rgba(118, 118, 128, .10) !important; border-color: transparent !important;
+}
+html[data-look="glass"] input:focus-visible, html[data-look="glass"] select:focus-visible, html[data-look="glass"] textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--signal) 35%, transparent); outline-offset: 0; background: var(--surface) !important;
+}
+
+/* Public pages and sign-in: the same glass header and soft cards. */
+html[data-look="glass"] .sc-public-head {
+  position: sticky; top: 0; z-index: 30; background: var(--glass) !important; border-bottom: 1px solid var(--rule) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
+}
+html[data-look="glass"] .sc-public-card,
+html[data-look="glass"] .sc-auth-card {
+  border-radius: 22px; border: 1px solid var(--glass-edge) !important; box-shadow: var(--card-shadow);
+}
 
 /* Phone: a floating glass tab bar, like iOS. */
 @media (max-width: 760px) {

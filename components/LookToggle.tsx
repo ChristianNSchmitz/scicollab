@@ -3,10 +3,9 @@
 import { useEffect, useState, type CSSProperties } from "react";
 
 /**
- * Switches the prototype "glass" look on and off for this browser. It is a
- * preview of a possible redesign (app/globals.css, data-look="glass"), so
- * it is stored locally and nobody else sees the choice. ?look=glass or
- * ?look=classic in any address does the same.
+ * Switches between the glass look (the default, app/globals.css,
+ * data-look="glass") and the classic square, monospace look, for this
+ * browser only. ?look=glass or ?look=classic in any address does the same.
  */
 export default function LookToggle({ style }: { style?: CSSProperties }) {
   const [glass, setGlass] = useState(false);
@@ -25,7 +24,7 @@ export default function LookToggle({ style }: { style?: CSSProperties }) {
       }}
       style={style}
     >
-      Glass look (prototype): {glass ? "on" : "off"}
+      {glass ? "Switch to classic look" : "Switch to glass look"}
     </button>
   );
 }

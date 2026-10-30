@@ -134,10 +134,10 @@ export default function ProfileBody({ d, publicView = false, side }: { d: Profil
 export function ProfileHead({ d, actions }: { d: ProfileData; actions?: ReactNode }) {
   const p = d.person;
   return (
-    <header style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16, marginBottom: 18, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
+    <header className="sc-page-head" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16, marginBottom: 18, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
       <Avatar name={p.display_name} url={p.avatar_url} size={64} />
       <div style={{ flex: "1 1 240px", minWidth: 0 }}>
-        <h1 style={{ font: mono(20, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{p.display_name || "Researcher"}</h1>
+        <h1 className="sc-title" style={{ font: mono(20, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{p.display_name || "Researcher"}</h1>
         <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "5px 0 0" }}>
           {[p.role_title, p.institution, p.field].filter(Boolean).join(" · ") || "No role or institution given yet."}
         </p>

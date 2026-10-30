@@ -221,7 +221,7 @@ export default async function Home({
         {posted && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Posted.</p>}
         <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} />
 
-        <nav aria-label="Which posts" style={{ display: "flex", gap: 0 }}>
+        <nav aria-label="Which posts" className="sc-seg" style={{ display: "flex", gap: 0 }}>
           {([["topics", "Your topic groups"], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => (
             <Link key={k} href={k === "topics" ? "/home#feed" : "/home?feed=following#feed"} aria-current={feedMode === k ? "page" : undefined}
               style={{ flex: 1, textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", color: feedMode === k ? "var(--ink)" : "var(--mute)", borderBottom: feedMode === k ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
@@ -291,7 +291,7 @@ export default async function Home({
                     </div>
                   </div>
                   <span style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                    <span style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: INTENT_COLOUR[p.intent] ?? "var(--mute)", border: `1px solid ${INTENT_COLOUR[p.intent] ?? "var(--rule)"}`, padding: "3px 7px" }}>
+                    <span className="sc-badge" style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: INTENT_COLOUR[p.intent] ?? "var(--mute)", border: `1px solid ${INTENT_COLOUR[p.intent] ?? "var(--rule)"}`, padding: "3px 7px" }}>
                       {(spec?.label ?? p.intent).toUpperCase()}
                     </span>
                     <Link href={qs({ room: p.room_id, feed: undefined })} title={housesOfRoom(p.room_id).length > 1 ? `shared across ${housesOfRoom(p.room_id).length} fields` : roomById(p.room_id)?.name} style={{ font: mono(11, 500), color: "var(--ink)" }}>#{p.room_id}</Link>

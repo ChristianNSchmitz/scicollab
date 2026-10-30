@@ -29,7 +29,7 @@ export default function SiteFooter({ width, clearDock = false }: {
 }) {
   return (
     <footer
-      className={clearDock ? "sc-footer-dock" : undefined}
+      className={clearDock ? "sc-footer sc-footer-dock" : "sc-footer"}
       style={{
         width: width ?? "100%", maxWidth: "100%", margin: "0 auto",
         background: "#0D0D0D", color: "#8E8B85",

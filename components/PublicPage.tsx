@@ -12,7 +12,7 @@ export default function PublicPage({ eyebrow, title, lede, children }: {
 }) {
   return (
     <div style={{ minHeight: "100vh", background: "var(--canvas)", display: "flex", flexDirection: "column" }}>
-      <header style={{ background: "var(--bg)", borderBottom: "1px solid var(--ink)" }}>
+      <header className="sc-public-head" style={{ background: "var(--bg)", borderBottom: "1px solid var(--ink)" }}>
         <div style={{ maxWidth: 880, margin: "0 auto", height: 60, padding: "0 16px", display: "flex", alignItems: "center", gap: 22 }}>
           <Link href="/" aria-label="SciCollab home" style={{ display: "inline-flex", alignItems: "flex-end", color: "var(--ink)" }}>
             <span style={{ position: "relative", font: "700 17px/1 var(--mono)", letterSpacing: "-.03em" }}>
@@ -36,7 +36,7 @@ export default function PublicPage({ eyebrow, title, lede, children }: {
       </header>
 
       <main style={{ flex: 1, padding: "28px 16px 56px" }}>
-        <article style={{ maxWidth: 880, margin: "0 auto", background: "var(--surface)", border: "1px solid var(--ink)", padding: "clamp(20px, 4vw, 40px)" }}>
+        <article className="sc-public-card" style={{ maxWidth: 880, margin: "0 auto", background: "var(--surface)", border: "1px solid var(--ink)", padding: "clamp(20px, 4vw, 40px)" }}>
           <div style={{ font: "500 11px/1 var(--mono)", letterSpacing: ".12em", color: "var(--signal-ink)", marginBottom: 12 }}>{eyebrow}</div>
           <h1 style={{ font: "700 clamp(22px, 3.2vw, 30px)/1.15 var(--mono)", letterSpacing: "-.03em", margin: "0 0 12px" }}>{title}</h1>
           {lede && <p style={{ font: "400 15px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 8px", maxWidth: "64ch" }}>{lede}</p>}

@@ -82,7 +82,7 @@ export default function LoginPage() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--canvas)", display: "flex", flexDirection: "column" }}>
     <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <div style={{ width: 460, background: "var(--surface)", border: "1px solid var(--ink)", padding: 32 }}>
+      <div className="sc-auth-card" style={{ width: 460, background: "var(--surface)", border: "1px solid var(--ink)", padding: 32 }}>
         <Link href="/" style={{ display: "inline-flex", alignItems: "flex-end", marginBottom: 26, color: "var(--ink)" }}>
           <span style={{ position: "relative", font: "700 18px/1 var(--mono)", letterSpacing: "-.03em" }}>
             scicollab

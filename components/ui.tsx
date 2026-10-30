@@ -1,9 +1,12 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
-/* The house rules from board [ 001 ]: no gradients, no shadows, no rounded
-   cards, no illustration. Elevation is a border plus a background step.
-   Max three signal-coloured elements per screen. Dense by default. */
+/* The classic house rules from board [ 001 ]: no gradients, no shadows, no
+   rounded cards, no illustration; elevation is a border plus a background
+   step. The default "glass" look (app/globals.css) softens these through
+   class hooks (sc-panel, sc-badge, sc-page-head…) without changing the
+   components, so both looks stay available. Max three signal-coloured
+   elements per screen. Dense by default. */
 
 /** Monospace text never goes below 11px: the boards drew labels at 9–10.5px,
  *  which is hard to read in a dense, uppercase, letter-spaced face. */
@@ -16,9 +19,9 @@ export function Page({ title, lede, actions, children }: {
   return (
     <div style={{ padding: "24px 16px 64px" }}>
       <div style={{ maxWidth: "var(--content-max)", margin: "0 auto" }}>
-        <header style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 16, marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
+        <header className="sc-page-head" style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 16, marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
           <div style={{ flex: "1 1 260px", minWidth: 0 }}>
-            <h1 style={{ font: mono(19, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{title}</h1>
+            <h1 className="sc-title" style={{ font: mono(19, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{title}</h1>
             {lede && <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "7px 0 0", maxWidth: "72ch" }}>{lede}</p>}
           </div>
           {actions}
@@ -62,7 +65,7 @@ export function Outcome({ value }: { value: "success" | "partial" | "negative" |
     negative: { label: "NEGATIVE RESULT", fg: "var(--signal-ink)", bd: "var(--signal-ink)" },
   }[value];
   return (
-    <span style={{ font: mono(10, 700), letterSpacing: ".08em", color: map.fg, border: `1px solid ${map.bd}`, padding: "3px 7px", whiteSpace: "nowrap" }}>
+    <span className="sc-badge" style={{ font: mono(10, 700), letterSpacing: ".08em", color: map.fg, border: `1px solid ${map.bd}`, padding: "3px 7px", whiteSpace: "nowrap" }}>
       {map.label}
     </span>
   );
@@ -71,7 +74,7 @@ export function Outcome({ value }: { value: "success" | "partial" | "negative" |
 /** Permanent chrome on any screen where a visibility decision could be made. */
 export function Visibility({ value }: { value: "private" | "lab" | "public" }) {
   return (
-    <span style={{ font: mono(10, 700), letterSpacing: ".09em", textTransform: "uppercase", color: "var(--ink)", background: "var(--bg)", border: "1px solid var(--ink)", padding: "3px 7px", whiteSpace: "nowrap" }}>
+    <span className="sc-badge" style={{ font: mono(10, 700), letterSpacing: ".09em", textTransform: "uppercase", color: "var(--ink)", background: "var(--bg)", border: "1px solid var(--ink)", padding: "3px 7px", whiteSpace: "nowrap" }}>
       {value}
     </span>
   );
@@ -79,7 +82,7 @@ export function Visibility({ value }: { value: "private" | "lab" | "public" }) {
 
 export function Tag({ children }: { children: ReactNode }) {
   return (
-    <span style={{ font: mono(10.5), color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 7px", whiteSpace: "nowrap" }}>
+    <span className="sc-badge" style={{ font: mono(10.5), color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 7px", whiteSpace: "nowrap" }}>
       {children}
     </span>
   );

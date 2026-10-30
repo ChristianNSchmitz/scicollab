@@ -17,11 +17,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="light" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="light" data-look="glass" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
-        {/* Apply the stored theme before first paint so the page never flashes. */}
+        {/* Apply the stored theme and look before first paint so the page never flashes.
+            Glass is the default look; "classic" is the earlier square, monospace one. */}
         <Script id="sc-theme" strategy="beforeInteractive">
-          {`try{var t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t;var q=new URLSearchParams(location.search).get('look');if(q==='glass'||q==='classic')localStorage.setItem('sc-look',q);var l=localStorage.getItem('sc-look');if(l==='glass')document.documentElement.dataset.look='glass'}catch(e){}`}
+          {`try{var t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t;var q=new URLSearchParams(location.search).get('look');if(q==='glass'||q==='classic')localStorage.setItem('sc-look',q);if(localStorage.getItem('sc-look')==='classic')delete document.documentElement.dataset.look}catch(e){}`}
         </Script>
       </head>
       <body>{children}</body>
