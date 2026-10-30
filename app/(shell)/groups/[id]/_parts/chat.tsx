@@ -39,7 +39,7 @@ export default async function GroupChat({ ctx }: { ctx: GroupCtx }) {
               <div style={{ display: "flex", gap: 8, alignItems: "flex-end", flexDirection: mine ? "row-reverse" : "row" }}>
                 {!mine && <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={26} />}
                 <div style={{ maxWidth: "78%" }}>
-                  <div className={mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ border: `1px solid ${mine ? "var(--ink)" : "var(--rule)"}`, background: "var(--surface)", padding: "8px 11px" }}>
+                  <div className={mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ border: `1px solid ${mine ? "transparent" : "var(--rule)"}`, borderRadius: mine ? "18px 18px 6px 18px" : "18px 18px 18px 6px", background: mine ? "color-mix(in srgb, var(--signal) 12%, var(--surface))" : "var(--surface)", padding: "8px 12px" }}>
                     <RichText body={m.body} className="" style={{ font: "400 13.5px/1.55 var(--sans)" }} />
                   </div>
                   <div style={{ display: "flex", gap: 8, justifyContent: mine ? "flex-end" : "flex-start", alignItems: "center", font: mono(10), color: "var(--mute)", marginTop: 3 }}>

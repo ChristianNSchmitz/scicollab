@@ -81,7 +81,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
               const card = cards?.find((c) => c.id === m.method_card_id);
               return (
                 <div key={m.id} style={{ display: "flex", justifyContent: mine ? "flex-end" : "flex-start" }}>
-                  <div className={mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ maxWidth: 520, border: "1px solid var(--rule)", background: mine ? "var(--bg)" : "var(--surface)", padding: "10px 12px" }}>
+                  <div className={mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ maxWidth: 520, border: `1px solid ${mine ? "transparent" : "var(--rule)"}`, borderRadius: mine ? "18px 18px 6px 18px" : "18px 18px 18px 6px", background: mine ? "color-mix(in srgb, var(--signal) 12%, var(--surface))" : "var(--surface)", padding: "10px 13px" }}>
                     <div style={{ font: mono(10), color: "var(--mute)", marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}>
                       {!mine && <Avatar name={other.display_name} url={other.avatar_url} size={16} />}
                       {mine ? "You" : other.display_name} · {timeAgo(m.created_at)}

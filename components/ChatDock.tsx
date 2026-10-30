@@ -232,7 +232,7 @@ export default function ChatDock() {
             )}
             {messages.map((m) => (
               <div key={m.id} style={{ alignSelf: m.mine ? "flex-end" : "flex-start", maxWidth: "86%" }}>
-                <div className={m.mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ border: `1px solid ${m.mine ? "var(--ink)" : "var(--rule)"}`, background: "var(--surface)", padding: "7px 9px" }}>
+                <div className={m.mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ border: `1px solid ${m.mine ? "transparent" : "var(--rule)"}`, borderRadius: m.mine ? "18px 18px 6px 18px" : "18px 18px 18px 6px", background: m.mine ? "color-mix(in srgb, var(--signal) 12%, var(--surface))" : "var(--surface)", padding: "7px 11px" }}>
                   <RichText body={m.body} className="" style={{ font: "400 13px/1.55 var(--sans)" }} />
                   {m.card && (
                     <Link href={`/methods/${m.card.id}`} className="sc-inset" style={{ display: "block", marginTop: 6, borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "5px 7px", color: "var(--ink)" }}>
