@@ -11,6 +11,7 @@ import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibl
 import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue } from "@/lib/record/publications";
 import Highlights, { type NewPaper, type Nudge } from "@/components/dashboard/Highlights";
+import GettingStarted, { type Step } from "@/components/dashboard/GettingStarted";
 import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import { followingOf } from "@/lib/social/follows";
@@ -64,7 +65,7 @@ export default async function Home({
   const [{ data: mine }, { data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }, { data: myPosts }, following, { data: myCards }, { data: myGroups }] =
     await Promise.all([
       supabase.from("user_rooms").select("room_id").eq("user_id", me_),
-      supabase.from("profiles").select("orcid").eq("id", me_).maybeSingle(),
+      supabase.from("profiles").select("orcid, role_title, institution, bio, avatar_url, techniques").eq("id", me_).maybeSingle(),
       supabase.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", me_).is("read_at", null),
       supabase.from("access_requests").select("id, attachment_id, created_at").eq("owner_id", me_).eq("status", "pending"),
       supabase.from("questions").select("id, title").eq("author_id", me_),
@@ -204,6 +205,16 @@ export default async function Home({
     onMine.length ? { href: "/you/record", text: `${onMine.length} reproduction${onMine.length > 1 ? "s and forks" : " or fork"} of your work` } : null,
   ].filter(Boolean) as Nudge[];
 
+  // First steps for new members, until done or hidden.
+  const steps: Step[] = [
+    { key: "profile", label: "Complete your profile", href: "/settings#profile", done: !!(me?.institution && me?.role_title && (me?.bio || (me?.techniques ?? []).length)) },
+    { key: "picture", label: "Add a picture", href: "/settings#picture", done: !!me?.avatar_url },
+    { key: "orcid", label: "Link your ORCID", href: "/settings#orcid", done: !!me?.orcid },
+    { key: "follow", label: "Follow three people", href: "/network", done: followed.length >= 3 },
+    { key: "group", label: "Join a group", href: "/groups", done: groupList.length > 0 },
+    { key: "post", label: "Write your first post", href: "#compose", done: myPostIds.length > 0 },
+  ];
+
   // No page heading: the dashboard is the top of the page, and the feed
   // starts right under it, on the first screen.
   return (
@@ -214,6 +225,7 @@ export default async function Home({
         <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sync]}</p>
       )}
 
+      <GettingStarted steps={steps} />
       <Highlights biblio={biblio} change={change} pubs={pubs} papers={papers} contacts={contacts} nudges={nudges} />
 
       {/* ── feed ──────────────────────────────────────────────────────── */}

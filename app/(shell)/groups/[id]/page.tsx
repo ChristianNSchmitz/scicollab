@@ -5,7 +5,7 @@ import { isRowId } from "@/lib/query";
 import { peopleById } from "@/lib/people";
 import { followingOf } from "@/lib/social/follows";
 import { activityOf } from "@/lib/social/activity";
-import { joinGroup, removeMember, addMember, addGroupProject, removeGroupProject, updateGroup, deleteGroup } from "@/app/actions/groups";
+import { joinGroup, removeMember, addMember, addGroupProject, removeGroupProject, updateGroup, deleteGroup, requestToJoin, withdrawRequest, answerRequest } from "@/app/actions/groups";
 import { joinProject } from "@/app/actions/projects";
 import { Page, Panel, PanelHead, Empty, Tag, btn, btnPrimary, field, fieldLabel, mono } from "@/components/ui";
 import Avatar from "@/components/Avatar";
@@ -16,6 +16,7 @@ export const dynamic = "force-dynamic";
 
 const FLASH: Record<string, { text: string; error?: boolean }> = {
   "saved=1":         { text: "Group saved." },
+  "requested=1":     { text: "Request sent. The owners see it on this page and in their notifications." },
   "added=1":         { text: "Member added." },
   "error=closed":    { text: "This group is closed: ask an owner to add you.", error: true },
   "error=lastowner": { text: "You are the last owner. Make someone else an owner first, or delete the group.", error: true },
@@ -38,11 +39,13 @@ export default async function Group({ params, searchParams }: { params: Promise<
   const { data: g } = await supabase.from("groups").select("*").eq("id", id).maybeSingle();
   if (!g) notFound();
 
-  const [{ data: members }, { data: gp }, following, { data: myProjects }] = await Promise.all([
+  const [{ data: members }, { data: gp }, following, { data: myProjects }, { data: requests }] = await Promise.all([
     supabase.from("group_members").select("user_id, role, joined_at").eq("group_id", id),
     supabase.from("group_projects").select("project_id, added_by").eq("group_id", id),
     followingOf(supabase, me),
     supabase.from("project_members").select("project_id").eq("user_id", me),
+    // Owners see every request; anyone else only their own (RLS, supabase/10-journeys.sql).
+    supabase.from("group_requests").select("user_id, message, created_at").eq("group_id", id),
   ]);
   const memberIds = (members ?? []).map((m: any) => m.user_id);
   const myRole = (members ?? []).find((m: any) => m.user_id === me)?.role as string | undefined;
@@ -50,7 +53,7 @@ export default async function Group({ params, searchParams }: { params: Promise<
   const projectIds = [...new Set([...(gp ?? []).map((p: any) => p.project_id), ...(myProjects ?? []).map((p: any) => p.project_id)])];
 
   const [people, { data: projects }, activity, { data: everyone }] = await Promise.all([
-    peopleById(supabase, memberIds),
+    peopleById(supabase, [...memberIds, ...(requests ?? []).map((r: any) => r.user_id)]),
     projectIds.length ? supabase.from("projects").select("id, title, summary, status").in("id", projectIds) : Promise.resolve({ data: [] as any[] }),
     activityOf(supabase, memberIds, { viewer: me, limit: 12 }),
     isOwner ? supabase.from("profiles").select("id, display_name, institution").order("display_name").limit(1000) : Promise.resolve({ data: [] as any[] }),
@@ -84,9 +87,20 @@ export default async function Group({ params, searchParams }: { params: Promise<
       )}
       {g.description && <p style={{ font: "400 14px/1.7 var(--sans)", margin: "0 0 16px", maxWidth: "72ch", whiteSpace: "pre-wrap" }}>{g.description}</p>}
       {!myRole && g.access === "closed" && (
-        <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 16px" }}>
-          This group is closed. Owners add members; message one of them if you belong here.
-        </p>
+        (requests ?? []).some((r: any) => r.user_id === me) ? (
+          <form action={withdrawRequest.bind(null, id)} style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", margin: "0 0 16px", font: "400 13.5px/1.6 var(--sans)" }}>
+            <span>You asked to join. The owners decide.</span>
+            <button type="submit" style={{ ...btn, height: 30 }}>Withdraw request</button>
+          </form>
+        ) : (
+          <form action={requestToJoin.bind(null, id)} className="sc-soft" style={{ display: "flex", gap: 8, alignItems: "flex-end", flexWrap: "wrap", margin: "0 0 16px", padding: 12, border: "1px solid var(--rule)", background: "var(--surface)" }}>
+            <div style={{ flex: "1 1 280px" }}>
+              <label style={fieldLabel} htmlFor="join-msg">This group is closed. Ask to join, with a line for the owners (optional)</label>
+              <input id="join-msg" name="message" maxLength={500} style={field} placeholder="I work on the passage comparison with Temi." />
+            </div>
+            <button type="submit" style={btnPrimary}>Ask to join</button>
+          </form>
+        )
       )}
 
       <div className="sc-two-col">
@@ -133,6 +147,28 @@ export default async function Group({ params, searchParams }: { params: Promise<
         </div>
 
         <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {isOwner && (requests?.length ?? 0) > 0 && (
+            <Panel style={{ borderColor: "var(--signal)" }}>
+              <div id="requests" style={{ scrollMarginTop: 72 }}><PanelHead>Requests to join · {requests!.length}</PanelHead></div>
+              {requests!.map((r: any) => {
+                const p = people.get(r.user_id);
+                return (
+                  <div key={r.user_id} style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                      <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={26} />
+                      <Link href={`/people/${r.user_id}`} style={{ flex: 1, font: mono(12.5, 500), color: "var(--ink)" }}>{p?.display_name ?? "Someone"}</Link>
+                    </div>
+                    {r.message && <p style={{ font: "400 13px/1.5 var(--sans)", margin: "6px 0 0" }}>{r.message}</p>}
+                    <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                      <form action={answerRequest.bind(null, id, r.user_id, true)}><button type="submit" style={{ ...small, background: "var(--ink)", color: "var(--bg)" }}>Let in</button></form>
+                      <form action={answerRequest.bind(null, id, r.user_id, false)}><button type="submit" style={small}>Decline</button></form>
+                    </div>
+                  </div>
+                );
+              })}
+            </Panel>
+          )}
+
           <Panel>
             <div id="members" style={{ scrollMarginTop: 72 }}><PanelHead>Members · {memberIds.length}</PanelHead></div>
             {sorted.length === 0 && <Empty>No members.</Empty>}

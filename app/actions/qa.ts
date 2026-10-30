@@ -52,3 +52,13 @@ export async function acceptAnswer(questionId: string, answerId: string) {
   await supabase.from("answers").update({ accepted: true }).eq("id", answerId);
   revalidatePath(`/questions/${questionId}`);
 }
+
+export async function editAnswer(answerId: string, questionId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const body = String(form.get("body") ?? "").trim().slice(0, 20000);
+  if (!body) return;
+  await supabase.from("answers").update({ body, edited_at: new Date().toISOString() }).eq("id", answerId).eq("author_id", user.id);
+  await recordMentions(supabase, user.id, "answer", answerId, `/questions/${questionId}`, body);
+  revalidatePath(`/questions/${questionId}`);
+  redirect(`/questions/${questionId}#answer-${answerId}`);
+}

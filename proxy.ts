@@ -9,6 +9,8 @@ import { NextResponse, type NextRequest } from "next/server";
 // /api/cron checks its own secret; it has no session to offer.
 const PUBLIC = [
   "/", "/login", "/signup", "/onboarding", "/api/cron",
+  // Password reset: the request form and the link back from the e-mail.
+  "/forgot-password", "/auth/callback",
   // Public information pages and the contact form (with its captcha).
   "/about", "/faq", "/terms", "/contact", "/api/captcha",
   // The front page's live "most active" list: public items only (lib/showcase.ts).

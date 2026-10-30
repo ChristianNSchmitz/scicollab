@@ -156,3 +156,28 @@ export async function deleteReply(replyId: string, postId: string) {
   revalidatePath(`/posts/${postId}`);
   revalidatePath("/home");
 }
+
+/** The author corrects a post. Kind, topic group and attachments stay as they were. */
+export async function editPost(postId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const title = text(form, "title", 200);
+  if (!title) redirect(`/posts/${postId}?error=title`);
+  const body = text(form, "body", 10000);
+  const { data } = await supabase.from("posts").update({ title, body, edited_at: new Date().toISOString() })
+    .eq("id", postId).eq("author_id", user.id).select("id");
+  if (!data?.length) throw new Error("Only the author can edit this post.");
+  await recordMentions(supabase, user.id, "post", postId, `/posts/${postId}`, `${title}\n${body}`);
+  revalidatePath(`/posts/${postId}`);
+  revalidatePath("/home");
+  redirect(`/posts/${postId}?edited=1`);
+}
+
+export async function editReply(replyId: string, postId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const body = text(form, "body", 5000);
+  if (!body) return;
+  await supabase.from("post_replies").update({ body, edited_at: new Date().toISOString() }).eq("id", replyId).eq("author_id", user.id);
+  await recordMentions(supabase, user.id, "reply", replyId, `/posts/${postId}#replies`, body);
+  revalidatePath(`/posts/${postId}`);
+  redirect(`/posts/${postId}#reply-${replyId}`);
+}

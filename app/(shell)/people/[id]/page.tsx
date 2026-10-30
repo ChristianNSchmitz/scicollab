@@ -8,6 +8,7 @@ import { followingOf } from "@/lib/social/follows";
 import { activityOf } from "@/lib/social/activity";
 import ProfileBody, { ProfileHead } from "@/components/social/ProfileBody";
 import FollowButton from "@/components/social/FollowButton";
+import ReportButton from "@/components/ReportButton";
 import ActivityList from "@/components/social/ActivityList";
 import Avatar from "@/components/Avatar";
 import { Panel, PanelHead, Tag, btn, mono } from "@/components/ui";
@@ -52,6 +53,7 @@ export default async function Person({ params }: { params: Promise<{ id: string 
                 {followsMe && <Tag>follows you</Tag>}
                 <FollowButton personId={id} following={myFollows.has(id)} />
                 <Link href={`/messages/${id}`} style={btn}>Message</Link>
+                <ReportButton kind="profile" targetId={id} label="Report" />
               </>
             )}
           </div>

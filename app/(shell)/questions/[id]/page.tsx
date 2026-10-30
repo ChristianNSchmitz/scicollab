@@ -4,7 +4,8 @@ import PersonLink from "@/components/social/PersonLink";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { postAnswer, acceptAnswer } from "@/app/actions/qa";
+import { postAnswer, acceptAnswer, editAnswer } from "@/app/actions/qa";
+import ReportButton from "@/components/ReportButton";
 import { Page, LimitNotice, Panel, PanelHead, Empty, Tag, field, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import RichText from "@/components/RichText";
@@ -68,6 +69,9 @@ export default async function Question({ params, searchParams }: { params: Promi
               </Link>
             </div>
           )}
+          {q.author_id !== user!.id && (
+            <div style={{ padding: "8px 14px", borderTop: "1px solid var(--rule)" }}><ReportButton kind="question" targetId={q.id} /></div>
+          )}
           {q.tags?.length > 0 && (
             <div style={{ padding: 14, borderTop: "1px solid var(--rule)", display: "flex", gap: 6, flexWrap: "wrap" }}>
               {q.tags.map((t: string) => <Tag key={t}>{t}</Tag>)}
@@ -84,7 +88,8 @@ export default async function Question({ params, searchParams }: { params: Promi
         {answers?.map((a) => {
           const who = people.get(a.author_id);
           return (
-            <Panel key={a.id} style={a.accepted ? { borderColor: "var(--ok)" } : undefined}>
+            <Panel key={a.id} style={{ scrollMarginTop: 72, ...(a.accepted ? { borderColor: "var(--ok)" } : {}) }}>
+              <span id={`answer-${a.id}`} />
               {a.accepted && (
                 <div style={{ padding: "8px 14px", borderBottom: "1px solid var(--ok)", font: mono(10, 700), letterSpacing: ".09em", color: "var(--ok)" }}>
                   ACCEPTED ANSWER
@@ -98,7 +103,7 @@ export default async function Question({ params, searchParams }: { params: Promi
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12, paddingTop: 10, borderTop: "1px solid var(--rule)" }}>
                   <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={22} />
                   <span style={{ font: mono(11), color: "var(--mute)" }}>
-                    <PersonLink id={a.author_id}>{who?.display_name ?? "Someone"}</PersonLink>{who?.institution ? ` · ${who.institution}` : ""} · {timeAgo(a.created_at)}
+                    <PersonLink id={a.author_id}>{who?.display_name ?? "Someone"}</PersonLink>{who?.institution ? ` · ${who.institution}` : ""} · {timeAgo(a.created_at)}{a.edited_at ? " · edited" : ""}
                   </span>
                   {isAsker && !a.accepted && (
                     <form action={acceptAnswer.bind(null, q.id, a.id)} style={{ marginLeft: "auto" }}>
@@ -106,6 +111,17 @@ export default async function Question({ params, searchParams }: { params: Promi
                     </form>
                   )}
                 </div>
+                {a.author_id === user!.id ? (
+                  <details style={{ marginTop: 8 }}>
+                    <summary style={{ font: "400 12px/1.4 var(--sans)", color: "var(--mute)", cursor: "pointer" }}>Edit your answer</summary>
+                    <form action={editAnswer.bind(null, a.id, q.id)} style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 6 }}>
+                      <MentionTextarea name="body" rows={5} required defaultValue={a.body} style={field} aria-label="Edit your answer" />
+                      <div><button type="submit" style={{ ...btn, height: 30 }}>Save</button></div>
+                    </form>
+                  </details>
+                ) : (
+                  <div style={{ marginTop: 8 }}><ReportButton kind="answer" targetId={a.id} /></div>
+                )}
               </div>
             </Panel>
           );

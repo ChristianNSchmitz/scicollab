@@ -8,10 +8,11 @@ import { Page, LimitNotice, Panel, PanelHead, Empty, Outcome, Tag, field, btn, b
 import { timeAgo } from "@/lib/format";
 import { roomById, housesOfRoom, intentById } from "@/lib/taxonomy";
 import { attachmentsFor, pendingFor, requestAccess, decideRequest } from "@/app/actions/attachments";
-import { replyToPost, deleteReply, deletePost } from "@/app/actions/posts";
+import { replyToPost, deleteReply, deletePost, editPost, editReply } from "@/app/actions/posts";
 import RichText from "@/components/RichText";
 import MentionTextarea from "@/components/social/MentionTextarea";
 import Reactions from "@/components/social/Reactions";
+import ReportButton from "@/components/ReportButton";
 import { PostImages, LinkCard } from "@/components/feed/PostMedia";
 import { imageUrls } from "@/lib/posts/images";
 import { mentionsIn } from "@/lib/social/mentions";
@@ -19,8 +20,8 @@ import { reactionsFor } from "@/lib/social/reactions";
 
 export const dynamic = "force-dynamic";
 
-export default async function PostDetail({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string }> }) {
-  const { limited } = await searchParams;
+export default async function PostDetail({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string; edit?: string; edited?: string; error?: string }> }) {
+  const { limited, edit, edited, error } = await searchParams;
   const { id } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -38,7 +39,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
   const [attachments, pending, { data: replies }] = await Promise.all([
     attachmentsFor(post.id),
     pendingFor(post.id),
-    supabase.from("post_replies").select("id, author_id, body, created_at").eq("post_id", post.id).order("created_at"),
+    supabase.from("post_replies").select("id, author_id, body, created_at, edited_at").eq("post_id", post.id).order("created_at"),
   ]);
   const [repliers, postMentions, replyMentions, reactions] = await Promise.all([
     peopleById(supabase, (replies ?? []).map((r: any) => r.author_id)),
@@ -62,6 +63,8 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
       }
     >
       <LimitNotice show={limited} />
+      {edited && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Your changes are saved.</p>}
+      {error === "title" && <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>A post needs a title.</p>}
       <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
@@ -71,6 +74,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                 <PersonLink id={post.author_id}>{author?.display_name ?? "Someone"}</PersonLink>
                 {author?.role_title ? ` · ${author.role_title}` : ""}
                 {author?.institution ? ` · ${author.institution}` : ""} · {timeAgo(post.created_at)}
+                {post.edited_at && <span title={`Edited ${String(post.edited_at).slice(0, 16).replace("T", " ")}`}> · edited</span>}
               </span>
             </div>
             {post.body && (
@@ -84,9 +88,23 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                 <LinkCard preview={post.link_preview} />
               </div>
             )}
-            <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)" }}>
+            <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
               <Reactions kind="post" targetId={post.id} summary={reactions.get(post.id)} own={isMine} path={`/posts/${post.id}`} />
+              <span style={{ flex: 1 }} />
+              {!isMine && <ReportButton kind="post" targetId={post.id} />}
             </div>
+            {isMine && (
+              <details id="edit" style={{ padding: "0 14px 12px" }} open={edit === "1" ? true : undefined}>
+                <summary style={{ font: "500 12.5px/1.4 var(--sans)", color: "var(--link)", cursor: "pointer" }}>Edit this post</summary>
+                <form action={editPost.bind(null, post.id)} style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
+                  <label htmlFor="edit-title" style={{ position: "absolute", left: -9999 }}>Title</label>
+                  <input id="edit-title" name="title" required maxLength={200} defaultValue={post.title} style={field} />
+                  <label htmlFor="edit-body" style={{ position: "absolute", left: -9999 }}>Text</label>
+                  <MentionTextarea id="edit-body" name="body" rows={6} maxLength={10000} defaultValue={post.body ?? ""} style={field} />
+                  <div><button type="submit" style={btnPrimary}>Save changes</button></div>
+                </form>
+              </details>
+            )}
 
             {post.intent === "collab" && (
               <div style={{ padding: 14, borderTop: "1px solid var(--rule)" }}>
@@ -202,12 +220,13 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             ) : replies!.map((r: any) => {
               const who = replier(r.author_id);
               return (
-                <div key={r.id} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
+                <div key={r.id} id={`reply-${r.id}`} style={{ padding: 14, borderBottom: "1px solid var(--rule)", scrollMarginTop: 72 }}>
                   <div style={{ display: "flex", gap: 9, alignItems: "center", font: mono(11), color: "var(--mute)", marginBottom: 7 }}>
                     <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={22} />
                     <span style={{ flex: 1 }}>
                       <PersonLink id={r.author_id}>{who?.display_name ?? "Someone"}</PersonLink>{who?.institution ? ` · ${who.institution}` : ""} · {timeAgo(r.created_at)}
                       {r.author_id === post.author_id && <span style={{ marginLeft: 6, color: "var(--ink)" }}>· author</span>}
+                      {r.edited_at && <span> · edited</span>}
                     </span>
                     {r.author_id === user!.id && (
                       <form action={deleteReply.bind(null, r.id, post.id)}>
@@ -216,6 +235,17 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                     )}
                   </div>
                   <RichText body={r.body} mentions={replyMentions.get(r.id)} />
+                  {r.author_id === user!.id ? (
+                    <details style={{ marginTop: 6 }}>
+                      <summary style={{ font: "400 12px/1.4 var(--sans)", color: "var(--mute)", cursor: "pointer" }}>edit</summary>
+                      <form action={editReply.bind(null, r.id, post.id)} style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 6 }}>
+                        <MentionTextarea name="body" rows={3} required maxLength={5000} defaultValue={r.body} style={field} aria-label="Edit your reply" />
+                        <div><button type="submit" style={{ ...btn, height: 30 }}>Save</button></div>
+                      </form>
+                    </details>
+                  ) : (
+                    <div style={{ marginTop: 6 }}><ReportButton kind="reply" targetId={r.id} /></div>
+                  )}
                 </div>
               );
             })}

@@ -38,7 +38,12 @@ export async function findMentions(supabase: Client, text: string): Promise<Ment
 export async function recordMentions(
   supabase: Client, authorId: string, kind: MentionKind, sourceId: string, href: string, text: string,
 ): Promise<void> {
-  const people = (await findMentions(supabase, text)).filter((p) => p.id !== authorId).slice(0, 20);
+  const found = (await findMentions(supabase, text)).filter((p) => p.id !== authorId).slice(0, 20);
+  if (!found.length) return;
+  // After an edit, only people newly mentioned are added (and notified).
+  const { data: already } = await supabase.from("mentions").select("mentioned_id").eq("source_kind", kind).eq("source_id", sourceId);
+  const known = new Set((already ?? []).map((m: { mentioned_id: string }) => m.mentioned_id));
+  const people = found.filter((p) => !known.has(p.id));
   if (!people.length) return;
   await supabase.from("mentions").insert(people.map((p) => ({
     author_id: authorId, mentioned_id: p.id, source_kind: kind, source_id: sourceId, href,

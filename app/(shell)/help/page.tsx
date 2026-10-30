@@ -20,6 +20,7 @@ const MORE = [
   { href: "/faq", label: "Frequently asked questions" },
   { href: "/about", label: "About SciCollab" },
   { href: "/terms", label: "Terms & conditions" },
+  { href: "/settings#password", label: "Change your password" },
   { href: "/settings#account", label: "Download or delete your data" },
   { href: "/contact", label: "Contact the team" },
 ];
@@ -48,7 +49,7 @@ export default function Help() {
             </Link>
           ))}
           <p style={{ margin: 0, padding: "10px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
-            Something broken or missing? Tell us through the contact form; there is no help desk yet.
+            Something broken or missing? Tell us through the contact form. To flag a post, answer, message or person to the moderation team, use &ldquo;Report&rdquo; next to it.
           </p>
         </Panel>
       </div>

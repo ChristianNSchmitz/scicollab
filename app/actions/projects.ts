@@ -103,3 +103,24 @@ export async function leaveProject(projectId: string) {
   revalidatePath("/projects");
   redirect("/projects");
 }
+
+/** The owner adds a person to the project. */
+export async function addProjectMember(projectId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const { data: p } = await supabase.from("projects").select("owner_id").eq("id", projectId).maybeSingle();
+  if (p?.owner_id !== user.id) throw new Error("Only the owner can add people.");
+  const personId = String(form.get("person") ?? "");
+  const { data: person } = await supabase.from("profiles").select("id").eq("id", personId).maybeSingle();
+  if (!person) redirect(`/projects/${projectId}?error=person`);
+  const { data: already } = await supabase.from("project_members").select("user_id").eq("project_id", projectId).eq("user_id", personId).maybeSingle();
+  if (!already) await supabase.from("project_members").insert({ project_id: projectId, user_id: personId, role: "contributor" });
+  revalidatePath(`/projects/${projectId}`);
+}
+
+export async function removeProjectMember(projectId: string, personId: string) {
+  const { supabase, user } = await requireUser();
+  const { data: p } = await supabase.from("projects").select("owner_id").eq("id", projectId).maybeSingle();
+  if (p?.owner_id !== user.id || personId === user.id) throw new Error("Only the owner can remove people, and not themselves.");
+  await supabase.from("project_members").delete().eq("project_id", projectId).eq("user_id", personId);
+  revalidatePath(`/projects/${projectId}`);
+}

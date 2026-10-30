@@ -16,7 +16,7 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
 
   const [
     { data: unread }, { data: incoming }, { data: outgoing }, { data: myQuestions }, { data: myPosts },
-    { data: myAnswers }, { data: mentions }, { data: followers },
+    { data: myAnswers }, { data: mentions }, { data: followers }, { data: owned },
   ] = await Promise.all([
     supabase.from("messages").select("sender_id, created_at").eq("recipient_id", me).is("read_at", null),
     supabase.from("access_requests").select("id, attachment_id, requester_id, created_at").eq("owner_id", me).eq("status", "pending"),
@@ -26,18 +26,22 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     supabase.from("answers").select("id, question_id").eq("author_id", me),
     supabase.from("mentions").select("author_id, source_kind, href, created_at").eq("mentioned_id", me).gte("created_at", since),
     supabase.from("follows").select("follower_id, created_at").eq("followee_id", me).gte("created_at", since),
+    supabase.from("group_members").select("group_id").eq("user_id", me).eq("role", "owner"),
   ]);
+  const ownedIds = (owned ?? []).map((g: any) => g.group_id);
 
   const qIds = (myQuestions ?? []).map((q: any) => q.id);
   const postIds = (myPosts ?? []).map((p: any) => p.id);
   const answerIds = (myAnswers ?? []).map((a: any) => a.id);
   const attIds = [...new Set([...(incoming ?? []), ...(outgoing ?? [])].map((r: any) => r.attachment_id))];
-  const [{ data: answers }, { data: replies }, { data: atts }, { data: onPosts }, { data: onAnswers }] = await Promise.all([
+  const [{ data: answers }, { data: replies }, { data: atts }, { data: onPosts }, { data: onAnswers }, { data: joinRequests }, { data: ownedGroups }] = await Promise.all([
     qIds.length ? supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds).gte("created_at", since) : empty,
     postIds.length ? supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", postIds).gte("created_at", since) : empty,
     attIds.length ? supabase.from("post_attachments").select("id, post_id").in("id", attIds) : empty,
     postIds.length ? supabase.from("reactions").select("target_id, user_id, kind, created_at").eq("target_kind", "post").in("target_id", postIds).gte("created_at", since) : empty,
     answerIds.length ? supabase.from("reactions").select("target_id, user_id, kind, created_at").eq("target_kind", "answer").in("target_id", answerIds).gte("created_at", since) : empty,
+    ownedIds.length ? supabase.from("group_requests").select("group_id, user_id, created_at").in("group_id", ownedIds) : empty,
+    ownedIds.length ? supabase.from("groups").select("id, name").in("id", ownedIds) : empty,
   ]);
 
   const titleOf = (rows: any[] | null, id: string, fallback: string) => (rows ?? []).find((r: any) => r.id === id)?.title ?? fallback;
@@ -73,6 +77,10 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     })),
     ...(mentions ?? []).map((m: any): Notice => ({
       at: m.created_at, kind: "mention", who: m.author_id, text: `mentioned you in ${where[m.source_kind] ?? "a post"}`, href: m.href,
+    })),
+    ...(joinRequests ?? []).map((r: any): Notice => ({
+      at: r.created_at, kind: "join request", who: r.user_id,
+      text: `asked to join ${(ownedGroups ?? []).find((g: any) => g.id === r.group_id)?.name ?? "your group"}`, href: `/groups/${r.group_id}#requests`,
     })),
     ...(followers ?? []).map((f: any): Notice => ({
       at: f.created_at, kind: "follow", who: f.follower_id, text: "started following you", href: `/people/${f.follower_id}`,

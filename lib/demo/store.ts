@@ -61,6 +61,17 @@ export function register(email: string, password: string, display_name: string, 
   return id;
 }
 
+/** Demo: change a member's password, after checking the current one. */
+export function changeDemoPassword(id: string, current: string, next: string): boolean {
+  for (const [email, uid] of emailToId) {
+    if (uid !== id) continue;
+    if (credentials.get(email) !== current) return false;
+    credentials.set(email, next);
+    return true;
+  }
+  return false;
+}
+
 export function emailTaken(email: string): boolean {
   return credentials.has(email.trim().toLowerCase());
 }
@@ -83,7 +94,7 @@ export const tables: Record<string, Record<string, unknown>[]> =
  *  person authored or received, removed in place so other references to the
  *  same arrays stay valid. */
 const OWNER_COLUMNS = ["author_id", "owner_id", "user_id", "sender_id", "recipient_id", "requester_id", "mentee_id", "mentor_id",
-  "follower_id", "followee_id", "mentioned_id", "created_by", "added_by"];
+  "follower_id", "followee_id", "mentioned_id", "created_by", "added_by", "reporter_id"];
 export function forget(id: string): void {
   for (const [email, uid] of emailToId) if (uid === id) { emailToId.delete(email); credentials.delete(email); }
   for (const rows of Object.values(tables)) {

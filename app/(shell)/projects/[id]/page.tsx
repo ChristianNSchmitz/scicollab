@@ -2,7 +2,7 @@ import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { addEntry, depositDataset, joinProject, leaveProject } from "@/app/actions/projects";
+import { addEntry, depositDataset, joinProject, leaveProject, addProjectMember, removeProjectMember } from "@/app/actions/projects";
 import { Page, Panel, PanelHead, Empty, Tag, Visibility, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo, bytes } from "@/lib/format";
 import Avatar from "@/components/Avatar";
@@ -69,6 +69,9 @@ export default async function Project({
     : [{ data: [] as any[] }, { data: [] as any[] }];
   const canJoin = !isMember && (myShareGroups?.length ?? 0) > 0;
   const isOwner = p.owner_id === user?.id;
+  const { data: everyone } = isOwner
+    ? await supabase.from("profiles").select("id, display_name, institution").order("display_name").limit(1000)
+    : { data: [] as any[] };
 
   const counts: Record<Tab, number> = {
     notebook: entries?.length ?? 0,
@@ -288,10 +291,27 @@ export default async function Project({
               {(members ?? []).map((m: any) => (
                 <div key={m.user_id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <Avatar name={nameOf(m.user_id)} url={people.get(m.user_id)?.avatar_url} size={22} />
-                  <span><Link href={`/people/${m.user_id}`} style={{ color: "var(--ink)" }}>{nameOf(m.user_id)}</Link> <span style={{ color: "var(--mute)" }}>· {m.role}</span></span>
+                  <span style={{ flex: 1 }}><Link href={`/people/${m.user_id}`} style={{ color: "var(--ink)" }}>{nameOf(m.user_id)}</Link> <span style={{ color: "var(--mute)" }}>· {m.role}</span></span>
+                  {isOwner && m.user_id !== user?.id && (
+                    <form action={removeProjectMember.bind(null, p.id, m.user_id)}>
+                      <button type="submit" aria-label={`Remove ${nameOf(m.user_id)} from the project`} style={{ background: "transparent", border: 0, color: "var(--mute)", cursor: "pointer", font: "400 13px/1 var(--sans)" }}>×</button>
+                    </form>
+                  )}
                 </div>
               ))}
             </div>
+            {isOwner && (
+              <form action={addProjectMember.bind(null, p.id)} style={{ display: "flex", gap: 8, padding: "0 14px 14px", flexWrap: "wrap" }}>
+                <label htmlFor="pm-person" style={{ position: "absolute", left: -9999 }}>Person to add</label>
+                <select id="pm-person" name="person" required defaultValue="" style={{ ...field, flex: "1 1 160px", width: "auto", height: 34, padding: "0 8px" }}>
+                  <option value="" disabled>Add a person…</option>
+                  {(everyone ?? []).filter((x: any) => !ids.includes(x.id)).map((x: any) => (
+                    <option key={x.id} value={x.id}>{x.display_name}{x.institution ? `, ${x.institution}` : ""}</option>
+                  ))}
+                </select>
+                <button type="submit" style={{ ...btn, height: 34 }}>Add</button>
+              </form>
+            )}
           </Panel>
         </aside>
       </div>

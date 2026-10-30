@@ -1,5 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { saveProfile, savePrivacy } from "@/app/actions/profile";
+import { changePassword } from "@/app/actions/password";
+import { cookies } from "next/headers";
+import { RECOVERY_COOKIE } from "@/lib/recovery";
 import { Page, Panel, PanelHead, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { deleteAccount } from "@/app/actions/account";
 import AvatarPicker from "@/components/settings/AvatarPicker";
@@ -13,6 +16,12 @@ export const dynamic = "force-dynamic";
 const FLASH: Record<string, { text: string; error?: boolean }> = {
   "saved=profile":   { text: "Profile saved." },
   "saved=privacy":   { text: "Privacy settings saved." },
+  "saved=password":  { text: "Password changed." },
+  "reset=1":         { text: "Choose a new password below. You do not need the old one for the next ten minutes." },
+  "error=pwshort":   { text: "The new password needs at least 8 characters.", error: true },
+  "error=pwmatch":   { text: "The two new passwords are not the same.", error: true },
+  "error=pwcurrent": { text: "Your current password is not right.", error: true },
+  "error=pwfail":    { text: "The password could not be changed. Please try again.", error: true },
   "error=name":      { text: "A display name is needed. It is how people find and credit you.", error: true },
   "orcid=linked":    { text: "ORCID linked. The first sync has started; publications appear on your profile shortly." },
   "orcid=unlinked":  { text: "ORCID unlinked. Synced publications were removed from SciCollab." },
@@ -30,6 +39,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: p } = await supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle();
+  const recovering = (await cookies()).get(RECOVERY_COOKIE)?.value === user!.id;
 
   const orcid = normaliseOrcid(p?.orcid);
   let linked: LinkedSummary | null = null;
@@ -48,7 +58,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
 
   const flashKey = Object.keys(FLASH).find((k) => { const [key, v] = k.split("="); return sp[key] === v; });
   const flash = flashKey ? FLASH[flashKey] : null;
-  const nav = [["#picture", "Picture"], ["#profile", "Profile"], ["#orcid", "ORCID & publications"], ["#privacy", "Privacy & e-mail"], ["#account", "Account"]];
+  const nav = [["#picture", "Picture"], ["#profile", "Profile"], ["#orcid", "ORCID & publications"], ["#privacy", "Privacy & e-mail"], ["#password", "Password"], ["#account", "Account"]];
 
   return (
     <Page title="Settings" lede="Your picture, profile, ORCID link, who can see your profile and which e-mails you get.">
@@ -139,6 +149,36 @@ export default async function Settings({ searchParams }: { searchParams: Promise
                   <span>E-mail me a weekly summary of my notifications (only when something happened).</span>
                 </label>
                 <div><button type="submit" style={{ ...btnPrimary, height: 38 }}>Save</button></div>
+              </div>
+            </Panel>
+          </form>
+        </section>
+
+        <section id="password" style={{ scrollMarginTop: 72, marginBottom: 14 }}>
+          <form action={changePassword}>
+            <Panel>
+              <PanelHead>Password</PanelHead>
+              <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 12 }}>
+                {!recovering && (
+                  <div>
+                    <label style={fieldLabel} htmlFor="pw-current">Current password</label>
+                    <input id="pw-current" name="current" type="password" required autoComplete="current-password" style={field} />
+                  </div>
+                )}
+                <div className="sc-pair" style={{ gap: 12 }}>
+                  <div>
+                    <label style={fieldLabel} htmlFor="pw-new">New password, at least 8 characters</label>
+                    <input id="pw-new" name="password" type="password" required minLength={8} autoComplete="new-password" style={field} />
+                  </div>
+                  <div>
+                    <label style={fieldLabel} htmlFor="pw-again">New password again</label>
+                    <input id="pw-again" name="confirm" type="password" required minLength={8} autoComplete="new-password" style={field} />
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+                  <button type="submit" style={{ ...btnPrimary, height: 38 }}>Change password</button>
+                  {!recovering && <a href="/forgot-password" style={{ font: "400 13px/1.4 var(--sans)", color: "var(--link)" }}>Forgot your current password?</a>}
+                </div>
               </div>
             </Panel>
           </form>

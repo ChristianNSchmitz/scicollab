@@ -119,3 +119,34 @@ export async function deleteGroup(groupId: string, form: FormData) {
   revalidatePath("/groups");
   redirect("/groups?deleted=1");
 }
+
+/** Ask to join a closed group; the owners see it on the group page and in their notifications. */
+export async function requestToJoin(groupId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const { data: member } = await supabase.from("group_members").select("user_id").eq("group_id", groupId).eq("user_id", user.id).maybeSingle();
+  if (member) redirect(`/groups/${groupId}`);
+  const { data: already } = await supabase.from("group_requests").select("user_id").eq("group_id", groupId).eq("user_id", user.id).maybeSingle();
+  if (!already) {
+    await supabase.from("group_requests").insert({ group_id: groupId, user_id: user.id, message: text(form, "message", 500) });
+  }
+  revalidatePath(`/groups/${groupId}`);
+  redirect(`/groups/${groupId}?requested=1`);
+}
+
+export async function withdrawRequest(groupId: string) {
+  const { supabase, user } = await requireUser();
+  await supabase.from("group_requests").delete().eq("group_id", groupId).eq("user_id", user.id);
+  revalidatePath(`/groups/${groupId}`);
+}
+
+/** An owner lets someone in, or says no. Either way the request is gone. */
+export async function answerRequest(groupId: string, personId: string, approve: boolean) {
+  const { supabase, user } = await requireUser();
+  if (!(await ownerOf(supabase, groupId, user.id))) throw new Error("Only an owner can answer requests.");
+  if (approve) {
+    const { data: already } = await supabase.from("group_members").select("user_id").eq("group_id", groupId).eq("user_id", personId).maybeSingle();
+    if (!already) await supabase.from("group_members").insert({ group_id: groupId, user_id: personId, role: "member" });
+  }
+  await supabase.from("group_requests").delete().eq("group_id", groupId).eq("user_id", personId);
+  revalidatePath(`/groups/${groupId}`);
+}

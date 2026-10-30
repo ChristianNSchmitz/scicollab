@@ -20,6 +20,7 @@ export function digestText(name: string, notices: Notice[], names: Map<string, s
     ["Reactions", notices.filter((n) => n.kind === "reaction")],
     ["New followers", notices.filter((n) => n.kind === "follow")],
     ["Data requests", notices.filter((n) => n.kind === "data request")],
+    ["Requests to join your groups", notices.filter((n) => n.kind === "join request")],
   ];
   const line = (n: Notice) => `- ${n.who ? names.get(n.who) ?? "Someone" : "Someone"} ${n.text}\n  ${origin}${n.href}`;
   const body = groups.filter(([, xs]) => xs.length)

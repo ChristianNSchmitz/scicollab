@@ -12,22 +12,25 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
   const supabase = await createClient();
   const term = likeTerm(q);
 
-  let cards: any[] = [], questions: any[] = [], people: any[] = [], projects: any[] = [];
+  let cards: any[] = [], questions: any[] = [], people: any[] = [], projects: any[] = [], posts: any[] = [], groups: any[] = [];
   if (term) {
     const like = `%${term}%`;
-    const [c, qq, p, pr] = await Promise.all([
+    const [c, qq, p, pr, po, gr] = await Promise.all([
       supabase.from("method_cards").select("id, code, title, outcome, system").or(`title.ilike.${like},method.ilike.${like},system.ilike.${like},fails_under.ilike.${like}`).limit(20),
       supabase.from("questions").select("id, title, body").or(`title.ilike.${like},body.ilike.${like}`).limit(20),
       supabase.from("profiles").select("id, display_name, institution, field").or(`display_name.ilike.${like},institution.ilike.${like},field.ilike.${like}`).limit(20),
       supabase.from("projects").select("id, title, summary").or(`title.ilike.${like},summary.ilike.${like}`).limit(20),
+      supabase.from("posts").select("id, title, room_id, created_at").or(`title.ilike.${like},body.ilike.${like}`).order("created_at", { ascending: false }).limit(20),
+      supabase.from("groups").select("id, name, institution").or(`name.ilike.${like},description.ilike.${like},institution.ilike.${like}`).limit(20),
     ]);
     cards = c.data ?? []; questions = qq.data ?? []; people = p.data ?? []; projects = pr.data ?? [];
+    posts = po.data ?? []; groups = gr.data ?? [];
   }
 
-  const total = cards.length + questions.length + people.length + projects.length;
+  const total = cards.length + questions.length + people.length + projects.length + posts.length + groups.length;
 
   return (
-    <Page title="Search" lede="Methods, questions, people and projects in one query — including the conditions under which something failed.">
+    <Page title="Search" lede="Posts, methods, questions, people, groups and projects in one query, including the conditions under which something failed.">
       <form style={{ display: "flex", gap: 8, marginBottom: 16, maxWidth: 720 }}>
         <input name="q" defaultValue={q} style={{ ...field, height: 40 }} placeholder="passage number, HEK293T, transfection…" autoFocus />
         <button type="submit" style={{ ...btnPrimary, height: 40 }}>Search</button>
@@ -39,6 +42,17 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
         <Panel><Empty>Nothing matches “{q.trim()}”.</Empty></Panel>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 860 }}>
+          {posts.length > 0 && (
+            <Panel>
+              <PanelHead>Posts · {posts.length}</PanelHead>
+              {posts.map((x) => (
+                <Link key={x.id} href={`/posts/${x.id}`} style={{ display: "flex", gap: 10, padding: "11px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
+                  <span style={{ font: mono(12.5, 500), flex: 1 }}>{x.title}</span>
+                  <span style={{ font: mono(10.5), color: "var(--mute)" }}>#{x.room_id}</span>
+                </Link>
+              ))}
+            </Panel>
+          )}
           {cards.length > 0 && (
             <Panel>
               <PanelHead>Method cards · {cards.length}</PanelHead>
@@ -66,6 +80,17 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
                 <Link key={x.id} href={`/people/${x.id}`} style={{ display: "block", padding: "11px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
                   <span style={{ font: mono(12.5, 500) }}>{x.display_name}</span>
                   <span style={{ font: mono(10.5), color: "var(--mute)", marginLeft: 8 }}>{[x.institution, x.field].filter(Boolean).join(" · ")}</span>
+                </Link>
+              ))}
+            </Panel>
+          )}
+          {groups.length > 0 && (
+            <Panel>
+              <PanelHead>Groups · {groups.length}</PanelHead>
+              {groups.map((x) => (
+                <Link key={x.id} href={`/groups/${x.id}`} style={{ display: "block", padding: "11px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
+                  <span style={{ font: mono(12.5, 500) }}>{x.name}</span>
+                  {x.institution && <span style={{ font: mono(10.5), color: "var(--mute)", marginLeft: 8 }}>{x.institution}</span>}
                 </Link>
               ))}
             </Panel>

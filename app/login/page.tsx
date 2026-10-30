@@ -71,6 +71,8 @@ function Form() {
         </p>
       )}
 
+      <Link href="/forgot-password" style={{ font: "400 12.5px/1 var(--sans)", color: "var(--link)", alignSelf: "flex-end", marginTop: -6 }}>Forgot your password?</Link>
+
       <button type="submit" disabled={busy} style={primary}>
         {busy ? "Signing in…" : "Sign in"}
       </button>

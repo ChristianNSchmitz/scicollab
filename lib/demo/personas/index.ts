@@ -453,6 +453,7 @@ function build() {
     group_projects: group_projects.filter((g) => projectIds.has(g.project_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [],
+    group_requests: [], reports: [],
     citation_snapshots: [], openalex_authors: [], publications: [], sync_runs: [],
   } as unknown as Record<string, Record<string, unknown>[]>;
 }

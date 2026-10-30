@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ReportButton from "@/components/ReportButton";
 import { notFound, redirect } from "next/navigation";
 import { MESSAGE_PROBLEM } from "@/lib/messages";
 import type { MessageProblem } from "@/app/actions/messages";
@@ -62,7 +63,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
     <Page
       title={other.display_name || "Researcher"}
       lede={[other.role_title, other.institution].filter(Boolean).join(" · ") || undefined}
-      actions={<div style={{ display: "flex", gap: 8 }}><Link href={`/people/${other.id}`} style={btn}>Profile</Link><Link href="/messages" style={btn}>All messages</Link></div>}
+      actions={<div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}><Link href={`/people/${other.id}`} style={btn}>Profile</Link><Link href="/messages" style={btn}>All messages</Link><ReportButton kind="profile" targetId={other.id} label="Report" /></div>}
     >
       <LimitNotice show={limited} />
       {problem && (
