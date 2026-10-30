@@ -198,7 +198,7 @@ function Badge({ text, color }: { text: string; color: string }) {
 function Grid({ fields }: { fields: { label: string; value: string }[] }) {
   if (!fields.length) return null;
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 1, background: "var(--rule)", border: "1px solid var(--rule)", marginBottom: 16 }}>
+    <div className="sc-inset" style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 1, background: "var(--rule)", border: "1px solid var(--rule)", marginBottom: 16 }}>
       {fields.map((f) => (
         <div key={f.label} style={{ background: "var(--surface)", padding: "9px 11px", minWidth: 0 }}>
           <div style={{ font: mono(9), color: "var(--mute)", marginBottom: 5 }}>{f.label}</div>

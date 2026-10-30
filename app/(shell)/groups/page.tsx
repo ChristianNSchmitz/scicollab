@@ -58,9 +58,9 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
         <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
       )}
       <nav aria-label="Group kinds" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
-        <a href="#people" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--ink)", color: "var(--ink)" }}>Your groups · {yours.length}</a>
-        <a href="#topics" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Topic groups · {joinedTopics.size} joined</a>
-        <a href="#new" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Start a group</a>
+        <a href="#people" className="sc-pill" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--ink)", color: "var(--ink)" }}>Your groups · {yours.length}</a>
+        <a href="#topics" className="sc-pill" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Topic groups · {joinedTopics.size} joined</a>
+        <a href="#new" className="sc-pill" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Start a group</a>
       </nav>
       <div id="people" className="sc-two-col" style={{ scrollMarginTop: 72 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>

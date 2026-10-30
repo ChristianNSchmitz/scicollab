@@ -81,7 +81,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
               const card = cards?.find((c) => c.id === m.method_card_id);
               return (
                 <div key={m.id} style={{ display: "flex", justifyContent: mine ? "flex-end" : "flex-start" }}>
-                  <div style={{ maxWidth: 520, border: "1px solid var(--rule)", background: mine ? "var(--bg)" : "var(--surface)", padding: "10px 12px" }}>
+                  <div className={mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ maxWidth: 520, border: "1px solid var(--rule)", background: mine ? "var(--bg)" : "var(--surface)", padding: "10px 12px" }}>
                     <div style={{ font: mono(10), color: "var(--mute)", marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}>
                       {!mine && <Avatar name={other.display_name} url={other.avatar_url} size={16} />}
                       {mine ? "You" : other.display_name} · {timeAgo(m.created_at)}
@@ -90,7 +90,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
                     {card && (
                       <Link
                         href={`/methods/${card.id}`}
-                        style={{ display: "block", marginTop: 9, borderLeft: "3px solid var(--signal)", background: "var(--surface)", padding: "8px 10px", color: "var(--ink)" }}
+                        className="sc-inset" style={{ display: "block", marginTop: 9, borderLeft: "3px solid var(--signal)", background: "var(--surface)", padding: "8px 10px", color: "var(--ink)" }}
                       >
                         <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)" }}>METHOD CARD</div>
                         <div style={{ font: mono(12, 500), marginTop: 3 }}>{card.code} — {card.title}</div>

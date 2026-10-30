@@ -154,7 +154,7 @@ export default async function Publications({
         </form>
         <div role="group" aria-label="Sort" style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", padding: "8px 14px", borderBottom: "1px solid var(--rule)" }}>
           {PUB_SORTS.map((s) => (
-            <Link key={s.key} href={href({ sort: s.key === "new" ? undefined : s.key })} aria-current={s.key === sort ? "true" : undefined} style={pill(s.key === sort)}>{s.label}</Link>
+            <Link key={s.key} href={href({ sort: s.key === "new" ? undefined : s.key })} aria-current={s.key === sort ? "true" : undefined} className="sc-pill" style={pill(s.key === sort)}>{s.label}</Link>
           ))}
           <span style={{ marginLeft: "auto", font: mono(10.5), color: "var(--mute)" }}>
             {shown.length === pubs.length ? `${pubs.length} publications` : `${shown.length} of ${pubs.length}`}

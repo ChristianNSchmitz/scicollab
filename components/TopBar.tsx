@@ -126,7 +126,7 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "", moder
           className="sc-top-search-text"
           style={{ flex: 1, minWidth: 0, height: "100%", border: 0, outline: "none", background: "transparent", font: "400 13px/1 var(--sans)", color: "var(--ink)", padding: 0 }}
         />
-        <span className="sc-top-kbd" aria-hidden="true" style={{ font: "500 11px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
+        <span className="sc-top-kbd sc-kbd" aria-hidden="true" style={{ font: "500 11px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
       </form>
 
       <Link href="/methods/new" className="sc-top-create" aria-label="Create" style={{ ...ghost, borderColor: "var(--ink)", background: "var(--ink)", color: "var(--bg)", textDecoration: "none" }}>

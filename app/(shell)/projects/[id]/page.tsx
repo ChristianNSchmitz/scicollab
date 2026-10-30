@@ -107,6 +107,7 @@ export default async function Project({
               key={t.id}
               href={`/projects/${p.id}?tab=${t.id}`}
               aria-current={on ? "page" : undefined}
+              className="sc-pill"
               style={{
                 display: "flex", alignItems: "center", gap: 7,
                 padding: "9px 16px", marginBottom: -1,

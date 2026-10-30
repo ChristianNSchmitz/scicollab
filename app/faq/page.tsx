@@ -129,7 +129,7 @@ export default function QuestionsPage() {
       {GROUPS.map((g, gi) => (
         <section key={g.title}>
           <h2 style={gi ? h2 : { ...h2, marginTop: 0, paddingTop: 0, borderTop: 0 }}>{g.title}</h2>
-          <div style={{ border: "1px solid var(--rule)" }}>
+          <div className="sc-soft" style={{ border: "1px solid var(--rule)" }}>
             {g.items.map((item, i) => (
               <details key={item.q} style={{ borderTop: i ? "1px solid var(--rule)" : 0 }}>
                 <summary style={{ cursor: "pointer", padding: "13px 14px", font: "600 13.5px/1.4 var(--mono)", listStylePosition: "inside" }}>

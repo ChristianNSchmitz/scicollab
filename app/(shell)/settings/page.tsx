@@ -65,7 +65,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
       <div style={{ maxWidth: 720 }}>
         <nav aria-label="Settings sections" style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
           {nav.map(([href, label]) => (
-            <a key={href} href={href} style={{ font: mono(11, 500), padding: "5px 10px", border: "1px solid var(--rule)", color: "var(--ink)" }}>{label}</a>
+            <a key={href} href={href} className="sc-pill" style={{ font: mono(11, 500), padding: "5px 10px", border: "1px solid var(--rule)", color: "var(--ink)" }}>{label}</a>
           ))}
         </nav>
 

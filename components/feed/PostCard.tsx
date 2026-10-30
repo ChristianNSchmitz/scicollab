@@ -61,7 +61,7 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
           <LinkCard preview={p.link_preview} />
 
           {card && (
-            <Link href={`/methods/${card.id}`} style={{ display: "block", marginTop: 11, border: "1px solid var(--rule)", background: "var(--bg)", padding: "10px 12px", color: "var(--ink)" }}>
+            <Link href={`/methods/${card.id}`} className="sc-inset" style={{ display: "block", marginTop: 11, border: "1px solid var(--rule)", background: "var(--bg)", padding: "10px 12px", color: "var(--ink)" }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                 <Outcome value={card.outcome} />
                 <span style={{ font: mono(10.5), color: "var(--mute)" }}>{card.code}</span>
@@ -71,7 +71,7 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
           )}
 
           {p.intent === "collab" && (p.technique || p.offer || p.deadline) && (
-            <div style={{ marginTop: 11, border: "1px solid var(--signal)", padding: "10px 12px" }}>
+            <div className="sc-inset" style={{ marginTop: 11, border: "1px solid var(--signal)", padding: "10px 12px" }}>
               <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 6 }}>WHAT IS NEEDED</div>
               <div style={{ font: mono(11.5, 400, 1.7) }}>
                 {p.technique && <div>technique · {p.technique}</div>}

@@ -43,7 +43,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
   const shown = (people ?? []).filter((p) =>
     filter === "following" ? following.has(p.id) : filter === "followers" ? followers.has(p.id) : true);
   const tab = (key: Filter, label: string) => (
-    <Link key={key} href={key === "all" ? "/network" : `/network?show=${key}`} aria-current={filter === key ? "page" : undefined}
+    <Link key={key} className="sc-pill" href={key === "all" ? "/network" : `/network?show=${key}`} aria-current={filter === key ? "page" : undefined}
       style={{ font: mono(11.5, 500), padding: "6px 11px", border: `1px solid ${filter === key ? "var(--ink)" : "var(--rule)"}`, color: "var(--ink)", textDecoration: "none", background: filter === key ? "var(--surface)" : "transparent" }}>
       {label}
     </Link>

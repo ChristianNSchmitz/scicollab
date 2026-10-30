@@ -77,7 +77,7 @@ export default function NewMethod() {
                   ["lab", "Lab", "your workspace"],
                   ["public", "Public", "anyone on SciCollab"],
                 ].map(([v, label, hint], i) => (
-                  <label key={v} style={{ border: "1px solid var(--rule)", padding: "9px 10px", cursor: "pointer" }}>
+                  <label key={v} className="sc-option" style={{ border: "1px solid var(--rule)", padding: "9px 10px", cursor: "pointer" }}>
                     <input type="radio" name="visibility" value={v} defaultChecked={i === 0} style={{ marginRight: 7 }} />
                     <span style={{ font: mono(12, 500) }}>{label}</span>
                     <span style={{ display: "block", font: "400 12px/1.4 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{hint}</span>

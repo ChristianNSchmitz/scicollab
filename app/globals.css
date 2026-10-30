@@ -355,10 +355,16 @@ html[data-look="glass"] .sc-hl-kicker, html[data-look="glass"] .sc-panel-head {
 html[data-look="glass"] .sc-panel-head { font-size: 13px !important; color: var(--ink) !important; border-bottom-color: var(--rule) !important; }
 
 /* Controls: rounded; pills fully round. */
-html[data-look="glass"] button,
 html[data-look="glass"] input:not([type="checkbox"]):not([type="radio"]),
 html[data-look="glass"] select,
 html[data-look="glass"] textarea { border-radius: var(--r-ctl) !important; }
+/* Buttons are capsules, like links styled as buttons; rows that happen to be
+   buttons (full-width menu entries, conversation lists, tabs) stay rounded rectangles. */
+html[data-look="glass"] button { border-radius: 999px !important; }
+html[data-look="glass"] button[style*="width:100%"],
+html[data-look="glass"] button[style*="width: 100%"],
+html[data-look="glass"] .sc-dock button[style*="border-bottom"],
+html[data-look="glass"] .sc-tabbar button { border-radius: var(--r-ctl) !important; }
 html[data-look="glass"] .sc-chip,
 html[data-look="glass"] .sc-filter a,
 html[data-look="glass"] [aria-label="Reactions"] button,
@@ -382,6 +388,30 @@ html[data-look="glass"] .sc-land-board, html[data-look="glass"] .sc-land-mobile 
 .sc-gl-primary  { background: var(--signal-fill); color: var(--on-signal); border-color: transparent; box-shadow: 0 4px 14px color-mix(in srgb, var(--signal-fill) 35%, transparent); }
 .sc-gl-big      { height: 46px; padding: 0 22px; font-size: 15px; }
 @media (max-width: 860px) { .sc-gl-hero { grid-template-columns: minmax(0, 1fr); gap: 28px; } .sc-gl-features { margin-top: 36px; } }
+
+/* One shape per kind of element, selected or not:
+   pills for tabs and filters, soft insets for boxes inside cards,
+   bubbles for chat, rounded options for choices. */
+html[data-look="glass"] .sc-pill { border-radius: 999px !important; }
+html[data-look="glass"] .sc-pill:not([aria-current]) { border-color: var(--rule) !important; }
+html[data-look="glass"] .sc-inset { border-radius: 12px; overflow: hidden; }
+html[data-look="glass"] .sc-option { border-radius: 12px; }
+html[data-look="glass"] .sc-option:has(input:checked) { border-color: var(--ink) !important; background: var(--surface); }
+html[data-look="glass"] .sc-kbd { border-radius: 6px; }
+/* The contact form's robot check (ALTCHA widget) in the same shape as the fields. */
+html[data-look="glass"] .altcha { --altcha-border-radius: 12px; }
+html[data-look="glass"] .altcha-main, html[data-look="glass"] .altcha { border-radius: 12px; }
+html[data-look="glass"] .sc-bubble {
+  border-radius: 18px 18px 18px 6px; border-color: var(--glass-edge) !important;
+  background: var(--surface) !important; box-shadow: 0 1px 2px rgba(31, 38, 60, .06);
+}
+html[data-look="glass"] .sc-bubble-mine {
+  border-radius: 18px 18px 6px 18px; border-color: transparent !important;
+  background: color-mix(in srgb, var(--signal) 12%, var(--surface)) !important;
+}
+html[data-look="glass"] .sc-bubble .sc-inset { border-radius: 10px; }
+html[data-look="glass"] .sc-dock form input { border-radius: 999px !important; }
+html[data-look="glass"] .sc-dock form button { border-radius: 999px !important; }
 
 /* Any other framed box: soft card instead of a black frame. */
 html[data-look="glass"] .sc-soft { border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-edge) !important; background: var(--surface) !important; box-shadow: var(--card-shadow); }

@@ -26,7 +26,7 @@ export default async function Projects() {
         ) : projects!.map((p) => (
           <Link key={p.id} href={`/projects/${p.id}`} style={{ display: "block", padding: "13px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 6 }}>
-              <span style={{ font: mono(10, 700), letterSpacing: ".08em", textTransform: "uppercase", color: "var(--ok)", border: "1px solid var(--ok)", padding: "3px 7px" }}>{p.status}</span>
+              <span className="sc-badge" style={{ font: mono(10, 700), letterSpacing: ".08em", textTransform: "uppercase", color: "var(--ok)", border: "1px solid var(--ok)", padding: "3px 7px" }}>{p.status}</span>
               <span style={{ marginLeft: "auto", font: mono(11), color: "var(--mute)" }}>{timeAgo(p.created_at)}</span>
               <Visibility value={p.visibility} />
             </div>

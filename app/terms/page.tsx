@@ -70,7 +70,7 @@ export default function TermsPage() {
       title="Terms & Conditions"
       lede="How contributions, credit and patents work on SciCollab. In short: what is in your own Workspace stays yours; what you add to someone else's work is free to use unless you agree credit first; and nothing patentable belongs in a public thread."
     >
-      <div role="note" style={{ border: "1px solid var(--flag)", background: "var(--bg)", padding: "12px 14px", marginBottom: 8 }}>
+      <div role="note" className="sc-inset" style={{ border: "1px solid var(--flag)", background: "var(--bg)", padding: "12px 14px", marginBottom: 8 }}>
         <div style={{ font: "700 11px/1 var(--mono)", letterSpacing: ".1em", color: "var(--flag-ink)", marginBottom: 6 }}>DRAFT — NOT YET IN FORCE</div>
         <p style={{ ...p, margin: 0, font: "400 13px/1.6 var(--sans)" }}>
           This is the working draft of the section on contributions, authorship and patents. It is being reviewed

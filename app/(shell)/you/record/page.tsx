@@ -183,7 +183,7 @@ export default async function RecordPage({ searchParams }: {
           {[{ key: null as Axis | null, label: `All · ${r.events.length}` }, ...AXES.map((a) => ({ key: a.key as Axis | null, label: `${a.label} · ${r.events.filter((e) => e.axis === a.key).length}` }))].map((f) => {
             const on = f.key === axis;
             return (
-              <Link key={f.label} href={q({ axis: f.key }) + "#ledger"}
+              <Link key={f.label} href={q({ axis: f.key }) + "#ledger"} className="sc-pill"
                     style={{ font: mono(10.5), padding: "4px 8px", textDecoration: "none",
                              border: `1px solid ${on ? "var(--ink)" : "var(--rule)"}`,
                              background: on ? "var(--ink)" : "transparent", color: on ? "var(--bg)" : "var(--ink)" }}>

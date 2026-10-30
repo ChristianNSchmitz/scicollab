@@ -55,7 +55,7 @@ export default function OrcidLinker({ linked, defaultName }: { linked: LinkedSum
       {linked && (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <div style={{ display: "flex", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
-            <span style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--ok)", border: "1px solid var(--ok)", padding: "2px 6px" }}>LINKED</span>
+            <span className="sc-badge" style={{ font: mono(10, 700), letterSpacing: ".08em", color: "var(--ok)", border: "1px solid var(--ok)", padding: "2px 6px" }}>LINKED</span>
             <a href={orcidUrl(linked.orcid)} target="_blank" rel="noreferrer" style={{ font: mono(13, 500), color: "var(--ink)" }}>{linked.orcid} ↗</a>
           </div>
           <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
