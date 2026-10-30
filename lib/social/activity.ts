@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { peopleById, type Person } from "@/lib/people";
 import { loadPublications } from "@/lib/record/publications";
 import { ROOMS } from "@/lib/taxonomy";
+import { currentGroupIds } from "@/lib/social/groups";
 
 type Client = SupabaseClient<any, any, any>;
 
@@ -26,7 +27,7 @@ export async function activityOf(
   if (!actors.length) return [];
   const since = new Date(Date.now() - (opts.days ?? 60) * DAY).toISOString();
   const [{ data: posts }, { data: answers }, { data: questions }, { data: cards }, { data: repros }, { data: joins }] = await Promise.all([
-    supabase.from("posts").select("id, author_id, room_id, title, created_at").in("author_id", actors).gte("created_at", since),
+    supabase.from("posts").select("id, author_id, room_id, group_id, title, created_at").in("author_id", actors).gte("created_at", since),
     supabase.from("answers").select("id, author_id, question_id, created_at").in("author_id", actors).gte("created_at", since),
     supabase.from("questions").select("id, author_id, title, created_at").in("author_id", actors).gte("created_at", since),
     supabase.from("method_cards").select("id, author_id, code, title, visibility, outcome, created_at").in("author_id", actors).gte("created_at", since),
@@ -46,10 +47,14 @@ export async function activityOf(
     newPapers(supabase, actors.slice(0, MAX_PAPER_AUTHORS), since),
   ]);
   const who = (id: string) => people.get(id) ?? null;
+  // Posts in a group's discussion appear only to that group's members.
+  const viewerGroups = new Set(await currentGroupIds(supabase, opts.viewer));
   const roomName = (id: string) => ROOMS.find((r) => r.id === id)?.name ?? id;
 
   const out: Activity[] = [
-    ...(posts ?? []).map((p: any): Activity => ({ at: p.created_at, actor: who(p.author_id), kind: "post", text: `posted in #${roomName(p.room_id)}`, title: p.title, href: `/posts/${p.id}` })),
+    ...(posts ?? []).filter((p: any) => !p.group_id || viewerGroups.has(p.group_id)).map((p: any): Activity => ({
+      at: p.created_at, actor: who(p.author_id), kind: "post", text: p.group_id ? "posted in your group" : `posted in #${roomName(p.room_id)}`, title: p.title, href: `/posts/${p.id}`,
+    })),
     ...(answers ?? []).filter((a: any) => (qs ?? []).some((q: any) => q.id === a.question_id)).map((a: any): Activity => ({
       at: a.created_at, actor: who(a.author_id), kind: "answer", text: "answered", title: (qs ?? []).find((q: any) => q.id === a.question_id)?.title ?? "", href: `/questions/${a.question_id}`,
     })),
@@ -62,7 +67,7 @@ export async function activityOf(
       const c = (rc ?? []).find((x: any) => x.id === r.card_id);
       return { at: r.created_at, actor: who(r.user_id), kind: "reproduction", text: `reproduced ${c.code}, ${r.outcome === "held" ? "it held" : "it failed"}`, title: c.title, href: `/methods/${c.id}` };
     }),
-    ...(joins ?? []).filter((j: any) => j.role !== "owner" && (gs ?? []).some((g: any) => g.id === j.group_id)).map((j: any): Activity => ({
+    ...(joins ?? []).filter((j: any) => j.role !== "owner" && j.role !== "alumni" && (gs ?? []).some((g: any) => g.id === j.group_id)).map((j: any): Activity => ({
       at: j.joined_at, actor: who(j.user_id), kind: "group", text: "joined the group", title: (gs ?? []).find((g: any) => g.id === j.group_id)?.name ?? "", href: `/groups/${j.group_id}`,
     })),
     ...papers.map((p): Activity => ({ at: p.at, actor: who(p.user), kind: "paper", text: "has a new publication", title: p.title, href: p.href })),

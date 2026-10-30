@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/session";
 import { intentById, roomById } from "@/lib/taxonomy";
 import { isRowId } from "@/lib/query";
 import { recordMentions } from "@/lib/social/mentions";
+import { roleIn, isCurrent, canReadPost } from "@/lib/social/groups";
 import { storeImages, removeImages, MAX_IMAGES, IMAGE_TYPES, MAX_IMAGE_BYTES } from "@/lib/posts/images";
 import { firstUrl, linkPreview } from "@/lib/posts/link-preview";
 
@@ -27,13 +28,20 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
   const spec = intentById(intent);
   if (!spec) return { error: "Pick what kind of post this is." };
 
-  // A room that exists, and one the author has joined: the composer only
-  // offers those, and a post anywhere else would land in a feed nobody reads.
-  const room = String(form.get("room_id") ?? "");
-  if (!roomById(room)) return { error: "Choose a room to post in." };
-  const { data: joined } = await supabase
-    .from("user_rooms").select("room_id").eq("user_id", user.id).eq("room_id", room).maybeSingle();
-  if (!joined) return { error: "You can only post in rooms you have joined." };
+  // Either a group's own discussion (members only), or a topic group the
+  // author has joined: the composer only offers those, and a post anywhere
+  // else would land in a feed nobody reads.
+  const groupId = String(form.get("group_id") ?? "");
+  let room = "";
+  if (groupId) {
+    if (!isRowId(groupId) || !isCurrent(await roleIn(supabase, groupId, user.id))) return { error: "You can only post in groups you are a member of." };
+  } else {
+    room = String(form.get("room_id") ?? "");
+    if (!roomById(room)) return { error: "Choose a topic group to post in." };
+    const { data: joined } = await supabase
+      .from("user_rooms").select("room_id").eq("user_id", user.id).eq("room_id", room).maybeSingle();
+    if (!joined) return { error: "You can only post in topic groups you have joined." };
+  }
 
   const title = text(form, "title", 200);
   if (!title) return { error: "Give the post a title." };
@@ -77,6 +85,7 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
     .insert({
       author_id: user.id,
       room_id: room,
+      group_id: groupId || null,
       intent,
       title,
       body: text(form, "body", 10000),
@@ -116,7 +125,8 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
 
   await recordMentions(supabase, user.id, "post", data.id, `/posts/${data.id}`, `${title}\n${body}`);
   revalidatePath("/home");
-  // Posted from the feed: stay on the feed, at the new post.
+  // Posted from the feed or a group page: stay there, at the new post.
+  if (groupId) { revalidatePath(`/groups/${groupId}`); redirect(`/groups/${groupId}?posted=1#post-${data.id}`); }
   if (form.get("return_to") === "feed") redirect(`/home?posted=1#post-${data.id}`);
   redirect(`/posts/${data.id}`);
 }
@@ -140,8 +150,8 @@ export async function replyToPost(postId: string, form: FormData) {
   const body = text(form, "body", 5000);
   if (!body) return;
   if (await overLimit(supabase, "reply", user.id)) redirect(`/posts/${postId}?limited=1#replies`);
-  const { data: post } = await supabase.from("posts").select("id").eq("id", postId).maybeSingle();
-  if (!post) throw new Error("That post no longer exists.");
+  const { data: post } = await supabase.from("posts").select("id, group_id").eq("id", postId).maybeSingle();
+  if (!post || !(await canReadPost(supabase, post, user.id))) throw new Error("That post no longer exists.");
   const { data: reply, error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body }).select("id").single();
   if (error) throw new Error(error.message);
   await recordMentions(supabase, user.id, "reply", reply.id, `/posts/${postId}#replies`, body);

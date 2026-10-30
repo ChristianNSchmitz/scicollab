@@ -11,6 +11,8 @@ const PUBLIC = [
   "/", "/login", "/signup", "/onboarding", "/api/cron",
   // Password reset: the request form and the link back from the e-mail.
   "/forgot-password", "/auth/callback",
+  // Group invitation links: readable signed out, so a new person can sign up from them.
+  "/join",
   // Public information pages and the contact form (with its captcha).
   "/about", "/faq", "/terms", "/contact", "/api/captcha",
   // The front page's live "most active" list: public items only (lib/showcase.ts).

@@ -26,7 +26,8 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     supabase.from("answers").select("id, question_id").eq("author_id", me),
     supabase.from("mentions").select("author_id, source_kind, href, created_at").eq("mentioned_id", me).gte("created_at", since),
     supabase.from("follows").select("follower_id, created_at").eq("followee_id", me).gte("created_at", since),
-    supabase.from("group_members").select("group_id").eq("user_id", me).eq("role", "owner"),
+    // Groups you manage (lead or admin): their join requests are yours to answer.
+    supabase.from("group_members").select("group_id").eq("user_id", me).in("role", ["owner", "admin"]),
   ]);
   const ownedIds = (owned ?? []).map((g: any) => g.group_id);
 

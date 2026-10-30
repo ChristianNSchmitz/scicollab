@@ -5,6 +5,7 @@ import { requireUser, sessionUser } from "@/lib/session";
 import { isRowId } from "@/lib/query";
 import { isReaction, type ReactionTarget } from "@/lib/social/reactions";
 import { unseenCount } from "@/lib/social/notifications";
+import { canReadPost } from "@/lib/social/groups";
 
 /**
  * Following and reactions. Both are small, reversible and private enough
@@ -37,8 +38,8 @@ export async function toggleReaction(kind: ReactionTarget, targetId: string, rea
   if ((kind !== "post" && kind !== "answer") || !isRowId(targetId) || !isReaction(reaction)) return { error: "Unknown reaction." };
 
   // Only on something that exists, and never on your own words.
-  const { data: target } = await supabase.from(kind === "post" ? "posts" : "answers").select("author_id").eq("id", targetId).maybeSingle();
-  if (!target) return { error: "That no longer exists." };
+  const { data: target } = await supabase.from(kind === "post" ? "posts" : "answers").select("*").eq("id", targetId).maybeSingle();
+  if (!target || (kind === "post" && !(await canReadPost(supabase, target as any, user.id)))) return { error: "That no longer exists." };
   if (target.author_id === user.id) return { error: "You cannot react to your own post." };
 
   const { data: mine } = await supabase.from("reactions").select("id")

@@ -13,6 +13,7 @@ import RichText from "@/components/RichText";
 import MentionTextarea from "@/components/social/MentionTextarea";
 import Reactions from "@/components/social/Reactions";
 import ReportButton from "@/components/ReportButton";
+import { canReadPost } from "@/lib/social/groups";
 import { PostImages, LinkCard } from "@/components/feed/PostMedia";
 import { imageUrls } from "@/lib/posts/images";
 import { mentionsIn } from "@/lib/social/mentions";
@@ -28,6 +29,9 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
 
   const { data: post } = await supabase.from("posts").select("*").eq("id", id).maybeSingle();
   if (!post) notFound();
+  const { data: { user: viewer } } = await supabase.auth.getUser();
+  if (!(await canReadPost(supabase, post, viewer!.id))) notFound();
+  const { data: group } = post.group_id ? await supabase.from("groups").select("id, name").eq("id", post.group_id).maybeSingle() : { data: null };
 
   const [{ data: author }, { data: card }] = await Promise.all([
     supabase.from("profiles").select("id, display_name, institution, role_title, avatar_url").eq("id", post.author_id).maybeSingle(),
@@ -57,7 +61,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
   return (
     <Page
       title={post.title}
-      lede={[spec?.label, room ? `#${room.id}` : null].filter(Boolean).join(" · ")}
+      lede={[spec?.label, room ? `#${room.id}` : group ? `${group.name}, members only` : null].filter(Boolean).join(" · ")}
       actions={
         !isMine ? <Link href={`/messages/${post.author_id}`} style={btn}>Message the author</Link> : undefined
       }
@@ -258,6 +262,15 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
         </div>
 
         <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {group ? (
+            <Panel>
+              <PanelHead>Group discussion</PanelHead>
+              <div style={{ padding: 14 }}>
+                <Link href={`/groups/${group.id}`} style={{ font: mono(13.5, 500), color: "var(--ink)" }}>{group.name}</Link>
+                <p style={{ font: "400 13px/1.55 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>Only the group&apos;s members can see this post and its replies.</p>
+              </div>
+            </Panel>
+          ) : (
           <Panel>
             <PanelHead>Topic group</PanelHead>
             <div style={{ padding: 14 }}>
@@ -269,6 +282,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               </div>
             </div>
           </Panel>
+          )}
           {isMine && (
             <details>
               <summary style={{ font: mono(11.5), color: "var(--err)", cursor: "pointer" }}>Delete this post</summary>

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { createAccount } from "@/app/actions/signup";
 import { demoSignUp, backendConfigured } from "@/app/actions/demo-auth";
@@ -12,12 +12,20 @@ import { demoSignUp, backendConfigured } from "@/app/actions/demo-auth";
  *  first; neither is connected, so the provider choice is shown as designed
  *  and email is the live path. */
 export default function SignupPage() {
+  return <Suspense fallback={null}><Signup /></Suspense>;
+}
+
+function Signup() {
   const router = useRouter();
+  // Arriving from a group invitation: carry it through sign-up and go back to it.
+  const params = useSearchParams();
+  const groupInvite = params.get("invite") ?? "";
+  const after = groupInvite && /^[A-Za-z0-9_-]{20,64}$/.test(groupInvite) ? `/join/${groupInvite}` : "/welcome";
   const [name, setName] = useState("");
   const [institution, setInstitution] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [invite, setInvite] = useState("");
+  const [invite, setInvite] = useState(groupInvite);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -31,7 +39,7 @@ export default function SignupPage() {
       const res = await demoSignUp(email.trim(), password, name.trim(), institution.trim());
       setBusy(false);
       if (!res.ok) { setError(res.error); return; }
-      router.push("/welcome");
+      router.push(after);
       router.refresh();
       return;
     }
@@ -53,7 +61,7 @@ export default function SignupPage() {
     setBusy(false);
     if (signInError) { setError("Account created. Please sign in."); return; }
 
-    router.push("/welcome");
+    router.push(after);
     router.refresh();
   }
 

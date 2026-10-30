@@ -11,7 +11,7 @@ import LookToggle from "@/components/LookToggle";
 /* Top bar — board [ 003 ]: 56px, wordmark in a 200px well, search to 660px
    with its ⌘K hint, Create, notifications, avatar with a presence dot. */
 
-export default function TopBar({ name = "", avatarUrl = null, userId = "" }: { name?: string; avatarUrl?: string | null; userId?: string }) {
+export default function TopBar({ name = "", avatarUrl = null, userId = "", moderator = false }: { name?: string; avatarUrl?: string | null; userId?: string; moderator?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const [unseen, setUnseen] = useState(0);
@@ -181,6 +181,7 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "" }: { n
             <Link href="/groups" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your groups</Link>
             <Link href="/you/publications" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your publications</Link>
             <Link href="/requests" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Access requests</Link>
+            {moderator && <Link href="/moderation" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Moderation inbox</Link>}
             <Link href="/settings" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Settings</Link>
             <LookToggle style={{ width: "100%", textAlign: "left", padding: "9px 12px", font: "400 12px/1 var(--mono)", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", color: "var(--ink)", cursor: "pointer" }} />
             <button onClick={signOut} style={{ width: "100%", textAlign: "left", padding: "9px 12px", font: "400 12px/1 var(--mono)", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", color: "var(--err)", cursor: "pointer" }}>

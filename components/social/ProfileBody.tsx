@@ -6,6 +6,7 @@ import PublicationRow from "@/components/record/PublicationRow";
 import Avatar from "@/components/Avatar";
 import { orcidUrl } from "@/lib/orcid";
 import { timeAgo } from "@/lib/format";
+import { ROLE_LABEL, type GroupRole } from "@/lib/social/groups";
 
 const row = { display: "flex", gap: 10, alignItems: "baseline", padding: "10px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" } as const;
 const quiet = { padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" } as const;
@@ -109,7 +110,7 @@ export default function ProfileBody({ d, publicView = false, side }: { d: Profil
               {d.groups.map((g) => (
                 <Link key={g.id} href={`/groups/${g.id}`} style={row}>
                   <span style={{ flex: 1, font: mono(12.5, 500) }}>{g.name}</span>
-                  {g.role === "owner" && <Tag>owner</Tag>}
+                  {g.role !== "member" && <Tag>{ROLE_LABEL[g.role as GroupRole] ?? g.role}</Tag>}
                 </Link>
               ))}
             </Panel>

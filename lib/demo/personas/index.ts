@@ -343,7 +343,8 @@ const groups = [
 
 const group_members = [
   ["gr-ebro", "u-rivera", "owner", "2026-09-29 10:00"], ["gr-ebro", "u-lindqvist", "member", "2026-09-29 10:05"],
-  ["gr-lund", "u-ingrid", "owner", "2026-08-04 08:00"], ["gr-lund", "u-mateo", "member", "2026-08-26 08:30"],
+  ["gr-lund", "u-ingrid", "owner", "2026-08-04 08:00"], ["gr-lund", "u-mateo", "admin", "2026-08-26 08:30"],
+  ["gr-lund", "u-lena", "alumni", "2026-08-05 09:00"], ["gr-ebro", "u-okafor", "guest", "2026-10-02 10:00"],
   ["gr-transfection", "u-okafor", "owner", "2026-09-10 09:00"], ["gr-transfection", "u-rivera", "member", "2026-09-11 10:00"],
   ["gr-transfection", "u-bhatt", "member", "2026-09-24 18:00"], ["gr-transfection", "u-lindqvist", "member", "2026-10-01 09:00"],
 ].map(([group_id, user_id, role, t]) => ({ group_id, user_id, role, joined_at: at(t) }));
@@ -352,6 +353,18 @@ const group_projects = [
   ["gr-ebro", "p-1", "u-rivera", "2026-09-29 10:10"], ["gr-ebro", "p-2", "u-rivera", "2026-09-29 10:10"],
   ["gr-lund", "pj-mateo", "u-mateo", "2026-08-28 09:00"], ["gr-lund", "pj-ingrid", "u-ingrid", "2026-08-05 07:00"],
 ].map(([group_id, project_id, added_by, t]) => ({ group_id, project_id, added_by, added_at: at(t) }));
+
+/* Lab discussions: posts visible only inside a group (supabase/11). */
+const group_posts = [
+  { id: "gp-ebro-1", group_id: "gr-ebro", author_id: "u-lindqvist", intent: "update", title: "Bay 3 sensor recalibrated, logger back on",
+    body: "Service came this morning. Bay 3 now reads within 0.1% of the reference meter. @Alex Rivera.ex the passage series can restart on Monday.", at: "2026-10-21 09:40" },
+  { id: "gp-ebro-2", group_id: "gr-ebro", author_id: "u-rivera", intent: "general", title: "Who has the last aliquot of TransLipo-3 lot 22?",
+    body: "I need two tubes for the p18 repeat. If it is in your box, please put it in the shared rack.", at: "2026-10-22 14:05" },
+  { id: "gp-lund-1", group_id: "gr-lund", author_id: "u-ingrid", intent: "update", title: "Lab meeting moved to Thursday 9:00",
+    body: "Mateo presents the GBA1 maturation series. Please read the notebook entries from last week before.", at: "2026-10-20 07:30" },
+  { id: "gp-tc-1", group_id: "gr-transfection", author_id: "u-okafor", intent: "general", title: "Next session: passage effects, bring one failed run",
+    body: "Two weeks from now. Everyone brings one run that did not work and the card that goes with it.", at: "2026-10-19 10:10" },
+];
 
 const reactions = [
   ["u-okafor", "post", "p-1", "seen", "2026-09-20 11:00"], ["u-lindqvist", "post", "p-1", "useful", "2026-09-29 09:10"],
@@ -374,6 +387,10 @@ function build() {
     technique: p.technique ?? "", organism: p.organism ?? "", deadline: day(p.deadline ?? null), offer: p.offer ?? "",
     created_at: at(p.at),
   }));
+  for (const g of group_posts) posts.push({
+    id: g.id, author_id: g.author_id, room_id: "", group_id: g.group_id, intent: g.intent, title: g.title, body: g.body,
+    method_card_id: null, project_id: null, technique: "", organism: "", deadline: null, offer: "", created_at: at(g.at),
+  } as any);
   const post_replies = list("replies").map((r) => ({ id: r.id, post_id: r.post_id, author_id: r.author_id, body: r.body, created_at: at(r.at) }));
   const questions = list("questions").map((q, i) => ({
     id: q.id, author_id: q.author_id, title: q.title, body: q.body, tags: q.tags ?? [],
@@ -453,7 +470,12 @@ function build() {
     group_projects: group_projects.filter((g) => projectIds.has(g.project_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [],
-    group_requests: [], reports: [],
+    group_requests: [], group_invites: [],
+    moderators: [{ user_id: "u-mod", added_at: at("2026-07-20 09:50") }],
+    reports: [
+      { id: "rp-1", reporter_id: "u-bhatt", target_kind: "post", target_id: "pp-common-jonas", reason: "spam", note: "Off-topic in a technical room?", status: "open", created_at: at("2026-10-22 18:00"), resolved_by: null, resolved_at: null, resolution: "" },
+      { id: "rp-2", reporter_id: "u-newcomer", target_kind: "profile", target_id: "u-priya", reason: "other", note: "Is this a vendor account? Just checking.", status: "open", created_at: at("2026-10-23 08:15"), resolved_by: null, resolved_at: null, resolution: "" },
+    ],
     citation_snapshots: [], openalex_authors: [], publications: [], sync_runs: [],
   } as unknown as Record<string, Record<string, unknown>[]>;
 }

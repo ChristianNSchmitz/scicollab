@@ -1,16 +1,16 @@
 import { peopleById } from "@/lib/people";
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
-import PersonLink from "@/components/social/PersonLink";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Panel, PanelHead, Empty, Outcome, mono } from "@/components/ui";
+import { Panel, PanelHead, Empty, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
-import { roomById, housesOfRoom, INTENTS, intentById } from "@/lib/taxonomy";
+import { roomById, INTENTS } from "@/lib/taxonomy";
 import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibliometrics";
 import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue } from "@/lib/record/publications";
 import Highlights, { type NewPaper, type Nudge } from "@/components/dashboard/Highlights";
+import PostCard from "@/components/feed/PostCard";
 import GettingStarted, { type Step } from "@/components/dashboard/GettingStarted";
 import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
@@ -21,10 +21,7 @@ import { coauthorsOf } from "@/lib/social/coauthors";
 import { reactionsFor } from "@/lib/social/reactions";
 import ActivityList from "@/components/social/ActivityList";
 import FollowButton from "@/components/social/FollowButton";
-import Reactions from "@/components/social/Reactions";
 import QuickPost from "@/components/feed/QuickPost";
-import { PostImages, LinkCard } from "@/components/feed/PostMedia";
-import RichText from "@/components/RichText";
 import { imageUrls } from "@/lib/posts/images";
 
 export const dynamic = "force-dynamic";
@@ -32,9 +29,6 @@ export const dynamic = "force-dynamic";
 /** Short names for the filter pills; the full name is the tooltip. */
 const SHORT: Record<string, string> = { result: "Results", data_question: "Data questions", general: "Questions", collab: "Collaborators", update: "News" };
 
-const INTENT_COLOUR: Record<string, string> = {
-  result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal-ink)", update: "var(--ink)",
-};
 
 /**
  * The landing page: a dashboard (citations, what is waiting on you, your
@@ -50,7 +44,8 @@ export default async function Home({
 }: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string; posted?: string }> }) {
   const { intent, room: roomParam, sync, feed: feedParam, posted } = await searchParams;
   // "following": posts and activity from the people you follow, from any topic group.
-  const feedMode = feedParam === "following" ? "following" : "topics";
+  // "groups": the discussions of the groups you are in (members only).
+  const feedMode = feedParam === "following" ? "following" : feedParam === "groups" ? "groups" : "topics";
   const room = feedMode === "topics" ? roomParam : undefined;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -75,22 +70,27 @@ export default async function Home({
       supabase.from("group_members").select("group_id, role").eq("user_id", me_),
     ]);
   const followed = [...following];
+  const myGroupIds = (myGroups ?? []).filter((g: any) => g.role !== "alumni").map((g: any) => g.group_id);
   const myRooms = (mine ?? []).map((r: { room_id: string }) => r.room_id);
 
   // A new account with no topic groups gets the picker, never an empty page.
   if (myRooms.length === 0) redirect("/welcome");
 
   const feed = (async () => {
-    if (feedMode === "following" && !followed.length) {
+    if ((feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length)) {
       return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>() };
     }
     let q = supabase
       .from("posts")
-      .select("id, author_id, room_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, created_at");
-    q = feedMode === "following" ? q.in("author_id", followed) : q.in("room_id", room ? [room] : myRooms);
+      .select("id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, created_at");
+    q = feedMode === "following" ? q.in("author_id", followed)
+      : feedMode === "groups" ? q.in("group_id", myGroupIds)
+      : q.in("room_id", room ? [room] : myRooms);
     q = q.order("created_at", { ascending: false }).limit(40);
     if (intent) q = q.eq("intent", intent);
-    const { data: posts } = await q;
+    // A followed person's posts in a group you are not in stay in that group.
+    const { data: all } = await q;
+    const posts = (all ?? []).filter((p: any) => !p.group_id || myGroupIds.includes(p.group_id));
     const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
     const postIds = (posts ?? []).map((p: any) => p.id);
     const [people, { data: cards }, { data: feedReplies }, reactions, images] = await Promise.all([
@@ -116,7 +116,7 @@ export default async function Home({
 
   // Your groups, and the projects shared in them that you are not on yet.
   const groupsPanel = (async () => {
-    const ids = (myGroups ?? []).map((g: any) => g.group_id);
+    const ids = myGroupIds;
     if (!ids.length) return { groups: [] as any[], joinable: new Map<string, number>() };
     const [{ data: groups }, { data: shared }, { data: onProjects }] = await Promise.all([
       supabase.from("groups").select("id, name").in("id", ids),
@@ -158,6 +158,7 @@ export default async function Home({
     social,
     groupsPanel,
   ]);
+  const groupNames = new Map<string, { id: string; name: string }>(groupList.map((g: any) => [g.id, { id: g.id, name: g.name }]));
   // New papers: yours from the last syncs, then those of people you follow.
   const names = await peopleById(supabase, theirPapers.map((p) => p.user));
   const year = new Date().getFullYear();
@@ -183,7 +184,7 @@ export default async function Home({
 
   const qs = (patch: Record<string, string | undefined>) => {
     const sp = new URLSearchParams();
-    const merged = { feed: feedMode === "following" ? "following" : undefined, intent, room, ...patch };
+    const merged = { feed: feedMode === "topics" ? undefined : feedMode, intent, room, ...patch };
     Object.entries(merged).forEach(([k, v]) => { if (v) sp.set(k, v); });
     const s = sp.toString();
     return s ? `/home?${s}#feed` : "/home#feed";
@@ -234,8 +235,8 @@ export default async function Home({
         <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} />
 
         <nav aria-label="Which posts" className="sc-seg" style={{ display: "flex", gap: 0 }}>
-          {([["topics", "Your topic groups"], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => (
-            <Link key={k} href={k === "topics" ? "/home#feed" : "/home?feed=following#feed"} aria-current={feedMode === k ? "page" : undefined}
+          {([["topics", "Topic groups"], ["groups", `My groups · ${myGroupIds.length}`], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => (
+            <Link key={k} href={k === "topics" ? "/home#feed" : `/home?feed=${k}#feed`} aria-current={feedMode === k ? "page" : undefined}
               style={{ flex: 1, textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", color: feedMode === k ? "var(--ink)" : "var(--mute)", borderBottom: feedMode === k ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
               {label}
             </Link>
@@ -278,7 +279,12 @@ export default async function Home({
           )}
         </div>
 
-        {(posts?.length ?? 0) === 0 && (feedMode === "topics" || followed.length > 0) && (
+        {feedMode === "groups" && (
+          <p style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>
+            Discussions inside your groups, seen only by their members. To post in one, open the group.
+          </p>
+        )}
+        {(posts?.length ?? 0) === 0 && (feedMode === "topics" || (feedMode === "following" && followed.length > 0)) && (
           <Panel>
             <Empty>
               Nothing here yet. Post the first thing above, or{" "}
@@ -286,77 +292,23 @@ export default async function Home({
             </Empty>
           </Panel>
         )}
+        {(posts?.length ?? 0) === 0 && feedMode === "groups" && (
+          <Panel>
+            <Empty>
+              {myGroupIds.length ? "No discussions in your groups yet." : "You are not in a group yet."}{" "}
+              <Link href="/groups" style={{ color: "var(--link)" }}>{myGroupIds.length ? "Open a group to start one" : "Find or start one"}</Link>.
+            </Empty>
+          </Panel>
+        )}
 
-        {(posts ?? []).map((p: any) => {
-          const card = cardOf(p.method_card_id);
-          const author = who(p.author_id);
-          const spec = intentById(p.intent);
-          return (
-            <article key={p.id} id={`post-${p.id}`} style={{ scrollMarginTop: 72 }}>
-              <Panel>
-                <div style={{ padding: "11px 14px", display: "flex", alignItems: "center", gap: 9, borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
-                  <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={28} />
-                  <div style={{ minWidth: 0 }}>
-                    <PersonLink id={p.author_id} style={{ font: mono(12.5, 600) }}>{author?.display_name ?? "Someone"}</PersonLink>
-                    <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 2 }}>
-                      {author?.institution ? `${author.institution} · ` : ""}{timeAgo(p.created_at)}
-                    </div>
-                  </div>
-                  <span style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                    <span className="sc-badge" style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: INTENT_COLOUR[p.intent] ?? "var(--mute)", border: `1px solid ${INTENT_COLOUR[p.intent] ?? "var(--rule)"}`, padding: "3px 7px" }}>
-                      {(spec?.label ?? p.intent).toUpperCase()}
-                    </span>
-                    <Link href={qs({ room: p.room_id, feed: undefined })} title={housesOfRoom(p.room_id).length > 1 ? `shared across ${housesOfRoom(p.room_id).length} fields` : roomById(p.room_id)?.name} style={{ font: mono(11, 500), color: "var(--ink)" }}>#{p.room_id}</Link>
-                  </span>
-                </div>
-
-                <div style={{ padding: 14 }}>
-                  <Link href={`/posts/${p.id}`} style={{ font: mono(15, 700, 1.35), color: "var(--ink)", textDecoration: "none" }}>{p.title}</Link>
-                  {p.body && <div style={{ marginTop: 8 }}><RichText body={excerpt(p.body, 400)} style={{ font: "400 13.5px/1.65 var(--sans)" }} /></div>}
-                  <PostImages urls={images.get(p.id)} title={p.title} />
-                  <LinkCard preview={p.link_preview} />
-
-                  {card && (
-                    <Link href={`/methods/${card.id}`} style={{ display: "block", marginTop: 11, border: "1px solid var(--rule)", background: "var(--bg)", padding: "10px 12px", color: "var(--ink)" }}>
-                      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                        <Outcome value={card.outcome} />
-                        <span style={{ font: mono(10.5), color: "var(--mute)" }}>{card.code}</span>
-                      </div>
-                      <div style={{ font: mono(12.5, 500), marginTop: 6 }}>{card.title}</div>
-                    </Link>
-                  )}
-
-                  {p.intent === "collab" && (p.technique || p.offer || p.deadline) && (
-                    <div style={{ marginTop: 11, border: "1px solid var(--signal)", padding: "10px 12px" }}>
-                      <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 6 }}>WHAT IS NEEDED</div>
-                      <div style={{ font: mono(11.5, 400, 1.7) }}>
-                        {p.technique && <div>technique · {p.technique}</div>}
-                        {p.organism && <div>system · {p.organism}</div>}
-                        {p.deadline && <div>by · {p.deadline}</div>}
-                        {p.offer && <div>offered back · {p.offer}</div>}
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", padding: "9px 14px", borderTop: "1px solid var(--rule)" }}>
-                  <Reactions kind="post" targetId={p.id} summary={reactions.get(p.id)} own={p.author_id === me_} path="/home" />
-                  <Link href={`/posts/${p.id}#replies`} style={{ marginLeft: "auto", font: mono(11, 500), color: "var(--mute)", textDecoration: "none" }}>
-                    {replyCount(p.id) === 0 ? "Reply →" : `${replyCount(p.id)} ${replyCount(p.id) === 1 ? "reply" : "replies"} →`}
-                  </Link>
-                </div>
-              </Panel>
-            </article>
-          );
-        })}
+        {(posts ?? []).map((p: any) => (
+          <PostCard key={p.id} p={p} author={who(p.author_id)} card={cardOf(p.method_card_id)} images={images.get(p.id)}
+            reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
+            topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null} />
+        ))}
       </section>
       </div>
     </div>
   );
 }
 
-/** The first `max` characters, cut at a word and marked as cut. */
-function excerpt(text: string, max: number): string {
-  if (text.length <= max) return text;
-  const cut = text.slice(0, max);
-  return cut.slice(0, Math.max(cut.lastIndexOf(" "), max * 0.6)).trimEnd() + "…";
-}

@@ -63,7 +63,7 @@ export default async function Project({
   const shareIds = (shares ?? []).map((s: { group_id: string }) => s.group_id);
   const [{ data: myShareGroups }, { data: shareGroups }] = shareIds.length
     ? await Promise.all([
-        supabase.from("group_members").select("group_id").eq("user_id", user!.id).in("group_id", shareIds),
+        supabase.from("group_members").select("group_id").eq("user_id", user!.id).neq("role", "alumni").in("group_id", shareIds),
         supabase.from("groups").select("id, name").in("id", shareIds),
       ])
     : [{ data: [] as any[] }, { data: [] as any[] }];

@@ -16,10 +16,14 @@ type Card = { id: string; code: string; title: string };
  * links, up to four images, a topic group and the kind of post. The full
  * form (/post) adds project data and the collaboration details.
  */
-export default function QuickPost({ topics, cards, defaultTopic }: { topics: Topic[]; cards: Card[]; defaultTopic?: string }) {
+export default function QuickPost({ topics, cards, defaultTopic, groupId, groupName }: {
+  topics: Topic[]; cards: Card[]; defaultTopic?: string;
+  /** Post into this group's members-only discussion instead of a topic group. */
+  groupId?: string; groupName?: string;
+}) {
   const [state, action, pending] = useActionState<PostState, FormData>(createPost, null);
   const [open, setOpen] = useState(false);
-  const [intent, setIntent] = useState<Intent>("update");
+  const [intent, setIntent] = useState<Intent>(groupId ? "general" : "update");
   const spec = INTENTS.find((i) => i.id === intent)!;
 
   function submit(e: FormEvent<HTMLFormElement>) {
@@ -28,7 +32,7 @@ export default function QuickPost({ topics, cards, defaultTopic }: { topics: Top
     startTransition(() => action(data));
   }
 
-  if (!topics.length) {
+  if (!groupId && !topics.length) {
     return (
       <Panel style={{ padding: 14, font: "400 13.5px/1.6 var(--sans)" }}>
         To post, first <Link href="/groups#topics" style={{ color: "var(--link)" }}>join a topic group</Link>: every post is filed in one.
@@ -42,7 +46,7 @@ export default function QuickPost({ topics, cards, defaultTopic }: { topics: Top
         <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
           <label htmlFor="qp-title" style={{ position: "absolute", left: -9999 }}>Title</label>
           <input id="qp-title" name="title" required maxLength={200} onFocus={() => setOpen(true)} style={{ ...field, font: "500 14px/1.4 var(--sans)" }}
-            placeholder="Share something: a result, a question, a paper, a picture from the bench…" />
+            placeholder={groupId ? `Write to ${groupName ?? "the group"}: an update, a question, a request…` : "Share something: a result, a question, a paper, a picture from the bench…"} />
           {open && (
             <>
               <label htmlFor="qp-body" style={{ position: "absolute", left: -9999 }}>Text</label>
@@ -54,10 +58,19 @@ export default function QuickPost({ topics, cards, defaultTopic }: { topics: Top
                 <select id="qp-intent" name="intent" value={intent} onChange={(e) => setIntent(e.target.value as Intent)} style={{ ...field, width: "auto", height: 34, padding: "0 8px" }}>
                   {INTENTS.map((i) => <option key={i.id} value={i.id}>{i.label}</option>)}
                 </select>
-                <label htmlFor="qp-topic" style={{ position: "absolute", left: -9999 }}>Topic group</label>
-                <select id="qp-topic" name="room_id" required defaultValue={defaultTopic ?? topics[0].id} style={{ ...field, width: "auto", height: 34, padding: "0 8px" }}>
-                  {topics.map((t) => <option key={t.id} value={t.id}>#{t.id}</option>)}
-                </select>
+                {groupId ? (
+                  <>
+                    <input type="hidden" name="group_id" value={groupId} />
+                    <span style={{ font: "500 12px/1.3 var(--sans)", color: "var(--mute)" }}>Only members see this</span>
+                  </>
+                ) : (
+                  <>
+                    <label htmlFor="qp-topic" style={{ position: "absolute", left: -9999 }}>Topic group</label>
+                    <select id="qp-topic" name="room_id" required defaultValue={defaultTopic ?? topics[0].id} style={{ ...field, width: "auto", height: 34, padding: "0 8px" }}>
+                      {topics.map((t) => <option key={t.id} value={t.id}>#{t.id}</option>)}
+                    </select>
+                  </>
+                )}
                 {spec.needsArtifact && (
                   <>
                     <label htmlFor="qp-card" style={{ position: "absolute", left: -9999 }}>Method card</label>
@@ -69,7 +82,7 @@ export default function QuickPost({ topics, cards, defaultTopic }: { topics: Top
                 )}
                 <input type="hidden" name="return_to" value="feed" />
                 <span style={{ flex: 1 }} />
-                <Link href="/post" style={{ font: mono(11, 500), color: "var(--mute)" }}>More options</Link>
+                {!groupId && <Link href="/post" style={{ font: mono(11, 500), color: "var(--mute)" }}>More options</Link>}
                 <button type="submit" disabled={pending} style={{ ...btnPrimary, height: 34 }}>{pending ? "Posting…" : "Post"}</button>
               </div>
               {spec.needsArtifact && cards.length === 0 && (

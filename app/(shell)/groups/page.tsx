@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createGroup } from "@/app/actions/groups";
 import { Page, Panel, PanelHead, Empty, Tag, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
 import TopicGroups from "@/components/social/TopicGroups";
+import { ROLE_LABEL, type GroupRole } from "@/lib/social/groups";
 
 export const dynamic = "force-dynamic";
 
@@ -28,10 +29,10 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
     supabase.from("user_rooms").select("room_id").eq("user_id", user!.id),
   ]);
   const joinedTopics = new Set((rooms ?? []).map((r: { room_id: string }) => r.room_id));
-  const count = (id: string) => (members ?? []).filter((m: any) => m.group_id === id).length;
+  const count = (id: string) => (members ?? []).filter((m: any) => m.group_id === id && m.role !== "alumni").length;
   const mine = new Map((members ?? []).filter((m: any) => m.user_id === user!.id).map((m: any) => [m.group_id, m.role as string]));
-  const yours = (groups ?? []).filter((g: any) => mine.has(g.id));
-  const others = (groups ?? []).filter((g: any) => !mine.has(g.id));
+  const yours = (groups ?? []).filter((g: any) => mine.has(g.id) && mine.get(g.id) !== "alumni");
+  const others = (groups ?? []).filter((g: any) => !mine.has(g.id) || mine.get(g.id) === "alumni");
   const flashKey = Object.keys(FLASH).find((k) => { const [key, v] = k.split("="); return sp[key] === v; });
   const flash = flashKey ? FLASH[flashKey] : null;
 
@@ -40,7 +41,7 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <span style={{ font: mono(13.5, 600) }}>{g.name}</span>
         <Tag>{g.access === "open" ? "open" : "closed"}</Tag>
-        {mine.get(g.id) === "owner" && <Tag>owner</Tag>}
+        {mine.get(g.id) && mine.get(g.id) !== "member" && <Tag>{ROLE_LABEL[mine.get(g.id) as GroupRole]}</Tag>}
         <span style={{ marginLeft: "auto", font: mono(10.5), color: "var(--mute)" }}>{count(g.id)} member{count(g.id) === 1 ? "" : "s"}</span>
       </div>
       {(g.institution || g.description) && (

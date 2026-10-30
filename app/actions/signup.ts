@@ -1,6 +1,7 @@
 "use server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { peekInvite } from "@/lib/social/invites";
 
 /**
  * Invite-gated account creation.
@@ -20,7 +21,9 @@ export async function createAccount(form: FormData): Promise<SignupResult> {
   const required = process.env.SCICOLLAB_INVITE_CODE ?? "";
   const offered = String(form.get("invite") ?? "").trim();
 
-  if (required && offered !== required) {
+  // A valid group invitation also opens the door: whoever a group invited
+  // should not need a second code (lib/social/invites.ts).
+  if (required && offered !== required && !(await peekInvite(offered))?.valid) {
     return { ok: false, error: "That invite code is not valid. This build is invite-only." };
   }
 

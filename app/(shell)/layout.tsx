@@ -6,6 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 import TopBar from "@/components/TopBar";
 import TabBar from "@/components/TabBar";
 import { createClient } from "@/lib/supabase/server";
+import { isModerator } from "@/lib/moderation";
 
 /**
  * The navigation shell — board [ 003 ].
@@ -18,18 +19,17 @@ export default async function ShellLayout({ children }: { children: React.ReactN
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("display_name, institution, avatar_url")
-    .eq("id", user.id)
-    .maybeSingle();
+  const [{ data: profile }, moderator] = await Promise.all([
+    supabase.from("profiles").select("display_name, institution, avatar_url").eq("id", user.id).maybeSingle(),
+    isModerator(supabase, user.id),
+  ]);
 
   const name = profile?.display_name ?? user.email ?? "Researcher";
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--bg)" }}>
       <DemoNotice />
-      <TopBar name={name} avatarUrl={profile?.avatar_url ?? null} userId={user.id} />
+      <TopBar name={name} avatarUrl={profile?.avatar_url ?? null} userId={user.id} moderator={moderator} />
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
         <Rail />
         <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)", display: "flex", flexDirection: "column" }}>
