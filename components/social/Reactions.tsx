@@ -26,7 +26,7 @@ export default function Reactions({ kind, targetId, summary, own, path }: {
     if (!any.length) return null;
     return (
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {any.map((r) => <span key={r.key} style={{ ...pill(false), cursor: "default" }}>{r.label} · {counts[r.key]}</span>)}
+        {any.map((r) => <span key={r.key} className="sc-react-own" style={{ ...pill(false), cursor: "default" }}>{r.label} · {counts[r.key]}</span>)}
       </div>
     );
   }

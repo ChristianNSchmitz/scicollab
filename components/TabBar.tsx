@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PRIMARY, SECONDARY, Icon } from "@/components/Rail";
+import LookToggle from "@/components/LookToggle";
 
 /**
  * Phone navigation: four destinations in reach of a thumb, and "More" for
@@ -49,9 +50,9 @@ export default function TabBar() {
   const tab = (href: string, label: string, d: string, on: boolean, onClick?: () => void) => {
     const inner = (
       <>
-        {on && <span style={{ position: "absolute", top: 0, left: "22%", right: "22%", height: 3, background: "var(--signal)" }} />}
+        {on && <span className="sc-tab-on" style={{ position: "absolute", top: 0, left: "22%", right: "22%", height: 3, background: "var(--signal)" }} />}
         <Icon d={d} />
-        <span style={{ font: "500 11px/1 var(--mono)" }}>{label}</span>
+        <span className="sc-tab-label" style={{ font: "500 11px/1 var(--mono)" }}>{label}</span>
       </>
     );
     const style: React.CSSProperties = {
@@ -96,6 +97,7 @@ export default function TabBar() {
                     style={{ width: "100%", padding: "14px 16px", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", textAlign: "left", font: "500 12px/1 var(--mono)", color: "var(--ink)", cursor: "pointer" }}>
               {dark ? "Light mode" : "Dark mode"}
             </button>
+            <LookToggle style={{ width: "100%", padding: "14px 16px", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", textAlign: "left", font: "500 12px/1 var(--mono)", color: "var(--ink)", cursor: "pointer" }} />
           </div>
         </div>
       )}

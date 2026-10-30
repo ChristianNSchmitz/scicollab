@@ -53,6 +53,7 @@ export default function Rail() {
         href={it.href}
         title={open ? undefined : it.label}
         aria-current={active ? "page" : undefined}
+        className="sc-rail-item"
         style={{
           position: "relative",
           display: "flex",
@@ -68,7 +69,7 @@ export default function Rail() {
         }}
       >
         {active && (
-          <span style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: "var(--signal)" }} />
+          <span className="sc-rail-bar" style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: "var(--signal)" }} />
         )}
         <Icon d={it.d} />
         {open && <span className="sc-rail-label" style={{ font: "500 12px/1 var(--mono)" }}>{it.label}</span>}

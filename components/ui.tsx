@@ -31,7 +31,7 @@ export function Page({ title, lede, actions, children }: {
 
 export function Panel({ children, style }: { children: ReactNode; style?: CSSProperties }) {
   return (
-    <div style={{ background: "var(--surface)", border: "1px solid var(--rule)", ...style }}>
+    <div className="sc-panel" style={{ background: "var(--surface)", border: "1px solid var(--rule)", ...style }}>
       {children}
     </div>
   );
@@ -39,7 +39,7 @@ export function Panel({ children, style }: { children: ReactNode; style?: CSSPro
 
 export function PanelHead({ children }: { children: ReactNode }) {
   return (
-    <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)" }}>
+    <div className="sc-panel-head" style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)" }}>
       {children}
     </div>
   );

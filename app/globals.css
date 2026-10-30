@@ -244,3 +244,148 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
   background: var(--signal-fill) !important;
   color: var(--on-signal) !important;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PROTOTYPE · "glass" look (html[data-look="glass"], switched in the account
+   menu or with ?look=glass). A preview of a softer, Apple-like redesign:
+   - glass (blur + translucency + a light edge) only on what floats over
+     content: the top bar, the phone tab bar, the chat dock, menus;
+   - content stays on near-solid cards, because text on glass reads worse;
+   - a soft colour field behind everything, so the glass has something to
+     refract; rounded corners, wide soft shadows, the system font for text.
+   Turned off for "reduce transparency" and "reduce motion". Nothing here
+   changes the classic look.
+   ───────────────────────────────────────────────────────────────────────── */
+html[data-look="glass"] {
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-sans), system-ui, sans-serif;
+  --bg: #F4F3F7;            /* still the colour of text on dark buttons; the page itself shows the colour field */
+  --surface: rgba(255, 255, 255, .82);
+  --rule: rgba(60, 60, 67, .12);
+  --glass: rgba(255, 255, 255, .55);
+  --glass-edge: rgba(255, 255, 255, .75);
+  --glass-shadow: 0 8px 32px rgba(31, 38, 60, .10), 0 1px 2px rgba(31, 38, 60, .06);
+  --card-shadow: 0 1px 2px rgba(31, 38, 60, .04), 0 6px 20px rgba(31, 38, 60, .06);
+  --r-card: 18px;
+  --r-ctl: 12px;
+}
+html[data-look="glass"][data-theme="dark"] {
+  --bg: #0A0B10;
+  --surface: rgba(28, 28, 32, .78);
+  --rule: rgba(235, 235, 245, .12);
+  --glass: rgba(30, 30, 36, .52);
+  --glass-edge: rgba(255, 255, 255, .14);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, .45);
+  --card-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+}
+
+/* The colour field: warm signal orange, a cool blue and a hint of mint. */
+html[data-look="glass"] body {
+  background:
+    radial-gradient(60vw 50vh at 8% 0%, rgba(255, 112, 51, .20), transparent 70%),
+    radial-gradient(55vw 55vh at 100% 15%, rgba(80, 140, 255, .18), transparent 70%),
+    radial-gradient(60vw 60vh at 40% 100%, rgba(52, 199, 140, .14), transparent 70%),
+    #F4F3F7;
+  background-attachment: fixed;
+}
+html[data-look="glass"][data-theme="dark"] body {
+  background:
+    radial-gradient(60vw 50vh at 8% 0%, rgba(255, 90, 20, .22), transparent 70%),
+    radial-gradient(55vw 55vh at 100% 15%, rgba(64, 110, 255, .24), transparent 70%),
+    radial-gradient(60vw 60vh at 40% 100%, rgba(30, 160, 120, .16), transparent 70%),
+    #0A0B10;
+  background-attachment: fixed;
+}
+html[data-look="glass"] body > div, html[data-look="glass"] .sc-main, html[data-look="glass"] .sc-main > div { background: transparent !important; }
+/* Names and titles in the system font; codes, numbers and tags stay monospaced. */
+html[data-look="glass"] article a[href^="/people/"] { font-family: var(--sans) !important; font-weight: 600 !important; text-decoration: none !important; }
+
+/* Glass: the top bar floats and the page scrolls beneath it. */
+html[data-look="glass"] .sc-top,
+html[data-look="glass"] .sc-tabbar,
+html[data-look="glass"] .sc-dock,
+html[data-look="glass"] .sc-sheet > div:last-child {
+  background: var(--glass) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: inset 0 1px 0 var(--glass-edge), var(--glass-shadow);
+}
+html[data-look="glass"] .sc-top {
+  position: sticky; top: 0; z-index: 30;
+  border-bottom: 1px solid var(--rule) !important;
+}
+html[data-look="glass"] .sc-dock {
+  border: 1px solid var(--glass-edge) !important;
+  border-radius: 18px 18px 0 0; overflow: hidden;
+}
+
+/* The rail: no panel of its own, a rounded pill for where you are. */
+html[data-look="glass"] .sc-rail {
+  background: transparent !important; border-right: 0 !important;
+  position: sticky; top: var(--top); height: calc(100vh - var(--top));
+}
+html[data-look="glass"] .sc-rail-item { border-radius: 10px; font-family: var(--sans) !important; }
+html[data-look="glass"] .sc-rail-item[aria-current="page"] {
+  background: var(--glass) !important; color: var(--ink) !important; border-color: var(--glass-edge) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: inset 0 1px 0 var(--glass-edge), 0 2px 10px rgba(31, 38, 60, .08);
+}
+html[data-look="glass"] .sc-rail-item[aria-current="page"] svg { color: var(--signal-ink); }
+html[data-look="glass"] .sc-rail-bar { display: none; }
+html[data-look="glass"] .sc-rail-label { font: 500 13.5px/1 var(--sans) !important; }
+
+/* Content: soft, rounded, near-solid cards. */
+html[data-look="glass"] .sc-panel,
+html[data-look="glass"] .sc-hl-tile {
+  border-radius: var(--r-card); overflow: hidden;
+  border: 1px solid var(--glass-edge) !important;
+  box-shadow: var(--card-shadow);
+}
+html[data-look="glass"] .sc-hl-tile { background: var(--surface); border-top-width: 1px !important; }
+html[data-look="glass"] .sc-hl-tile:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(31, 38, 60, .10); }
+html[data-look="glass"] .sc-hl-big { font-family: var(--sans); font-weight: 700; letter-spacing: -.03em; }
+html[data-look="glass"] .sc-hl-kicker, html[data-look="glass"] .sc-panel-head {
+  font: 600 11px/1 var(--sans) !important; letter-spacing: .02em !important; text-transform: none !important;
+}
+html[data-look="glass"] .sc-panel-head { font-size: 13px !important; color: var(--ink) !important; border-bottom-color: var(--rule) !important; }
+
+/* Controls: rounded; pills fully round. */
+html[data-look="glass"] button,
+html[data-look="glass"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-look="glass"] select,
+html[data-look="glass"] textarea { border-radius: var(--r-ctl) !important; }
+html[data-look="glass"] .sc-chip,
+html[data-look="glass"] .sc-filter a,
+html[data-look="glass"] [aria-label="Reactions"] button,
+html[data-look="glass"] .sc-react-own,
+html[data-look="glass"] .sc-top-create,
+html[data-look="glass"] .sc-top-theme { border-radius: 999px !important; }
+html[data-look="glass"] .sc-chip { border-color: transparent; background: var(--glass); box-shadow: inset 0 1px 0 var(--glass-edge), 0 1px 6px rgba(31, 38, 60, .08); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+html[data-look="glass"] .sc-top-search { border-radius: 12px !important; background: rgba(120, 120, 128, .12) !important; border-color: transparent !important; }
+html[data-look="glass"] .sc-avatar { border-radius: 50% !important; border-color: transparent !important; box-shadow: 0 0 0 1px var(--rule); }
+html[data-look="glass"] .sc-prose, html[data-look="glass"] article a[href^="/posts/"] { font-family: var(--sans) !important; }
+html[data-look="glass"] article a[href^="/posts/"] { font-weight: 650 !important; letter-spacing: -.01em; }
+
+/* Phone: a floating glass tab bar, like iOS. */
+@media (max-width: 760px) {
+  html[data-look="glass"] .sc-tabbar {
+    left: 12px !important; right: 12px !important; bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: 0 !important; border: 1px solid var(--glass-edge) !important; border-radius: 28px; overflow: hidden;
+  }
+  html[data-look="glass"] .sc-sheet > div:last-child { border-radius: 22px 22px 0 0; border-top: 0 !important; }
+  /* The active tab: a soft lozenge behind it and the icon in the accent, as on iOS. */
+  html[data-look="glass"] .sc-tab-on { top: 6px !important; bottom: 6px; left: 8% !important; right: 8% !important; height: auto !important; border-radius: 20px; background: rgba(120, 120, 128, .14) !important; }
+  html[data-look="glass"] .sc-tabbar [aria-current="page"] svg { color: var(--signal-ink); position: relative; }
+  html[data-look="glass"] .sc-tab-label { font: 600 10.5px/1 var(--sans) !important; position: relative; }
+  html[data-look="glass"] .sc-main { padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
+}
+
+/* Respect the system: solid instead of glass, and no movement. */
+@media (prefers-reduced-transparency: reduce) {
+  html[data-look="glass"] .sc-top, html[data-look="glass"] .sc-tabbar, html[data-look="glass"] .sc-dock,
+  html[data-look="glass"] .sc-chip, html[data-look="glass"] .sc-rail-item[aria-current="page"] {
+    -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-look="glass"] .sc-hl-tile:hover { transform: none; }
+}

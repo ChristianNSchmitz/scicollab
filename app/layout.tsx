@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* Apply the stored theme before first paint so the page never flashes. */}
         <Script id="sc-theme" strategy="beforeInteractive">
-          {`try{var t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}`}
+          {`try{var t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t;var q=new URLSearchParams(location.search).get('look');if(q==='glass'||q==='classic')localStorage.setItem('sc-look',q);var l=localStorage.getItem('sc-look');if(l==='glass')document.documentElement.dataset.look='glass'}catch(e){}`}
         </Script>
       </head>
       <body>{children}</body>

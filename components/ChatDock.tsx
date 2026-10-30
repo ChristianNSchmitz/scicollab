@@ -136,6 +136,7 @@ export default function ChatDock() {
     return (
       <button
         onClick={() => setOpen(true)}
+        className="sc-dock"
         style={{ ...shell, height: 38, flexDirection: "row", alignItems: "center", gap: 9, padding: "0 12px", cursor: "pointer", textAlign: "left" }}
         aria-label="Open chat"
       >
@@ -151,7 +152,7 @@ export default function ChatDock() {
   }
 
   return (
-    <div style={{ ...shell, height: 460 }}>
+    <div className="sc-dock" style={{ ...shell, height: 460 }}>
       {/* header */}
       <div style={{ height: 38, flex: "none", display: "flex", alignItems: "center", gap: 8, padding: "0 10px 0 12px", borderBottom: "1px solid var(--rule)" }}>
         {thread && (

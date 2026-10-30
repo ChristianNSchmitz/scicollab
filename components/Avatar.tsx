@@ -20,12 +20,12 @@ export default function Avatar({
 
   if (a.kind === "image") {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={a.src} alt="" width={size} height={size} style={{ ...box, objectFit: "cover", padding: 0 }} />;
+    return <img className="sc-avatar" src={a.src} alt="" width={size} height={size} style={{ ...box, objectFit: "cover", padding: 0 }} />;
   }
   if (a.kind === "preset") {
     const icon = PRESET_ICONS.find((i) => i.id === a.icon) ?? PRESET_ICONS[0];
     return (
-      <span aria-hidden="true" style={{ ...box, background: a.colour, borderColor: a.colour }}>
+      <span className="sc-avatar" aria-hidden="true" style={{ ...box, background: a.colour, borderColor: a.colour }}>
         <svg width={Math.round(size * 0.62)} height={Math.round(size * 0.62)} viewBox="0 0 24 24" fill="none"
              stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <path d={icon.d} />
@@ -34,7 +34,7 @@ export default function Avatar({
     );
   }
   return (
-    <span aria-hidden="true" style={{ ...box, font: `500 ${Math.max(9, Math.round(size * 0.4))}px/1 var(--mono)` }}>
+    <span className="sc-avatar" aria-hidden="true" style={{ ...box, font: `500 ${Math.max(9, Math.round(size * 0.4))}px/1 var(--mono)` }}>
       {initialsOf(name)}
     </span>
   );
