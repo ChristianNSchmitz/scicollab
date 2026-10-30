@@ -168,24 +168,29 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "", moder
 
         {menu && (
           <div
+            className="sc-account-menu"
             onMouseLeave={() => setMenu(false)}
             style={{
-              position: "absolute", right: 0, top: 40, width: 216, zIndex: 50,
-              background: "var(--surface)", border: "1px solid var(--ink)",
+              position: "absolute", right: 0, top: 44, width: 232, zIndex: 50, padding: 6,
+              background: "color-mix(in srgb, var(--bg) 94%, transparent)", border: "1px solid var(--rule)", borderRadius: 16,
+              boxShadow: "0 16px 40px rgba(31, 38, 60, .18), 0 2px 6px rgba(31, 38, 60, .06)",
+              WebkitBackdropFilter: "blur(22px) saturate(198%)", backdropFilter: "blur(22px) saturate(198%)",
             }}
           >
-            <div style={{ padding: "10px 12px", borderBottom: "1px solid var(--rule)" }}>
-              <div style={{ font: "500 12px/1.3 var(--mono)" }}>{name || "Signed in"}</div>
+            <div style={{ padding: "8px 10px 10px", margin: "0 0 4px", borderBottom: "1px solid var(--rule)" }}>
+              <div style={{ font: "600 13px/1.3 var(--sans)" }}>{name || "Signed in"}</div>
             </div>
-            <Link href={userId ? `/people/${userId}` : "/you"} onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your profile</Link>
-            <Link href="/you" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your record</Link>
-            <Link href="/groups" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your groups</Link>
-            <Link href="/you/publications" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Your publications</Link>
-            <Link href="/requests" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Access requests</Link>
-            {moderator && <Link href="/moderation" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Moderation inbox</Link>}
-            <Link href="/settings" onClick={() => setMenu(false)} style={{ display: "block", padding: "9px 12px", font: "400 12px/1 var(--mono)", color: "var(--ink)" }}>Settings</Link>
-            <LookToggle style={{ width: "100%", textAlign: "left", padding: "9px 12px", font: "400 12px/1 var(--mono)", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", color: "var(--ink)", cursor: "pointer" }} />
-            <button onClick={signOut} style={{ width: "100%", textAlign: "left", padding: "9px 12px", font: "400 12px/1 var(--mono)", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", color: "var(--err)", cursor: "pointer" }}>
+            <Link href={userId ? `/people/${userId}` : "/you"} onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Your profile</Link>
+            <Link href="/you" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Your record</Link>
+            <Link href="/groups" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Your groups</Link>
+            <Link href="/you/publications" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Your publications</Link>
+            <Link href="/you/saved" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Saved posts</Link>
+            <Link href="/requests" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Access requests</Link>
+            {moderator && <Link href="/moderation" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Moderation inbox</Link>}
+            <Link href="/settings" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Settings</Link>
+            <div style={{ borderTop: "1px solid var(--rule)", margin: "4px 0" }} />
+            <LookToggle className="sc-menu-item" style={{ width: "100%", textAlign: "left", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", background: "transparent", border: 0, color: "var(--ink)", cursor: "pointer" }} />
+            <button onClick={signOut} className="sc-menu-item" style={{ width: "100%", textAlign: "left", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", background: "transparent", border: 0, color: "var(--err)", cursor: "pointer" }}>
               Sign out
             </button>
           </div>

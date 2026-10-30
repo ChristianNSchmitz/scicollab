@@ -13,6 +13,9 @@ import RichText from "@/components/RichText";
 import MentionTextarea from "@/components/social/MentionTextarea";
 import Reactions from "@/components/social/Reactions";
 import ReportButton from "@/components/ReportButton";
+import PostActions from "@/components/feed/PostActions";
+import PostMenu from "@/components/feed/PostMenu";
+import { postExtras } from "@/lib/posts/extras";
 import { canReadPost } from "@/lib/social/groups";
 import { PostImages, LinkCard } from "@/components/feed/PostMedia";
 import { imageUrls } from "@/lib/posts/images";
@@ -51,7 +54,8 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
     mentionsIn(supabase, "reply", (replies ?? []).map((r: any) => r.id)),
     reactionsFor(supabase, "post", [post.id], user!.id),
   ]);
-  const images = await imageUrls(supabase, [post]);
+  const [images, extras] = await Promise.all([imageUrls(supabase, [post]), postExtras(supabase, user!.id, [post.id], new Set(), reactions)]);
+  const extra = extras.get(post.id);
   const replier = (id: string) => repliers.get(id);
 
   const room = roomById(post.room_id);
@@ -95,7 +99,9 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
               <Reactions kind="post" targetId={post.id} summary={reactions.get(post.id)} own={isMine} path={`/posts/${post.id}`} />
               <span style={{ flex: 1 }} />
-              {!isMine && <ReportButton kind="post" targetId={post.id} />}
+              <PostActions postId={post.id} inGroup={!!post.group_id} own={isMine} reposted={extra?.reposted ?? false} />
+              <PostMenu postId={post.id} saved={extra?.saved ?? false} own={isMine} />
+              {(extra?.reposts ?? 0) > 0 && <span style={{ flexBasis: "100%", font: "400 12px/1.4 var(--sans)", color: "var(--mute)" }}>{extra!.reposts} {extra!.reposts === 1 ? "repost" : "reposts"}</span>}
             </div>
             {isMine && (
               <details id="edit" style={{ padding: "0 14px 12px" }} open={edit === "1" ? true : undefined}>

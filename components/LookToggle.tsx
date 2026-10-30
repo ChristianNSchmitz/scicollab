@@ -7,7 +7,7 @@ import { useEffect, useState, type CSSProperties } from "react";
  * data-look="glass") and the classic square, monospace look, for this
  * browser only. ?look=glass or ?look=classic in any address does the same.
  */
-export default function LookToggle({ style }: { style?: CSSProperties }) {
+export default function LookToggle({ style, className }: { style?: CSSProperties; className?: string }) {
   const [glass, setGlass] = useState(false);
   useEffect(() => setGlass(document.documentElement.dataset.look === "glass"), []);
   return (
@@ -23,6 +23,7 @@ export default function LookToggle({ style }: { style?: CSSProperties }) {
         try { localStorage.setItem("sc-look", next ? "glass" : "classic"); } catch {}
       }}
       style={style}
+      className={className}
     >
       {glass ? "Switch to classic look" : "Switch to glass look"}
     </button>

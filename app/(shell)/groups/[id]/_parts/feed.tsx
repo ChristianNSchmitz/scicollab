@@ -1,6 +1,7 @@
 import { reactionsFor } from "@/lib/social/reactions";
 import { imageUrls } from "@/lib/posts/images";
 import { peopleById } from "@/lib/people";
+import { postExtras } from "@/lib/posts/extras";
 import { Panel, Empty } from "@/components/ui";
 import QuickPost from "@/components/feed/QuickPost";
 import PostCard from "@/components/feed/PostCard";
@@ -20,6 +21,7 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
     postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : Promise.resolve({ data: [] as any[] }),
     markSeen(supabase, id, me, "feed"),
   ]);
+  const extras = await postExtras(supabase, me, postIds, new Set(), reactions);
   return (
     <section aria-label="Group feed" style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 12 }}>
       <QuickPost topics={[]} cards={[]} groupId={id} groupName={g.name} />
@@ -27,7 +29,7 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
       {(posts ?? []).map((p: any) => (
         <PostCard key={p.id} p={p} author={authors.get(p.author_id)} images={images.get(p.id)} reaction={reactions.get(p.id)}
           replies={(replies ?? []).filter((r: any) => r.post_id === p.id).length} me={me} path={`/groups/${id}?tab=feed`}
-          topicHref={(r) => `/home?room=${r}`} group={null} />
+          topicHref={(r) => `/home?room=${r}`} group={null} extra={extras.get(p.id)} />
       ))}
     </section>
   );

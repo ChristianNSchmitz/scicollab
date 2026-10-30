@@ -6,7 +6,7 @@ import { toggleReaction } from "@/app/actions/social";
 import { REACTIONS, type ReactionKey, type ReactionSummary, type ReactionTarget } from "@/lib/social/reactions";
 
 const pill = (on: boolean): React.CSSProperties => ({
-  display: "inline-flex", alignItems: "center", gap: 6, height: 28, padding: "0 10px",
+  display: "inline-flex", alignItems: "center", gap: 6, height: 28, padding: "0 10px", borderRadius: 999,
   border: `1px solid ${on ? "var(--ink)" : "var(--rule)"}`, background: on ? "var(--ink)" : "transparent",
   color: on ? "var(--bg)" : "var(--ink)", font: "500 11.5px/1 var(--mono)", cursor: "pointer",
 });

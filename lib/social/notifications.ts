@@ -35,7 +35,7 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
   const postIds = (myPosts ?? []).map((p: any) => p.id);
   const answerIds = (myAnswers ?? []).map((a: any) => a.id);
   const attIds = [...new Set([...(incoming ?? []), ...(outgoing ?? [])].map((r: any) => r.attachment_id))];
-  const [{ data: answers }, { data: replies }, { data: atts }, { data: onPosts }, { data: onAnswers }, { data: joinRequests }, { data: ownedGroups }] = await Promise.all([
+  const [{ data: answers }, { data: replies }, { data: atts }, { data: onPosts }, { data: onAnswers }, { data: joinRequests }, { data: ownedGroups }, { data: reposts }] = await Promise.all([
     qIds.length ? supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds).gte("created_at", since) : empty,
     postIds.length ? supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", postIds).gte("created_at", since) : empty,
     attIds.length ? supabase.from("post_attachments").select("id, post_id").in("id", attIds) : empty,
@@ -43,6 +43,7 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     answerIds.length ? supabase.from("reactions").select("target_id, user_id, kind, created_at").eq("target_kind", "answer").in("target_id", answerIds).gte("created_at", since) : empty,
     ownedIds.length ? supabase.from("group_requests").select("group_id, user_id, created_at").in("group_id", ownedIds) : empty,
     ownedIds.length ? supabase.from("groups").select("id, name").in("id", ownedIds) : empty,
+    postIds.length ? supabase.from("post_reposts").select("post_id, user_id, created_at").in("post_id", postIds).gte("created_at", since) : empty,
   ]);
 
   const titleOf = (rows: any[] | null, id: string, fallback: string) => (rows ?? []).find((r: any) => r.id === id)?.title ?? fallback;
@@ -82,6 +83,9 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     ...(joinRequests ?? []).map((r: any): Notice => ({
       at: r.created_at, kind: "join request", who: r.user_id,
       text: `asked to join ${(ownedGroups ?? []).find((g: any) => g.id === r.group_id)?.name ?? "your group"}`, href: `/groups/${r.group_id}?tab=members#requests`,
+    })),
+    ...(reposts ?? []).filter((r: any) => r.user_id !== me).map((r: any): Notice => ({
+      at: r.created_at, kind: "repost", who: r.user_id, text: `reposted “${titleOf(myPosts, r.post_id, "your post")}”`, href: `/posts/${r.post_id}`,
     })),
     ...(followers ?? []).map((f: any): Notice => ({
       at: f.created_at, kind: "follow", who: f.follower_id, text: "started following you", href: `/people/${f.follower_id}`,

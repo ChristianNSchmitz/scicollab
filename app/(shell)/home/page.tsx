@@ -23,6 +23,7 @@ import ActivityList from "@/components/social/ActivityList";
 import FollowButton from "@/components/social/FollowButton";
 import QuickPost from "@/components/feed/QuickPost";
 import { imageUrls } from "@/lib/posts/images";
+import { postExtras, repostedBy } from "@/lib/posts/extras";
 
 export const dynamic = "force-dynamic";
 
@@ -78,29 +79,38 @@ export default async function Home({
 
   const feed = (async () => {
     if ((feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length)) {
-      return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>() };
+      return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>> };
     }
-    let q = supabase
-      .from("posts")
-      .select("id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, created_at");
+    const cols = "id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, created_at";
+    // Following: what they posted, and what they reposted (at the time of the repost).
+    const reposted = feedMode === "following" ? await repostedBy(supabase, followed) : [];
+    let q = supabase.from("posts").select(cols);
     q = feedMode === "following" ? q.in("author_id", followed)
       : feedMode === "groups" ? q.in("group_id", myGroupIds)
       : q.in("room_id", room ? [room] : myRooms);
     q = q.order("created_at", { ascending: false }).limit(40);
     if (intent) q = q.eq("intent", intent);
     // A followed person's posts in a group you are not in stay in that group.
-    const { data: all } = await q;
-    const posts = (all ?? []).filter((p: any) => !p.group_id || myGroupIds.includes(p.group_id));
+    const { data: own } = await q;
+    const repostIds = reposted.map((r) => r.post_id).filter((id) => !(own ?? []).some((p: any) => p.id === id));
+    const { data: shared } = repostIds.length ? await supabase.from("posts").select(cols).in("id", repostIds) : { data: [] as any[] };
+    const when = (p: any) => reposted.find((r) => r.post_id === p.id && r.created_at > p.created_at)?.created_at ?? p.created_at;
+    const all = [...(own ?? []), ...(intent ? (shared ?? []).filter((p: any) => p.intent === intent) : shared ?? [])]
+      .sort((a: any, b: any) => when(b).localeCompare(when(a))).slice(0, 40);
+    const posts = all.filter((p: any) => !p.group_id || myGroupIds.includes(p.group_id));
     const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
     const postIds = (posts ?? []).map((p: any) => p.id);
-    const [people, { data: cards }, { data: feedReplies }, reactions, images] = await Promise.all([
+    const [authors, { data: cards }, { data: feedReplies }, reactions, images] = await Promise.all([
       peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
       cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : empty,
       postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : empty,
       reactionsFor(supabase, "post", postIds, me_),
       imageUrls(supabase, posts ?? []),
     ]);
-    return { posts, people, cards, feedReplies, reactions, images };
+    const extras = await postExtras(supabase, me_, postIds, following, reactions);
+    const contextIds = [...extras.values()].map((e) => e.context?.personId).filter((x): x is string => !!x && !authors.has(x));
+    const people = contextIds.length ? new Map([...authors, ...(await peopleById(supabase, contextIds))]) : authors;
+    return { posts, people, cards, feedReplies, reactions, images, extras };
   })();
 
   const research = (async () => {
@@ -144,7 +154,7 @@ export default async function Home({
   ]);
 
   const [
-    { posts, people, cards, feedReplies, reactions, images },
+    { posts, people, cards, feedReplies, reactions, images, extras },
     { biblio, pubs, change, citations },
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
     [followActivity, onMine, contacts, theirPapers],
@@ -304,7 +314,8 @@ export default async function Home({
         {(posts ?? []).map((p: any) => (
           <PostCard key={p.id} p={p} author={who(p.author_id)} card={cardOf(p.method_card_id)} images={images.get(p.id)}
             reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
-            topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null} />
+            topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null}
+            extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")} />
         ))}
       </section>
       </div>

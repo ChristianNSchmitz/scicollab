@@ -416,6 +416,14 @@ const group_files = [
     text: "Talk notes: methanol 10% vs 20%, bands above 100 kDa.\n", note: "For Thursday's club", at: "2026-10-28 17:40" },
 ].map(({ text, at: t, ...f }) => ({ ...f, size_bytes: Buffer.byteLength(text), path: textFile(text), created_at: at(t) }));
 
+/* Reposts and saved posts (supabase/14). */
+const post_reposts = [
+  ["p-1", "u-okafor", "We saw the same cliff in Lagos at p19. Worth reading before you plan a long series.", "2026-10-14 08:10"],
+  ["p-1", "u-lindqvist", "", "2026-10-14 09:30"],
+  ["pp-stats-mateo", "u-ingrid", "Mateo's normalisation note, useful for anyone running Seahorse plates.", "2026-09-22 08:00"],
+  ["p-2", "u-bhatt", "", "2026-10-23 09:15"],
+].map(([post_id, user_id, note, t]) => ({ id: `rp-${post_id}-${user_id}`, post_id, user_id, note, created_at: at(t) }));
+
 /* Lab discussions: posts visible only inside a group (supabase/11). */
 const group_posts = [
   { id: "gp-ebro-1", group_id: "gr-ebro", author_id: "u-lindqvist", intent: "update", title: "Bay 3 sensor recalibrated, logger back on",
@@ -532,6 +540,7 @@ function build() {
     group_projects: group_projects.filter((g) => projectIds.has(g.project_id)),
     group_methods: group_methods.filter((g) => cardIds.has(g.card_id)),
     group_messages, group_notes, group_tasks, group_files, group_visits: [],
+    post_reposts: post_reposts.filter((r) => postIds.has(r.post_id)), saved_posts: [],
     group_datasets: group_datasets.filter((g) => dataIds.has(g.dataset_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [],
