@@ -15,13 +15,14 @@ export default function Designed({
   return (
     <div style={{ padding: "16px 16px 64px" }}>
       <div
+        className="sc-soft"
         style={{
           maxWidth: 1440, margin: "0 auto 14px", display: "flex", gap: 12,
           alignItems: "baseline", flexWrap: "wrap", padding: "11px 14px",
           border: "1px solid var(--flag)", background: "var(--surface)",
         }}
       >
-        <span style={{ font: mono(10, 700), letterSpacing: ".1em", color: "var(--flag-ink)" }}>DESIGNED · NOT WIRED</span>
+        <span className="sc-badge" style={{ font: mono(10, 700), letterSpacing: ".1em", color: "var(--flag-ink)" }}>PLANNED · NOT AVAILABLE YET</span>
         <span style={{ font: mono(12, 500) }}>{title}</span>
         <span style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", flex: 1, minWidth: 260 }}>
           {missing}
@@ -29,7 +30,8 @@ export default function Designed({
         <span style={{ font: mono(10.5), color: "var(--mute)" }}>board {board}</span>
         <Link href="/home" style={{ font: mono(11, 500), color: "var(--link)" }}>← Home</Link>
       </div>
-      <div style={{ maxWidth: 1440, margin: "0 auto", overflowX: "auto" }}>
+      {/* The design board itself is the old drawing; the glass look shows only the notice. */}
+      <div className="sc-designed-board" style={{ maxWidth: 1440, margin: "0 auto", overflowX: "auto" }}>
         <Screen hideCoverage id={screen} />
       </div>
     </div>

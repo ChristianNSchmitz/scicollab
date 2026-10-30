@@ -383,6 +383,15 @@ html[data-look="glass"] .sc-land-board, html[data-look="glass"] .sc-land-mobile 
 .sc-gl-big      { height: 46px; padding: 0 22px; font-size: 15px; }
 @media (max-width: 860px) { .sc-gl-hero { grid-template-columns: minmax(0, 1fr); gap: 28px; } .sc-gl-features { margin-top: 36px; } }
 
+/* Any other framed box: soft card instead of a black frame. */
+html[data-look="glass"] .sc-soft { border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-edge) !important; background: var(--surface) !important; box-shadow: var(--card-shadow); }
+html[data-look="glass"] .sc-designed-board { display: none; }
+/* A dark call-to-action band becomes a light glass one. */
+html[data-look="glass"] .sc-cta-band { background: var(--glass) !important; color: var(--ink) !important; border-radius: 18px; border: 1px solid var(--glass-edge); box-shadow: inset 0 1px 0 var(--glass-edge), var(--card-shadow); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+html[data-look="glass"] .sc-cta-band > div { font-family: var(--sans) !important; font-weight: 600 !important; }
+html[data-look="glass"] .sc-cta-primary { border-radius: 999px; }
+html[data-look="glass"] .sc-cta-ghost { border-radius: 999px; border-color: var(--rule) !important; color: var(--ink) !important; background: var(--surface); }
+
 /* The live showcase card on the front page. */
 html[data-look="glass"] .sc-show { border-radius: 22px; overflow: hidden; border: 1px solid var(--glass-edge) !important; box-shadow: 0 12px 40px rgba(31, 38, 60, .12); }
 html[data-look="glass"] .sc-show-head { background: var(--glass) !important; color: var(--ink) !important; border-bottom: 1px solid var(--rule) !important; -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); font-family: var(--sans) !important; }

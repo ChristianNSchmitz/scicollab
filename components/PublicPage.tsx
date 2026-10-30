@@ -28,7 +28,7 @@ export default function PublicPage({ eyebrow, title, lede, children }: {
           </nav>
           <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
             <Link href="/login" style={{ font: "500 12px/1 var(--mono)", color: "var(--ink)" }}>Sign in</Link>
-            <Link href="/signup" style={{ height: 32, padding: "0 14px", display: "inline-flex", alignItems: "center", background: "var(--signal-fill)", color: "var(--on-signal)", font: "500 12px/1 var(--mono)" }}>
+            <Link href="/signup" className="sc-cta-primary" style={{ height: 32, padding: "0 14px", display: "inline-flex", alignItems: "center", background: "var(--signal-fill)", color: "var(--on-signal)", font: "500 12px/1 var(--mono)" }}>
               Create account
             </Link>
           </div>

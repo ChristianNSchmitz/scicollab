@@ -33,7 +33,7 @@ export default function AboutPage() {
     <PublicPage
       eyebrow="ABOUT US"
       title="Science, easy together."
-      lede="SciCollab is where researchers share the data, methods and failed runs behind their work — before publication — and get help from peers who have been there."
+      lede="SciCollab is a network for scientists to exchange ideas, discuss their work, and share data and methods, including the failed runs, before publication, with peers who have been there."
     >
       <h2 style={{ ...h2, marginTop: 0, paddingTop: 0, borderTop: 0 }}>Why we exist</h2>
       <p style={p}>
@@ -48,7 +48,7 @@ export default function AboutPage() {
       </div>
 
       <h2 style={h2}>What we are building</h2>
-      <div style={{ border: "1px solid var(--rule)" }}>
+      <div className="sc-soft" style={{ border: "1px solid var(--rule)" }}>
         {BUILDING.map(([title, text], i) => (
           <div key={title} style={{ display: "grid", gridTemplateColumns: "34px 1fr", gap: 12, padding: "12px 14px", borderTop: i ? "1px solid var(--rule)" : 0 }}>
             <span style={{ font: "500 11px/1.6 var(--mono)", color: "var(--mute)" }}>{String(i + 1).padStart(2, "0")}</span>
@@ -66,7 +66,7 @@ export default function AboutPage() {
         the real pain is not publishing — it is being alone at the bench with a problem. A first prototype was tested
         with early users; their verdict was that the value appears when data, methods and discussion live in one place.
       </p>
-      <ol style={{ listStyle: "none", padding: 0, margin: "14px 0 0", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 0, border: "1px solid var(--ink)" }}>
+      <ol className="sc-soft" style={{ listStyle: "none", padding: 0, margin: "14px 0 0", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 0, border: "1px solid var(--ink)" }}>
         {[
           ["DONE", "Field research", "Interviews and two surveys with researchers."],
           ["DONE", "Prototype", "Five core flows tested with early users."],
@@ -88,8 +88,8 @@ export default function AboutPage() {
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
         {TEAM.map((m) => (
-          <div key={m.name} style={{ border: "1px solid var(--rule)", background: "var(--bg)", padding: 14, display: "grid", gridTemplateColumns: "40px 1fr", gap: 12 }}>
-            <span aria-hidden="true" style={{ width: 40, height: 40, display: "inline-flex", alignItems: "center", justifyContent: "center", background: "var(--ink)", color: "var(--bg)", font: "700 16px/1 var(--mono)" }}>
+          <div key={m.name} className="sc-soft" style={{ border: "1px solid var(--rule)", background: "var(--bg)", padding: 14, display: "grid", gridTemplateColumns: "40px 1fr", gap: 12 }}>
+            <span aria-hidden="true" className="sc-avatar" style={{ width: 40, height: 40, display: "inline-flex", alignItems: "center", justifyContent: "center", background: "var(--ink)", color: "var(--bg)", font: "700 16px/1 var(--mono)" }}>
               {m.name[0]}
             </span>
             <div>
@@ -101,10 +101,10 @@ export default function AboutPage() {
         ))}
       </div>
 
-      <div style={{ marginTop: 34, padding: "18px 20px", background: "#0D0D0D", color: "#F2F0EC", display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
+      <div className="sc-cta-band" style={{ marginTop: 34, padding: "18px 20px", background: "#0D0D0D", color: "#F2F0EC", display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
         <div style={{ flex: "1 1 260px", font: "500 15px/1.4 var(--mono)" }}>Want to try it in your lab, or just have a question?</div>
-        <Link href="/contact" style={{ height: 40, padding: "0 18px", display: "inline-flex", alignItems: "center", background: "var(--signal-fill)", color: "var(--on-signal)", font: "500 13px/1 var(--mono)" }}>Talk to us</Link>
-        <Link href="/faq" style={{ height: 40, padding: "0 18px", display: "inline-flex", alignItems: "center", border: "1px solid #F2F0EC", color: "#F2F0EC", font: "500 13px/1 var(--mono)" }}>Read the questions</Link>
+        <Link href="/contact" className="sc-cta-primary" style={{ height: 40, padding: "0 18px", display: "inline-flex", alignItems: "center", background: "var(--signal-fill)", color: "var(--on-signal)", font: "500 13px/1 var(--mono)" }}>Talk to us</Link>
+        <Link href="/faq" className="sc-cta-ghost" style={{ height: 40, padding: "0 18px", display: "inline-flex", alignItems: "center", border: "1px solid #F2F0EC", color: "#F2F0EC", font: "500 13px/1 var(--mono)" }}>Read the questions</Link>
       </div>
 
       <p style={{ ...small, marginTop: 20 }}>
@@ -117,7 +117,7 @@ export default function AboutPage() {
 
 function Stat({ n, text, src }: { n: string; text: string; src: string }) {
   return (
-    <div style={{ border: "1px solid var(--ink)", padding: "14px 14px 12px", background: "var(--bg)" }}>
+    <div className="sc-soft" style={{ border: "1px solid var(--ink)", padding: "14px 14px 12px", background: "var(--bg)" }}>
       <div style={{ font: "700 26px/1 var(--mono)", letterSpacing: "-.03em", color: "var(--signal-ink)", marginBottom: 8 }}>{n}</div>
       <div style={{ font: "400 13px/1.5 var(--sans)", marginBottom: 8 }}>{text}</div>
       <div style={{ font: "400 11px/1.4 var(--mono)", color: "var(--mute)" }}>{src}</div>

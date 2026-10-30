@@ -12,7 +12,7 @@ const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500", "700"],
 export const metadata: Metadata = {
   title: "SciCollab",
   description:
-    "A failed experiment nobody wrote down gets repeated. SciCollab keeps the data, the code, the conditions and the argument in one place — including the runs that didn't work.",
+    "The network for scientists: exchange ideas, discuss your work in groups, and share data and methods, including the runs that didn't work.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

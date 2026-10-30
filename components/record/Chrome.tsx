@@ -9,8 +9,8 @@ export function PrivacyStrip({ children, weeks, hrefFor }: {
   children: ReactNode; weeks: number; hrefFor: (w: number) => string;
 }) {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, padding: "10px 14px", marginBottom: 16, background: "var(--surface)", border: "1px solid var(--ink)" }}>
-      <span style={{ font: mono(10, 700), letterSpacing: ".09em", border: "1px solid var(--ink)", padding: "3px 7px", whiteSpace: "nowrap" }}>ONLY ME</span>
+    <div className="sc-soft" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, padding: "10px 14px", marginBottom: 16, background: "var(--surface)", border: "1px solid var(--ink)" }}>
+      <span className="sc-badge" style={{ font: mono(10, 700), letterSpacing: ".09em", border: "1px solid var(--ink)", padding: "3px 7px", whiteSpace: "nowrap" }}>ONLY ME</span>
       <span style={{ font: "400 13px/1.55 var(--sans)", color: "var(--ink)", flex: "1 1 320px" }}>{children}</span>
       <div style={{ display: "flex", border: "1px solid var(--rule)" }} role="group" aria-label="Time window">
         {WINDOWS.map((w) => (

@@ -81,7 +81,7 @@ export default async function OpenMethod({ params }: { params: Promise<{ id: str
           <p style={{ ...para, whiteSpace: "pre-wrap" }}>{c.fails_under}</p>
         </>
       )}
-      <div style={{ marginTop: 28, paddingTop: 16, borderTop: "1px solid var(--ink)", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      <div style={{ marginTop: 28, paddingTop: 16, borderTop: "1px solid var(--rule)", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
         <span style={{ ...para, margin: 0, flex: "1 1 260px" }}>Members discuss this card, reproduce it and fork it for their own conditions.</span>
         <Link href={`/login?next=${encodeURIComponent(`/methods/${id}`)}`} style={btn}>Sign in</Link>
         <Link href="/signup" style={btnPrimary}>Join SciCollab</Link>

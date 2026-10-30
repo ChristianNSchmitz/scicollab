@@ -3,16 +3,17 @@ import LiveShowcase from "@/components/LiveShowcase";
 import type { ShowItem } from "@/lib/showcase";
 
 /**
- * The public front page in the glass look: the same message as the B1
- * design board, set as a responsive page instead of a fixed 1440px artboard,
- * so it reads the same on a phone. Shown when data-look="glass" (the
+ * The public front page in the glass look: SciCollab as a network for
+ * scientists to exchange ideas, discuss, and share data and methods. A
+ * responsive page instead of the fixed 1440px B1 artboard, so it reads the
+ * same on a phone. Shown when data-look="glass" (the
  * default); the classic look keeps the board (app/page.tsx).
  */
 const FEATURES = [
-  { title: "Questions carry their data", text: "A question is never plain text. It carries the data, the code, the images and the context that produced it." },
-  { title: "Method cards", text: "Method, conditions, outcomes, captured as a first-class object, not a paragraph in a PDF. Versioned, forkable, and explicit about when a method fails." },
-  { title: "Negative results count", text: "Not a footnote. A citable, reusable object with the same weight as a positive result. A failure that reproduces is a contribution." },
-  { title: "A record that keeps itself", text: "Link your ORCID: publications, citations and h-index stay up to date, and every artifact is versioned and time-stamped." },
+  { title: "Exchange ideas", text: "Post a result, a question, a paper or a picture from the bench to the topic groups you work in, and get replies from people who run the same experiments." },
+  { title: "Discuss in groups", text: "Your lab, consortium or journal club in one place: members, shared projects anyone in the group can join, and what everyone did lately." },
+  { title: "Share data and methods", text: "Attach datasets and code to a post, and record methods as cards that others can fork and reproduce, including the conditions under which they fail." },
+  { title: "Find your people", text: "Link your ORCID: your publications and citations stay up to date, and your co-authors and people with your techniques are suggested to follow." },
 ];
 
 export default function GlassLanding({ items }: { items: ShowItem[] }) {
@@ -39,14 +40,15 @@ export default function GlassLanding({ items }: { items: ShowItem[] }) {
         <section className="sc-gl-hero">
           <div>
             <div style={{ font: "600 13px/1.3 var(--sans)", color: "var(--signal-ink)", marginBottom: 14 }}>
-              GitHub × Stack Overflow × a database, for scientists
+              The network for scientists
             </div>
             <h1 style={{ font: "700 clamp(34px, 5.2vw, 58px)/1.04 var(--sans)", letterSpacing: "-.035em", margin: "0 0 18px" }}>
-              A failed experiment nobody wrote down gets repeated.
+              Exchange ideas. Discuss your work. Share data and methods.
             </h1>
             <p style={{ font: "400 clamp(16px, 1.6vw, 19px)/1.55 var(--sans)", color: "var(--mute)", margin: "0 0 26px", maxWidth: 560 }}>
-              Somewhere else. By someone junior. Next month. SciCollab keeps the data, the code, the conditions and
-              the argument in one place, including the runs that didn&apos;t work.
+              SciCollab connects you with the researchers who run the same experiments as you: ask and answer, follow
+              colleagues and co-authors, work together in groups, and share the data and methods behind your results,
+              including the runs that didn&apos;t work.
             </p>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <Link href="/signup" className="sc-gl-btn sc-gl-primary sc-gl-big">Create your account</Link>
@@ -74,13 +76,13 @@ export default function GlassLanding({ items }: { items: ShowItem[] }) {
         <section className="sc-panel sc-gl-cta" style={{ background: "var(--surface)" }}>
           <div>
             <h2 style={{ font: "700 clamp(22px, 2.6vw, 30px)/1.15 var(--sans)", letterSpacing: "-.025em", margin: "0 0 8px" }}>
-              Fast, credible context, before you repeat the failure.
+              Someone has already solved your problem. Find them.
             </h2>
             <p style={{ font: "400 15px/1.6 var(--sans)", color: "var(--mute)", margin: 0, maxWidth: 620 }}>
-              One search across people, projects, datasets, methods and discussions, instead of four tools and whoever happens to be reachable.
+              One place for the people, discussions, data and methods of your field, instead of four tools and whoever happens to be reachable.
             </p>
           </div>
-          <Link href="/signup" className="sc-gl-btn sc-gl-primary sc-gl-big">Get started</Link>
+          <Link href="/signup" className="sc-gl-btn sc-gl-primary sc-gl-big">Join SciCollab</Link>
         </section>
       </main>
     </div>
