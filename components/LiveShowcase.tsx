@@ -102,7 +102,7 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
 
   if (!items.length || !current) {
     return (
-      <section ref={root} aria-label="Most active on SciCollab" style={frame}>
+      <section ref={root} aria-label="Most active on SciCollab" className="sc-show" style={frame}>
         <Head pos="" />
         <div style={{ padding: 28, font: "400 14px/1.6 var(--sans)", color: "var(--mute)" }}>
           Nothing has been shared publicly yet. The first public method cards, questions and datasets will appear here.
@@ -114,6 +114,7 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
   const n = items.length;
   return (
     <section
+      className="sc-show"
       ref={root}
       aria-roledescription="carousel"
       aria-label="Most active on SciCollab this month"
@@ -163,7 +164,7 @@ const FOOT: Record<ShowItem["kind"], React.ReactNode> = {
 
 function Head({ pos, children }: { pos: string; children?: React.ReactNode }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px 8px 12px", borderBottom: "1px solid var(--ink)", background: "var(--ink)", color: "var(--bg)" }}>
+    <div className="sc-show-head" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px 8px 12px", borderBottom: "1px solid var(--ink)", background: "var(--ink)", color: "var(--bg)" }}>
       <span aria-hidden="true" style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--signal)", flexShrink: 0 }} />
       <span style={{ font: mono(10, 700), letterSpacing: ".12em", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>LIVE · MOST ACTIVE THIS MONTH</span>
       <span style={{ marginLeft: "auto", font: mono(11, 500), whiteSpace: "nowrap", flexShrink: 0 }}>{pos}</span>
@@ -176,6 +177,7 @@ function Arrow({ label, disabled, onClick, children }: { label: string; disabled
   return (
     <button
       type="button" aria-label={label} disabled={disabled} onClick={onClick}
+      className="sc-show-arrow"
       style={{ width: 28, height: 24, flexShrink: 0, border: "1px solid var(--bg)", background: "transparent", color: "var(--bg)", font: mono(15, 700), cursor: disabled ? "default" : "pointer", opacity: disabled ? 0.35 : 1, padding: 0 }}
     >
       {children}
@@ -190,7 +192,7 @@ const OUTCOME = {
 } as const;
 
 function Badge({ text, color }: { text: string; color: string }) {
-  return <span style={{ display: "inline-flex", padding: "3px 6px", border: `1px solid ${color}`, color, font: mono(10, 500), whiteSpace: "nowrap" }}>{text}</span>;
+  return <span className="sc-badge" style={{ display: "inline-flex", padding: "3px 6px", border: `1px solid ${color}`, color, font: mono(10, 500), whiteSpace: "nowrap" }}>{text}</span>;
 }
 
 function Grid({ fields }: { fields: { label: string; value: string }[] }) {

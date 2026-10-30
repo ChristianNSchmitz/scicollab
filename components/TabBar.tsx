@@ -11,7 +11,7 @@ import LookToggle from "@/components/LookToggle";
  * the rest, including Messages and the theme switch the top bar drops on a
  * small screen. Hidden above 760px by CSS (globals.css), where the rail is.
  */
-const TABS = ["/home", "/methods", "/ask", "/you"];
+const TABS = ["/home", "/groups", "/projects", "/you"];
 const MESSAGES = { href: "/messages", label: "Messages", d: "M4 5h16v11H8l-4 4zM8 9h8M8 12h5" };
 const NOTIFICATIONS = { href: "/notifications", label: "Notifications", d: "M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M13.7 21a2 2 0 0 1-3.4 0" };
 
@@ -32,7 +32,7 @@ export default function TabBar() {
   const active = (href: string) => pathname === href || pathname.startsWith(href + "/");
   const tabs = TABS.map((h) => PRIMARY.find((p) => p.href === h)!);
   const more = [
-    ...PRIMARY.filter((p) => !TABS.includes(p.href)).slice(0, 1),   // Projects first
+    ...PRIMARY.filter((p) => !TABS.includes(p.href)).slice(0, 1),   // Methods first
     MESSAGES,
     ...PRIMARY.filter((p) => !TABS.includes(p.href)).slice(1),
     NOTIFICATIONS,

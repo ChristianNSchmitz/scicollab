@@ -7,6 +7,7 @@ import SiteFooter from "@/components/SiteFooter";
 import { createClient } from "@/lib/supabase/server";
 import { isConfigured } from "@/lib/mode";
 import LiveShowcase from "@/components/LiveShowcase";
+import GlassLanding from "@/components/GlassLanding";
 import { loadShowcase, type ShowItem } from "@/lib/showcase";
 
 /* The board's hero shows one invented method card. The front page shows the
@@ -63,6 +64,7 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
           Your account and everything that belonged to it have been deleted.
         </p>
       )}
+      <GlassLanding items={items} />
       <MobileLanding items={items} />
       <div className="sc-land-board" style={{ padding: 24, overflowX: "auto" }}>
       <div style={{ width: 1440, margin: "0 auto" }}>
@@ -85,6 +87,7 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
         <SiteFooter width={1440} />
         </div>
       </div>
+      <div className="sc-land-glass"><SiteFooter /></div>
     </div>
   );
 }

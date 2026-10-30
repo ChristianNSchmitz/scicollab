@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { signOut as serverSignOut } from "@/app/actions/demo-auth";
 import { unseenNotifications } from "@/app/actions/social";
 import LookToggle from "@/components/LookToggle";
@@ -24,12 +24,17 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "" }: { n
   }, [pathname]);
   const [menu, setMenu] = useState(false);
   const [dark, setDark] = useState(false);
+  const [query, setQuery] = useState("");
+  const searchInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        router.push("/search");
+        // ⌘K / Ctrl K: into the search bar; on a phone, where it is hidden, the search page.
+        const el = searchInput.current;
+        if (el && el.offsetParent !== null) el.focus();
+        else router.push("/search");
       }
       if (e.key === "Escape") setMenu(false);
     };
@@ -88,24 +93,41 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "" }: { n
         <span style={{ font: "700 16px/1 var(--mono)", color: "var(--signal-ink)" }}>/</span>
       </Link>
 
-      <Link
-        href="/search"
+      {/* Type straight into the bar; Enter opens the results. On a phone only
+          the magnifier shows, and it opens the search page. */}
+      <form
+        role="search"
         className="sc-top-search"
-        aria-label="Search"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const q = query.trim();
+          router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
+        }}
         style={{
           flex: 1, maxWidth: 660, display: "flex", alignItems: "center", gap: 10,
           height: 34, padding: "0 10px", border: "1px solid var(--rule)",
-          background: "var(--bg)", textDecoration: "none",
+          background: "var(--bg)", margin: 0,
         }}
       >
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" strokeWidth="1.5" strokeLinecap="round">
-          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
-        </svg>
-        <span className="sc-top-search-text" style={{ font: "400 12px/1 var(--mono)", color: "var(--mute)", flex: 1 }}>
-          Search people, projects, datasets, methods, discussions
-        </span>
-        <span className="sc-top-kbd" style={{ font: "500 11px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
-      </Link>
+        <button type="submit" aria-label="Search" style={{ display: "flex", background: "transparent", border: 0, padding: 0, cursor: "pointer" }}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" strokeWidth="1.5" strokeLinecap="round">
+            <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+          </svg>
+        </button>
+        <input
+          ref={searchInput}
+          type="search"
+          name="q"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Escape") { setQuery(""); e.currentTarget.blur(); } }}
+          aria-label="Search people, projects, datasets, methods, discussions"
+          placeholder="Search people, projects, datasets, methods, discussions"
+          className="sc-top-search-text"
+          style={{ flex: 1, minWidth: 0, height: "100%", border: 0, outline: "none", background: "transparent", font: "400 13px/1 var(--sans)", color: "var(--ink)", padding: 0 }}
+        />
+        <span className="sc-top-kbd" aria-hidden="true" style={{ font: "500 11px/1 var(--mono)", color: "var(--mute)", border: "1px solid var(--rule)", padding: "3px 5px" }}>⌘K</span>
+      </form>
 
       <Link href="/methods/new" className="sc-top-create" aria-label="Create" style={{ ...ghost, borderColor: "var(--ink)", background: "var(--ink)", color: "var(--bg)", textDecoration: "none" }}>
         <span className="sc-top-create-long">Create</span>

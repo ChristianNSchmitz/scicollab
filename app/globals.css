@@ -371,6 +371,39 @@ html[data-look="glass"] .sc-avatar { border-radius: 50% !important; border-color
 html[data-look="glass"] .sc-prose, html[data-look="glass"] article a[href^="/posts/"] { font-family: var(--sans) !important; }
 html[data-look="glass"] article a[href^="/posts/"] { font-weight: 650 !important; letter-spacing: -.01em; }
 
+/* The front page: a responsive glass page instead of the fixed artboard. */
+.sc-land-glass { display: none; }
+html[data-look="glass"] .sc-land-glass { display: block; }
+html[data-look="glass"] .sc-land-board, html[data-look="glass"] .sc-land-mobile { display: none !important; }
+.sc-gl-hero     { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.sc-gl-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 56px; }
+.sc-gl-cta      { display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 28px; margin-top: 18px; }
+.sc-gl-btn      { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 16px; border-radius: 999px; font: 600 14px/1 var(--sans); color: var(--ink); text-decoration: none; background: var(--glass); border: 1px solid var(--glass-edge); box-shadow: inset 0 1px 0 var(--glass-edge), 0 1px 4px rgba(31, 38, 60, .08); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+.sc-gl-primary  { background: var(--signal-fill); color: var(--on-signal); border-color: transparent; box-shadow: 0 4px 14px color-mix(in srgb, var(--signal-fill) 35%, transparent); }
+.sc-gl-big      { height: 46px; padding: 0 22px; font-size: 15px; }
+@media (max-width: 860px) { .sc-gl-hero { grid-template-columns: minmax(0, 1fr); gap: 28px; } .sc-gl-features { margin-top: 36px; } }
+
+/* The live showcase card on the front page. */
+html[data-look="glass"] .sc-show { border-radius: 22px; overflow: hidden; border: 1px solid var(--glass-edge) !important; box-shadow: 0 12px 40px rgba(31, 38, 60, .12); }
+html[data-look="glass"] .sc-show-head { background: var(--glass) !important; color: var(--ink) !important; border-bottom: 1px solid var(--rule) !important; -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); font-family: var(--sans) !important; }
+html[data-look="glass"] .sc-show-head *:not(.sc-show-arrow) { color: inherit !important; }
+html[data-look="glass"] .sc-show-arrow { border-radius: 999px !important; border-color: var(--rule) !important; color: var(--ink) !important; width: 28px !important; height: 28px !important; }
+
+/* The search field inside the top bar: the bar is the field. */
+html[data-look="glass"] .sc-top-search input[type="search"]:not([type="checkbox"]):not([type="radio"]):not([type="file"]) { background: transparent !important; outline: none !important; }
+html[data-look="glass"] .sc-top-search:focus-within { box-shadow: 0 0 0 3px color-mix(in srgb, var(--signal) 30%, transparent); background: var(--surface) !important; }
+
+/* The "Preview build" notice: a pale, frosted yellow instead of a hard band. */
+html[data-look="glass"] .sc-demo {
+  background: rgba(255, 230, 120, .38) !important; color: #3D3200 !important;
+  border-bottom: 1px solid rgba(214, 170, 0, .25) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%); backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6);
+  font: 500 12px/1.5 var(--sans) !important;
+}
+html[data-look="glass"] .sc-demo > span:first-child { letter-spacing: .04em !important; }
+html[data-look="glass"][data-theme="dark"] .sc-demo { background: rgba(255, 212, 0, .14) !important; color: #FFE680 !important; border-bottom-color: rgba(255, 212, 0, .18) !important; box-shadow: none; }
+
 /* Link-styled buttons (Analytics, Profile, Message…) round like real buttons. */
 html[data-look="glass"] a[style*="border:1px solid var(--ink)"],
 html[data-look="glass"] a[style*="border:1px solid var(--signal-fill)"],

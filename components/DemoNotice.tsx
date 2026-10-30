@@ -16,6 +16,7 @@ export default function DemoNotice() {
   return (
     <div
       role="note"
+      className="sc-demo"
       style={{
         background: "var(--flag)", color: "#0D0D0D",
         borderBottom: "1px solid var(--ink)",
