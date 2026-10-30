@@ -354,6 +354,15 @@ const group_projects = [
   ["gr-lund", "pj-mateo", "u-mateo", "2026-08-28 09:00"], ["gr-lund", "pj-ingrid", "u-ingrid", "2026-08-05 07:00"],
 ].map(([group_id, project_id, added_by, t]) => ({ group_id, project_id, added_by, added_at: at(t) }));
 
+/* Method cards members linked to their groups (supabase/12). */
+const group_methods = [
+  ["gr-ebro", "c-0602", "u-rivera", "2026-09-30 09:00"], ["gr-ebro", "c-0688", "u-lindqvist", "2026-10-02 08:30"],
+  ["gr-ebro", "c-0391", "u-rivera", "2026-10-06 11:00"],
+  ["gr-transfection", "c-0288", "u-okafor", "2026-09-10 09:30"], ["gr-transfection", "c-0412", "u-rivera", "2026-09-12 14:00"],
+  ["gr-transfection", "c-0670", "u-okafor", "2026-09-20 16:00"], ["gr-transfection", "c-0517", "u-bhatt", "2026-09-25 10:00"],
+  ["gr-lund", "pc-1187", "u-mateo", "2026-08-28 09:30"], ["gr-lund", "pc-1219", "u-mateo", "2026-09-03 10:00"],
+].map(([group_id, card_id, added_by, t]) => ({ group_id, card_id, added_by, added_at: at(t) }));
+
 /* Lab discussions: posts visible only inside a group (supabase/11). */
 const group_posts = [
   { id: "gp-ebro-1", group_id: "gr-ebro", author_id: "u-lindqvist", intent: "update", title: "Bay 3 sensor recalibrated, logger back on",
@@ -468,6 +477,7 @@ function build() {
     card_reads: cardReads(method_cards),
     follows, groups, group_members,
     group_projects: group_projects.filter((g) => projectIds.has(g.project_id)),
+    group_methods: group_methods.filter((g) => cardIds.has(g.card_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [],
     group_requests: [], group_invites: [],

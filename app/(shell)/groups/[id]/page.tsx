@@ -11,10 +11,11 @@ import { imageUrls } from "@/lib/posts/images";
 import { ROLE_LABEL, canManage, isCurrent, type GroupRole } from "@/lib/social/groups";
 import {
   joinGroup, leaveGroup, removeMember, addMember, setRole, addGroupProject, removeGroupProject, updateGroup, deleteGroup,
+  linkMethod, unlinkMethod,
   requestToJoin, withdrawRequest, answerRequest, createInvite, revokeInvite,
 } from "@/app/actions/groups";
 import { joinProject } from "@/app/actions/projects";
-import { Page, Panel, PanelHead, Empty, btn, btnPrimary, field, fieldLabel, mono } from "@/components/ui";
+import { Page, Panel, PanelHead, Empty, Outcome, btn, btnPrimary, field, fieldLabel, mono } from "@/components/ui";
 import Avatar from "@/components/Avatar";
 import FollowButton from "@/components/social/FollowButton";
 import ActivityList from "@/components/social/ActivityList";
@@ -58,13 +59,16 @@ export default async function Group({ params, searchParams }: { params: Promise<
   const { data: g } = await supabase.from("groups").select("*").eq("id", id).maybeSingle();
   if (!g) notFound();
 
-  const [{ data: members }, { data: gp }, following, { data: myProjects }, { data: requests }] = await Promise.all([
+  const [{ data: members }, { data: gp }, following, { data: myProjects }, { data: requests }, { data: gm }, { data: myCards }] = await Promise.all([
     supabase.from("group_members").select("user_id, role, joined_at").eq("group_id", id),
     supabase.from("group_projects").select("project_id, added_by").eq("group_id", id),
     followingOf(supabase, me),
     supabase.from("project_members").select("project_id").eq("user_id", me),
     // Admins see every request; anyone else only their own (RLS, supabase/10-journeys.sql).
     supabase.from("group_requests").select("user_id, message, created_at").eq("group_id", id),
+    // Linked method cards: members read them even when private (supabase/12-group-methods.sql).
+    supabase.from("group_methods").select("card_id, added_by, added_at").eq("group_id", id).order("added_at", { ascending: false }),
+    supabase.from("method_cards").select("id, code, title, outcome, visibility").eq("author_id", me).order("updated_at", { ascending: false }).limit(200),
   ]);
   const myRole = (members ?? []).find((m: any) => m.user_id === me)?.role as GroupRole | undefined;
   const member = isCurrent(myRole);
@@ -75,8 +79,9 @@ export default async function Group({ params, searchParams }: { params: Promise<
   const memberIds = (members ?? []).map((m: any) => m.user_id);
   const projectIds = [...new Set([...(gp ?? []).map((p: any) => p.project_id), ...(myProjects ?? []).map((p: any) => p.project_id)])];
 
-  const [people, { data: projects }, activity, { data: everyone }, { data: posts }, { data: invites }] = await Promise.all([
-    peopleById(supabase, [...memberIds, ...(requests ?? []).map((r: any) => r.user_id)]),
+  const cardIds = (gm ?? []).map((m: any) => m.card_id);
+  const [people, { data: projects }, activity, { data: everyone }, { data: posts }, { data: invites }, { data: linkedCards }] = await Promise.all([
+    peopleById(supabase, [...memberIds, ...(requests ?? []).map((r: any) => r.user_id), ...(gm ?? []).map((m: any) => m.added_by)]),
     projectIds.length ? supabase.from("projects").select("id, title, summary, status").in("id", projectIds) : Promise.resolve({ data: [] as any[] }),
     activityOf(supabase, current.map((m: any) => m.user_id), { viewer: me, limit: 8 }),
     manage ? supabase.from("profiles").select("id, display_name, institution").order("display_name").limit(1000) : Promise.resolve({ data: [] as any[] }),
@@ -86,6 +91,7 @@ export default async function Group({ params, searchParams }: { params: Promise<
           .eq("group_id", id).order("created_at", { ascending: false }).limit(30)
       : Promise.resolve({ data: [] as any[] }),
     manage ? supabase.from("group_invites").select("token, role, email, max_uses, uses, expires_at").eq("group_id", id) : Promise.resolve({ data: [] as any[] }),
+    cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, visibility, author_id").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
   ]);
   const postIds = (posts ?? []).map((p: any) => p.id);
   const [authors, reactions, images, { data: replies }] = await Promise.all([
@@ -98,6 +104,9 @@ export default async function Group({ params, searchParams }: { params: Promise<
   const shared = (gp ?? []).map((p: any) => ({ ...p, project: (projects ?? []).find((x: any) => x.id === p.project_id) })).filter((p: any) => p.project);
   const addable = (myProjects ?? []).map((p: any) => (projects ?? []).find((x: any) => x.id === p.project_id))
     .filter((p: any) => p && !shared.some((s: any) => s.project_id === p.id));
+  // Unreadable ones (a non-member and a private card) drop out here.
+  const methods = (gm ?? []).map((m: any) => ({ ...m, card: (linkedCards ?? []).find((c: any) => c.id === m.card_id) })).filter((m: any) => m.card);
+  const linkable = (myCards ?? []).filter((c: any) => !cardIds.includes(c.id));
   const sorted = [...current].sort((a: any, b: any) => ORDER.indexOf(a.role) - ORDER.indexOf(b.role));
   const liveInvites = (invites ?? []).filter((i: any) => new Date(i.expires_at) >= new Date() && i.uses < i.max_uses);
   const h = await headers();
@@ -147,8 +156,8 @@ export default async function Group({ params, searchParams }: { params: Promise<
       <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {member ? (
-            <section aria-label="Group discussion" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <h2 style={{ font: mono(14, 700), margin: 0 }}>Discussion <span style={{ font: "400 12.5px/1 var(--sans)", color: "var(--mute)" }}>· members only</span></h2>
+            <section aria-label="Group feed" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <h2 style={{ font: mono(14, 700), margin: 0 }}>Group feed <span style={{ font: "400 12.5px/1 var(--sans)", color: "var(--mute)" }}>· members only</span></h2>
               <QuickPost topics={[]} cards={[]} groupId={id} groupName={g.name} />
               {(posts ?? []).length === 0 && <Panel><Empty>No posts yet. Start the conversation: an update, a question, a request for the lab.</Empty></Panel>}
               {(posts ?? []).map((p: any) => (
@@ -189,6 +198,37 @@ export default async function Group({ params, searchParams }: { params: Promise<
                 </select>
                 <button type="submit" style={btn}>Share with the group</button>
                 <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members of the group can then see it and join it.</span>
+              </form>
+            )}
+          </Panel>
+
+          <Panel>
+            <div id="methods" style={{ scrollMarginTop: 72 }}><PanelHead>Methods · {methods.length}</PanelHead></div>
+            {methods.length === 0 && <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>No method cards linked to the group yet.</div>}
+            {methods.map((m: any) => (
+              <div key={m.card_id} style={{ display: "flex", gap: 10, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
+                <div style={{ flex: "1 1 240px", minWidth: 0 }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                    <Outcome value={m.card.outcome} />
+                    <span style={{ font: mono(10.5), color: "var(--mute)" }}>{m.card.code}</span>
+                    {m.card.visibility !== "public" && <span style={{ font: mono(10.5), color: "var(--mute)" }}>· {m.card.visibility === "private" ? "private, shared with this group" : "lab"}</span>}
+                  </div>
+                  <Link href={`/methods/${m.card_id}`} style={{ display: "block", font: mono(13, 600, 1.4), color: "var(--ink)", marginTop: 5 }}>{m.card.title}</Link>
+                  <div style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>by {people.get(m.card.author_id)?.display_name ?? "a member"}</div>
+                </div>
+                {(m.added_by === me || manage) && (
+                  <form action={unlinkMethod.bind(null, id, m.card_id)}><button type="submit" style={small}>Unlink</button></form>
+                )}
+              </div>
+            ))}
+            {member && linkable.length > 0 && (
+              <form action={linkMethod.bind(null, id)} style={{ display: "flex", gap: 8, padding: 14, flexWrap: "wrap" }}>
+                <label htmlFor="g-method" style={{ position: "absolute", left: -9999 }}>Method card to link</label>
+                <select id="g-method" name="card" style={{ ...field, flex: "1 1 220px", width: "auto" }}>
+                  {linkable.map((c: any) => <option key={c.id} value={c.id}>{c.code} · {c.title}</option>)}
+                </select>
+                <button type="submit" style={btn}>Link to the group</button>
+                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Optional. Members of the group can then read the card, also when it is private. Unlink any time.</span>
               </form>
             )}
           </Panel>

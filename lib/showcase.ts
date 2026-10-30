@@ -20,9 +20,11 @@ import { ensureRecordSeed } from "@/lib/record/demo-seed";
  * - never names a project, fork parent or linked card unless that one is
  *   public too.
  *
- * Ranking is "rolling": activity in the last 30 days counts fully, older
- * activity a little, so the list moves as people use the site. At most five
- * items, at most three of one kind.
+ * Which five: a random mix from the public items with any activity, drawn
+ * anew for each visitor (at most three of one kind), so the front page
+ * reads like a feed of what the community does rather than a leaderboard.
+ * Activity is still scored ("rolling": the last 30 days count fully) to
+ * choose the pool of up to 30 items the mix is drawn from.
  */
 
 export type ShowField = { label: string; value: string };
@@ -44,6 +46,7 @@ export type ShowItem =
 const WINDOW_DAYS = 30;
 const MAX_ITEMS = 5;
 const MAX_PER_KIND = 3;
+const POOL = 30;
 const CACHE_MS = 30_000;
 
 type Row = Record<string, any>;
@@ -193,12 +196,22 @@ async function compute(db: Client): Promise<ShowItem[]> {
   }
 
   items.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+  return items.slice(0, POOL).map((it) => ({ ...it, score: Math.round(it.score * 10) / 10 }));
+}
+
+/** Five at random from the pool, at most three of one kind. */
+function pick(pool: ShowItem[]): ShowItem[] {
+  const shuffled = [...pool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   const out: ShowItem[] = [];
   const perKind: Record<string, number> = {};
-  for (const it of items) {
+  for (const it of shuffled) {
     if ((perKind[it.kind] ?? 0) >= MAX_PER_KIND) continue;
     perKind[it.kind] = (perKind[it.kind] ?? 0) + 1;
-    out.push({ ...it, score: Math.round(it.score * 10) / 10 });
+    out.push(it);
     if (out.length === MAX_ITEMS) break;
   }
   return out;
@@ -206,17 +219,18 @@ async function compute(db: Client): Promise<ShowItem[]> {
 
 const g = globalThis as { __scShowcase?: { at: number; items: ShowItem[] } };
 
-/** The current top five, cached briefly so a busy front page costs a few queries a minute. */
+/** Five at random from the active public items. The pool is cached briefly,
+ *  so a busy front page costs a few queries a minute; the draw is per visit. */
 export async function loadShowcase(): Promise<ShowItem[]> {
   const hit = g.__scShowcase;
-  if (hit && Date.now() - hit.at < CACHE_MS) return hit.items;
+  if (hit && Date.now() - hit.at < CACHE_MS) return pick(hit.items);
   const db = publicReader();
   if (!db) return [];
   try {
     const items = await compute(db);
     g.__scShowcase = { at: Date.now(), items };
-    return items;
+    return pick(items);
   } catch {
-    return hit?.items ?? [];               // the front page must render even if this fails
+    return pick(hit?.items ?? []);          // the front page must render even if this fails
   }
 }

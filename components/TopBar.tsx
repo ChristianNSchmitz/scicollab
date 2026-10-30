@@ -104,9 +104,10 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "", moder
           router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
         }}
         style={{
-          flex: 1, maxWidth: 660, display: "flex", alignItems: "center", gap: 10,
+          // The search takes the middle; the actions sit at the right edge.
+          flex: 1, maxWidth: 960, display: "flex", alignItems: "center", gap: 10,
           height: 34, padding: "0 10px", border: "1px solid var(--rule)",
-          background: "var(--bg)", margin: 0,
+          background: "var(--bg)", margin: "0 auto 0 0",
         }}
       >
         <button type="submit" aria-label="Search" style={{ display: "flex", background: "transparent", border: 0, padding: 0, cursor: "pointer" }}>

@@ -11,7 +11,7 @@ import GlassLanding from "@/components/GlassLanding";
 import { loadShowcase, type ShowItem } from "@/lib/showcase";
 
 /* The board's hero shows one invented method card. The front page shows the
-   real, public, most active items instead: the example block is swapped for
+   real, public items instead (a random mix): the example block is swapped for
    a slot of the same place in the layout, and the carousel mounts there. If
    the board changes and the block is not found, the board renders as drawn. */
 const SLOT = "sc-live-showcase";

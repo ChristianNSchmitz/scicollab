@@ -5,13 +5,12 @@ import { createPortal } from "react-dom";
 import type { ShowItem } from "@/lib/showcase";
 
 /**
- * The front page's rolling "most active right now": up to five public items
+ * The front page's "from the community": five public items drawn at random
  * (method cards, question threads, shared datasets), one at a time, with
- * arrows. Read-only — it shows summaries and links to the item, nothing more.
+ * arrows. Read-only, it shows summaries and links to the item, nothing more.
  *
- * It refreshes once a minute while it is on screen and the tab is visible.
- * When a new item reaches the top it is shown, unless the visitor is using
- * the arrows at that moment; then a short notice offers it instead.
+ * A new mix is drawn once a minute while it is on screen and the tab is
+ * visible, unless the visitor is using the arrows at that moment.
  *
  * `mountId`: render into an element of the design artboard (the board is
  * static HTML, so the carousel is portalled into its slot). Without it, the
@@ -42,8 +41,6 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
   const [items, setItems] = useState<ShowItem[]>(initial);
   const [at, setAt] = useState(0);
   const [fresh, setFresh] = useState<Set<string>>(new Set());
-  const [notice, setNotice] = useState<ShowItem | null>(null);
-  const [announce, setAnnounce] = useState("");
   const root = useRef<HTMLElement>(null);
   const touched = useRef(0);
   const known = useRef(new Set(initial.map((i) => i.id)));
@@ -52,13 +49,8 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
   const go = useCallback((delta: number) => {
     if (items.length < 2) return;
     touched.current = Date.now();
-    setNotice(null);
     setAt((i) => (i + delta + items.length) % items.length);
   }, [items.length]);
-
-  // The latest values for the refresh timer, which outlives renders.
-  const state = useRef({ items, at });
-  state.current = { items, at };
 
   // Refresh: once a minute, only while on screen and the tab is visible.
   useEffect(() => {
@@ -72,24 +64,14 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
         const body = (await res.json()) as { items?: ShowItem[] };
         if (stop || !Array.isArray(body.items)) return;
         const next = body.items.slice(0, 5);
-        const { items: prev, at: shownAt } = state.current;
-
         const arrived = next.filter((i) => !known.current.has(i.id));
         arrived.forEach((i) => known.current.add(i.id));
         if (arrived.length) setFresh((s) => new Set([...s, ...arrived.map((i) => i.id)]));
 
-        const showing = prev[Math.min(shownAt, prev.length - 1)];
-        const newTop = next[0] && prev[0]?.id !== next[0].id ? next[0] : null;
-        const quiet = Date.now() - touched.current > QUIET_MS;
+        // A fresh random mix, swapped in only while nobody is using the arrows.
+        if (Date.now() - touched.current < QUIET_MS) return;
         setItems(next);
-        if (newTop && quiet) {
-          setAt(0); setNotice(null);
-          setAnnounce(`New at number 1: ${newTop.title}`);
-        } else {
-          const keep = showing ? next.findIndex((i) => i.id === showing.id) : -1;
-          setAt(keep >= 0 ? keep : 0);
-          if (newTop) setNotice(newTop);
-        }
+        setAt(0);
       } catch {
         /* offline or asleep: keep what is shown */
       }
@@ -102,7 +84,7 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
 
   if (!items.length || !current) {
     return (
-      <section ref={root} aria-label="Most active on SciCollab" className="sc-show" style={frame}>
+      <section ref={root} aria-label="From the SciCollab community" className="sc-show" style={frame}>
         <Head pos="" />
         <div style={{ padding: 28, font: "400 14px/1.6 var(--sans)", color: "var(--mute)" }}>
           Nothing has been shared publicly yet. The first public method cards, questions and datasets will appear here.
@@ -117,7 +99,7 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
       className="sc-show"
       ref={root}
       aria-roledescription="carousel"
-      aria-label="Most active on SciCollab this month"
+      aria-label="From the SciCollab community"
       style={frame}
       onKeyDown={(e) => { if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); }}
     >
@@ -125,16 +107,6 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
         <Arrow label="Previous" disabled={n < 2} onClick={() => go(-1)}>‹</Arrow>
         <Arrow label="Next" disabled={n < 2} onClick={() => go(1)}>›</Arrow>
       </Head>
-
-      {notice && (
-        <button
-          type="button"
-          onClick={() => { setAt(0); setNotice(null); touched.current = Date.now(); }}
-          style={{ display: "block", width: "100%", textAlign: "left", padding: "8px 12px", border: 0, borderBottom: "1px solid var(--rule)", background: "var(--flag)", color: "#0D0D0D", font: mono(11, 500, 1.4), cursor: "pointer" }}
-        >
-          ↑ New at #1: {notice.title} — show it
-        </button>
-      )}
 
       <div role="group" aria-roledescription="slide" aria-label={`${Math.min(at, n - 1) + 1} of ${n}`} style={{ minHeight: 400 }}>
         <Slide item={current} isNew={fresh.has(current.id)} />
@@ -147,9 +119,8 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
       </div>
       <div style={{ padding: "11px 12px", borderTop: "1px solid var(--rule)", background: "var(--bg)", font: mono(11, 400, 1.4), color: "var(--mute)" }}>
         {FOOT[current.kind]}
-        <div style={{ marginTop: 5, fontSize: 10 }}>Live · public items only · ranked by activity in the last 30 days · refreshes every minute</div>
+        <div style={{ marginTop: 5, fontSize: 10 }}>A random mix of public items, new with every visit and every minute</div>
       </div>
-      <div aria-live="polite" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>{announce}</div>
     </section>
   );
 }
@@ -166,7 +137,7 @@ function Head({ pos, children }: { pos: string; children?: React.ReactNode }) {
   return (
     <div className="sc-show-head" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px 8px 12px", borderBottom: "1px solid var(--ink)", background: "var(--ink)", color: "var(--bg)" }}>
       <span aria-hidden="true" style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--signal)", flexShrink: 0 }} />
-      <span style={{ font: mono(10, 700), letterSpacing: ".12em", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>LIVE · MOST ACTIVE THIS MONTH</span>
+      <span style={{ font: mono(10, 700), letterSpacing: ".12em", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>LIVE · FROM THE COMMUNITY</span>
       <span style={{ marginLeft: "auto", font: mono(11, 500), whiteSpace: "nowrap", flexShrink: 0 }}>{pos}</span>
       {children}
     </div>

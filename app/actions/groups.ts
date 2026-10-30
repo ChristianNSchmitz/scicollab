@@ -135,6 +135,32 @@ export async function addMember(groupId: string, form: FormData) {
   redirect(`/groups/${groupId}?added=1#members`);
 }
 
+/** A member links one of their own method cards to the group; current
+ *  members can then read it, also when it is private or lab-only. */
+export async function linkMethod(groupId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const cardId = String(form.get("card") ?? "");
+  const [{ data: member }, { data: card }] = await Promise.all([
+    supabase.from("group_members").select("user_id").eq("group_id", groupId).eq("user_id", user.id).neq("role", "alumni").maybeSingle(),
+    isRowId(cardId) ? supabase.from("method_cards").select("id").eq("id", cardId).eq("author_id", user.id).maybeSingle() : Promise.resolve({ data: null }),
+  ]);
+  if (!member || !card) throw new Error("You can only link your own method cards to a group you are in.");
+  const { data: already } = await supabase.from("group_methods").select("card_id").eq("group_id", groupId).eq("card_id", cardId).maybeSingle();
+  if (!already) await supabase.from("group_methods").insert({ group_id: groupId, card_id: cardId, added_by: user.id });
+  revalidatePath(`/groups/${groupId}`);
+  revalidatePath(`/methods/${cardId}`);
+}
+
+export async function unlinkMethod(groupId: string, cardId: string) {
+  const { supabase, user } = await requireUser();
+  const { data: row } = await supabase.from("group_methods").select("added_by").eq("group_id", groupId).eq("card_id", cardId).maybeSingle();
+  if (!row) return;
+  if (row.added_by !== user.id && !(await ownerOf(supabase, groupId, user.id))) throw new Error("Only whoever linked it, or an admin, can unlink it.");
+  await supabase.from("group_methods").delete().eq("group_id", groupId).eq("card_id", cardId);
+  revalidatePath(`/groups/${groupId}`);
+  revalidatePath(`/methods/${cardId}`);
+}
+
 /** A member shares one of their own projects with the group. */
 export async function addGroupProject(groupId: string, form: FormData) {
   const { supabase, user } = await requireUser();

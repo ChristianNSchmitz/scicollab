@@ -59,7 +59,7 @@ export default function GlassLanding({ items }: { items: ShowItem[] }) {
             </p>
           </div>
           <div className="sc-gl-show">
-            <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", margin: "0 0 10px 4px" }}>Most active right now</div>
+            <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", margin: "0 0 10px 4px" }}>A random pick of public work</div>
             <LiveShowcase initial={items} />
           </div>
         </section>
