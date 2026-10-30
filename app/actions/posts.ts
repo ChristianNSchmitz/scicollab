@@ -126,7 +126,7 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
   await recordMentions(supabase, user.id, "post", data.id, `/posts/${data.id}`, `${title}\n${body}`);
   revalidatePath("/home");
   // Posted from the feed or a group page: stay there, at the new post.
-  if (groupId) { revalidatePath(`/groups/${groupId}`); redirect(`/groups/${groupId}?posted=1#post-${data.id}`); }
+  if (groupId) { revalidatePath(`/groups/${groupId}`); redirect(`/groups/${groupId}?tab=feed&posted=1#post-${data.id}`); }
   if (form.get("return_to") === "feed") redirect(`/home?posted=1#post-${data.id}`);
   redirect(`/posts/${data.id}`);
 }

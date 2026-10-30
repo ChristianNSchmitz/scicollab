@@ -363,6 +363,59 @@ const group_methods = [
   ["gr-lund", "pc-1187", "u-mateo", "2026-08-28 09:30"], ["gr-lund", "pc-1219", "u-mateo", "2026-09-03 10:00"],
 ].map(([group_id, card_id, added_by, t]) => ({ group_id, card_id, added_by, added_at: at(t) }));
 
+/* The group workspace (supabase/13): chat, notice board, tasks, shared data and files. */
+const group_messages = [
+  ["gr-ebro", "u-lindqvist", "Morning. Bay 3 is booked for me until 12, the passage series can have it after.", "2026-10-27 08:12"],
+  ["gr-ebro", "u-rivera", "Perfect, I will seed at 13:00.", "2026-10-27 08:20"],
+  ["gr-ebro", "u-okafor", "If you have spare p18 cells, could I take one flask for the repeat in Lagos? Happy to cover shipping.", "2026-10-27 10:41"],
+  ["gr-ebro", "u-rivera", "Yes, I will freeze two vials on Thursday.", "2026-10-27 11:02"],
+  ["gr-ebro", "u-lindqvist", "Reminder: TransLipo-3 lot 22 runs out this week, the order is on the task list.", "2026-10-29 16:30"],
+  ["gr-transfection", "u-okafor", "Next club: Thursday 16:00, Bhatt presents the high-MW transfer data.", "2026-10-26 09:00"],
+  ["gr-transfection", "u-bhatt", "Slides are in Files. Comments welcome before Thursday.", "2026-10-28 17:45"],
+  ["gr-lund", "u-ingrid", "Seahorse is down for service on Monday, plan the plates around it.", "2026-10-25 14:00"],
+].map(([group_id, author_id, body, t], i) => ({ id: `gmsg-${i + 1}`, group_id, author_id, body, created_at: at(t) }));
+
+const group_notes = [
+  { id: "gn-ebro-1", group_id: "gr-ebro", author_id: "u-rivera", pinned: true, title: "Bench rules",
+    body: "Log every run in the project ELN on the day. Negative runs too.\nCO₂ check (MC-0602) before any run that looks off.\nLabel tubes with lot number and passage.", at: "2026-09-29 10:30" },
+  { id: "gn-ebro-2", group_id: "gr-ebro", author_id: "u-lindqvist", pinned: true, title: "Incubator bookings",
+    body: "Bays 1 and 2: book in the shared calendar at the door. Bay 3: ask Maja until the logger has run a full week.", at: "2026-10-21 10:00" },
+  { id: "gn-ebro-3", group_id: "gr-ebro", author_id: "u-okafor", pinned: false, title: "Shipping cells to Lagos",
+    body: "Dry ice, courier account 4471. Send the tracking number in the chat.", at: "2026-10-27 11:10" },
+  { id: "gn-tr-1", group_id: "gr-transfection", author_id: "u-okafor", pinned: true, title: "How the club works",
+    body: "One method card per session, presented by whoever ran it. Bring the runs that failed.", at: "2026-09-10 09:40" },
+  { id: "gn-lund-1", group_id: "gr-lund", author_id: "u-ingrid", pinned: true, title: "Seahorse protocol in use",
+    body: "Mito stress test as in PC-1187. Normalise to Hoechst nuclei counts, not protein.", at: "2026-08-05 07:30" },
+].map(({ at: t, ...n }) => ({ ...n, created_at: at(t), updated_at: at(t) }));
+
+const group_tasks = [
+  ["gr-ebro", "Order TransLipo-3, new lot", "u-lindqvist", "2026-10-31", null, "u-rivera", "2026-10-29 16:25"],
+  ["gr-ebro", "Freeze two vials of p18 for Temi", "u-rivera", "2026-11-05", null, "u-okafor", "2026-10-27 11:05"],
+  ["gr-ebro", "Upload run 17 flow data", "u-rivera", "2026-11-03", null, "u-rivera", "2026-10-28 09:00"],
+  ["gr-ebro", "Recalibrate bay 3 sensor", "u-lindqvist", "2026-10-21", "2026-10-21 09:30", "u-rivera", "2026-10-14 09:00"],
+  ["gr-transfection", "Comment on Bhatt's slides", null, "2026-10-30", null, "u-okafor", "2026-10-28 18:00"],
+  ["gr-lund", "Plan plates around Seahorse service", "u-mateo", "2026-11-02", null, "u-ingrid", "2026-10-25 14:05"],
+].map(([group_id, title, assignee_id, due_on, done, created_by, t], i) => ({
+  id: `gt-${i + 1}`, group_id, title, assignee_id, due_on: day(due_on), done_at: done ? at(done) : null, done_by: done ? assignee_id : null,
+  created_by, created_at: at(t as string),
+}));
+
+const group_datasets = [
+  ["gr-ebro", "d-2", "u-rivera", "2026-10-02 10:00"], ["gr-ebro", "d-4", "u-rivera", "2026-10-22 09:00"],
+  ["gr-transfection", "d-1", "u-rivera", "2026-09-12 14:10"],
+  ["gr-lund", "pd-mateo-xf", "u-mateo", "2026-09-03 10:10"],
+].map(([group_id, dataset_id, added_by, t]) => ({ group_id, dataset_id, added_by, added_at: at(t) }));
+
+const textFile = (text: string) => `data:text/plain;base64,${Buffer.from(text).toString("base64")}`;
+const group_files = [
+  { id: "gf-1", group_id: "gr-ebro", uploaded_by: "u-lindqvist", name: "bay3-calibration-2026-10-21.txt", mime: "text/plain",
+    text: "Bay 3 calibration, 21 Oct 2026\nReference meter: 5.02 %\nBay 3 sensor after service: 5.00 %\n", note: "Service report, summary", at: "2026-10-21 10:15" },
+  { id: "gf-2", group_id: "gr-ebro", uploaded_by: "u-rivera", name: "passage-series-plan.txt", mime: "text/plain",
+    text: "Passage series p8 to p24, every second passage, three wells each.\n", note: "Plan for the restart", at: "2026-10-23 15:00" },
+  { id: "gf-3", group_id: "gr-transfection", uploaded_by: "u-bhatt", name: "high-mw-transfer-notes.txt", mime: "text/plain",
+    text: "Talk notes: methanol 10% vs 20%, bands above 100 kDa.\n", note: "For Thursday's club", at: "2026-10-28 17:40" },
+].map(({ text, at: t, ...f }) => ({ ...f, size_bytes: Buffer.byteLength(text), path: textFile(text), created_at: at(t) }));
+
 /* Lab discussions: posts visible only inside a group (supabase/11). */
 const group_posts = [
   { id: "gp-ebro-1", group_id: "gr-ebro", author_id: "u-lindqvist", intent: "update", title: "Bay 3 sensor recalibrated, logger back on",
@@ -478,6 +531,8 @@ function build() {
     follows, groups, group_members,
     group_projects: group_projects.filter((g) => projectIds.has(g.project_id)),
     group_methods: group_methods.filter((g) => cardIds.has(g.card_id)),
+    group_messages, group_notes, group_tasks, group_files, group_visits: [],
+    group_datasets: group_datasets.filter((g) => dataIds.has(g.dataset_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [],
     group_requests: [], group_invites: [],

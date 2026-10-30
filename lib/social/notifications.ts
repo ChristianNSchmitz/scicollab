@@ -81,7 +81,7 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     })),
     ...(joinRequests ?? []).map((r: any): Notice => ({
       at: r.created_at, kind: "join request", who: r.user_id,
-      text: `asked to join ${(ownedGroups ?? []).find((g: any) => g.id === r.group_id)?.name ?? "your group"}`, href: `/groups/${r.group_id}#requests`,
+      text: `asked to join ${(ownedGroups ?? []).find((g: any) => g.id === r.group_id)?.name ?? "your group"}`, href: `/groups/${r.group_id}?tab=members#requests`,
     })),
     ...(followers ?? []).map((f: any): Notice => ({
       at: f.created_at, kind: "follow", who: f.follower_id, text: "started following you", href: `/people/${f.follower_id}`,

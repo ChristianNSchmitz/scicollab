@@ -47,13 +47,13 @@ export async function updateGroup(groupId: string, form: FormData) {
   const { supabase, user } = await requireUser();
   if (!(await ownerOf(supabase, groupId, user.id))) throw new Error("Only an owner can change the group.");
   const name = text(form, "name", 120);
-  if (name.length < 2) redirect(`/groups/${groupId}?error=name`);
+  if (name.length < 2) redirect(`/groups/${groupId}?tab=members&error=name#settings`);
   await supabase.from("groups").update({
     name, description: text(form, "description", 1000), institution: text(form, "institution", 200),
     access: form.get("access") === "closed" ? "closed" : "open",
   }).eq("id", groupId);
   revalidatePath(`/groups/${groupId}`);
-  redirect(`/groups/${groupId}?saved=1`);
+  redirect(`/groups/${groupId}?tab=members&saved=1#settings`);
 }
 
 export async function joinGroup(groupId: string) {
@@ -95,10 +95,10 @@ export async function setRole(groupId: string, personId: string, form: FormData)
   const mine = await roleIn(supabase, groupId, user.id);
   const theirs = await roleIn(supabase, groupId, personId);
   if (!canManage(mine) || !theirs) throw new Error("Only a lead or an admin can change roles.");
-  if ((next === "owner" || theirs === "owner") && mine !== "owner") redirect(`/groups/${groupId}?error=leadonly#members`);
+  if ((next === "owner" || theirs === "owner") && mine !== "owner") redirect(`/groups/${groupId}?tab=members&error=leadonly`);
   if (theirs === "owner" && next !== "owner") {
     const { data: owners } = await supabase.from("group_members").select("user_id").eq("group_id", groupId).eq("role", "owner");
-    if ((owners ?? []).length <= 1) redirect(`/groups/${groupId}?error=lastowner#members`);
+    if ((owners ?? []).length <= 1) redirect(`/groups/${groupId}?tab=members&error=lastowner`);
   }
   await supabase.from("group_members").update({ role: next }).eq("group_id", groupId).eq("user_id", personId);
   revalidatePath(`/groups/${groupId}`);
@@ -110,7 +110,7 @@ export async function removeMember(groupId: string, userId: string) {
   if (!isRowId(userId)) return;
   const self = userId === user.id;
   if (!self && !(await ownerOf(supabase, groupId, user.id))) throw new Error("Only a lead or an admin can remove members.");
-  if (!self && (await roleIn(supabase, groupId, userId)) === "owner" && !(await leadOf(supabase, groupId, user.id))) redirect(`/groups/${groupId}?error=leadonly#members`);
+  if (!self && (await roleIn(supabase, groupId, userId)) === "owner" && !(await leadOf(supabase, groupId, user.id))) redirect(`/groups/${groupId}?tab=members&error=leadonly`);
   const { data: owners } = await supabase.from("group_members").select("user_id").eq("group_id", groupId).eq("role", "owner");
   if ((owners ?? []).length === 1 && owners![0].user_id === userId) redirect(`/groups/${groupId}?error=lastowner`);
   await supabase.from("group_members").delete().eq("group_id", groupId).eq("user_id", userId);
@@ -125,14 +125,14 @@ export async function addMember(groupId: string, form: FormData) {
   if (!(await ownerOf(supabase, groupId, user.id))) throw new Error("Only an owner can add members.");
   const personId = String(form.get("person") ?? "");
   const { data: person } = isRowId(personId) ? await supabase.from("profiles").select("id").eq("id", personId).maybeSingle() : { data: null };
-  if (!person) redirect(`/groups/${groupId}?error=person#members`);
+  if (!person) redirect(`/groups/${groupId}?tab=members&error=person`);
   const { data: already } = await supabase.from("group_members").select("user_id").eq("group_id", groupId).eq("user_id", personId).maybeSingle();
   const role = String(form.get("role") ?? "member");
   const asRole = role === "owner" && (await leadOf(supabase, groupId, user.id)) ? "owner" : ["admin", "member", "guest"].includes(role) ? role : "member";
   if (!already) await supabase.from("group_members").insert({ group_id: groupId, user_id: personId, role: asRole });
   else await supabase.from("group_members").update({ role: asRole }).eq("group_id", groupId).eq("user_id", personId);
   revalidatePath(`/groups/${groupId}`);
-  redirect(`/groups/${groupId}?added=1#members`);
+  redirect(`/groups/${groupId}?tab=members&added=1`);
 }
 
 /** A member links one of their own method cards to the group; current
@@ -187,7 +187,7 @@ export async function removeGroupProject(groupId: string, projectId: string) {
 export async function deleteGroup(groupId: string, form: FormData) {
   const { supabase, user } = await requireUser();
   if (!(await leadOf(supabase, groupId, user.id))) throw new Error("Only a lead can delete the group.");
-  if (text(form, "confirm", 20).toUpperCase() !== "DELETE") redirect(`/groups/${groupId}?error=confirm#settings`);
+  if (text(form, "confirm", 20).toUpperCase() !== "DELETE") redirect(`/groups/${groupId}?tab=members&error=confirm#settings`);
   // The group first, while you are still its owner. The database cascades
   // to members and projects; the demo store does not, hence the two after.
   await supabase.from("groups").delete().eq("id", groupId);
@@ -241,7 +241,7 @@ export async function createInvite(groupId: string, form: FormData) {
   if (!(await ownerOf(supabase, groupId, user.id))) throw new Error("Only a lead or an admin can invite.");
   const role = ["admin", "member", "guest"].includes(String(form.get("role"))) ? String(form.get("role")) : "member";
   const email = text(form, "email", 200).toLowerCase();
-  if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) redirect(`/groups/${groupId}?error=email#invite`);
+  if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) redirect(`/groups/${groupId}?tab=members&error=email#invite`);
   const uses = email ? 1 : Math.min(500, Math.max(1, Number(form.get("uses")) || 25));
   const days = Math.min(90, Math.max(1, Number(form.get("days")) || 14));
   const token = randomBytes(18).toString("base64url");
@@ -263,7 +263,7 @@ export async function createInvite(groupId: string, form: FormData) {
     mailed = sent.ok ? "&mailed=1" : "&mailed=0";
   }
   revalidatePath(`/groups/${groupId}`);
-  redirect(`/groups/${groupId}?invite=${token}${mailed}#invite`);
+  redirect(`/groups/${groupId}?tab=members&invite=${token}${mailed}#invite`);
 }
 
 export async function revokeInvite(groupId: string, token: string) {

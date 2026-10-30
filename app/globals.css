@@ -116,6 +116,7 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 .sc-two-col { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
 /* The dashboard band on top of the feed: three slim tiles, then a row of chips. */
 .sc-hl        { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.sc-hl-4      { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .sc-hl-tile   { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--ink); min-width: 0; transition: border-color .15s ease; }
 .sc-hl-tile:hover { border-color: var(--ink); }
 .sc-hl-main   { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; color: var(--ink); text-decoration: none; }
@@ -136,6 +137,7 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 /* Phone: three numbers side by side, no detail lines; chips scroll sideways. */
 @media (max-width: 760px) {
   .sc-hl         { gap: 6px; }
+  .sc-hl-4       { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sc-hl-tile    { padding: 8px 9px; border-top-width: 2px; }
   .sc-hl-detail, .sc-hl-aside, .sc-hl-unit, .sc-long { display: none; }
   .sc-short      { display: inline; }
@@ -522,4 +524,10 @@ html[data-look="glass"] .sc-auth-card {
 }
 @media (prefers-reduced-motion: reduce) {
   html[data-look="glass"] .sc-hl-tile:hover { transform: none; }
+}
+
+/* The file picker's button, in the same capsule shape as every other button. */
+input[type="file"]::file-selector-button {
+  height: 30px; padding: 0 12px; margin-right: 10px; border: 1px solid var(--ink); border-radius: 999px;
+  background: var(--surface); color: var(--ink); font: 500 12.5px/1 var(--sans); cursor: pointer;
 }
