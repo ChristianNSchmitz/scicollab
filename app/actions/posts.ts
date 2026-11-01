@@ -4,7 +4,9 @@ import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { intentById, roomById } from "@/lib/taxonomy";
+import { isConfigured } from "@/lib/mode";
+import { intentById, roomById, FEEDBACK_KINDS } from "@/lib/taxonomy";
+import { checkPostFiles, storePostFiles } from "@/lib/posts/files";
 import { isRowId } from "@/lib/query";
 import { recordMentions } from "@/lib/social/mentions";
 import { roleIn, isCurrent, canReadPost } from "@/lib/social/groups";
@@ -32,8 +34,17 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
   // author has joined: the composer only offers those, and a post anywhere
   // else would land in a feed nobody reads.
   const groupId = String(form.get("group_id") ?? "");
+  // A request for feedback can go to a few chosen people instead of a topic group.
+  const forPeople = intent === "feedback" && !groupId && form.get("audience") === "people";
+  const people = forPeople
+    ? [...new Set(form.getAll("audience_people").map(String).filter((id) => isRowId(id) && id !== user.id))].slice(0, 10)
+    : [];
+  if (forPeople && !people.length) return { error: "Choose at least one person to ask for feedback." };
   let room = "";
-  if (groupId) {
+  if (forPeople) {
+    const { data: found } = await supabase.from("profiles").select("id").in("id", people);
+    if ((found ?? []).length !== people.length) return { error: "One of the people you chose could not be found." };
+  } else if (groupId) {
     if (!isRowId(groupId) || !isCurrent(await roleIn(supabase, groupId, user.id))) return { error: "You can only post in groups you are a member of." };
   } else {
     room = String(form.get("room_id") ?? "");
@@ -50,6 +61,10 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
   if (images.length > MAX_IMAGES) return { error: `At most ${MAX_IMAGES} images per post.` };
   if (images.some((f) => !IMAGE_TYPES.includes(f.type))) return { error: "Images must be JPEG, PNG or WebP." };
   if (images.some((f) => f.size > MAX_IMAGE_BYTES)) return { error: "An image is too large even after scaling. Try a smaller one." };
+  const files = intent === "feedback" ? form.getAll("files").filter((f): f is File => f instanceof File && f.size > 0) : [];
+  const fileProblem = checkPostFiles(files);
+  if (fileProblem) return { error: fileProblem };
+  if (intent === "collab" && !text(form, "technique", 200)) return { error: "Say which technique or expertise you are looking for." };
 
   // The intents that exist to carry evidence must carry it, and it must be
   // the author's own card. This keeps the feed anchored to artifacts.
@@ -94,10 +109,17 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
       organism: text(form, "organism", 200),
       deadline: String(form.get("deadline") ?? "") || null,
       offer: text(form, "offer", 300),
+      audience: forPeople ? "people" : "topic",
+      feedback_kinds: intent === "feedback"
+        ? [...new Set(form.getAll("feedback_kinds").map(String))].filter((k) => FEEDBACK_KINDS.some((f) => f.id === k))
+        : [],
     })
     .select("id")
     .single();
   if (error) return { error: error.message };
+
+  if (people.length) await supabase.from("post_audience").insert(people.map((user_id) => ({ post_id: data.id, user_id })));
+  if (files.length) await storePostFiles(supabase, user.id, data.id, files);
 
   if (attachment) {
     await supabase.from("post_attachments").insert({
@@ -127,7 +149,8 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
   revalidatePath("/home");
   // Posted from the feed or a group page: stay there, at the new post.
   if (groupId) { revalidatePath(`/groups/${groupId}`); redirect(`/groups/${groupId}?tab=feed&posted=1#post-${data.id}`); }
-  if (form.get("return_to") === "feed") redirect(`/home?posted=1#post-${data.id}`);
+  // A post for chosen people is not in any feed: open it.
+  if (form.get("return_to") === "feed" && !forPeople) redirect(`/home?posted=1#post-${data.id}`);
   redirect(`/posts/${data.id}`);
 }
 
@@ -150,9 +173,11 @@ export async function replyToPost(postId: string, form: FormData) {
   const body = text(form, "body", 5000);
   if (!body) return;
   if (await overLimit(supabase, "reply", user.id)) redirect(`/posts/${postId}?limited=1#replies`);
-  const { data: post } = await supabase.from("posts").select("id, group_id").eq("id", postId).maybeSingle();
+  const { data: post } = await supabase.from("posts").select("id, group_id, audience, author_id").eq("id", postId).maybeSingle();
   if (!post || !(await canReadPost(supabase, post, user.id))) throw new Error("That post no longer exists.");
-  const { data: reply, error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body }).select("id").single();
+  // On a feedback request a reply can point at a place: "page 3", "Fig. 2C".
+  const anchor = text(form, "anchor", 80);
+  const { data: reply, error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body, anchor, helped_at: null }).select("id").single();
   if (error) throw new Error(error.message);
   await recordMentions(supabase, user.id, "reply", reply.id, `/posts/${postId}#replies`, body);
   revalidatePath(`/posts/${postId}`);
@@ -190,4 +215,18 @@ export async function editReply(replyId: string, postId: string, form: FormData)
   await recordMentions(supabase, user.id, "reply", replyId, `/posts/${postId}#replies`, body);
   revalidatePath(`/posts/${postId}`);
   redirect(`/posts/${postId}#reply-${replyId}`);
+}
+
+/** The author of a feedback request marks a reply as the one that helped (or takes it back). */
+export async function markHelped(postId: string, replyId: string, helped: boolean) {
+  const { supabase, user } = await requireUser();
+  const { data: post } = await supabase.from("posts").select("author_id").eq("id", postId).maybeSingle();
+  if (!post || post.author_id !== user.id) throw new Error("Only the author of the post can mark a reply as helpful.");
+  if (isConfigured()) {
+    const { error } = await supabase.rpc("mark_reply_helped", { p_reply: replyId, p_helped: helped });
+    if (error) throw new Error(error.message);
+  } else {
+    await supabase.from("post_replies").update({ helped_at: helped ? new Date().toISOString() : null }).eq("id", replyId).eq("post_id", postId).neq("author_id", user.id);
+  }
+  revalidatePath(`/posts/${postId}`);
 }

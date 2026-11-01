@@ -10,13 +10,14 @@ import ExpandText from "@/components/feed/ExpandText";
 import FollowButton from "@/components/social/FollowButton";
 import { Panel, Outcome, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
-import { roomById, housesOfRoom, intentById } from "@/lib/taxonomy";
+import { roomById, housesOfRoom, intentById, feedbackLabel } from "@/lib/taxonomy";
+import { fileSize } from "@/lib/social/group-files";
 import type { Person } from "@/lib/people";
 import { REACTIONS, type ReactionSummary } from "@/lib/social/reactions";
 import type { PostExtra } from "@/lib/posts/extras";
 
 const INTENT_COLOUR: Record<string, string> = {
-  result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal-ink)", update: "var(--ink)",
+  result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal-ink)", feedback: "var(--info)", update: "var(--ink)",
 };
 
 
@@ -91,9 +92,36 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
             </Link>
           )}
 
+          {p.intent === "feedback" && (
+            <div className="sc-inset" style={{ marginTop: 11, border: "1px solid var(--info)", borderRadius: 12, padding: "10px 12px" }}>
+              <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--info)", marginBottom: 6 }}>FEEDBACK WANTED</div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", font: "400 12.5px/1.5 var(--sans)" }}>
+                {(p.feedback_kinds ?? []).map((k: string) => <span key={k} style={{ padding: "2px 9px", borderRadius: 999, background: "color-mix(in srgb, var(--info) 10%, transparent)" }}>{feedbackLabel(k)}</span>)}
+                {p.deadline && <span style={{ color: "var(--mute)" }}>by {p.deadline}</span>}
+                {p.audience === "people" && <span style={{ color: "var(--mute)" }}>· only for the people asked</span>}
+              </div>
+              {(extra?.files ?? []).length > 0 && (
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 8 }}>
+                  {extra!.files.map((f) => (
+                    <a key={f.id} href={`/api/post-files/${f.id}`} target="_blank" rel="noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 10px", borderRadius: 10, border: "1px solid var(--rule)", background: "var(--bg)", color: "var(--ink)", font: "500 12.5px/1.2 var(--sans)", textDecoration: "none" }}>
+                      <span aria-hidden="true" style={{ font: mono(9, 700), color: "var(--err)" }}>{f.mime === "application/pdf" ? "PDF" : "IMG"}</span>{f.name}
+                      <span style={{ color: "var(--mute)" }}>{fileSize(f.size_bytes)}</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {p.intent === "collab" && (p.technique || p.offer || p.deadline) && (
             <div className="sc-inset" style={{ marginTop: 11, border: "1px solid var(--signal)", borderRadius: 12, padding: "10px 12px" }}>
-              <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 6 }}>WHAT IS NEEDED</div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
+                <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)" }}>WHAT IS NEEDED</span>
+                <span style={{ marginLeft: "auto", padding: "2px 9px", borderRadius: 999, font: "600 11px/1.4 var(--sans)", color: (p.call_status ?? "open") === "open" ? "var(--ok)" : "var(--mute)", border: `1px solid ${(p.call_status ?? "open") === "open" ? "var(--ok)" : "var(--rule)"}` }}>
+                  {(p.call_status ?? "open") === "open" ? "Open" : p.call_status === "filled" ? "Filled" : "Closed"}
+                </span>
+              </div>
               <div style={{ font: mono(11.5, 400, 1.7) }}>
                 {p.technique && <div>technique · {p.technique}</div>}
                 {p.organism && <div>system · {p.organism}</div>}
@@ -113,7 +141,7 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
         )}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", padding: "8px 10px 8px 14px", borderTop: reacted || replies || reposts ? 0 : "1px solid var(--rule)" }}>
           <Reactions kind="post" targetId={p.id} summary={reaction} own={own} path={path} />
-          <PostActions postId={p.id} inGroup={!!p.group_id} own={own} reposted={extra?.reposted ?? false} />
+          <PostActions postId={p.id} inGroup={!!p.group_id || p.audience === "people"} own={own} reposted={extra?.reposted ?? false} />
         </div>
       </Panel>
     </article>

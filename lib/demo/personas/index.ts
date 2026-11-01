@@ -126,6 +126,19 @@ const BIOS: Record<string, string> = {
 };
 for (const p of profiles) if (BIOS[p.id]) Object.assign(p, { bio: BIOS[p.id], public_profile: true });
 
+/* What each person is open to (supabase/15): the signals that make someone approachable. */
+const OPEN_TO: Record<string, string[]> = {
+  "u-rivera": ["collaborate", "feedback", "mentoring"],
+  "u-mateo": ["collaborate", "feedback", "visiting"],
+  "u-ingrid": ["collaborate", "mentoring", "positions"],
+  "u-okafor": ["collaborate", "positions"],
+  "u-lindqvist": ["feedback"],
+  "u-lena": ["feedback_wanted", "mentee", "visiting"],
+  "u-bhatt": ["feedback_wanted", "collaborate", "mentee"],
+  "u-newcomer": ["mentee"],
+};
+for (const p of profiles) Object.assign(p, { open_to: OPEN_TO[p.id] ?? [] });
+
 // ── rooms joined ──────────────────────────────────────────────────────────
 const ROOMS_JOINED: [string, string, string][] = [
   ["u-lena", "introductions", "2026-07-26 22:20"], ["u-lena", "reproducibility", "2026-07-26 22:24"],
@@ -424,6 +437,63 @@ const post_reposts = [
   ["p-2", "u-bhatt", "", "2026-10-23 09:15"],
 ].map(([post_id, user_id, note, t]) => ({ id: `rp-${post_id}-${user_id}`, post_id, user_id, note, created_at: at(t) }));
 
+/* Feedback requests, collaboration calls and small chats (supabase/15). */
+const pdf = (title: string) => {
+  const text = `BT /F1 18 Tf 60 760 Td (${title}) Tj 0 -28 Td /F1 11 Tf (Example file in the SciCollab demo. Invented content.) Tj ET`;
+  const objs = [
+    "<< /Type /Catalog /Pages 2 0 R >>", "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
+    `<< /Length ${text.length} >>\nstream\n${text}\nendstream`, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+  ];
+  let out = "%PDF-1.4\n"; const offs: number[] = [];
+  objs.forEach((o, i) => { offs.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xref = out.length;
+  out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n${offs.map((o) => `${String(o).padStart(10, "0")} 00000 n \n`).join("")}`;
+  out += `trailer\n<< /Size ${objs.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return out;
+};
+const FEEDBACK_POSTS = [
+  { id: "fb-lena", author_id: "u-lena", room_id: "", audience: "people", intent: "feedback", feedback_kinds: ["figures", "clarity"],
+    title: "Feedback on my first poster draft (iPSC neurons, December meeting)",
+    body: "This is my first poster. I am unsure whether Figure 2 tells the story without me standing next to it, and whether the methods box is too long. Any comment on a specific panel is welcome.",
+    deadline: "2026-11-12", at: "2026-10-28 21:40", to: ["u-mateo", "u-ingrid", "u-rivera"], file: "poster-draft-v3.pdf" },
+  { id: "fb-bhatt", author_id: "u-bhatt", room_id: "western-blot", audience: "topic", intent: "feedback", feedback_kinds: ["statistics", "methods"],
+    title: "Is my densitometry analysis sound? Methods and Fig. 3 of a thesis chapter",
+    body: "Chapter 3 compares transfer conditions for high-MW proteins. I normalise to total protein stain and test with a one-way ANOVA across four methanol concentrations. Would you trust Fig. 3?",
+    deadline: "2026-11-08", at: "2026-10-27 18:10", to: [], file: "chapter3-methods-fig3.pdf" },
+];
+const FEEDBACK_REPLIES = [
+  { id: "fr-1", post_id: "fb-bhatt", author_id: "u-rivera", anchor: "Fig. 3B", helped: "2026-10-29 09:00", at: "2026-10-28 08:20",
+    body: "Four conditions with n=3 each: I would show the individual points and use a test for trend rather than ANOVA, since methanol is ordered." },
+  { id: "fr-2", post_id: "fb-bhatt", author_id: "u-lindqvist", anchor: "Page 2, methods", helped: null, at: "2026-10-28 10:05",
+    body: "Say which total protein stain and the exposure range. Without that nobody can repeat the normalisation." },
+  { id: "fr-3", post_id: "fb-lena", author_id: "u-mateo", anchor: "Figure 2", helped: "2026-10-30 10:00", at: "2026-10-29 19:30",
+    body: "Figure 2 works if the y-axis says OCR per 1000 nuclei. As it is, people will ask about normalisation first." },
+];
+const CALL_POSTS = [
+  { id: "call-mateo", author_id: "u-mateo", room_id: "cell-culture", title: "Seahorse-experienced lab to repeat a respiration phenotype in GBA1 neurons",
+    body: "We see a 20% drop in maximal respiration in GBA1 N370S dopaminergic neurons at day 60. Before we write it up we want a second lab to run the same plates blind.",
+    technique: "Seahorse XF", organism: "iPSC-derived dopaminergic neurons", deadline: "2027-01-31", offer: "Co-authorship, cells shipped frozen, analysis shared", at: "2026-10-26 10:00" },
+  { id: "call-ingrid", author_id: "u-ingrid", room_id: "reproducibility", title: "Statistician for a multi-site iPSC variability study (part-time, remote)",
+    body: "Three sites, twelve lines, three differentiations each. We need someone who has modelled nested variance before, ideally with mixed models in R.",
+    technique: "Mixed models, variance decomposition", organism: "iPSC lines from 12 donors", deadline: "2026-12-15", offer: "Paid consultancy or co-authorship", at: "2026-10-29 15:30" },
+];
+const call_interest = [
+  ["p-4", "u-mateo", "We run iPSC passage series in Lund and could repeat your comparison at p8, p16 and p24 with your protocol.", true, "2026-10-25 09:00"],
+  ["p-4", "u-lindqvist", "I can run the flow cytometry readout for the second lab if you send fixed cells.", false, "2026-10-26 14:20"],
+].map(([post_id, user_id, pitch, shortlisted, t]) => ({ id: `ci-${post_id}-${user_id}`, post_id, user_id, pitch, shortlisted, created_at: at(t as string) }));
+const chat_rooms = [{ id: "cr-1", title: "Writing buddies · thesis chapters", created_by: "u-lena", created_at: at("2026-10-20 20:00") }];
+const chat_room_members = ["u-lena", "u-bhatt", "u-newcomer", "u-rivera"].map((user_id, i) => ({
+  id: `crm-${i}`, room_id: "cr-1", user_id, added_by: "u-lena", joined_at: at("2026-10-20 20:00"), last_read_at: user_id === "u-lena" ? at("2026-10-31 08:00") : null,
+}));
+const chat_room_messages = [
+  ["u-lena", "Shall we do a 25-minute writing sprint every morning at 9 and report word counts here?", "2026-10-20 20:05"],
+  ["u-bhatt", "Yes. Chapter 3 needs it.", "2026-10-20 20:30"],
+  ["u-newcomer", "I am in, even if mine is only a literature review so far.", "2026-10-21 08:50"],
+  ["u-rivera", "Happy to join as the postdoc who still remembers how painful this was. 9:00 works.", "2026-10-21 09:02"],
+  ["u-bhatt", "740 words today. The methods section finally exists.", "2026-10-30 10:15"],
+].map(([author_id, body, t], i) => ({ id: `crmsg-${i + 1}`, room_id: "cr-1", author_id, body, created_at: at(t) }));
+
 /* Lab discussions: posts visible only inside a group (supabase/11). */
 const group_posts = [
   { id: "gp-ebro-1", group_id: "gr-ebro", author_id: "u-lindqvist", intent: "update", title: "Bay 3 sensor recalibrated, logger back on",
@@ -461,7 +531,26 @@ function build() {
     id: g.id, author_id: g.author_id, room_id: "", group_id: g.group_id, intent: g.intent, title: g.title, body: g.body,
     method_card_id: null, project_id: null, technique: "", organism: "", deadline: null, offer: "", created_at: at(g.at),
   } as any);
-  const post_replies = list("replies").map((r) => ({ id: r.id, post_id: r.post_id, author_id: r.author_id, body: r.body, created_at: at(r.at) }));
+  for (const f of FEEDBACK_POSTS) posts.push({
+    id: f.id, author_id: f.author_id, room_id: f.room_id, intent: f.intent, title: f.title, body: f.body,
+    method_card_id: null, project_id: null, technique: "", organism: "", deadline: day(f.deadline), offer: "", created_at: at(f.at),
+    audience: f.audience, feedback_kinds: f.feedback_kinds,
+  } as any);
+  for (const c of CALL_POSTS) posts.push({
+    id: c.id, author_id: c.author_id, room_id: c.room_id, intent: "collab", title: c.title, body: c.body,
+    method_card_id: null, project_id: null, technique: c.technique, organism: c.organism, deadline: day(c.deadline), offer: c.offer, created_at: at(c.at),
+  } as any);
+  // Every post: who it is for, what feedback it asks, whether a call is still open.
+  for (const p of posts as any[]) { p.audience ??= "topic"; p.feedback_kinds ??= []; p.call_status ??= "open"; }
+  const post_audience = FEEDBACK_POSTS.flatMap((f) => f.to.map((user_id) => ({ id: `pa-${f.id}-${user_id}`, post_id: f.id, user_id })));
+  const post_files = FEEDBACK_POSTS.map((f) => ({
+    id: `pf-${f.id}`, post_id: f.id, uploaded_by: f.author_id, name: f.file, mime: "application/pdf",
+    size_bytes: pdf(f.title).length, path: `data:application/pdf;base64,${Buffer.from(pdf(f.title.slice(0, 60))).toString("base64")}`, created_at: at(f.at),
+  }));
+  const post_replies = [
+    ...list("replies").map((r) => ({ id: r.id, post_id: r.post_id, author_id: r.author_id, body: r.body, created_at: at(r.at), anchor: "", helped_at: null as string | null })),
+    ...FEEDBACK_REPLIES.map((r) => ({ id: r.id, post_id: r.post_id, author_id: r.author_id, body: r.body, created_at: at(r.at), anchor: r.anchor, helped_at: r.helped ? at(r.helped) : null })),
+  ];
   const questions = list("questions").map((q, i) => ({
     id: q.id, author_id: q.author_id, title: q.title, body: q.body, tags: q.tags ?? [],
     method_card_id: q.method_card_id ?? null, visibility: "public", views: q.views ?? 12 + i * 5, created_at: at(q.at),
@@ -541,6 +630,7 @@ function build() {
     group_methods: group_methods.filter((g) => cardIds.has(g.card_id)),
     group_messages, group_notes, group_tasks, group_files, group_visits: [],
     post_reposts: post_reposts.filter((r) => postIds.has(r.post_id)), saved_posts: [],
+    post_audience, post_files, call_interest, chat_rooms, chat_room_members, chat_room_messages,
     group_datasets: group_datasets.filter((g) => dataIds.has(g.dataset_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [],

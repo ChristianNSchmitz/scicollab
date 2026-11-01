@@ -11,6 +11,7 @@ export type ProfileData = {
   person: {
     id: string; display_name: string; institution: string; role_title: string; field: string;
     techniques: string[]; avatar_url: string | null; orcid: string | null; bio: string; public_profile: boolean; created_at: string;
+    open_to?: string[];
   };
   cards: { id: string; code: string; title: string; outcome: "success" | "partial" | "negative" | null; visibility: string; created_at: string }[];
   answers: { id: string; question_id: string; title: string; accepted: boolean; created_at: string }[];
@@ -31,7 +32,7 @@ export type ProfileData = {
  */
 export async function loadProfile(db: Client, personId: string, viewer: string | null): Promise<ProfileData | null> {
   const { data: person } = await db.from("profiles")
-    .select("id, display_name, institution, role_title, field, techniques, avatar_url, orcid, bio, public_profile, created_at")
+    .select("id, display_name, institution, role_title, field, techniques, avatar_url, orcid, bio, public_profile, open_to, created_at")
     .eq("id", personId).maybeSingle();
   if (!person) return null;
   if (!viewer && !person.public_profile) return null;

@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { Page, Panel, PanelHead, Empty, Tag, btn, mono } from "@/components/ui";
+import { Page, Panel, PanelHead, Empty, Tag, btn, field, mono } from "@/components/ui";
+import { OPEN_TO } from "@/lib/taxonomy";
+import { findExperts, type Evidence } from "@/lib/social/expertise";
+import { OpenToChips } from "@/components/social/ProfileBody";
 import Avatar from "@/components/Avatar";
 import { nameGuide, unnameGuide } from "@/app/actions/record";
 import { ensureRecordTables } from "@/lib/record/demo-seed";
@@ -17,16 +20,18 @@ type Filter = "all" | "following" | "followers";
 /** Network — board G1. Your co-authors first (the people you already know),
  *  then everyone, each with the actions open to you: follow, message, and
  *  naming someone as a guide who helped you. */
-export default async function Network({ searchParams }: { searchParams: Promise<{ show?: string }> }) {
+export default async function Network({ searchParams }: { searchParams: Promise<{ show?: string; q?: string; open?: string }> }) {
   ensureRecordTables();
-  const { show } = await searchParams;
+  const { show, q: rawQ, open } = await searchParams;
+  const q = (rawQ ?? "").trim().slice(0, 80);
+  const openTo = OPEN_TO.some((o) => o.id === open) ? open! : "";
   const filter: Filter = show === "following" || show === "followers" ? show : "all";
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const me = user!.id;
 
   const [{ data: people }, { data: guides }, following, { data: followerRows }, { data: mine }] = await Promise.all([
-    supabase.from("profiles").select("id, display_name, institution, role_title, field, techniques, avatar_url").neq("id", me).order("display_name"),
+    supabase.from("profiles").select("id, display_name, institution, role_title, field, techniques, open_to, avatar_url").neq("id", me).order("display_name"),
     // Mentoring credit is given by the person who was helped, so you name your guides here.
     supabase.from("mentorships").select("mentor_id").eq("mentee_id", me),
     followingOf(supabase, me),
@@ -40,8 +45,14 @@ export default async function Network({ searchParams }: { searchParams: Promise<
   const h = await headers();
   const origin = `${h.get("x-forwarded-proto") ?? "https"}://${h.get("host") ?? "scicollab"}`;
 
-  const shown = (people ?? []).filter((p) =>
-    filter === "following" ? following.has(p.id) : filter === "followers" ? followers.has(p.id) : true);
+  // Searching by technique: who lists it, who made it work, who repeated it.
+  const experts = q ? await findExperts(supabase, q) : null;
+  const rank = (e?: Evidence[]) => (e ?? []).reduce((n, x) => n + (x.kind === "listed" ? 1 : 3), 0);
+  const shown = (people ?? []).filter((p: any) =>
+    (filter === "following" ? following.has(p.id) : filter === "followers" ? followers.has(p.id) : true)
+    && (!experts || experts.has(p.id))
+    && (!openTo || (p.open_to ?? []).includes(openTo)))
+    .sort((a: any, b: any) => (experts ? rank(experts.get(b.id)) - rank(experts.get(a.id)) : 0));
   const tab = (key: Filter, label: string) => (
     <Link key={key} className="sc-pill" href={key === "all" ? "/network" : `/network?show=${key}`} aria-current={filter === key ? "page" : undefined}
       style={{ font: mono(11.5, 500), padding: "6px 11px", border: `1px solid ${filter === key ? "var(--ink)" : "var(--rule)"}`, color: "var(--ink)", textDecoration: "none", background: filter === key ? "var(--surface)" : "transparent" }}>
@@ -91,6 +102,22 @@ export default async function Network({ searchParams }: { searchParams: Promise<
         </Panel>
       )}
 
+      <form role="search" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 12 }}>
+        <label style={{ flex: "2 1 260px", font: "600 12px/1.3 var(--sans)", color: "var(--mute)" }}>Find people by technique
+          <input name="q" defaultValue={q} placeholder="Seahorse, lipofection, qPCR, flow cytometry…" style={{ ...field, marginTop: 4 }} />
+        </label>
+        <label style={{ flex: "1 1 180px", font: "600 12px/1.3 var(--sans)", color: "var(--mute)" }}>Open to
+          <select name="open" defaultValue={openTo} style={{ ...field, marginTop: 4 }}>
+            <option value="">Anything</option>
+            {OPEN_TO.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
+          </select>
+        </label>
+        {filter !== "all" && <input type="hidden" name="show" value={filter} />}
+        <button type="submit" style={{ ...btn, height: 38 }}>Search</button>
+        {(q || openTo) && <Link href={filter === "all" ? "/network" : `/network?show=${filter}`} style={{ font: "400 12.5px/38px var(--sans)", color: "var(--mute)" }}>clear</Link>}
+      </form>
+      {q && <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "-4px 0 10px" }}>People who list “{q}”, recorded a method card with it that worked, or repeated someone&apos;s card and it held. Strongest evidence first.</p>}
+
       <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
         {tab("all", `Everyone · ${people?.length ?? 0}`)}
         {tab("following", `Following · ${following.size}`)}
@@ -102,6 +129,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
           <Empty>
             {filter === "following" ? <>You do not follow anyone yet. <Link href="/network" style={{ color: "var(--link)" }}>See everyone</Link>.</>
               : filter === "followers" ? "Nobody follows you yet. Posting, answering and recording methods is how people find you."
+              : q || openTo ? "Nobody matches yet. Try a broader word, or post a call for collaborators so the right person finds you."
               : "Nobody else has an account yet."}
           </Empty>
         ) : shown.map((p) => (
@@ -115,7 +143,18 @@ export default async function Network({ searchParams }: { searchParams: Promise<
               <div style={{ font: mono(11), color: "var(--mute)", marginTop: 3 }}>
                 {[p.role_title, p.institution, p.field].filter(Boolean).join(" · ") || "No role or institution yet"}
               </div>
-              {p.techniques?.length > 0 && (
+              {(p.open_to ?? []).length > 0 && <OpenToChips ids={p.open_to} style={{ marginTop: 7 }} />}
+              {experts?.get(p.id) && (
+                <ul style={{ margin: "7px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 3 }}>
+                  {experts.get(p.id)!.slice(0, 4).map((e, i) => (
+                    <li key={i} style={{ font: "400 12.5px/1.45 var(--sans)" }}>
+                      <span aria-hidden="true" style={{ color: e.kind === "listed" ? "var(--mute)" : "var(--ok)" }}>{e.kind === "listed" ? "·" : "✓"}</span>{" "}
+                      {e.href ? <Link href={e.href} style={{ color: "var(--ink)" }}>{e.text}</Link> : <span style={{ color: "var(--mute)" }}>{e.text}</span>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {!experts && p.techniques?.length > 0 && (
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 7 }}>
                   {p.techniques.slice(0, 4).map((t: string) => <Tag key={t}>{t}</Tag>)}
                 </div>

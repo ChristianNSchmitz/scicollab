@@ -1,3 +1,4 @@
+import { OPEN_TO } from "@/lib/taxonomy";
 import { createClient } from "@/lib/supabase/server";
 import { saveProfile, savePrivacy } from "@/app/actions/profile";
 import { changePassword } from "@/app/actions/password";
@@ -116,6 +117,16 @@ export default async function Settings({ searchParams }: { searchParams: Promise
                   <label style={fieldLabel} htmlFor="techniques">Techniques — comma separated</label>
                   <input id="techniques" name="techniques" defaultValue={(p?.techniques ?? []).join(", ")} style={field} placeholder="transfection, western blot, qPCR" />
                 </div>
+                <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
+                  <legend style={fieldLabel}>Open to: shown on your profile and used to find you</legend>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 }}>
+                    {OPEN_TO.map((o) => (
+                      <label key={o.id} className="sc-option" style={{ display: "inline-flex", alignItems: "center", gap: 6, height: 32, padding: "0 12px", borderRadius: 999, border: "1px solid var(--rule)", font: "500 13px/1 var(--sans)", cursor: "pointer" }}>
+                        <input type="checkbox" name="open_to" value={o.id} defaultChecked={(p?.open_to ?? []).includes(o.id)} /> {o.label}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
                 <div><button type="submit" style={{ ...btnPrimary, height: 38 }}>Save profile</button></div>
               </div>
             </Panel>

@@ -10,6 +10,8 @@ export type PostExtra = {
   reposts: number;
   reposted: boolean;
   saved: boolean;
+  /** Files attached to a feedback request. */
+  files: { id: string; name: string; mime: string; size_bytes: number }[];
   /** Who you follow did something with it, and what; first one wins. */
   context?: { personId: string; text: string; note?: string };
 };
@@ -20,14 +22,18 @@ export async function postExtras(
 ): Promise<Map<string, PostExtra>> {
   const out = new Map<string, PostExtra>();
   if (!postIds.length) return out;
-  const [{ data: reposts }, { data: saved }] = await Promise.all([
+  const [{ data: reposts }, { data: saved }, { data: files }] = await Promise.all([
     supabase.from("post_reposts").select("post_id, user_id, note, created_at").in("post_id", postIds),
     supabase.from("saved_posts").select("post_id").eq("user_id", me).in("post_id", postIds),
+    supabase.from("post_files").select("id, post_id, name, mime, size_bytes").in("post_id", postIds),
   ]);
   const savedSet = new Set((saved ?? []).map((s: any) => s.post_id));
   for (const id of postIds) {
     const rs = (reposts ?? []).filter((r: any) => r.post_id === id);
-    const extra: PostExtra = { reposts: rs.length, reposted: rs.some((r: any) => r.user_id === me), saved: savedSet.has(id) };
+    const extra: PostExtra = {
+      reposts: rs.length, reposted: rs.some((r: any) => r.user_id === me), saved: savedSet.has(id),
+      files: (files ?? []).filter((f: any) => f.post_id === id),
+    };
     const byFollowed = rs.filter((r: any) => following.has(r.user_id)).sort((a: any, b: any) => b.created_at.localeCompare(a.created_at))[0];
     if (byFollowed) extra.context = { personId: byFollowed.user_id, text: "reposted this", note: byFollowed.note || undefined };
     else {

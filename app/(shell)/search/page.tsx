@@ -1,5 +1,5 @@
 import { likeTerm } from "@/lib/query";
-import { currentGroupIds } from "@/lib/social/groups";
+import { notForChosenPeople, currentGroupIds } from "@/lib/social/groups";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Outcome, field, btnPrimary, mono } from "@/components/ui";
@@ -21,14 +21,14 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
       supabase.from("questions").select("id, title, body").or(`title.ilike.${like},body.ilike.${like}`).limit(20),
       supabase.from("profiles").select("id, display_name, institution, field").or(`display_name.ilike.${like},institution.ilike.${like},field.ilike.${like}`).limit(20),
       supabase.from("projects").select("id, title, summary").or(`title.ilike.${like},summary.ilike.${like}`).limit(20),
-      supabase.from("posts").select("id, title, room_id, group_id, created_at").or(`title.ilike.${like},body.ilike.${like}`).order("created_at", { ascending: false }).limit(20),
+      supabase.from("posts").select("id, title, room_id, group_id, audience, author_id, created_at").or(`title.ilike.${like},body.ilike.${like}`).order("created_at", { ascending: false }).limit(20),
       supabase.from("groups").select("id, name, institution").or(`name.ilike.${like},description.ilike.${like},institution.ilike.${like}`).limit(20),
     ]);
     cards = c.data ?? []; questions = qq.data ?? []; people = p.data ?? []; projects = pr.data ?? [];
     // A group's discussion is found only by its own members.
     const { data: { user } } = await supabase.auth.getUser();
     const mine = new Set(user ? await currentGroupIds(supabase, user.id) : []);
-    posts = (po.data ?? []).filter((x: any) => !x.group_id || mine.has(x.group_id)); groups = gr.data ?? [];
+    posts = (po.data ?? []).filter((x: any) => (!x.group_id || mine.has(x.group_id)) && (!user || notForChosenPeople(user.id)(x))); groups = gr.data ?? [];
   }
 
   const total = cards.length + questions.length + people.length + projects.length + posts.length + groups.length;
