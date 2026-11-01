@@ -38,7 +38,7 @@ export async function createGroup(form: FormData) {
     access: form.get("access") === "closed" ? "closed" : "open", created_by: user.id,
   }).select("id").single();
   if (error) throw new Error(error.message);
-  await supabase.from("group_members").insert({ group_id: data.id, user_id: user.id, role: "owner" });
+  await supabase.from("group_members").insert({ group_id: data.id, user_id: user.id, role: "owner" , joined_at: new Date().toISOString() });
   revalidatePath("/groups");
   redirect(`/groups/${data.id}`);
 }
@@ -63,7 +63,7 @@ export async function joinGroup(groupId: string) {
   if (g.access !== "open") redirect(`/groups/${groupId}?error=closed`);
   const role = await roleIn(supabase, groupId, user.id);
   if (role === "alumni") await supabase.from("group_members").update({ role: "member", joined_at: new Date().toISOString() }).eq("group_id", groupId).eq("user_id", user.id);
-  else if (!role) await supabase.from("group_members").insert({ group_id: groupId, user_id: user.id, role: "member" });
+  else if (!role) await supabase.from("group_members").insert({ group_id: groupId, user_id: user.id, role: "member" , joined_at: new Date().toISOString() });
   revalidatePath(`/groups/${groupId}`);
   revalidatePath("/groups");
 }
@@ -129,7 +129,7 @@ export async function addMember(groupId: string, form: FormData) {
   const { data: already } = await supabase.from("group_members").select("user_id").eq("group_id", groupId).eq("user_id", personId).maybeSingle();
   const role = String(form.get("role") ?? "member");
   const asRole = role === "owner" && (await leadOf(supabase, groupId, user.id)) ? "owner" : ["admin", "member", "guest"].includes(role) ? role : "member";
-  if (!already) await supabase.from("group_members").insert({ group_id: groupId, user_id: personId, role: asRole });
+  if (!already) await supabase.from("group_members").insert({ group_id: groupId, user_id: personId, role: asRole , joined_at: new Date().toISOString() });
   else await supabase.from("group_members").update({ role: asRole }).eq("group_id", groupId).eq("user_id", personId);
   revalidatePath(`/groups/${groupId}`);
   redirect(`/groups/${groupId}?tab=members&added=1`);
@@ -146,7 +146,7 @@ export async function linkMethod(groupId: string, form: FormData) {
   ]);
   if (!member || !card) throw new Error("You can only link your own method cards to a group you are in.");
   const { data: already } = await supabase.from("group_methods").select("card_id").eq("group_id", groupId).eq("card_id", cardId).maybeSingle();
-  if (!already) await supabase.from("group_methods").insert({ group_id: groupId, card_id: cardId, added_by: user.id });
+  if (!already) await supabase.from("group_methods").insert({ group_id: groupId, card_id: cardId, added_by: user.id, added_at: new Date().toISOString() });
   revalidatePath(`/groups/${groupId}`);
   revalidatePath(`/methods/${cardId}`);
 }
@@ -171,7 +171,7 @@ export async function addGroupProject(groupId: string, form: FormData) {
   ]);
   if (!member || !onProject) throw new Error("You can only add your own projects to a group you are in.");
   const { data: already } = await supabase.from("group_projects").select("project_id").eq("group_id", groupId).eq("project_id", projectId).maybeSingle();
-  if (!already) await supabase.from("group_projects").insert({ group_id: groupId, project_id: projectId, added_by: user.id });
+  if (!already) await supabase.from("group_projects").insert({ group_id: groupId, project_id: projectId, added_by: user.id, added_at: new Date().toISOString() });
   revalidatePath(`/groups/${groupId}`);
 }
 
@@ -223,7 +223,7 @@ export async function answerRequest(groupId: string, personId: string, approve: 
   if (approve) {
     const role = await roleIn(supabase, groupId, personId);
     if (role === "alumni") await supabase.from("group_members").update({ role: "member" }).eq("group_id", groupId).eq("user_id", personId);
-    else if (!role) await supabase.from("group_members").insert({ group_id: groupId, user_id: personId, role: "member" });
+    else if (!role) await supabase.from("group_members").insert({ group_id: groupId, user_id: personId, role: "member" , joined_at: new Date().toISOString() });
   }
   await supabase.from("group_requests").delete().eq("group_id", groupId).eq("user_id", personId);
   revalidatePath(`/groups/${groupId}`);

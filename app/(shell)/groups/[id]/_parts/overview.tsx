@@ -39,7 +39,7 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
   const name = (uid: string) => people.get(uid)?.display_name ?? "A member";
   const monthAgo = new Date(Date.now() - 30 * 864e5).toISOString();
   const newMembers = current.filter((m: any) => m.joined_at > monthAgo && m.user_id !== me)
-    .sort((a: any, b: any) => b.joined_at.localeCompare(a.joined_at)).slice(0, 5);
+    .sort((a: any, b: any) => String(b.joined_at ?? "").localeCompare(String(a.joined_at ?? ""))).slice(0, 5);
 
   if (!member) {
     const activity = await activityOf(supabase, current.map((m: any) => m.user_id), { viewer: me, limit: 8 });
@@ -77,7 +77,7 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
     ...(methods ?? []).map((m: any) => ({ at: m.added_at, kind: "Method", title: (cards ?? []).find((c: any) => c.id === m.card_id)?.title, by: m.added_by, href: `/methods/${m.card_id}` })),
     ...(data ?? []).map((d: any) => ({ at: d.added_at, kind: "Data", title: (sets ?? []).find((s: any) => s.id === d.dataset_id)?.title, by: d.added_by, href: `${tabHref(id, "shared")}#data` })),
     ...(files ?? []).map((f: any) => ({ at: f.created_at, kind: "File", title: f.name, by: f.uploaded_by, href: `${tabHref(id, "shared")}#files` })),
-  ].filter((r) => r.title).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 5);
+  ].filter((r) => r.title).sort((a, b) => String(b.at ?? "").localeCompare(String(a.at ?? ""))).slice(0, 5);
 
   const mine = (tasks ?? []).filter((t: any) => t.assignee_id === me);
   const toPick = (tasks ?? []).filter((t: any) => !t.assignee_id);

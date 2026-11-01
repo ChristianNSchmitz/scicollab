@@ -211,6 +211,32 @@ const projects = [
   },
 ];
 
+/* What each project sets out to show (supabase/16). */
+const AIMS: Record<string, string> = {
+  "p-1": "Find the passage at which lipofection efficiency in HEK293T drops below 50%.\nTest whether thawing an earlier stock recovers it.\nPublish the negative runs with the card.",
+  "p-2": "Every bay checked against an independent meter each quarter.\nA written threshold for when a run is repeated because of the incubator.",
+  "pj-mateo": "Show whether the respiration deficit in GBA1 N370S neurons grows with maturation.\nHave a second lab repeat day 60 before the preprint.",
+};
+for (const p of projects) Object.assign(p, { aims: AIMS[p.id] ?? "" });
+
+const project_methods = [
+  ["p-1", "c-0412", "u-rivera", "2026-09-25 09:00"], ["p-1", "c-0355", "u-rivera", "2026-09-26 10:00"], ["p-1", "c-0391", "u-rivera", "2026-10-02 11:00"],
+  ["p-2", "c-0602", "u-rivera", "2026-10-16 14:30"], ["p-2", "c-0688", "u-lindqvist", "2026-10-17 09:00"],
+  ["pj-mateo", "pc-1187", "u-mateo", "2026-08-28 10:00"], ["pj-mateo", "pc-1219", "u-mateo", "2026-09-04 10:00"],
+].map(([project_id, card_id, added_by, t]) => ({ id: `pm-${project_id}-${card_id}`, project_id, card_id, added_by, added_at: at(t) }));
+
+const project_milestones = [
+  ["p-1", "Passage series p8 to p24 complete", "2026-11-14", null, "u-rivera", "2026-09-25 09:30"],
+  ["p-1", "Thaw-recovery experiment from p10 stock", "2026-11-28", null, "u-lindqvist", "2026-09-30 09:00"],
+  ["p-1", "Card MC-0412 updated with all runs", "2026-10-20", "2026-10-19 18:40", "u-rivera", "2026-09-25 09:35"],
+  ["p-2", "Bay 3 sensor recalibrated", "2026-10-21", "2026-10-21 09:30", "u-rivera", "2026-10-16 14:10"],
+  ["p-2", "72 h logging on all three bays", "2026-11-07", null, "u-lindqvist", "2026-10-16 14:12"],
+  ["p-2", "Repeat threshold written into the bench rules", "2026-11-21", null, "u-rivera", "2026-10-16 14:15"],
+  ["pj-mateo", "Day 100 plates run", "2026-12-05", null, "u-mateo", "2026-08-28 10:30"],
+].map(([project_id, title, due, done, created_by, t], i) => ({
+  id: `ms-${i + 1}`, project_id, title, due_on: day(due), done_at: done ? at(done) : null, done_by: done ? created_by : null, created_by, created_at: at(t as string),
+}));
+
 const project_members = [
   { project_id: "pj-lena",   user_id: "u-lena",   role: "owner",       created_at: at("2026-08-01 15:20") },
   { project_id: "pj-mateo",  user_id: "u-mateo",  role: "owner",       created_at: at("2026-08-27 12:40") },
@@ -610,6 +636,8 @@ function build() {
     answers,
     projects: liveProjects,
     project_members: project_members.filter((m) => projectIds.has(m.project_id)),
+    project_methods: project_methods.filter((m) => projectIds.has(m.project_id) && cardIds.has(m.card_id)),
+    project_milestones: project_milestones.filter((m) => projectIds.has(m.project_id)),
     eln_entries,
     messages,
     user_rooms: ROOMS_JOINED.map(([user_id, room_id, t]) => ({ user_id, room_id, joined_at: at(t) })),
