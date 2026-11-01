@@ -13,14 +13,18 @@ import type { CSSProperties, ReactNode } from "react";
 export const mono = (size: number, weight = 400, lh = 1) =>
   `${weight} ${size < 11 ? Math.min(11, size + 1.5) : size}px/${lh} var(--mono)`;
 
-export function Page({ title, lede, actions, children }: {
-  title: string; lede?: string; actions?: ReactNode; children: ReactNode;
+export function Page({ title, lede, actions, eyebrow, children }: {
+  title: string; lede?: string; actions?: ReactNode;
+  /** A small line above the heading, e.g. the project a tab belongs to. */
+  eyebrow?: ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div style={{ padding: "24px 16px 64px" }}>
       <div style={{ maxWidth: "var(--content-max)", margin: "0 auto" }}>
         <header className="sc-page-head" style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 16, marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
           <div style={{ flex: "1 1 260px", minWidth: 0 }}>
+            {eyebrow && <div style={{ font: "500 13px/1.4 var(--sans)", color: "var(--mute)", margin: "0 0 4px" }}>{eyebrow}</div>}
             <h1 className="sc-title" style={{ font: mono(19, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{title}</h1>
             {lede && <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "7px 0 0", maxWidth: "72ch" }}>{lede}</p>}
           </div>

@@ -72,6 +72,8 @@ export default async function Project({
     cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, visibility, author_id, system").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
     isMember ? supabase.from("method_cards").select("id, code, title").eq("author_id", user!.id).order("updated_at", { ascending: false }).limit(200) : Promise.resolve({ data: [] as any[] }),
   ]);
+  // Authors of linked cards who are not on the project.
+  for (const [k, v] of await peopleById(supabase, (cards ?? []).map((c: any) => c.author_id).filter((a: string) => !people.has(a)))) people.set(k, v);
   const methods = (linked ?? []).map((l: any) => ({ ...l, card: (cards ?? []).find((c: any) => c.id === l.card_id) })).filter((l: any) => l.card);
   const linkable = (myCards ?? []).filter((c: any) => !cardIds.includes(c.id));
   const ms = [...(milestones ?? [])].sort((a: any, b: any) => Number(!!a.done_at) - Number(!!b.done_at) || (a.due_on ?? "9999").localeCompare(b.due_on ?? "9999"));
@@ -111,8 +113,10 @@ export default async function Project({
 
   return (
     <Page
-      title={p.title}
-      lede={p.summary || undefined}
+      // On a tab, the heading names the tab; the project is the line above it.
+      title={active === "overview" ? p.title : TABS.find((t) => t.id === active)!.label}
+      eyebrow={active === "overview" ? undefined : <Link href={`/projects/${p.id}`} style={{ color: "var(--mute)", textDecoration: "none" }}>{p.title}</Link>}
+      lede={active === "overview" ? p.summary || undefined : undefined}
       actions={canJoin ? (
         <form action={joinProject.bind(null, p.id)}><button type="submit" style={btnPrimary}>Join this project</button></form>
       ) : isMember && !isOwner ? (
