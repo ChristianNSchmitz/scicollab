@@ -32,7 +32,7 @@ export default function Repositories({ scope, id, links, canEdit, canManage, me,
   return (
     <Panel>
       <div id="repos" style={{ scrollMarginTop: 72 }}><PanelHead>Repositories · {links.length}</PanelHead></div>
-      {f && <p role={f.error ? "alert" : "status"} style={{ margin: 0, padding: "9px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.5 var(--sans)", color: f.error ? "var(--err)" : "var(--ok)" }}>{f.text}</p>}
+      {f && <p role={f.error ? "alert" : "status"} style={{ margin: 0, padding: "9px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.6 var(--sans)", color: f.error ? "var(--err)" : "var(--ok)" }}>{f.text}</p>}
       {links.length === 0 && <Empty>No repository linked yet.</Empty>}
       {links.map((l) => {
         const c = l.cache;
@@ -41,9 +41,9 @@ export default function Repositories({ scope, id, links, canEdit, canManage, me,
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
               <Mark provider={l.provider} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <a href={c?.webUrl ?? l.url} target="_blank" rel="noreferrer" style={{ font: mono(13.5, 600, 1.4), color: "var(--ink)", overflowWrap: "anywhere" }}>{c?.name ?? l.path} ↗</a>
-                {c?.description && <div style={{ font: "400 13px/1.5 var(--sans)", color: "var(--ink)", marginTop: 3 }}>{c.description}</div>}
-                <div style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>
+                <a href={c?.webUrl ?? l.url} target="_blank" rel="noreferrer" style={{ font: mono(13.5, 600, 1.5), color: "var(--ink)", overflowWrap: "anywhere" }}>{c?.name ?? l.path} ↗</a>
+                {c?.description && <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--ink)", marginTop: 3 }}>{c.description}</div>}
+                <div style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3 }}>
                   {[l.provider === "github" ? "GitHub" : `GitLab${l.host !== "gitlab.com" ? ` (${l.host})` : ""}`, c?.language, c ? `${c.defaultBranch}` : null,
                     c && c.stars ? `★ ${c.stars}` : null, c?.updatedAt ? `updated ${timeAgo(c.updatedAt)}` : null].filter(Boolean).join(" · ")}
                   {l.error && <span style={{ color: "var(--err)" }}> · {l.error}, showing the last snapshot</span>}
@@ -55,7 +55,7 @@ export default function Repositories({ scope, id, links, canEdit, canManage, me,
             {(c?.commits ?? []).length > 0 && (
               <ul style={{ listStyle: "none", margin: "10px 0 0 36px", padding: 0, display: "flex", flexDirection: "column", gap: 4 }}>
                 {c!.commits.map((m) => (
-                  <li key={m.sha} style={{ display: "flex", gap: 8, alignItems: "baseline", font: "400 12.5px/1.45 var(--sans)", minWidth: 0 }}>
+                  <li key={m.sha} style={{ display: "flex", gap: 8, alignItems: "baseline", font: "400 12.5px/1.55 var(--sans)", minWidth: 0 }}>
                     <a href={m.url} target="_blank" rel="noreferrer" style={{ font: mono(11, 700), color: "var(--signal-ink)", flex: "none" }}>{m.sha.slice(0, 7)}</a>
                     <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.message}</span>
                     <span style={{ color: "var(--mute)", fontSize: 11.5, whiteSpace: "nowrap" }}>{m.author}{m.date ? ` · ${timeAgo(m.date)}` : ""}</span>

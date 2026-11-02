@@ -67,7 +67,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
     >
       <LimitNotice show={limited} />
       {problem && (
-        <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)", maxWidth: 760 }}>
+        <p role="alert" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)", maxWidth: 760 }}>
           {problem}
         </p>
       )}
@@ -86,7 +86,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
                       {!mine && <Avatar name={other.display_name} url={other.avatar_url} size={16} />}
                       {mine ? "You" : other.display_name} · {timeAgo(m.created_at)}
                     </div>
-                    <RichText body={m.body} className="" style={{ font: "400 14px/1.65 var(--sans)" }} />
+                    <RichText body={m.body} className="" style={{ font: "400 14px/1.75 var(--sans)" }} />
                     {card && (
                       <Link
                         href={`/methods/${card.id}`}
@@ -121,12 +121,12 @@ export default async function Thread({ params, searchParams }: { params: Promise
           <Panel style={{ borderColor: "var(--flag)" }}>
             <PanelHead>You cannot message strangers yet</PanelHead>
             <div style={{ padding: 14 }}>
-              <p style={{ font: "400 14px/1.7 var(--sans)", margin: "0 0 14px" }}>
+              <p style={{ font: "400 14px/1.8 var(--sans)", margin: "0 0 14px" }}>
                 New accounts can message people once they have posted, answered or recorded something. This keeps spam out. </p>
               <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 8 }}>
                 THE PATH TO UNLOCKING · ANY ONE OF THESE
               </div>
-              <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 13.5px/1.8 var(--sans)" }}>
+              <ul style={{ margin: "0 0 14px", paddingLeft: 18, font: "400 13.5px/1.9 var(--sans)" }}>
                 <li>Record one method card — including a run that did not work</li>
                 <li>Ask one question</li>
                 <li>Answer someone else&rsquo;s question, or reply to a post in a topic group</li>
@@ -135,7 +135,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
                 <Link href="/methods/new" style={btnPrimary}>Record a method</Link>
                 <Link href="/ask" style={btn}>Ask publicly instead</Link>
               </div>
-              <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "12px 0 0" }}>
+              <p style={{ font: "400 12.5px/1.7 var(--sans)", color: "var(--mute)", margin: "12px 0 0" }}>
                 Asking publicly is usually faster than a direct message, and others benefit from the answer.
               </p>
             </div>

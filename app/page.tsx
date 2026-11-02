@@ -29,7 +29,7 @@ function withSlot(first: ShowItem | undefined) {
     const placeholder = first
       ? `<div style="border:1px solid var(--ink);background:var(--surface);padding:16px;min-height:420px">` +
         `<div style="font:700 10px/1 var(--mono);letter-spacing:.12em;margin-bottom:14px">LIVE · MOST ACTIVE THIS MONTH</div>` +
-        `<a href="${esc(first.href)}" style="font:500 17px/1.3 var(--mono);color:var(--ink);text-decoration:none">${esc(first.title)}</a></div>`
+        `<a href="${esc(first.href)}" style="font:500 17px/1.4 var(--mono);color:var(--ink);text-decoration:none">${esc(first.title)}</a></div>`
       : "";
     return html.slice(0, a) + `<div id="${SLOT}">${placeholder}</div>` + html.slice(b + EXAMPLE_END.length);
   };
@@ -60,7 +60,7 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
     <div style={{ minHeight: "100vh", background: "var(--canvas)" }}>
       <DemoNotice />
       {deleted && (
-        <p role="status" style={{ margin: 0, padding: "10px 16px", font: "400 14px/1.5 var(--sans)", background: "var(--surface)", borderBottom: "1px solid var(--rule)", textAlign: "center" }}>
+        <p role="status" style={{ margin: 0, padding: "10px 16px", font: "400 14px/1.6 var(--sans)", background: "var(--surface)", borderBottom: "1px solid var(--rule)", textAlign: "center" }}>
           Your account and everything that belonged to it have been deleted.
         </p>
       )}
@@ -97,7 +97,7 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
  *  front door still reads and both ways in stay on screen. */
 function MobileLanding({ items }: { items: ShowItem[] }) {
   const point = (t: string) => (
-    <li style={{ display: "flex", gap: 8, font: "400 14px/1.55 var(--sans)" }}>
+    <li style={{ display: "flex", gap: 8, font: "400 14px/1.65 var(--sans)" }}>
       <span style={{ color: "var(--signal-ink)" }}>→</span><span>{t}</span>
     </li>
   );
@@ -113,7 +113,7 @@ function MobileLanding({ items }: { items: ShowItem[] }) {
       <h1 style={{ font: mono(30, 700, 1.12), letterSpacing: "-.03em", margin: "0 0 14px" }}>
         A failed experiment nobody wrote down gets repeated.
       </h1>
-      <p style={{ font: "400 15px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 20px" }}>
+      <p style={{ font: "400 15px/1.7 var(--sans)", color: "var(--mute)", margin: "0 0 20px" }}>
         Somewhere else. By someone junior. Next month. SciCollab keeps the data, the code, the conditions
         and the argument in one place — including the runs that didn&apos;t work.
       </p>

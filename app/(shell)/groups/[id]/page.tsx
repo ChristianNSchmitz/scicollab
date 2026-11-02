@@ -121,12 +121,12 @@ export default async function Group({ params, searchParams }: { params: Promise<
       }
     >
       {flash && (
-        <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
+        <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
       )}
-      {tab === "overview" && g.description && <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "-8px 0 14px", maxWidth: "72ch", whiteSpace: "pre-wrap" }}>{g.description}</p>}
+      {tab === "overview" && g.description && <p style={{ font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)", margin: "-8px 0 14px", maxWidth: "72ch", whiteSpace: "pre-wrap" }}>{g.description}</p>}
       {!member && g.access === "closed" && (
         (requests ?? []).some((r: any) => r.user_id === me) ? (
-          <form action={withdrawRequest.bind(null, id)} style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", margin: "0 0 16px", font: "400 13.5px/1.6 var(--sans)" }}>
+          <form action={withdrawRequest.bind(null, id)} style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", margin: "0 0 16px", font: "400 13.5px/1.7 var(--sans)" }}>
             <span>You asked to join. The lead and admins decide.</span>
             <button type="submit" style={{ ...btn, height: 30 }}>Withdraw request</button>
           </form>

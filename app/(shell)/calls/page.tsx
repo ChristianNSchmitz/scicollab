@@ -49,12 +49,12 @@ export default async function Calls({ searchParams }: { searchParams: Promise<Se
   return (
     <Page title="Calls for collaborators" lede="Labs looking for a technique or a second pair of hands. Only the caller sees who is interested."
       actions={<Link href="/post?intent=collab" style={btnPrimary}>Post a call</Link>}>
-      {sp.sent === "1" && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Sent. The caller sees your interest on the call and is notified.</p>}
+      {sp.sent === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Sent. The caller sees your interest on the call and is notified.</p>}
       <form role="search" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 12, maxWidth: 900 }}>
-        <label style={{ flex: "2 1 260px", font: "600 12px/1.3 var(--sans)", color: "var(--mute)" }}>Technique, system or any word
+        <label style={{ flex: "2 1 260px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Technique, system or any word
           <input name="q" defaultValue={sp.q ?? ""} placeholder="Seahorse, iPSC neurons, CRISPR…" style={{ ...field, marginTop: 4 }} />
         </label>
-        <label style={{ flex: "1 1 150px", font: "600 12px/1.3 var(--sans)", color: "var(--mute)" }}>Deadline before
+        <label style={{ flex: "1 1 150px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Deadline before
           <input name="due" type="date" defaultValue={due} style={{ ...field, marginTop: 4 }} />
         </label>
         {status !== "open" && <input type="hidden" name="status" value={status} />}
@@ -82,12 +82,12 @@ export default async function Calls({ searchParams }: { searchParams: Promise<Se
                 <div style={{ padding: "12px 14px", display: "flex", gap: 10, alignItems: "flex-start", flexWrap: "wrap" }}>
                   <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={30} />
                   <div style={{ flex: "1 1 300px", minWidth: 0 }}>
-                    <Link href={`/posts/${c.id}`} style={{ font: "650 15px/1.35 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>{c.title}</Link>
-                    <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 2 }}>
+                    <Link href={`/posts/${c.id}`} style={{ font: "650 15px/1.45 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>{c.title}</Link>
+                    <div style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 2 }}>
                       <PersonLink id={c.author_id}>{p?.display_name ?? "Someone"}</PersonLink>{p?.institution ? ` · ${p.institution}` : ""} · {timeAgo(c.created_at)}{roomById(c.room_id) ? ` · #${c.room_id}` : ""}
                     </div>
                   </div>
-                  <span style={{ padding: "3px 10px", borderRadius: 999, font: "600 11.5px/1.4 var(--sans)", color: open ? "var(--ok)" : "var(--mute)", border: `1px solid ${open ? "var(--ok)" : "var(--rule)"}` }}>
+                  <span style={{ padding: "3px 10px", borderRadius: 999, font: "600 11.5px/1.5 var(--sans)", color: open ? "var(--ok)" : "var(--mute)", border: `1px solid ${open ? "var(--ok)" : "var(--rule)"}` }}>
                     {open ? "Open" : c.call_status === "filled" ? "Filled" : "Closed"}
                   </span>
                 </div>
@@ -95,7 +95,7 @@ export default async function Calls({ searchParams }: { searchParams: Promise<Se
                   {[["Technique", c.technique], ["System", c.organism], ["By", c.deadline], ["Offered back", c.offer]].filter(([, v]) => v).map(([k, v]) => (
                     <div key={k as string} className="sc-inset" style={{ padding: "8px 10px", borderRadius: 12, background: "var(--bg)", border: "1px solid var(--rule)" }}>
                       <div style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--mute)" }}>{String(k).toUpperCase()}</div>
-                      <div style={{ font: "500 13px/1.4 var(--sans)", marginTop: 3 }}>{v}</div>
+                      <div style={{ font: "500 13px/1.5 var(--sans)", marginTop: 3 }}>{v}</div>
                     </div>
                   ))}
                 </div>
@@ -103,19 +103,19 @@ export default async function Calls({ searchParams }: { searchParams: Promise<Se
                   {mine ? (
                     <Link href={`/posts/${c.id}#call`} style={{ ...btn, height: 32 }}>{answers(c.id)} interested · shortlist and status</Link>
                   ) : my ? (
-                    <span style={{ font: "500 13px/1.4 var(--sans)", color: "var(--ok)" }}>✓ You said you are interested{my.shortlisted ? ", and you are on the shortlist" : ""}. <Link href={`/posts/${c.id}#call`} style={{ color: "var(--link)" }}>See or withdraw</Link></span>
+                    <span style={{ font: "500 13px/1.5 var(--sans)", color: "var(--ok)" }}>✓ You said you are interested{my.shortlisted ? ", and you are on the shortlist" : ""}. <Link href={`/posts/${c.id}#call`} style={{ color: "var(--link)" }}>See or withdraw</Link></span>
                   ) : open ? (
                     <details style={{ flex: 1 }}>
                       <summary style={{ ...btnPrimary, height: 32, borderRadius: 999, display: "inline-flex", alignItems: "center", listStyle: "none", cursor: "pointer" }}>I&apos;m interested</summary>
                       <form action={expressInterest.bind(null, c.id)} style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10, maxWidth: 560 }}>
                         <input type="hidden" name="back" value={back} />
-                        <label htmlFor={`pitch-${c.id}`} style={{ font: "600 12px/1.3 var(--sans)", color: "var(--mute)" }}>Your pitch: what you can do, with which system, and when</label>
+                        <label htmlFor={`pitch-${c.id}`} style={{ font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Your pitch: what you can do, with which system, and when</label>
                         <textarea id={`pitch-${c.id}`} name="pitch" rows={3} maxLength={1000} required style={field} />
                         <div><button type="submit" style={btnPrimary}>Send to {p?.display_name?.split(" ")[0] ?? "the caller"}</button></div>
                       </form>
                     </details>
                   ) : (
-                    <span style={{ font: "400 13px/1.4 var(--sans)", color: "var(--mute)" }}>This call is {c.call_status}.</span>
+                    <span style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>This call is {c.call_status}.</span>
                   )}
                   <Link href={`/posts/${c.id}`} style={{ marginLeft: "auto", font: "500 12.5px/1 var(--sans)", color: "var(--mute)", textDecoration: "none" }}>Open the call →</Link>
                 </div>

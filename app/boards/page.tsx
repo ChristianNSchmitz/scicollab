@@ -23,7 +23,7 @@ export default function Boards() {
           EXTRACTED FROM THE SEPTEMBER BOARDS
         </div>
         <h1 style={{ font: mono(30, 700, 1.1), margin: "0 0 8px", letterSpacing: "-.02em" }}>Screens</h1>
-        <p style={{ font: "400 14px/1.7 var(--sans)", color: "var(--mute)", margin: "0 0 28px", maxWidth: "70ch" }}>
+        <p style={{ font: "400 14px/1.8 var(--sans)", color: "var(--mute)", margin: "0 0 28px", maxWidth: "70ch" }}>
           {screens.length} artboards, mounted exactly as designed. The ones the platform actually uses are wired into
           routes; the rest are here so the extraction can be checked. <Link href="/" style={{ color: "var(--link)" }}>Back to the site</Link>.
         </p>

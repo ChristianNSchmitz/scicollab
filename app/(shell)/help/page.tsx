@@ -36,7 +36,7 @@ export default function Help() {
               <span style={{ font: mono(12, 700), color: "var(--signal-ink)" }}>{i + 1}</span>
               <span>
                 <span style={{ font: mono(12.5, 700) }}>{s.label}</span>
-                <span style={{ display: "block", font: "400 13px/1.55 var(--sans)", color: "var(--mute)", marginTop: 2 }}>{s.text}</span>
+                <span style={{ display: "block", font: "400 13px/1.65 var(--sans)", color: "var(--mute)", marginTop: 2 }}>{s.text}</span>
               </span>
             </Link>
           ))}
@@ -44,11 +44,11 @@ export default function Help() {
         <Panel>
           <PanelHead>More help</PanelHead>
           {MORE.map((m) => (
-            <Link key={m.href} href={m.href} style={{ display: "flex", gap: 8, padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13.5px/1.5 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>
+            <Link key={m.href} href={m.href} style={{ display: "flex", gap: 8, padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13.5px/1.6 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>
               <span style={{ color: "var(--signal-ink)" }}>→</span>{m.label}
             </Link>
           ))}
-          <p style={{ margin: 0, padding: "10px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
+          <p style={{ margin: 0, padding: "10px 14px", font: "400 13px/1.7 var(--sans)", color: "var(--mute)" }}>
             Something broken or missing? Tell us through the contact form. To flag a post, answer, message or person to the moderation team, use &ldquo;Report&rdquo; next to it.
           </p>
         </Panel>

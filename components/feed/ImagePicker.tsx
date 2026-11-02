@@ -83,7 +83,7 @@ export default function ImagePicker({ resetKey }: { resetKey?: unknown }) {
           </span>
         ))}
       </div>
-      {problem && <p role="alert" style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>{problem}</p>}
+      {problem && <p role="alert" style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>{problem}</p>}
     </div>
   );
 }

@@ -34,7 +34,7 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
   const spec = INTENTS.find((i) => i.id === intent)!;
   const [audience, setAudience] = useState<"topic" | "people">("topic");
   const chosenOnly = !groupId && intent === "feedback" && audience === "people";
-  const sub = { font: "600 12px/1.3 var(--sans)", color: "var(--mute)" } as const;
+  const sub = { font: "600 12px/1.4 var(--sans)", color: "var(--mute)" } as const;
   const check = { display: "inline-flex", alignItems: "center", gap: 6, height: 30, padding: "0 12px", borderRadius: 999, border: "1px solid var(--rule)", font: "500 12.5px/1 var(--sans)", cursor: "pointer" } as const;
 
   function submit(e: FormEvent<HTMLFormElement>) {
@@ -45,7 +45,7 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
 
   if (!groupId && !topics.length) {
     return (
-      <Panel style={{ padding: 14, font: "400 13.5px/1.6 var(--sans)" }}>
+      <Panel style={{ padding: 14, font: "400 13.5px/1.7 var(--sans)" }}>
         To post, first <Link href="/groups#topics" style={{ color: "var(--link)" }}>join a topic group</Link>: every post is filed in one.
       </Panel>
     );
@@ -60,7 +60,7 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
             {meName !== undefined && <Avatar name={meName} url={meAvatar ?? null} size={30} />}
             <label htmlFor="qp-title" style={{ position: "absolute", left: -9999 }}>Title</label>
             <input id="qp-title" name="title" required maxLength={200} onFocus={() => setOpen(true)}
-              style={{ ...field, flex: 1, height: 40, borderRadius: open ? 12 : 999, padding: "0 16px", font: "500 14px/1.4 var(--sans)" }}
+              style={{ ...field, flex: 1, height: 40, borderRadius: open ? 12 : 999, padding: "0 16px", font: "500 14px/1.5 var(--sans)" }}
               placeholder={groupId ? `Write to ${groupName ?? "the group"}…` : open ? "Title" : "Share a result, a question, a draft for feedback…"} />
           </div>
           {open && (
@@ -90,7 +90,7 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
                   <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
                     <label style={sub}>By<input name="deadline" type="date" style={{ ...field, marginTop: 4, width: "auto" }} /></label>
                     <label style={{ ...sub, flex: "1 1 220px" }}>The draft, poster or figures (PDF or images, up to 3 files, 3 MB each)
-                      <input name="files" type="file" multiple accept="application/pdf,image/jpeg,image/png,image/webp" style={{ display: "block", marginTop: 6, font: "400 12.5px/1.4 var(--sans)" }} />
+                      <input name="files" type="file" multiple accept="application/pdf,image/jpeg,image/png,image/webp" style={{ display: "block", marginTop: 6, font: "400 12.5px/1.5 var(--sans)" }} />
                     </label>
                   </div>
                   {!groupId && (
@@ -118,10 +118,10 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
                 {groupId ? (
                   <>
                     <input type="hidden" name="group_id" value={groupId} />
-                    <span style={{ font: "500 12px/1.3 var(--sans)", color: "var(--mute)" }}>Only members see this</span>
+                    <span style={{ font: "500 12px/1.4 var(--sans)", color: "var(--mute)" }}>Only members see this</span>
                   </>
                 ) : chosenOnly ? (
-                  <span style={{ font: "500 12px/1.3 var(--sans)", color: "var(--mute)" }}>Only the people you chose see this</span>
+                  <span style={{ font: "500 12px/1.4 var(--sans)", color: "var(--mute)" }}>Only the people you chose see this</span>
                 ) : (
                   <>
                     <label htmlFor="qp-topic" style={{ position: "absolute", left: -9999 }}>Topic group</label>
@@ -145,11 +145,11 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
                 <button type="submit" disabled={pending} style={{ ...btnPrimary, height: 34 }}>{pending ? "Posting…" : "Post"}</button>
               </div>
               {spec.needsArtifact && cards.length === 0 && (
-                <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--signal-ink)", margin: 0 }}>
+                <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--signal-ink)", margin: 0 }}>
                   This kind needs a method card. <Link href="/methods/new" style={{ color: "var(--link)" }}>Record one</Link>, or choose another kind.
                 </p>
               )}
-              {state?.error && <p role="alert" style={{ font: "400 13px/1.5 var(--sans)", color: "var(--err)", margin: 0 }}>{state.error}</p>}
+              {state?.error && <p role="alert" style={{ font: "400 13px/1.6 var(--sans)", color: "var(--err)", margin: 0 }}>{state.error}</p>}
             </>
           )}
         </div>

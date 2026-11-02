@@ -86,7 +86,7 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
     return (
       <section ref={root} aria-label="From the SciCollab community" className="sc-show" style={frame}>
         <Head pos="" />
-        <div style={{ padding: 28, font: "400 14px/1.6 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: 28, font: "400 14px/1.7 var(--sans)", color: "var(--mute)" }}>
           Nothing has been shared publicly yet. The first public method cards, questions and datasets will appear here.
         </div>
       </section>
@@ -117,7 +117,7 @@ function Carousel({ initial }: { initial: ShowItem[] }) {
           <span key={it.id} style={{ width: 18, height: 3, background: i === at ? "var(--ink)" : "var(--rule)" }} />
         ))}
       </div>
-      <div style={{ padding: "11px 12px", borderTop: "1px solid var(--rule)", background: "var(--bg)", font: mono(11, 400, 1.4), color: "var(--mute)" }}>
+      <div style={{ padding: "11px 12px", borderTop: "1px solid var(--rule)", background: "var(--bg)", font: mono(11, 400, 1.5), color: "var(--mute)" }}>
         {FOOT[current.kind]}
         <div style={{ marginTop: 5, fontSize: 10 }}>A random mix of public items, new with every visit and every minute</div>
       </div>
@@ -173,7 +173,7 @@ function Grid({ fields }: { fields: { label: string; value: string }[] }) {
       {fields.map((f) => (
         <div key={f.label} style={{ background: "var(--surface)", padding: "9px 11px", minWidth: 0 }}>
           <div style={{ font: mono(9), color: "var(--mute)", marginBottom: 5 }}>{f.label}</div>
-          <div style={{ font: mono(12, 400, 1.3), overflowWrap: "anywhere" }}>{f.value}</div>
+          <div style={{ font: mono(12, 400, 1.4), overflowWrap: "anywhere" }}>{f.value}</div>
         </div>
       ))}
     </div>
@@ -190,11 +190,11 @@ function Slide({ item, isNew }: { item: ShowItem; isNew: boolean }) {
     </div>
   );
   const title = (
-    <a href={item.href} style={{ display: "block", font: mono(17, 500, 1.3), marginBottom: 6, color: "var(--ink)", textDecoration: "none" }}>
+    <a href={item.href} style={{ display: "block", font: mono(17, 500, 1.4), marginBottom: 6, color: "var(--ink)", textDecoration: "none" }}>
       {item.title}
     </a>
   );
-  const byline = <div style={{ font: mono(11, 400, 1.4), color: "var(--mute)", marginBottom: 16 }}>{item.byline}</div>;
+  const byline = <div style={{ font: mono(11, 400, 1.5), color: "var(--mute)", marginBottom: 16 }}>{item.byline}</div>;
 
   if (item.kind === "card") {
     const o = item.outcome ? OUTCOME[item.outcome] : null;
@@ -207,7 +207,7 @@ function Slide({ item, isNew }: { item: ShowItem; isNew: boolean }) {
           {item.failsUnder && (
             <>
               <div style={{ font: mono(9), color: "var(--mute)", marginBottom: 7 }}>FAILS UNDER</div>
-              <div style={{ borderLeft: "3px solid var(--signal)", padding: "9px 11px", background: "var(--bg)", font: "400 13px/1.5 var(--sans)" }}>{item.failsUnder}</div>
+              <div style={{ borderLeft: "3px solid var(--signal)", padding: "9px 11px", background: "var(--bg)", font: "400 13px/1.6 var(--sans)" }}>{item.failsUnder}</div>
             </>
           )}
         </div>
@@ -221,7 +221,7 @@ function Slide({ item, isNew }: { item: ShowItem; isNew: boolean }) {
         {top(<Badge text="QUESTION THREAD" color="var(--ink)" />, `${item.answers} answer${item.answers === 1 ? "" : "s"}${item.accepted ? " · answered" : ""}`)}
         <div style={{ padding: 16 }}>
           {title}{byline}
-          <p style={{ margin: "0 0 14px", font: "400 14px/1.6 var(--sans)" }}>{item.excerpt}</p>
+          <p style={{ margin: "0 0 14px", font: "400 14px/1.7 var(--sans)" }}>{item.excerpt}</p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {item.tags.map((t) => <span key={t} style={{ font: mono(10.5), border: "1px solid var(--rule)", borderRadius: 999, padding: "3px 9px", color: "var(--mute)" }}>{t}</span>)}
           </div>
@@ -236,7 +236,7 @@ function Slide({ item, isNew }: { item: ShowItem; isNew: boolean }) {
       <div style={{ padding: 16 }}>
         {title}{byline}
         <Grid fields={item.fields} />
-        {item.summary && <p style={{ margin: 0, font: "400 14px/1.6 var(--sans)" }}>{item.summary}</p>}
+        {item.summary && <p style={{ margin: 0, font: "400 14px/1.7 var(--sans)" }}>{item.summary}</p>}
       </div>
     </>
   );

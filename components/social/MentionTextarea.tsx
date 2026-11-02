@@ -80,8 +80,8 @@ export default function MentionTextarea({ style, ...props }: TextareaHTMLAttribu
             <li key={p.id} id={`${listId}-${i}`} role="option" aria-selected={i === active}
               onMouseDown={(e) => { e.preventDefault(); pick(p); }}
               style={{ padding: "8px 10px", cursor: "pointer", background: i === active ? "var(--bg)" : "transparent", borderBottom: "1px solid var(--rule)" }}>
-              <div style={{ font: "500 12.5px/1.3 var(--mono)" }}>{p.name}</div>
-              {p.institution && <div style={{ font: "400 11px/1.3 var(--mono)", color: "var(--mute)", marginTop: 2 }}>{p.institution}</div>}
+              <div style={{ font: "500 12.5px/1.4 var(--mono)" }}>{p.name}</div>
+              {p.institution && <div style={{ font: "400 11px/1.4 var(--mono)", color: "var(--mute)", marginTop: 2 }}>{p.institution}</div>}
             </li>
           ))}
         </ul>

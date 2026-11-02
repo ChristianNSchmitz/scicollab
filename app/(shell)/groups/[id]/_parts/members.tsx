@@ -87,7 +87,7 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
         {alumni.length > 0 && (
           <Panel>
             <PanelHead>Alumni · {alumni.length}</PanelHead>
-            <div style={{ padding: "8px 14px 4px", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Former members. Their methods, data and posts stay with the group and credited to them.</div>
+            <div style={{ padding: "8px 14px 4px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Former members. Their methods, data and posts stay with the group and credited to them.</div>
             {alumni.map((m: any) => {
               const p = people.get(m.user_id);
               return (
@@ -118,7 +118,7 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
                     <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={26} />
                     <Link href={`/people/${r.user_id}`} style={{ flex: 1, font: mono(12.5, 500), color: "var(--ink)" }}>{p?.display_name ?? "Someone"}</Link>
                   </div>
-                  {r.message && <p style={{ font: "400 13px/1.5 var(--sans)", margin: "6px 0 0" }}>{r.message}</p>}
+                  {r.message && <p style={{ font: "400 13px/1.6 var(--sans)", margin: "6px 0 0" }}>{r.message}</p>}
                   <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
                     <form action={answerRequest.bind(null, id, r.user_id, true)}><button type="submit" style={{ ...small, background: "var(--ink)", color: "var(--bg)" }}>Let in</button></form>
                     <form action={answerRequest.bind(null, id, r.user_id, false)}><button type="submit" style={small}>Decline</button></form>
@@ -135,7 +135,7 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
             <PanelHead>Invite people</PanelHead>
             {newInvite && (
               <div style={{ padding: "12px 14px", borderBottom: "1px solid var(--rule)", background: "color-mix(in srgb, var(--ok) 8%, transparent)" }}>
-                <div style={{ font: "600 13px/1.4 var(--sans)", marginBottom: 6 }}>Your invitation link{newInvite.email ? ` for ${newInvite.email}` : ""}</div>
+                <div style={{ font: "600 13px/1.5 var(--sans)", marginBottom: 6 }}>Your invitation link{newInvite.email ? ` for ${newInvite.email}` : ""}</div>
                 <CopyLink url={`${origin}/join/${newInvite.token}`} />
               </div>
             )}
@@ -145,25 +145,25 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
                 <input id="inv-email" name="email" type="email" style={field} placeholder="new.phd@institution.edu" />
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <label style={{ font: "400 12.5px/1.4 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>As
+                <label style={{ font: "400 12.5px/1.5 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>As
                   <select name="role" defaultValue="member" style={{ ...field, width: "auto" }}>
                     {["member", "guest", "admin"].map((r) => <option key={r} value={r}>{ROLE_LABEL[r as GroupRole]}</option>)}
                   </select>
                 </label>
-                <label style={{ font: "400 12.5px/1.4 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>Uses (link)
+                <label style={{ font: "400 12.5px/1.5 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>Uses (link)
                   <input name="uses" type="number" min={1} max={500} defaultValue={25} style={{ ...field, width: 80 }} />
                 </label>
-                <label style={{ font: "400 12.5px/1.4 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>Valid for days
+                <label style={{ font: "400 12.5px/1.5 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>Valid for days
                   <input name="days" type="number" min={1} max={90} defaultValue={14} style={{ ...field, width: 80 }} />
                 </label>
               </div>
               <div><button type="submit" style={btnPrimary}>Create invitation</button></div>
-              <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Works for people without an account too.</span>
+              <span style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Works for people without an account too.</span>
             </form>
             {liveInvites.length > 0 && (
               <div style={{ borderTop: "1px solid var(--rule)" }}>
                 {liveInvites.map((i: any) => (
-                  <div key={i.token} style={{ display: "flex", gap: 8, alignItems: "center", padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.4 var(--sans)", flexWrap: "wrap" }}>
+                  <div key={i.token} style={{ display: "flex", gap: 8, alignItems: "center", padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.5 var(--sans)", flexWrap: "wrap" }}>
                     <span style={{ flex: "1 1 160px" }}>{i.email ?? "Link"} · {ROLE_LABEL[i.role as GroupRole]} · {i.uses}/{i.max_uses} used · until {String(i.expires_at).slice(0, 10)}</span>
                     <CopyLink url={`${origin}/join/${i.token}`} compact />
                     <form action={revokeInvite.bind(null, id, i.token)}><button type="submit" style={small}>Revoke</button></form>
@@ -183,7 +183,7 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
                 <div><label style={fieldLabel} htmlFor="gs-name">Name</label><input id="gs-name" name="name" defaultValue={g.name} required minLength={2} maxLength={120} style={field} /></div>
                 <div><label style={fieldLabel} htmlFor="gs-inst">Institution</label><input id="gs-inst" name="institution" defaultValue={g.institution} maxLength={200} style={field} /></div>
                 <div><label style={fieldLabel} htmlFor="gs-desc">Description</label><textarea id="gs-desc" name="description" defaultValue={g.description} rows={3} maxLength={1000} style={field} /></div>
-                <fieldset style={{ border: 0, padding: 0, margin: 0, font: "400 13px/1.6 var(--sans)" }}>
+                <fieldset style={{ border: 0, padding: 0, margin: 0, font: "400 13px/1.7 var(--sans)" }}>
                   <legend style={fieldLabel}>Who can join</legend>
                   <label style={{ display: "flex", gap: 8 }}><input type="radio" name="access" value="closed" defaultChecked={g.access === "closed"} /> Closed: by request, invitation or being added</label>
                   <label style={{ display: "flex", gap: 8 }}><input type="radio" name="access" value="open" defaultChecked={g.access === "open"} /> Open: anyone can join</label>
@@ -195,7 +195,7 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
                   <label style={fieldLabel} htmlFor="gs-confirm">Delete the group: type DELETE</label>
                   <input id="gs-confirm" name="confirm" autoComplete="off" style={{ ...field, maxWidth: 200 }} />
                   <div><button type="submit" style={{ ...btn, borderColor: "var(--err)", color: "var(--err)" }}>Delete group</button></div>
-                  <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members and projects are not deleted; the group&apos;s discussion is.</span>
+                  <span style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Members and projects are not deleted; the group&apos;s discussion is.</span>
                 </form>
               )}
             </Panel>

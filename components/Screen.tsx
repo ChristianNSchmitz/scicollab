@@ -87,7 +87,7 @@ export default function Screen({
     html = readFileSync(join(process.cwd(), "design", "screens", `${id}.html`), "utf8");
   } catch {
     return (
-      <div style={{ padding: 24, font: "400 12px/1.6 var(--mono)", color: "var(--err)" }}>
+      <div style={{ padding: 24, font: "400 12px/1.7 var(--mono)", color: "var(--err)" }}>
         Screen <code>{id}</code> is not in design/screens. Run{" "}
         <code>node scripts/extract-screens.mjs</code>.
       </div>

@@ -49,7 +49,7 @@ export default async function Notifications() {
           return (
             <Link key={n} href={i.href} style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)", boxShadow: fresh ? "inset 3px 0 0 var(--signal)" : undefined }}>
               <Avatar name={p?.display_name ?? "?"} url={p?.avatar_url ?? null} size={28} />
-              <span style={{ flex: 1, minWidth: 0, font: "400 13.5px/1.5 var(--sans)" }}>
+              <span style={{ flex: 1, minWidth: 0, font: "400 13.5px/1.6 var(--sans)" }}>
                 <strong style={{ fontWeight: 600 }}>{p?.display_name ?? "Someone"}</strong> {i.text}
               </span>
               {fresh && <span style={{ font: mono(10, 700), color: "var(--signal-ink)" }}>NEW</span>}

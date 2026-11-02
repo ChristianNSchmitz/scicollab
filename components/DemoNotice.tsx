@@ -22,7 +22,7 @@ export default function DemoNotice() {
         borderBottom: "1px solid var(--ink)",
         padding: "7px 16px", display: "flex", gap: 10,
         alignItems: "baseline", flexWrap: "wrap",
-        font: "500 11.5px/1.5 var(--mono)",
+        font: "500 11.5px/1.6 var(--mono)",
       }}
     >
       <span style={{ fontWeight: 700, letterSpacing: ".08em" }}>PREVIEW BUILD</span>

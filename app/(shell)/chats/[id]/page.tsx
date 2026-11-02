@@ -45,11 +45,11 @@ export default async function ChatRoom({ params, searchParams }: { params: Promi
   return (
     <Page title={room_} lede={`Small chat · ${(members ?? []).length} people · only they see it`} actions={<Link href="/messages" style={btn}>All messages</Link>}>
       <LiveRefresh seconds={10} />
-      {sp.error === "many" && <p role="alert" style={{ margin: "0 0 12px", padding: "10px 12px", borderRadius: 12, border: "1px solid var(--err)", color: "var(--err)", font: "400 13px/1.5 var(--sans)" }}>A small chat has at most {MAX_CHAT_PEOPLE} people.</p>}
+      {sp.error === "many" && <p role="alert" style={{ margin: "0 0 12px", padding: "10px 12px", borderRadius: 12, border: "1px solid var(--err)", color: "var(--err)", font: "400 13px/1.6 var(--sans)" }}>A small chat has at most {MAX_CHAT_PEOPLE} people.</p>}
       <div className="sc-two-col">
         <Panel>
           <ChatScroller count={messages.length} style={{ display: "flex", flexDirection: "column", gap: 10, padding: 14, maxHeight: "62vh", minHeight: 260, overflowY: "auto", background: "var(--bg)" }}>
-            {messages.length === 0 && <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>No messages yet. Say why you brought everyone together.</p>}
+            {messages.length === 0 && <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>No messages yet. Say why you brought everyone together.</p>}
             {messages.map((m: any, i: number) => {
               const mine = m.author_id === me;
               const p = people.get(m.author_id);
@@ -60,7 +60,7 @@ export default async function ChatRoom({ params, searchParams }: { params: Promi
                     {!mine && <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={26} />}
                     <div style={{ maxWidth: "78%" }}>
                       <div className={mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ border: `1px solid ${mine ? "transparent" : "var(--rule)"}`, borderRadius: mine ? "18px 18px 6px 18px" : "18px 18px 18px 6px", background: mine ? "color-mix(in srgb, var(--signal) 12%, var(--surface))" : "var(--surface)", padding: "8px 12px" }}>
-                        <RichText body={m.body} className="" style={{ font: "400 13.5px/1.55 var(--sans)" }} />
+                        <RichText body={m.body} className="" style={{ font: "400 13.5px/1.65 var(--sans)" }} />
                       </div>
                       <div style={{ font: mono(10), color: "var(--mute)", marginTop: 3, textAlign: mine ? "right" : "left" }}>{mine ? "You" : p?.display_name ?? "Someone"} · {timeAgo(m.created_at)}</div>
                     </div>
@@ -82,8 +82,8 @@ export default async function ChatRoom({ params, searchParams }: { params: Promi
                 <div key={m.user_id} style={{ display: "flex", gap: 9, alignItems: "center", padding: "9px 14px", borderBottom: "1px solid var(--rule)" }}>
                   <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={24} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <PersonLink id={m.user_id} style={{ font: "600 13px/1.3 var(--sans)" }}>{m.user_id === me ? "You" : p?.display_name ?? "Someone"}</PersonLink>
-                    {p?.institution && <div style={{ font: "400 11.5px/1.4 var(--sans)", color: "var(--mute)" }}>{p.institution}</div>}
+                    <PersonLink id={m.user_id} style={{ font: "600 13px/1.4 var(--sans)" }}>{m.user_id === me ? "You" : p?.display_name ?? "Someone"}</PersonLink>
+                    {p?.institution && <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)" }}>{p.institution}</div>}
                   </div>
                 </div>
               );

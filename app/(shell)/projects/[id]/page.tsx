@@ -128,13 +128,13 @@ export default async function Project({
       ) : undefined}
     >
       {canJoin && (
-        <p style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 14px", padding: "10px 12px", border: "1px solid var(--signal)", background: "var(--surface)" }}>
+        <p style={{ font: "400 13.5px/1.7 var(--sans)", margin: "0 0 14px", padding: "10px 12px", border: "1px solid var(--signal)", background: "var(--surface)" }}>
           Shared with {(shareGroups ?? []).filter((g: any) => (myShareGroups ?? []).some((m: any) => m.group_id === g.id)).map((g: any) => g.name).join(", ")}.
           Join to read and add to its notebook, data and code.
         </p>
       )}
-      {saved === "1" && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Project saved.</p>}
-      {error === "title" && <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", borderRadius: 12, color: "var(--err)", background: "var(--surface)" }}>A project needs a title.</p>}
+      {saved === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Project saved.</p>}
+      {error === "title" && <p role="alert" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", borderRadius: 12, color: "var(--err)", background: "var(--surface)" }}>A project needs a title.</p>}
       {/* The ways into a project, as one segmented control: no rule runs under it. */}
       <SegTabs label="Project sections" items={TABS.map((t) => ({
         href: t.id === "overview" ? `/projects/${p.id}` : `/projects/${p.id}?tab=${t.id}`, active: t.id === active,
@@ -149,8 +149,8 @@ export default async function Project({
               <Panel>
                 <PanelHead>Aims</PanelHead>
                 <div style={{ padding: 14 }}>
-                  {p.aims ? <div style={{ font: "400 14px/1.7 var(--sans)", whiteSpace: "pre-wrap" }}>{p.aims}</div>
-                    : <span style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>No aims written yet.{isOwner ? " Add them under Settings below: two or three lines on what the project sets out to show." : ""}</span>}
+                  {p.aims ? <div style={{ font: "400 14px/1.8 var(--sans)", whiteSpace: "pre-wrap" }}>{p.aims}</div>
+                    : <span style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)" }}>No aims written yet.{isOwner ? " Add them under Settings below: two or three lines on what the project sets out to show." : ""}</span>}
                   {(p.tags ?? []).length > 0 && <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 12 }}>{p.tags.map((t: string) => <Tag key={t}>{t}</Tag>)}</div>}
                 </div>
               </Panel>
@@ -176,8 +176,8 @@ export default async function Project({
                         </form>
                       ) : <span aria-hidden="true" style={{ width: 22, textAlign: "center", color: m.done_at ? "var(--ok)" : "var(--mute)" }}>{m.done_at ? "✓" : "○"}</span>}
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ font: "500 13.5px/1.4 var(--sans)", textDecoration: m.done_at ? "line-through" : "none", color: m.done_at ? "var(--mute)" : "var(--ink)" }}>{m.title}</div>
-                        <div style={{ font: "400 12px/1.4 var(--sans)", color: late ? "var(--err)" : "var(--mute)" }}>
+                        <div style={{ font: "500 13.5px/1.5 var(--sans)", textDecoration: m.done_at ? "line-through" : "none", color: m.done_at ? "var(--mute)" : "var(--ink)" }}>{m.title}</div>
+                        <div style={{ font: "400 12px/1.5 var(--sans)", color: late ? "var(--err)" : "var(--mute)" }}>
                           {m.done_at ? `reached ${timeAgo(m.done_at)}` : m.due_on ? (late ? `due ${m.due_on}, overdue` : `due ${m.due_on}`) : "no date"}
                         </div>
                       </div>
@@ -202,7 +202,7 @@ export default async function Project({
                 <PanelHead>What happened lately</PanelHead>
                 {recent.length === 0 && <Empty>Nothing yet.</Empty>}
                 {recent.map((r, i) => (
-                  <Link key={i} href={r.href} style={{ display: "flex", gap: 10, padding: "9px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none", font: "400 13px/1.45 var(--sans)" }}>
+                  <Link key={i} href={r.href} style={{ display: "flex", gap: 10, padding: "9px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none", font: "400 13px/1.55 var(--sans)" }}>
                     <span style={{ flex: 1, minWidth: 0 }}>{r.text}</span>
                     <span style={{ color: "var(--mute)", fontSize: 12, whiteSpace: "nowrap" }}>{timeAgo(r.at)}</span>
                   </Link>
@@ -248,8 +248,8 @@ export default async function Project({
                       <span style={{ font: mono(10.5), color: "var(--mute)" }}>{m.card.code}</span>
                       {m.card.visibility !== "public" && <span style={{ font: mono(10.5), color: "var(--mute)" }}>· {m.card.visibility === "private" ? "private, shared with the project" : "lab"}</span>}
                     </div>
-                    <Link href={`/methods/${m.card_id}`} style={{ display: "block", font: mono(13.5, 600, 1.4), color: "var(--ink)", marginTop: 5 }}>{m.card.title}</Link>
-                    <div style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>by {nameOf(m.card.author_id)}{m.card.system ? ` · ${m.card.system}` : ""} · linked {timeAgo(m.added_at)}</div>
+                    <Link href={`/methods/${m.card_id}`} style={{ display: "block", font: mono(13.5, 600, 1.5), color: "var(--ink)", marginTop: 5 }}>{m.card.title}</Link>
+                    <div style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3 }}>by {nameOf(m.card.author_id)}{m.card.system ? ` · ${m.card.system}` : ""} · linked {timeAgo(m.added_at)}</div>
                   </div>
                   {(m.added_by === user?.id || isOwner) && (
                     <form action={unlinkProjectMethod.bind(null, p.id, m.card_id)}><button type="submit" style={{ ...btn, height: 28, padding: "0 12px", borderRadius: 999 }}>Unlink</button></form>
@@ -267,7 +267,7 @@ export default async function Project({
                       <button type="submit" style={{ ...btn, borderRadius: 999 }}>Link to the project</button>
                     </form>
                   )}
-                  <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>
+                  <span style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
                     Everyone on the project can read it. <Link href="/methods/new" style={{ color: "var(--link)" }}>Record a new method</Link>.
                   </span>
                 </div>
@@ -284,7 +284,7 @@ export default async function Project({
                   <button type="submit" style={{ ...btnPrimary, marginTop: 11 }}>Sign and add entry</button>
                 </form>
               ) : (
-                <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>
+                <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
                   Only the people on this project can add to its notebook.
                 </div>
               )}
@@ -315,13 +315,13 @@ export default async function Project({
                       {bytes(d.size_bytes)} · {timeAgo(d.created_at)}
                     </span>
                   </div>
-                  <div style={{ font: mono(14, 500, 1.35) }}>
+                  <div style={{ font: mono(14, 500, 1.45) }}>
                     {d.file_path ? (
                       <Link href={`/projects/${p.id}/files/${d.id}`} style={{ color: "var(--ink)" }}>{d.title}</Link>
                     ) : d.title}
                   </div>
                   {d.summary && (
-                    <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>{d.summary}</p>
+                    <p style={{ font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>{d.summary}</p>
                   )}
                   <div style={{ marginTop: 9 }}><Tag>{d.licence}</Tag></div>
                 </div>
@@ -357,7 +357,7 @@ export default async function Project({
                       ))}
                     </div>
                   </fieldset>
-                  <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>
+                  <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
                     This records the dataset and where it lives. The files stay in your repository.
                   </p>
                   <button type="submit" style={{ ...btnPrimary, justifyContent: "center", borderRadius: 999 }}>Deposit</button>
@@ -419,7 +419,7 @@ export default async function Project({
 
           <Panel>
             <PanelHead>Contents</PanelHead>
-            <div style={{ padding: 14, font: mono(12, 400, 1.9) }}>
+            <div style={{ padding: 14, font: mono(12, 400, 2) }}>
               <div>{counts.notebook} notebook {counts.notebook === 1 ? "entry" : "entries"}</div>
               <div>{counts.data} dataset{counts.data === 1 ? "" : "s"}</div>
               <div>{counts.code} code file{counts.code === 1 ? "" : "s"}</div>
@@ -438,7 +438,7 @@ export default async function Project({
           )}
           <Panel>
             <PanelHead>People · {members?.length ?? 0}</PanelHead>
-            <div style={{ padding: 14, font: mono(12, 400, 1.8), display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ padding: 14, font: mono(12, 400, 1.9), display: "flex", flexDirection: "column", gap: 6 }}>
               {(members ?? []).map((m: any) => (
                 <div key={m.user_id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <Avatar name={nameOf(m.user_id)} url={people.get(m.user_id)?.avatar_url} size={22} />

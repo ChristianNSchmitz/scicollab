@@ -82,23 +82,23 @@ export default async function Moderation({ searchParams }: { searchParams: Promi
             <Panel key={r.id}>
               <PanelHead>{REASON[r.reason] ?? r.reason} · {r.target_kind} · reported by {name(r.reporter_id)} · {timeAgo(r.created_at)}</PanelHead>
               <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
-                {r.note && <p style={{ margin: 0, font: "400 13.5px/1.55 var(--sans)" }}><strong style={{ fontWeight: 600 }}>Note:</strong> {r.note}</p>}
+                {r.note && <p style={{ margin: 0, font: "400 13.5px/1.65 var(--sans)" }}><strong style={{ fontWeight: 600 }}>Note:</strong> {r.note}</p>}
                 <div className="sc-soft" style={{ border: "1px solid var(--rule)", background: "var(--bg)", padding: "10px 12px" }}>
                   {t.gone ? (
-                    <span style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>The reported content no longer exists.</span>
+                    <span style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>The reported content no longer exists.</span>
                   ) : (
                     <>
                       <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" }}>
-                        <span style={{ font: "600 14px/1.4 var(--sans)" }}>{t.title}</span>
-                        {t.author && <span style={{ font: "400 12.5px/1.4 var(--sans)", color: "var(--mute)" }}>by {t.author}</span>}
+                        <span style={{ font: "600 14px/1.5 var(--sans)" }}>{t.title}</span>
+                        {t.author && <span style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)" }}>by {t.author}</span>}
                         {t.href && <Link href={t.href} style={{ marginLeft: "auto", font: "500 12.5px/1 var(--sans)", color: "var(--link)" }}>Open →</Link>}
                       </div>
-                      {t.text && <p style={{ margin: "6px 0 0", font: "400 13.5px/1.55 var(--sans)", whiteSpace: "pre-wrap" }}>{t.text.slice(0, 600)}{t.text.length > 600 ? "…" : ""}</p>}
+                      {t.text && <p style={{ margin: "6px 0 0", font: "400 13.5px/1.65 var(--sans)", whiteSpace: "pre-wrap" }}>{t.text.slice(0, 600)}{t.text.length > 600 ? "…" : ""}</p>}
                     </>
                   )}
                 </div>
                 {closed ? (
-                  <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)" }}>
+                  <div style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)" }}>
                     <Tag>{r.status}</Tag> by {name(r.resolved_by) ?? "a moderator"}{r.resolved_at ? `, ${timeAgo(r.resolved_at)}` : ""}{r.resolution ? `: ${r.resolution}` : ""}
                   </div>
                 ) : (

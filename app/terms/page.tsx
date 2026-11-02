@@ -72,7 +72,7 @@ export default function TermsPage() {
     >
       <div role="note" className="sc-inset" style={{ border: "1px solid var(--flag)", background: "var(--bg)", padding: "12px 14px", marginBottom: 8 }}>
         <div style={{ font: "700 11px/1 var(--mono)", letterSpacing: ".1em", color: "var(--flag-ink)", marginBottom: 6 }}>DRAFT — NOT YET IN FORCE</div>
-        <p style={{ ...p, margin: 0, font: "400 13px/1.6 var(--sans)" }}>
+        <p style={{ ...p, margin: 0, font: "400 13px/1.7 var(--sans)" }}>
           This is the working draft of the section on contributions, authorship and patents. It is being reviewed
           with an EU intellectual-property lawyer and will be completed with the account, privacy and acceptable-use
           sections before public launch. Questions about it are welcome through the <Link href="/contact">contact form</Link>.
@@ -83,8 +83,8 @@ export default function TermsPage() {
       <dl style={{ margin: 0 }}>
         {DEFINITIONS.map(([term, def]) => (
           <div key={term} style={{ display: "grid", gridTemplateColumns: "minmax(140px, 200px) 1fr", gap: "4px 16px", padding: "8px 0", borderBottom: "1px solid var(--rule)" }}>
-            <dt style={{ font: "600 12.5px/1.5 var(--mono)" }}>{term}</dt>
-            <dd style={{ margin: 0, font: "400 14px/1.6 var(--sans)" }}>{def}</dd>
+            <dt style={{ font: "600 12.5px/1.6 var(--mono)" }}>{term}</dt>
+            <dd style={{ margin: 0, font: "400 14px/1.7 var(--sans)" }}>{def}</dd>
           </div>
         ))}
       </dl>
@@ -95,7 +95,7 @@ export default function TermsPage() {
           {s.intro && <p style={{ ...p, fontStyle: "italic", color: "var(--mute)" }}>{s.intro}</p>}
           {s.clauses.map((c) => (
             <p key={c.n} id={`clause-${c.n}`} style={p}>
-              <strong style={{ font: "600 13px/1.6 var(--mono)" }}>{c.n} {c.title}.</strong> {c.text}
+              <strong style={{ font: "600 13px/1.7 var(--mono)" }}>{c.n} {c.title}.</strong> {c.text}
             </p>
           ))}
         </section>

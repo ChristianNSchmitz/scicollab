@@ -51,10 +51,10 @@ export default function AboutPage() {
       <div className="sc-soft" style={{ border: "1px solid var(--rule)" }}>
         {BUILDING.map(([title, text], i) => (
           <div key={title} style={{ display: "grid", gridTemplateColumns: "34px 1fr", gap: 12, padding: "12px 14px", borderTop: i ? "1px solid var(--rule)" : 0 }}>
-            <span style={{ font: "500 11px/1.6 var(--mono)", color: "var(--mute)" }}>{String(i + 1).padStart(2, "0")}</span>
+            <span style={{ font: "500 11px/1.7 var(--mono)", color: "var(--mute)" }}>{String(i + 1).padStart(2, "0")}</span>
             <div>
-              <div style={{ font: "600 13px/1.4 var(--mono)", marginBottom: 3 }}>{title}</div>
-              <div style={{ font: "400 14px/1.6 var(--sans)" }}>{text}</div>
+              <div style={{ font: "600 13px/1.5 var(--mono)", marginBottom: 3 }}>{title}</div>
+              <div style={{ font: "400 14px/1.7 var(--sans)" }}>{text}</div>
             </div>
           </div>
         ))}
@@ -75,8 +75,8 @@ export default function AboutPage() {
         ].map(([state, title, text], i) => (
           <li key={title} style={{ padding: "12px 14px", borderLeft: i ? "1px solid var(--rule)" : 0 }}>
             <div style={{ font: "700 11px/1 var(--mono)", letterSpacing: ".1em", color: state === "DONE" ? "var(--ok)" : state === "NEXT" ? "var(--signal-ink)" : "var(--mute)", marginBottom: 8 }}>{state}</div>
-            <div style={{ font: "600 13px/1.3 var(--mono)", marginBottom: 4 }}>{title}</div>
-            <div style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>{text}</div>
+            <div style={{ font: "600 13px/1.4 var(--mono)", marginBottom: 4 }}>{title}</div>
+            <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>{text}</div>
           </li>
         ))}
       </ol>
@@ -94,15 +94,15 @@ export default function AboutPage() {
             </span>
             <div>
               <div style={{ font: "700 14px/1.2 var(--mono)" }}>{m.name}</div>
-              <div style={{ font: "500 11px/1.4 var(--mono)", letterSpacing: ".04em", color: "var(--signal-ink)", margin: "3px 0 6px", textTransform: "uppercase" }}>{m.role}</div>
-              <div style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>{m.line}</div>
+              <div style={{ font: "500 11px/1.5 var(--mono)", letterSpacing: ".04em", color: "var(--signal-ink)", margin: "3px 0 6px", textTransform: "uppercase" }}>{m.role}</div>
+              <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>{m.line}</div>
             </div>
           </div>
         ))}
       </div>
 
       <div className="sc-cta-band" style={{ marginTop: 34, padding: "18px 20px", background: "#0D0D0D", color: "#F2F0EC", display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
-        <div style={{ flex: "1 1 260px", font: "500 15px/1.4 var(--mono)" }}>Want to try it in your lab, or just have a question?</div>
+        <div style={{ flex: "1 1 260px", font: "500 15px/1.5 var(--mono)" }}>Want to try it in your lab, or just have a question?</div>
         <Link href="/contact" className="sc-cta-primary" style={{ height: 40, padding: "0 18px", display: "inline-flex", alignItems: "center", background: "var(--signal-fill)", color: "var(--on-signal)", font: "500 13px/1 var(--mono)" }}>Talk to us</Link>
         <Link href="/faq" className="sc-cta-ghost" style={{ height: 40, padding: "0 18px", display: "inline-flex", alignItems: "center", border: "1px solid #F2F0EC", color: "#F2F0EC", font: "500 13px/1 var(--mono)" }}>Read the questions</Link>
       </div>
@@ -119,8 +119,8 @@ function Stat({ n, text, src }: { n: string; text: string; src: string }) {
   return (
     <div className="sc-soft" style={{ border: "1px solid var(--ink)", padding: "14px 14px 12px", background: "var(--bg)" }}>
       <div style={{ font: "700 26px/1 var(--mono)", letterSpacing: "-.03em", color: "var(--signal-ink)", marginBottom: 8 }}>{n}</div>
-      <div style={{ font: "400 13px/1.5 var(--sans)", marginBottom: 8 }}>{text}</div>
-      <div style={{ font: "400 11px/1.4 var(--mono)", color: "var(--mute)" }}>{src}</div>
+      <div style={{ font: "400 13px/1.6 var(--sans)", marginBottom: 8 }}>{text}</div>
+      <div style={{ font: "400 11px/1.5 var(--mono)", color: "var(--mute)" }}>{src}</div>
     </div>
   );
 }

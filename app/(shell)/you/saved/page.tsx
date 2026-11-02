@@ -38,7 +38,7 @@ export default async function SavedPosts() {
 
   return (
     <YouShell active="saved">
-      <section style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 12 }}>
+      <section style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 20 }}>
         {posts.length === 0 && <Panel><Empty>Nothing saved yet. Use ··· on a post to save it.</Empty></Panel>}
         {posts.map((p) => (
           <PostCard key={p.id} p={p} author={people.get(p.author_id)} card={(cards ?? []).find((c: any) => c.id === p.method_card_id) ?? null}

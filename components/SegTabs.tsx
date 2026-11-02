@@ -75,4 +75,4 @@ export function HeaderMenu({ children }: { children: ReactNode }) {
 
 /** A row inside HeaderMenu: link or button, same shape. */
 export const menuRow = { display: "block", width: "100%", textAlign: "left" as const, padding: "9px 10px", borderRadius: 10, border: 0, background: "transparent",
-  font: "500 13px/1.3 var(--sans)", color: "var(--ink)", textDecoration: "none", cursor: "pointer" };
+  font: "500 13px/1.4 var(--sans)", color: "var(--ink)", textDecoration: "none", cursor: "pointer" };

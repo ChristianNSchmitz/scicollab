@@ -24,9 +24,9 @@ export function Page({ title, lede, actions, eyebrow, children }: {
       <div style={{ maxWidth: "var(--content-max)", margin: "0 auto" }}>
         <header className="sc-page-head" style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 16, marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--ink)" }}>
           <div style={{ flex: "1 1 260px", minWidth: 0 }}>
-            {eyebrow && <div style={{ font: "500 13px/1.4 var(--sans)", color: "var(--mute)", margin: "0 0 4px" }}>{eyebrow}</div>}
+            {eyebrow && <div style={{ font: "500 13px/1.5 var(--sans)", color: "var(--mute)", margin: "0 0 4px" }}>{eyebrow}</div>}
             <h1 className="sc-title" style={{ font: mono(19, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{title}</h1>
-            {lede && <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "7px 0 0", maxWidth: "72ch" }}>{lede}</p>}
+            {lede && <p style={{ font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)", margin: "7px 0 0", maxWidth: "72ch" }}>{lede}</p>}
           </div>
           {actions}
         </header>
@@ -54,7 +54,7 @@ export function PanelHead({ children }: { children: ReactNode }) {
 
 export function Empty({ children }: { children: ReactNode }) {
   return (
-    <div style={{ padding: "34px 16px", textAlign: "center", font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)" }}>
+    <div style={{ padding: "34px 16px", textAlign: "center", font: "400 13.5px/1.8 var(--sans)", color: "var(--mute)" }}>
       {children}
     </div>
   );
@@ -104,7 +104,7 @@ export const btnPrimary: CSSProperties = {
 
 export const field: CSSProperties = {
   width: "100%", padding: "9px 10px", border: "1px solid var(--rule)",
-  background: "var(--bg)", font: "400 13px/1.5 var(--mono)", color: "var(--ink)",
+  background: "var(--bg)", font: "400 13px/1.6 var(--mono)", color: "var(--ink)",
 };
 
 export const fieldLabel: CSSProperties = {
@@ -124,7 +124,7 @@ export function Row({ href, children }: { href: string; children: ReactNode }) {
 export function LimitNotice({ show }: { show?: string }) {
   if (!show) return null;
   return (
-    <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
+    <p role="alert" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>
       That was not sent: you have reached the limit for now. Please wait a few minutes and try again.
     </p>
   );

@@ -29,7 +29,7 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
     return r ? { body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: repliers.get(r.author_id) } : null;
   };
   return (
-    <section aria-label="Group feed" style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 12 }}>
+    <section aria-label="Group feed" style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 20 }}>
       <QuickPost topics={[]} cards={[]} groupId={id} groupName={g.name} />
       {(posts ?? []).length === 0 && <Panel><Empty>No posts yet.</Empty></Panel>}
       {(posts ?? []).map((p: any) => (

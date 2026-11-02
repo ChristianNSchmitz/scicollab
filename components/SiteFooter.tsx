@@ -35,7 +35,7 @@ export default function SiteFooter({ width, clearDock = false }: {
         background: "#0D0D0D", color: "#8E8B85",
         borderTop: "1px solid #2E2C29",
         padding: "14px 16px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px 22px",
-        font: "400 11px/1.4 var(--mono)", letterSpacing: ".04em",
+        font: "400 11px/1.5 var(--mono)", letterSpacing: ".04em",
       }}
     >
       <Link href="/" aria-label="SciCollab home" style={{ display: "inline-flex", alignItems: "flex-end", color: "#F2F0EC" }}>

@@ -184,7 +184,7 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "", moder
             }}
           >
             <div style={{ padding: "8px 10px 10px", margin: "0 0 4px", borderBottom: "1px solid var(--rule)" }}>
-              <div style={{ font: "600 13px/1.3 var(--sans)" }}>{name || "Signed in"}</div>
+              <div style={{ font: "600 13px/1.4 var(--sans)" }}>{name || "Signed in"}</div>
             </div>
             <Link href={userId ? `/people/${userId}` : "/you"} onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Your profile</Link>
             <Link href="/you" onClick={() => setMenu(false)} className="sc-menu-item" style={{ display: "block", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Activity, record and saved</Link>

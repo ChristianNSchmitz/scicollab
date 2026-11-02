@@ -10,14 +10,14 @@ const KIND: Record<Activity["kind"], string> = {
 
 /** A stream of what people did, each line linking to the thing itself. */
 export default function ActivityList({ items, compact = false, empty }: { items: Activity[]; compact?: boolean; empty: string }) {
-  if (!items.length) return <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>{empty}</div>;
+  if (!items.length) return <div style={{ padding: "12px 14px", font: "400 13px/1.7 var(--sans)", color: "var(--mute)" }}>{empty}</div>;
   return (
     <>
       {items.map((a, i) => {
         const external = a.href.startsWith("http");
         const body = (
           <>
-            <span style={{ font: "400 13px/1.5 var(--sans)" }}>
+            <span style={{ font: "400 13px/1.6 var(--sans)" }}>
               {!compact && a.actor && <strong style={{ fontWeight: 600 }}>{a.actor.display_name} </strong>}
               <span style={{ color: "var(--mute)" }}>{a.text}</span>{" "}
               <span>{a.title}</span>

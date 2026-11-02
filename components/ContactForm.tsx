@@ -37,7 +37,7 @@ export default function ContactForm({ initialTopic }: { initialTopic?: string })
         <div style={{ font: mono(10, 700), letterSpacing: ".1em", color: result.delivered ? "var(--ok)" : "var(--flag-ink)", marginBottom: 8 }}>
           {result.delivered ? "MESSAGE SENT" : "CHECKED — NOT SENT (PREVIEW)"}
         </div>
-        <p style={{ font: "400 13.5px/1.6 var(--sans)", margin: 0 }}>
+        <p style={{ font: "400 13.5px/1.7 var(--sans)", margin: 0 }}>
           {result.delivered
             ? "Thank you. A person from the team will answer you by e-mail."
             : "Your message passed every check, but this copy of the site has no e-mail service connected, so it was written to the server log instead of being sent. On the live site it would have gone to the team."}
@@ -78,7 +78,7 @@ export default function ContactForm({ initialTopic }: { initialTopic?: string })
       <label style={lab}>
         <span style={lbl}>Message</span>
         <textarea name="message" required rows={7} maxLength={5000}
-          style={{ ...field, height: "auto", padding: "10px", font: "400 13.5px/1.55 var(--sans)", resize: "vertical", ...border("message") }} />
+          style={{ ...field, height: "auto", padding: "10px", font: "400 13.5px/1.65 var(--sans)", resize: "vertical", ...border("message") }} />
       </label>
 
       {/* Honeypot: hidden from people and from screen readers; bots fill it in. */}
@@ -86,7 +86,7 @@ export default function ContactForm({ initialTopic }: { initialTopic?: string })
         <label>Website <input name="website" tabIndex={-1} autoComplete="off" /></label>
       </div>
 
-      <label style={{ display: "flex", gap: 10, alignItems: "flex-start", font: "400 12.5px/1.55 var(--sans)", color: bad("consent") ? "var(--err)" : "var(--ink)" }}>
+      <label style={{ display: "flex", gap: 10, alignItems: "flex-start", font: "400 12.5px/1.65 var(--sans)", color: bad("consent") ? "var(--err)" : "var(--ink)" }}>
         <input type="checkbox" name="consent" required style={{ marginTop: 3 }} />
         <span>
           Use my name and e-mail only to answer this message. </span>
@@ -97,14 +97,14 @@ export default function ContactForm({ initialTopic }: { initialTopic?: string })
       </div>
 
       {result && !result.ok && (
-        <p role="alert" style={{ font: "400 12px/1.5 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "8px 10px", margin: 0 }}>
+        <p role="alert" style={{ font: "400 12px/1.6 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "8px 10px", margin: 0 }}>
           {result.error}
         </p>
       )}
 
       <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
         <button type="submit" disabled={busy} style={primary}>{busy ? "Sending…" : "Send message"}</button>
-        <span style={{ font: mono(11, 400, 1.5), color: "var(--mute)" }}>
+        <span style={{ font: mono(11, 400, 1.6), color: "var(--mute)" }}>
           See also the <Link href="/faq">questions people ask</Link>.
         </span>
       </div>

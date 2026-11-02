@@ -78,7 +78,7 @@ function Signup() {
         </Link>
 
         <h1 style={{ font: "700 20px/1.2 var(--mono)", margin: "0 0 6px", letterSpacing: "-.02em" }}>Create your account</h1>
-        <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 20px" }}>
+        <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: "0 0 20px" }}>
           Free for individual researchers · institutional pilots start at one lab
         </p>
 
@@ -117,7 +117,7 @@ function Signup() {
           </label>
 
           {error && (
-            <p style={{ font: "400 11px/1.5 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "8px 10px", margin: 0 }}>{error}</p>
+            <p style={{ font: "400 11px/1.6 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "8px 10px", margin: 0 }}>{error}</p>
           )}
 
           <button type="submit" disabled={busy} style={primary}>
@@ -125,7 +125,7 @@ function Signup() {
           </button>
         </form>
 
-        <p style={{ font: "400 11px/1.6 var(--mono)", color: "var(--mute)", marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--rule)" }}>
+        <p style={{ font: "400 11px/1.7 var(--mono)", color: "var(--mute)", marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--rule)" }}>
           Already have one? <Link href="/login" style={{ color: "var(--link)" }}>Sign in</Link>
         </p>
       </div>

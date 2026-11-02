@@ -83,7 +83,7 @@ export default function RichText({ body, style, className = "sc-prose", mentions
   body: string; style?: CSSProperties; className?: string; mentions?: Mention[];
 }) {
   const parts = splitFences(body ?? "");
-  const text: CSSProperties = { font: "400 14px/1.7 var(--sans)", margin: 0, whiteSpace: "pre-wrap", ...style };
+  const text: CSSProperties = { font: "400 14px/1.8 var(--sans)", margin: 0, whiteSpace: "pre-wrap", ...style };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       {parts.map((p, i) =>
@@ -94,7 +94,7 @@ export default function RichText({ body, style, className = "sc-prose", mentions
             style={{
               margin: 0, padding: "10px 12px", overflowX: "auto",
               background: "var(--bg)", border: "1px solid var(--rule)",
-              font: "400 12.5px/1.55 var(--mono)", color: "var(--ink)", whiteSpace: "pre",
+              font: "400 12.5px/1.65 var(--mono)", color: "var(--ink)", whiteSpace: "pre",
             }}
           >
             <code>{p.text}</code>

@@ -70,7 +70,7 @@ export default function PostComposer({
                 style={{ marginRight: 8 }}
               />
               <span style={{ font: mono(12.5, 500) }}>{i.label}</span>
-              <span style={{ display: "block", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 5 }}>{i.hint}</span>
+              <span style={{ display: "block", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 5 }}>{i.hint}</span>
               {i.needsArtifact && (
                 <span style={{ display: "inline-block", font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--signal-ink)", marginTop: 7 }}>
                   NEEDS A METHOD CARD
@@ -91,7 +91,7 @@ export default function PostComposer({
               {rooms.map((r) => <option key={r.id} value={r.id}>#{r.id} — {r.name}</option>)}
             </select>
             {rooms.length === 0 && (
-              <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--signal-ink)", margin: "6px 0 0" }}>
+              <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--signal-ink)", margin: "6px 0 0" }}>
                 You have not joined any topic groups yet. <Link href="/groups#topics" style={{ color: "var(--link)" }}>Join some first</Link> and this list fills up.
               </p>
             )}
@@ -122,11 +122,11 @@ export default function PostComposer({
               {cards.map((c) => <option key={c.id} value={c.id}>{c.code} — {c.title}</option>)}
             </select>
             {cards.length === 0 && spec.needsArtifact ? (
-              <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--signal-ink)", margin: "6px 0 0" }}>
+              <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--signal-ink)", margin: "6px 0 0" }}>
                 You have no method cards yet. <Link href="/methods/new" style={{ color: "var(--link)" }}>Record one first</Link>, or choose a general question.
               </p>
             ) : cardMissing && (
-              <p role="alert" style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>
+              <p role="alert" style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--err)", margin: "6px 0 0" }}>
                 “{spec.label}” needs a method card. Pick one here, or choose a different kind of post above.
               </p>
             )}
@@ -138,7 +138,7 @@ export default function PostComposer({
         <PanelHead>Attach data or code from a project</PanelHead>
         <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 13 }}>
           {attachables.length === 0 ? (
-            <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+            <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: 0 }}>
               Nothing to attach yet — datasets and code live inside a project, and you are not on one that has any.
             </p>
           ) : (
@@ -168,13 +168,13 @@ export default function PostComposer({
                     <label style={{ border: "1px solid var(--rule)", padding: "10px 11px", cursor: "pointer", background: "var(--bg)" }}>
                       <input type="radio" name="access" value="on_request" defaultChecked style={{ marginRight: 8 }} />
                       <span style={{ font: mono(12.5, 500) }}>Request access</span>
-                      <span style={{ display: "block", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
+                      <span style={{ display: "block", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
                         Others see its title and size and must ask you for access. </span>
                     </label>
                     <label style={{ border: "1px solid var(--rule)", padding: "10px 11px", cursor: "pointer", background: "var(--bg)" }}>
                       <input type="radio" name="access" value="open" style={{ marginRight: 8 }} />
                       <span style={{ font: mono(12.5, 500) }}>Open</span>
-                      <span style={{ display: "block", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
+                      <span style={{ display: "block", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
                         Anyone who can read the post can open it. Sensible for data you have already published.
                       </span>
                     </label>
@@ -211,7 +211,7 @@ export default function PostComposer({
       )}
 
       {state?.error && (
-        <p style={{ font: "400 12px/1.6 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "10px 12px", margin: "0 0 12px" }}>
+        <p style={{ font: "400 12px/1.7 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "10px 12px", margin: "0 0 12px" }}>
           {state.error}
         </p>
       )}

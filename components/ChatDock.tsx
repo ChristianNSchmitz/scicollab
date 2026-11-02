@@ -195,7 +195,7 @@ export default function ChatDock() {
             ))}
 
             {found.length === 0 && convos.length === 0 && (
-              <p style={{ padding: 16, font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+              <p style={{ padding: 16, font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: 0 }}>
                 No conversations yet. Search for someone above, or message an author from a post.
               </p>
             )}
@@ -226,14 +226,14 @@ export default function ChatDock() {
         <>
           <div ref={scroller} style={{ flex: 1, overflowY: "auto", padding: 10, display: "flex", flexDirection: "column", gap: 8, background: "var(--bg)" }}>
             {messages.length === 0 && (
-              <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>
+              <p style={{ font: "400 12.5px/1.7 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>
                 No messages yet.
               </p>
             )}
             {messages.map((m) => (
               <div key={m.id} style={{ alignSelf: m.mine ? "flex-end" : "flex-start", maxWidth: "86%" }}>
                 <div className={m.mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ border: `1px solid ${m.mine ? "transparent" : "var(--rule)"}`, borderRadius: m.mine ? "18px 18px 6px 18px" : "18px 18px 18px 6px", background: m.mine ? "color-mix(in srgb, var(--signal) 12%, var(--surface))" : "var(--surface)", padding: "7px 11px" }}>
-                  <RichText body={m.body} className="" style={{ font: "400 13px/1.55 var(--sans)" }} />
+                  <RichText body={m.body} className="" style={{ font: "400 13px/1.65 var(--sans)" }} />
                   {m.card && (
                     <Link href={`/methods/${m.card.id}`} className="sc-inset" style={{ display: "block", marginTop: 6, borderLeft: "3px solid var(--signal)", background: "var(--bg)", padding: "5px 7px", color: "var(--ink)" }}>
                       <span style={{ font: mono(9, 700), letterSpacing: ".08em", color: "var(--signal-ink)" }}>METHOD CARD</span>
@@ -250,7 +250,7 @@ export default function ChatDock() {
 
           {gated ? (
             <div style={{ flex: "none", borderTop: "1px solid var(--flag)", background: "var(--surface)", padding: "10px 12px" }}>
-              <p style={{ font: "400 12.5px/1.55 var(--sans)", margin: "0 0 8px" }}>
+              <p style={{ font: "400 12.5px/1.65 var(--sans)", margin: "0 0 8px" }}>
                 You cannot message strangers yet. Record a method card, ask or answer a question, or reply to a post, and this opens.
               </p>
               <Link href="/methods/new" style={{ font: mono(11, 500), color: "var(--link)" }}>Record a method →</Link>

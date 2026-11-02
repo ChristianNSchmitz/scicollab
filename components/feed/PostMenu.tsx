@@ -41,7 +41,7 @@ export default function PostMenu({ postId, saved: initial, own }: { postId: stri
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" /><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></svg>Copy link to post
           </button>
           {!own && <div style={{ ...menuItem, cursor: "default", display: "block" }}><ReportButton kind="post" targetId={postId} label="Report this post" /></div>}
-          {note && <div role="status" style={{ padding: "6px 10px 4px", font: "400 12px/1.4 var(--sans)", color: "var(--mute)", overflowWrap: "anywhere" }}>{note}</div>}
+          {note && <div role="status" style={{ padding: "6px 10px 4px", font: "400 12px/1.5 var(--sans)", color: "var(--mute)", overflowWrap: "anywhere" }}>{note}</div>}
         </div>
       )}
     </div>

@@ -21,7 +21,7 @@ export default async function Messages({ searchParams }: { searchParams: Promise
   return (
     <Page title="Messages" lede="Direct messages and small chats."
       actions={<Link href="/chats/new" style={btnPrimary}>New small chat</Link>}>
-      {left === "1" && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>You left the chat.</p>}
+      {left === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>You left the chat.</p>}
       <Panel style={{ marginBottom: 14 }}>
         <PanelHead>Small chats · {chats.length}</PanelHead>
         {chats.length === 0 ? (

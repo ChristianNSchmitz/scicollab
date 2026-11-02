@@ -251,7 +251,7 @@ export default async function Home({
       <div style={{ maxWidth: "var(--content-max)", margin: "0 auto" }}>
       <h1 className="sr-only">Feed</h1>
       {sync && SYNC_FLASH[sync] && (
-        <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sync]}</p>
+        <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sync]}</p>
       )}
 
       <GettingStarted steps={steps} />
@@ -259,8 +259,8 @@ export default async function Home({
       <ForYouPanel data={waiting} names={new Map([...names].map(([id, p]) => [id, p.display_name]))} />
 
       {/* ── feed ──────────────────────────────────────────────────────── */}
-      <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12, scrollMarginTop: 72 }}>
-        {posted && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Posted.</p>}
+      <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20, scrollMarginTop: 72 }}>
+        {posted && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Posted.</p>}
         <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} meName={me?.display_name ?? ""} meAvatar={me?.avatar_url ?? null} />
 
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
@@ -312,7 +312,7 @@ export default async function Home({
         )}
 
         {feedMode === "groups" && (
-          <p style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>
+          <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
             Discussions inside your groups, seen only by their members. To post in one, open the group.
           </p>
         )}

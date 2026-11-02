@@ -31,7 +31,7 @@ export default async function YouShell({ active, children }: { active: YouTab; c
           <Avatar name={p?.display_name ?? ""} url={p?.avatar_url ?? null} size={56} />
           <div style={{ flex: "1 1 260px", minWidth: 0 }}>
             <h1 className="sc-title" style={{ font: "700 24px/1.2 var(--sans)", letterSpacing: "-.02em", margin: 0 }}>{p?.display_name || "You"}</h1>
-            <p style={{ font: "400 13.5px/1.5 var(--sans)", color: "var(--mute)", margin: "4px 0 0" }}>
+            <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "4px 0 0" }}>
               {[p?.role_title, p?.institution].filter(Boolean).join(" · ") || "Add your role and institution in Settings."}
               {openTo.length > 0 && <> · Open to {openTo.map((o) => openToLabel(o).toLowerCase()).join(", ")}</>}
             </p>

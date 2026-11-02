@@ -28,7 +28,7 @@ function useOutside(open: boolean, close: () => void) {
   return box;
 }
 
-const field = { width: "100%", border: "1px solid var(--rule)", borderRadius: 12, background: "var(--bg)", color: "var(--ink)", font: "400 13px/1.5 var(--sans)", padding: "8px 10px" } as const;
+const field = { width: "100%", border: "1px solid var(--rule)", borderRadius: 12, background: "var(--bg)", color: "var(--ink)", font: "400 13px/1.6 var(--sans)", padding: "8px 10px" } as const;
 const primary = { height: 32, padding: "0 14px", border: 0, borderRadius: 999, background: "var(--ink)", color: "var(--bg)", font: "600 12.5px/1 var(--sans)", cursor: "pointer" } as const;
 
 /**
@@ -80,7 +80,7 @@ export default function PostActions({ postId, inGroup, own, reposted: initialRep
           <IconSend />Send
         </button>
       )}
-      {status && <span role="status" style={{ font: "400 12px/1.4 var(--sans)", color: "var(--mute)", marginLeft: 6 }}>{status}</span>}
+      {status && <span role="status" style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", marginLeft: 6 }}>{status}</span>}
 
       {menu === "repost" && (
         <div role="menu" style={{ ...popover, left: 0, bottom: 38, width: thoughts !== null ? 340 : undefined }}>
@@ -100,7 +100,7 @@ export default function PostActions({ postId, inGroup, own, reposted: initialRep
             </>
           ) : (
             <form onSubmit={(e) => { e.preventDefault(); doRepost(thoughts); }} style={{ display: "flex", flexDirection: "column", gap: 8, padding: 6 }}>
-              <label htmlFor={`rp-note-${postId}`} style={{ font: "600 12.5px/1.3 var(--sans)" }}>Your thoughts</label>
+              <label htmlFor={`rp-note-${postId}`} style={{ font: "600 12.5px/1.4 var(--sans)" }}>Your thoughts</label>
               <textarea id={`rp-note-${postId}`} autoFocus rows={3} maxLength={1000} value={thoughts} onChange={(e) => setThoughts(e.target.value)} style={field} placeholder="Why your followers should read this" />
               <div style={{ display: "flex", gap: 8 }}>
                 <button type="submit" style={primary} disabled={pending}>Repost</button>
@@ -117,9 +117,9 @@ export default function PostActions({ postId, inGroup, own, reposted: initialRep
             e.preventDefault(); if (!to) return;
             start(async () => { const r = await sendPost(postId, to.id, note); if ("error" in r) setStatus(r.error); else { setStatus(`Sent to ${to.name}.`); close(); } });
           }} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ font: "600 12.5px/1.3 var(--sans)" }}>Send as a message</div>
+            <div style={{ font: "600 12.5px/1.4 var(--sans)" }}>Send as a message</div>
             {to ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 8, font: "400 13px/1.4 var(--sans)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, font: "400 13px/1.5 var(--sans)" }}>
                 <span style={{ flex: 1 }}>To <b style={{ fontWeight: 600 }}>{to.name}</b></span>
                 <button type="button" onClick={() => setTo(null)} style={{ border: 0, background: "none", color: "var(--mute)", cursor: "pointer", font: "400 12px/1 var(--sans)", textDecoration: "underline" }}>change</button>
               </div>

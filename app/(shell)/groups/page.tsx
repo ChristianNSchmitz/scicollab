@@ -46,7 +46,7 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
         <span style={{ marginLeft: "auto", font: mono(10.5), color: "var(--mute)" }}>{count(g.id)} member{count(g.id) === 1 ? "" : "s"}</span>
       </div>
       {(g.institution || g.description) && (
-        <div style={{ font: "400 13px/1.55 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
+        <div style={{ font: "400 13px/1.65 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
           {[g.institution, g.description].filter(Boolean).join(" · ").slice(0, 220)}
         </div>
       )}
@@ -56,7 +56,7 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
   return (
     <Page title="Groups" lede="Your groups are the people you work with. Topic groups fill your feed.">
       {flash && (
-        <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
+        <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
       )}
       <nav aria-label="Group kinds" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
         <a href="#people" className="sc-pill" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--ink)", color: "var(--ink)" }}>Your groups · {yours.length}</a>
@@ -92,7 +92,7 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
                   <label style={fieldLabel} htmlFor="g-desc">What the group is for</label>
                   <textarea id="g-desc" name="description" rows={3} maxLength={1000} style={field} placeholder="Who is in it, what you work on together." />
                 </div>
-                <fieldset style={{ border: 0, padding: 0, margin: 0, font: "400 13px/1.6 var(--sans)" }}>
+                <fieldset style={{ border: 0, padding: 0, margin: 0, font: "400 13px/1.7 var(--sans)" }}>
                   <legend style={fieldLabel}>Who can join</legend>
                   <label style={{ display: "flex", gap: 8 }}><input type="radio" name="access" value="closed" defaultChecked /> Closed: owners add members (a lab)</label>
                   <label style={{ display: "flex", gap: 8 }}><input type="radio" name="access" value="open" /> Open: anyone can join (a journal club)</label>
@@ -106,7 +106,7 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
       </div>
       <section id="topics" style={{ scrollMarginTop: 72, marginTop: 26 }}>
         <h2 style={{ font: mono(15, 700), margin: "0 0 4px" }}>Topic groups</h2>
-        <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 12px", maxWidth: "72ch" }}>
+        <p style={{ font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)", margin: "0 0 12px", maxWidth: "72ch" }}>
           Join topic groups to see their posts in your feed. </p>
         <TopicGroups joined={joinedTopics} field={HOUSES.some((h) => h.id === sp.field) ? sp.field : undefined} />
       </section>

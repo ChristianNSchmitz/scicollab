@@ -25,9 +25,9 @@ export default async function GroupBoard({ ctx }: { ctx: GroupCtx }) {
                 <div style={{ padding: "12px 14px" }}>
                   <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" }}>
                     {n.pinned && <span className="sc-badge" style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--signal-ink)", border: "1px solid var(--signal)", padding: "2px 7px" }}>PINNED</span>}
-                    <h3 style={{ font: mono(14.5, 700, 1.35), margin: 0, flex: 1 }}>{n.title}</h3>
+                    <h3 style={{ font: mono(14.5, 700, 1.45), margin: 0, flex: 1 }}>{n.title}</h3>
                   </div>
-                  {n.body && <div style={{ marginTop: 8 }}><RichText body={n.body} style={{ font: "400 13.5px/1.65 var(--sans)", whiteSpace: "pre-wrap" }} /></div>}
+                  {n.body && <div style={{ marginTop: 8 }}><RichText body={n.body} style={{ font: "400 13.5px/1.75 var(--sans)", whiteSpace: "pre-wrap" }} /></div>}
                   <div style={{ ...note, marginTop: 8 }}>
                     {people.get(n.author_id)?.display_name ?? "A member"} · {n.updated_at !== n.created_at ? `edited ${timeAgo(n.updated_at)}` : timeAgo(n.created_at)}
                   </div>
@@ -59,14 +59,14 @@ export default async function GroupBoard({ ctx }: { ctx: GroupCtx }) {
       <aside>
         <Panel>
           <PanelHead>New note</PanelHead>
-          {sp.error === "note" && <p role="alert" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.5 var(--sans)", color: "var(--err)" }}>A note needs a title.</p>}
+          {sp.error === "note" && <p role="alert" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.6 var(--sans)", color: "var(--err)" }}>A note needs a title.</p>}
           <form action={addNote.bind(null, id)} style={{ display: "flex", flexDirection: "column", gap: 8, padding: 14 }}>
             <label style={fieldLabel} htmlFor="note-title">Title</label>
             <input id="note-title" name="title" required maxLength={200} style={field} placeholder="Booking the confocal" />
             <label style={fieldLabel} htmlFor="note-body">Text</label>
             <textarea id="note-body" name="body" rows={6} maxLength={8000} style={field} placeholder="Who to ask, where the sheet is, what to log." />
             {manage && (
-              <label style={{ display: "flex", gap: 8, alignItems: "center", font: "400 13px/1.4 var(--sans)" }}>
+              <label style={{ display: "flex", gap: 8, alignItems: "center", font: "400 13px/1.5 var(--sans)" }}>
                 <input type="checkbox" name="pinned" /> Pin to the top
               </label>
             )}

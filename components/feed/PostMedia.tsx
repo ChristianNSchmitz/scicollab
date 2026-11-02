@@ -27,8 +27,8 @@ export function LinkCard({ preview }: { preview?: LinkPreview | null }) {
     <a href={preview.url} target="_blank" rel="noopener noreferrer nofollow ugc"
       style={{ display: "block", marginTop: 11, padding: "10px 12px", border: "1px solid var(--rule)", borderLeft: "3px solid var(--ink)", background: "var(--bg)", color: "var(--ink)", textDecoration: "none" }}>
       <div style={{ font: mono(10.5), color: "var(--mute)", marginBottom: 4 }}>{preview.site} ↗</div>
-      <div style={{ font: "600 13.5px/1.4 var(--sans)" }}>{preview.title}</div>
-      {preview.description && <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{preview.description}</div>}
+      <div style={{ font: "600 13.5px/1.5 var(--sans)" }}>{preview.title}</div>
+      {preview.description && <div style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{preview.description}</div>}
     </a>
   );
 }

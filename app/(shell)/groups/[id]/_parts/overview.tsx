@@ -50,7 +50,7 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
           <ActivityList items={activity} empty="Nothing public from the members in the last 60 days." />
         </Panel>
         <Panel style={{ padding: 14 }}>
-          <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
+          <div style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)" }}>
             Feed, chat, board, tasks and files are for members. Shared methods and projects are under <Link href={tabHref(id, "shared")} style={{ color: "var(--link)" }}>Shared</Link>.
           </div>
         </Panel>
@@ -108,8 +108,8 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
             {(pinned ?? []).length === 0 && <Empty>Nothing pinned.</Empty>}
             {(pinned ?? []).map((n: any) => (
               <Link key={n.id} href={`${tabHref(id, "board")}#note-${n.id}`} style={line}>
-                <div style={{ font: mono(13, 600, 1.4) }}>{n.title}</div>
-                {n.body && <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{n.body}</div>}
+                <div style={{ font: mono(13, 600, 1.5) }}>{n.title}</div>
+                {n.body && <div style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{n.body}</div>}
               </Link>
             ))}
             {more(tabHref(id, "board"), "The whole board")}
@@ -122,7 +122,7 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
               const due = dueLabel(t.due_on);
               return (
                 <Link key={t.id} href={tabHref(id, "tasks")} style={line}>
-                  <div style={{ font: "500 13px/1.45 var(--sans)" }}>{t.title}</div>
+                  <div style={{ font: "500 13px/1.55 var(--sans)" }}>{t.title}</div>
                   <div style={{ ...note, marginTop: 2 }}>
                     {t.assignee_id === me ? "yours" : "nobody yet"}{due && <> · <span style={{ color: due.late ? "var(--err)" : "var(--mute)" }}>{due.text}</span></>}
                   </div>

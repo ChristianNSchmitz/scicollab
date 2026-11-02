@@ -35,7 +35,7 @@ export default async function GroupTasks({ ctx }: { ctx: GroupCtx }) {
           </button>
         </form>
         <div style={{ flex: "1 1 220px", minWidth: 0 }}>
-          <div style={{ font: "500 13.5px/1.45 var(--sans)", textDecoration: t.done_at ? "line-through" : "none", color: t.done_at ? "var(--mute)" : "var(--ink)" }}>{t.title}</div>
+          <div style={{ font: "500 13.5px/1.55 var(--sans)", textDecoration: t.done_at ? "line-through" : "none", color: t.done_at ? "var(--mute)" : "var(--ink)" }}>{t.title}</div>
           <div style={{ ...note, marginTop: 2 }}>
             {t.done_at
               ? `done ${timeAgo(t.done_at)}${t.done_by ? ` by ${t.done_by === me ? "you" : name(t.done_by)}` : ""}`
@@ -74,18 +74,18 @@ export default async function GroupTasks({ ctx }: { ctx: GroupCtx }) {
       <aside>
         <Panel>
           <PanelHead>New task</PanelHead>
-          {sp.error === "task" && <p role="alert" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.5 var(--sans)", color: "var(--err)" }}>A task needs a title.</p>}
+          {sp.error === "task" && <p role="alert" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.6 var(--sans)", color: "var(--err)" }}>A task needs a title.</p>}
           <form action={addTask.bind(null, id)} style={{ display: "flex", flexDirection: "column", gap: 8, padding: 14 }}>
             <label style={fieldLabel} htmlFor="task-title">What needs doing</label>
             <input id="task-title" name="title" required maxLength={300} style={field} placeholder="Order a new lot of TransLipo-3" />
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <label style={{ font: "400 12.5px/1.4 var(--sans)", display: "flex", flexDirection: "column", gap: 4, flex: "1 1 140px" }}>Who
+              <label style={{ font: "400 12.5px/1.5 var(--sans)", display: "flex", flexDirection: "column", gap: 4, flex: "1 1 140px" }}>Who
                 <select name="assignee" defaultValue="" style={field}>
                   <option value="">Nobody yet</option>
                   {current.map((m: any) => <option key={m.user_id} value={m.user_id}>{m.user_id === me ? "Me" : people.get(m.user_id)?.display_name ?? "Member"}</option>)}
                 </select>
               </label>
-              <label style={{ font: "400 12.5px/1.4 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>By
+              <label style={{ font: "400 12.5px/1.5 var(--sans)", display: "flex", flexDirection: "column", gap: 4 }}>By
                 <input name="due" type="date" style={{ ...field, width: "auto" }} />
               </label>
             </div>

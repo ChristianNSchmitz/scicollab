@@ -70,7 +70,7 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
                     ))}
                   </select>
                 ) : (
-                  <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+                  <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: 0 }}>
                     You have no method cards yet. A question without one still works, it just makes peers guess.{" "}
                     <Link href="/methods/new" style={{ color: "var(--link)" }}>Record a method</Link>
                   </p>
@@ -90,7 +90,7 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
           const t = tally.get(q.id) ?? { n: 0, accepted: false };
           return (
             <Link key={q.id} href={`/questions/${q.id}`} style={{ display: "block", padding: "12px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
-              <div style={{ font: mono(13.5, 500, 1.35) }}>{q.title}</div>
+              <div style={{ font: mono(13.5, 500, 1.45) }}>{q.title}</div>
               <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, marginTop: 7, font: mono(11), color: "var(--mute)" }}>
                 <span style={t.accepted ? { color: "var(--ok)" } : undefined}>
                   {t.n} {t.n === 1 ? "answer" : "answers"}{t.accepted ? " · accepted" : ""}

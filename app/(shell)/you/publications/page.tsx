@@ -94,7 +94,7 @@ export default async function Publications({
         {!example && <form action={syncNow.bind(null, "/you/publications")}><button type="submit" style={{ ...btn, height: 32, borderRadius: 999, border: "1px solid var(--rule)" }}>Sync now</button></form>}
       </div>
       {sp.sync && SYNC_FLASH[sp.sync] && (
-        <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sp.sync]}</p>
+        <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sp.sync]}</p>
       )}
 
       {ok ? (
@@ -104,7 +104,7 @@ export default async function Publications({
               <div key={label} style={{ padding: "14px 16px", background: "var(--surface)" }}>
                 <div style={{ font: mono(26, 700), letterSpacing: "-.02em" }}>{value}</div>
                 <div style={{ font: mono(11, 500), marginTop: 5 }}>{label}</div>
-                <div style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{sub}</div>
+                <div style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{sub}</div>
               </div>
             ))}
           </div>
@@ -116,7 +116,7 @@ export default async function Publications({
             <div style={{ padding: "12px 16px", background: "var(--surface)" }}>
               <div style={{ font: mono(10, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 8 }}>H-INDEX BY YEAR</div>
               {h.length ? <YearBars points={h} unit="h-index" current={c.year} height={48} />
-                : <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>Appears after the next full sync.</p>}
+                : <p style={{ font: "400 12.5px/1.7 var(--sans)", color: "var(--mute)", margin: 0 }}>Appears after the next full sync.</p>}
             </div>
           </div>
           <div style={{ padding: "8px 16px", borderTop: "1px solid var(--rule)", font: mono(10.5), color: "var(--mute)", display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -126,7 +126,7 @@ export default async function Publications({
         </Panel>
       ) : (
         <Panel style={{ marginBottom: 14 }}>
-          <div style={{ padding: 14, font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)" }}>
+          <div style={{ padding: 14, font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)" }}>
             {biblio.state === "pending" ? "Fetching your record from OpenAlex for the first time. Reload in a moment."
               : biblio.state === "not-found" ? "OpenAlex has no author for your ORCID yet. It is checked again on every sync."
               : `${biblio.state === "unreachable" && biblio.message ? biblio.message : "OpenAlex could not be reached."} The next sync will try again.`}
@@ -160,7 +160,7 @@ export default async function Publications({
         {shown.length === 0 ? (
           <Empty>{pubs.length === 0 ? "No publications in OpenAlex for this ORCID yet." : "Nothing matches that filter."}</Empty>
         ) : shown.map((p) => <PublicationRow key={p.openalex_id} p={p} c={c} isNew={fresh.has(p.openalex_id)} detailed />)}
-        <div style={{ padding: "9px 14px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: "9px 14px", font: "400 12px/1.7 var(--sans)", color: "var(--mute)" }}>
           From <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID.
           Missing papers are fixed in ORCID or OpenAlex. </div>
       </Panel>
@@ -169,7 +169,7 @@ export default async function Publications({
         <Panel style={{ marginTop: 14 }}>
           <PanelHead>Sync history · last {runs.length}</PanelHead>
           {runs.map((r) => (
-            <div key={r.id} style={{ display: "flex", gap: 10, flexWrap: "wrap", padding: "7px 14px", borderTop: "1px solid var(--rule)", font: mono(11, 400, 1.5) }}>
+            <div key={r.id} style={{ display: "flex", gap: 10, flexWrap: "wrap", padding: "7px 14px", borderTop: "1px solid var(--rule)", font: mono(11, 400, 1.6) }}>
               <span style={{ color: "var(--mute)", minWidth: 150 }}>{new Date(r.started_at).toISOString().slice(0, 16).replace("T", " ")} UTC</span>
               <span style={{ color: "var(--mute)", minWidth: 64 }}>{r.trigger}</span>
               <span style={{ flex: 1, minWidth: 200, color: r.status === "ok" || r.status === "running" ? "var(--ink)" : "var(--err)" }}>

@@ -27,8 +27,8 @@ export default function TopicGroups({ joined, field }: { joined: Set<string>; fi
             <div key={room.id} className="sc-soft" style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "12px 14px", border: "1px solid var(--rule)", borderRadius: 16, background: "var(--surface)" }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <Link href={`/home?room=${room.id}`} style={{ font: mono(13.5, 600), color: "var(--ink)" }}>#{room.id}</Link>
-                <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{room.blurb}</div>
-                <div style={{ font: "400 11.5px/1.4 var(--sans)", color: "var(--mute)", marginTop: 5 }} title={room.houses.map(houseName).join(", ")}>
+                <div style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{room.blurb}</div>
+                <div style={{ font: "400 11.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 5 }} title={room.houses.map(houseName).join(", ")}>
                   {room.houses.length > 2 ? `Shared across ${room.houses.length} fields` : room.houses.map(houseName).join(" · ")}
                 </div>
               </div>

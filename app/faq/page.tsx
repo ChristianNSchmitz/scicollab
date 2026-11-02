@@ -132,17 +132,17 @@ export default function QuestionsPage() {
           <div className="sc-soft" style={{ border: "1px solid var(--rule)" }}>
             {g.items.map((item, i) => (
               <details key={item.q} style={{ borderTop: i ? "1px solid var(--rule)" : 0 }}>
-                <summary style={{ cursor: "pointer", padding: "13px 14px", font: "600 13.5px/1.4 var(--mono)", listStylePosition: "inside" }}>
+                <summary style={{ cursor: "pointer", padding: "13px 14px", font: "600 13.5px/1.5 var(--mono)", listStylePosition: "inside" }}>
                   {item.q}
                 </summary>
-                <div style={{ padding: "0 14px 14px 30px", font: "400 14.5px/1.65 var(--sans)", maxWidth: "70ch" }}>{item.a}</div>
+                <div style={{ padding: "0 14px 14px 30px", font: "400 14.5px/1.75 var(--sans)", maxWidth: "70ch" }}>{item.a}</div>
               </details>
             ))}
           </div>
         </section>
       ))}
 
-      <p style={{ font: "400 14.5px/1.6 var(--sans)", marginTop: 30 }}>
+      <p style={{ font: "400 14.5px/1.7 var(--sans)", marginTop: 30 }}>
         Another question? <Link href="/contact">Write to us</Link> — a person from the team answers.
       </p>
       <p style={{ ...small, marginTop: 16 }}>

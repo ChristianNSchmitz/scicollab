@@ -15,8 +15,8 @@ export default function ForYouPanel({ data, names }: { data: ForYou; names: Map<
         <Link key={f.id} href={`/posts/${f.id}`} style={row}>
           <span style={{ ...kind, color: "var(--info)", background: "color-mix(in srgb, var(--info) 10%, transparent)" }}>FEEDBACK</span>
           <span style={{ flex: 1, minWidth: 0 }}>
-            <span style={{ font: "600 13.5px/1.4 var(--sans)" }}>{f.title}</span>
-            <span style={{ display: "block", font: "400 12px/1.4 var(--sans)", color: "var(--mute)" }}>{names.get(f.author_id) ?? "Someone"} asked you{f.deadline ? `, by ${f.deadline}` : ""}</span>
+            <span style={{ font: "600 13.5px/1.5 var(--sans)" }}>{f.title}</span>
+            <span style={{ display: "block", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>{names.get(f.author_id) ?? "Someone"} asked you{f.deadline ? `, by ${f.deadline}` : ""}</span>
           </span>
         </Link>
       ))}
@@ -24,8 +24,8 @@ export default function ForYouPanel({ data, names }: { data: ForYou; names: Map<
         <Link key={q.id} href={`/questions/${q.id}`} style={row}>
           <span style={{ ...kind, color: "var(--signal-ink)", background: "color-mix(in srgb, var(--signal) 10%, transparent)" }}>QUESTION</span>
           <span style={{ flex: 1, minWidth: 0 }}>
-            <span style={{ font: "600 13.5px/1.4 var(--sans)" }}>{q.title}</span>
-            <span style={{ display: "block", font: "400 12px/1.4 var(--sans)", color: "var(--mute)" }}>No answer yet · matches “{q.match}” · {timeAgo(q.created_at)}</span>
+            <span style={{ font: "600 13.5px/1.5 var(--sans)" }}>{q.title}</span>
+            <span style={{ display: "block", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>No answer yet · matches “{q.match}” · {timeAgo(q.created_at)}</span>
           </span>
         </Link>
       ))}

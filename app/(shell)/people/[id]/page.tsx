@@ -59,7 +59,7 @@ export default async function Person({ params }: { params: Promise<{ id: string 
           </div>
         } />
         {isMe && (
-          <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "-6px 0 14px" }}>
+          <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: "-6px 0 14px" }}>
             This is how other members see you. {d.person.public_profile
               ? "Your profile is also visible to visitors who are not signed in."
               : <>Only signed-in members can see it; you can <Link href="/settings#privacy" style={{ color: "var(--link)" }}>make it public</Link>.</>}

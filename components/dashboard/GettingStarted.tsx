@@ -21,8 +21,8 @@ export default function GettingStarted({ steps }: { steps: Step[] }) {
   return (
     <section aria-label="Getting started" className="sc-panel" style={{ background: "var(--surface)", border: "1px solid var(--rule)", padding: "12px 14px", marginBottom: 12 }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
-        <strong style={{ font: "600 14px/1.3 var(--sans)" }}>Get started</strong>
-        <span style={{ font: "400 12.5px/1.3 var(--sans)", color: "var(--mute)" }}>{done} of {steps.length} done</span>
+        <strong style={{ font: "600 14px/1.4 var(--sans)" }}>Get started</strong>
+        <span style={{ font: "400 12.5px/1.4 var(--sans)", color: "var(--mute)" }}>{done} of {steps.length} done</span>
         <span style={{ flex: 1 }} />
         <button type="button" onClick={() => { setHidden(true); try { localStorage.setItem("sc-start-hidden", "1"); } catch {} }}
           style={{ background: "transparent", border: 0, font: "400 12px/1 var(--sans)", color: "var(--mute)", cursor: "pointer" }}>Hide</button>

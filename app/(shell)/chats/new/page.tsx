@@ -18,7 +18,7 @@ export default async function NewChat({ searchParams }: { searchParams: Promise<
       actions={<Link href="/messages" style={btn}>Back to messages</Link>}>
       <form action={createChat} style={{ maxWidth: 640 }}>
         <Panel style={{ padding: 16, display: "flex", flexDirection: "column", gap: 14 }}>
-          {error && ERRORS[error] && <p role="alert" style={{ margin: 0, padding: "10px 12px", borderRadius: 12, border: "1px solid var(--err)", color: "var(--err)", font: "400 13px/1.5 var(--sans)" }}>{ERRORS[error]}</p>}
+          {error && ERRORS[error] && <p role="alert" style={{ margin: 0, padding: "10px 12px", borderRadius: 12, border: "1px solid var(--err)", color: "var(--err)", font: "400 13px/1.6 var(--sans)" }}>{ERRORS[error]}</p>}
           <div>
             <label style={fieldLabel} htmlFor="chat-title">Name (optional)</label>
             <input id="chat-title" name="title" maxLength={120} placeholder="Writing buddies, Seahorse users, iPSC journal club…" style={field} />

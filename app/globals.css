@@ -124,7 +124,7 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 .sc-hl-num    { display: flex; align-items: baseline; gap: 6px; }
 .sc-hl-big    { font: 700 28px/1 var(--mono); letter-spacing: -.04em; }
 .sc-hl-unit   { font: 400 12px/1.2 var(--sans); color: var(--mute); }
-.sc-hl-detail { font: 400 12px/1.35 var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-hl-detail { font: 400 12px/1.45 var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sc-hl-aside  { flex: none; }
 .sc-hl-dot    { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); animation: sc-hl-pulse 1.8s ease-in-out infinite; }
 .sc-chips     { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
@@ -442,7 +442,7 @@ html[data-look="glass"] .sc-demo {
   border-bottom: 1px solid rgba(214, 170, 0, .25) !important;
   -webkit-backdrop-filter: blur(24px) saturate(194%); backdrop-filter: blur(24px) saturate(194%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .726);
-  font: 500 12px/1.5 var(--sans) !important;
+  font: 500 12px/1.6 var(--sans) !important;
 }
 html[data-look="glass"] .sc-demo > span:first-child { letter-spacing: .04em !important; }
 html[data-look="glass"][data-theme="dark"] .sc-demo { background: rgba(255, 212, 0, .14) !important; color: #FFE680 !important; border-bottom-color: rgba(255, 212, 0, .18) !important; box-shadow: none; }

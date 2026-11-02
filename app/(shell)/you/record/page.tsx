@@ -76,7 +76,7 @@ export default async function RecordPage({ searchParams }: {
                 <WeeklyBars values={a.weekly} weekStarts={weekStarts} unit={a.unit} />
                 <div style={{ marginTop: 10, paddingTop: 8, borderTop: "1px solid var(--rule)" }}>
                   {a.facts.map(([k, v]) => (
-                    <div key={k} style={{ display: "flex", justifyContent: "space-between", gap: 8, font: mono(10.5, 400, 1.8), color: "var(--mute)" }}>
+                    <div key={k} style={{ display: "flex", justifyContent: "space-between", gap: 8, font: mono(10.5, 400, 1.9), color: "var(--mute)" }}>
                       <span>{k}</span><span style={{ color: "var(--ink)", textAlign: "right" }}>{v}</span>
                     </div>
                   ))}
@@ -131,7 +131,7 @@ export default async function RecordPage({ searchParams }: {
             </table>
           </div>
         )}
-        <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
+        <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 12px/1.7 var(--sans)", color: "var(--mute)" }}>
           A read is one reader in one week. Who read is never stored. </div>
       </Panel>
 
@@ -148,7 +148,7 @@ export default async function RecordPage({ searchParams }: {
               </Empty>
             ) : r.reuse.slice(0, 8).map((e, i) => (
               <Link key={i} href={e.href} style={{ display: "flex", gap: 12, padding: "11px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" }}>
-                <span style={{ font: "400 13.5px/1.5 var(--sans)", flex: 1, minWidth: 0 }}>{e.text}</span>
+                <span style={{ font: "400 13.5px/1.6 var(--sans)", flex: 1, minWidth: 0 }}>{e.text}</span>
                 <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(e.at)}</span>
               </Link>
             ))}
@@ -161,7 +161,7 @@ export default async function RecordPage({ searchParams }: {
               <Empty>Nothing waiting on you.</Empty>
             ) : r.loops.slice(0, 7).map((l, i) => (
               <Link key={i} href={l.href} style={{ display: "block", padding: "10px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" }}>
-                <div style={{ font: "400 13px/1.45 var(--sans)" }}>{l.text}</div>
+                <div style={{ font: "400 13px/1.55 var(--sans)" }}>{l.text}</div>
                 <div style={{ font: mono(10), color: "var(--mute)", marginTop: 3 }}>{l.hint}</div>
               </Link>
             ))}
@@ -200,7 +200,7 @@ export default async function RecordPage({ searchParams }: {
                   <tr key={i} style={{ borderTop: "1px solid var(--rule)" }}>
                     <td style={{ ...td, font: mono(11), color: "var(--mute)", whiteSpace: "nowrap" }}>{e.at.slice(0, 10)}</td>
                     <td style={{ ...td, font: mono(11), whiteSpace: "nowrap" }}>{AXIS_LABEL[e.axis]}</td>
-                    <td style={{ ...td, font: "400 13.5px/1.5 var(--sans)" }}>{e.text}</td>
+                    <td style={{ ...td, font: "400 13.5px/1.6 var(--sans)" }}>{e.text}</td>
                     <td style={{ ...td, textAlign: "right" }}><Link href={e.href} style={{ font: mono(11) }}>open →</Link></td>
                   </tr>
                 ))}

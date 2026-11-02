@@ -10,7 +10,7 @@ import { timeAgo } from "@/lib/format";
 import { ROLE_LABEL, type GroupRole } from "@/lib/social/groups";
 
 const row = { display: "flex", gap: 10, alignItems: "baseline", padding: "10px 14px", borderBottom: "1px solid var(--rule)", textDecoration: "none", color: "var(--ink)" } as const;
-const quiet = { padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" } as const;
+const quiet = { padding: "12px 14px", font: "400 13px/1.7 var(--sans)", color: "var(--mute)" } as const;
 
 /**
  * The body of a profile, shared by the member view (/people/[id]) and the
@@ -35,7 +35,7 @@ export default function ProfileBody({ d, publicView = false, side }: { d: Profil
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {(person.bio || person.techniques.length > 0 || person.orcid) && (
         <Panel style={{ padding: 14 }}>
-          {person.bio && <p style={{ margin: "0 0 10px", font: "400 14px/1.65 var(--sans)", whiteSpace: "pre-wrap" }}>{person.bio}</p>}
+          {person.bio && <p style={{ margin: "0 0 10px", font: "400 14px/1.75 var(--sans)", whiteSpace: "pre-wrap" }}>{person.bio}</p>}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
             {person.techniques.map((t) => <Tag key={t}>{t}</Tag>)}
             {person.orcid && (
@@ -65,7 +65,7 @@ export default function ProfileBody({ d, publicView = false, side }: { d: Profil
               : d.cards.slice(0, 8).map((c) => (
                 <Link key={c.id} href={`/methods/${c.id}`} style={{ ...row, flexWrap: "wrap" }}>
                   <span style={{ font: mono(11, 500), color: "var(--mute)" }}>{c.code}</span>
-                  <span style={{ flex: "1 1 200px", font: "500 13.5px/1.45 var(--sans)" }}>{c.title}</span>
+                  <span style={{ flex: "1 1 200px", font: "500 13.5px/1.55 var(--sans)" }}>{c.title}</span>
                   <Outcome value={c.outcome} />
                   {!publicView && <Visibility value={c.visibility as "private" | "lab" | "public"} />}
                 </Link>
@@ -77,7 +77,7 @@ export default function ProfileBody({ d, publicView = false, side }: { d: Profil
             {d.answers.length === 0 ? <div style={quiet}>No answers yet.</div>
               : d.answers.slice(0, 6).map((a) => (
                 <Link key={a.id} href={memberHref(`/questions/${a.question_id}`)} style={row}>
-                  <span style={{ flex: 1, font: "400 13.5px/1.45 var(--sans)" }}>{a.title}</span>
+                  <span style={{ flex: 1, font: "400 13.5px/1.55 var(--sans)" }}>{a.title}</span>
                   {a.accepted && <span style={{ font: mono(10, 700), color: "var(--ok)" }}>ACCEPTED</span>}
                   <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(a.created_at)}</span>
                 </Link>
@@ -89,7 +89,7 @@ export default function ProfileBody({ d, publicView = false, side }: { d: Profil
               <PanelHead>Questions · {d.questions.length}</PanelHead>
               {d.questions.slice(0, 5).map((q) => (
                 <Link key={q.id} href={memberHref(`/questions/${q.id}`)} style={row}>
-                  <span style={{ flex: 1, font: "400 13.5px/1.45 var(--sans)" }}>{q.title}</span>
+                  <span style={{ flex: 1, font: "400 13.5px/1.55 var(--sans)" }}>{q.title}</span>
                   <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(q.created_at)}</span>
                 </Link>
               ))}
@@ -140,7 +140,7 @@ export function ProfileHead({ d, actions }: { d: ProfileData; actions?: ReactNod
       <Avatar name={p.display_name} url={p.avatar_url} size={64} />
       <div style={{ flex: "1 1 240px", minWidth: 0 }}>
         <h1 className="sc-title" style={{ font: mono(20, 700, 1.2), margin: 0, letterSpacing: "-.02em" }}>{p.display_name || "Researcher"}</h1>
-        <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "5px 0 0" }}>
+        <p style={{ font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)", margin: "5px 0 0" }}>
           {[p.role_title, p.institution, p.field].filter(Boolean).join(" · ") || "No role or institution given yet."}
         </p>
         <p style={{ font: mono(10.5), color: "var(--mute)", margin: "4px 0 0" }}>Member since {p.created_at.slice(0, 7)}</p>
@@ -157,7 +157,7 @@ export function OpenToChips({ ids, style }: { ids: string[]; style?: React.CSSPr
     <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center", ...style }}>
       <span style={{ font: "600 11.5px/1 var(--sans)", color: "var(--mute)" }}>Open to</span>
       {ids.map((id) => (
-        <span key={id} style={{ padding: "3px 9px", borderRadius: 999, font: "500 11.5px/1.3 var(--sans)", color: "var(--ok)", background: "color-mix(in srgb, var(--ok) 10%, transparent)" }}>{openToLabel(id)}</span>
+        <span key={id} style={{ padding: "3px 9px", borderRadius: 999, font: "500 11.5px/1.4 var(--sans)", color: "var(--ok)", background: "color-mix(in srgb, var(--ok) 10%, transparent)" }}>{openToLabel(id)}</span>
       ))}
     </div>
   );

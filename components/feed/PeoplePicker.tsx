@@ -40,7 +40,7 @@ export default function PeoplePicker({ name, max, label, initial = [] }: { name:
           {hits.map((p) => (
             <button key={p.id} type="button" role="option" aria-selected={false} className="sc-menu-item"
               onClick={() => { setChosen([...chosen, p]); setQ(""); setHits([]); }}
-              style={{ display: "block", width: "100%", textAlign: "left", padding: "8px 10px", border: 0, borderRadius: 10, background: "transparent", color: "var(--ink)", font: "400 13px/1.3 var(--sans)", cursor: "pointer" }}>
+              style={{ display: "block", width: "100%", textAlign: "left", padding: "8px 10px", border: 0, borderRadius: 10, background: "transparent", color: "var(--ink)", font: "400 13px/1.4 var(--sans)", cursor: "pointer" }}>
               <b style={{ fontWeight: 600 }}>{p.name}</b>{p.institution && <span style={{ color: "var(--mute)" }}> · {p.institution}</span>}
             </button>
           ))}

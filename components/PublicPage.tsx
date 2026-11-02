@@ -39,7 +39,7 @@ export default function PublicPage({ eyebrow, title, lede, children }: {
         <article className="sc-public-card" style={{ maxWidth: 880, margin: "0 auto", background: "var(--surface)", border: "1px solid var(--ink)", padding: "clamp(20px, 4vw, 40px)" }}>
           <div style={{ font: "500 11px/1 var(--mono)", letterSpacing: ".12em", color: "var(--signal-ink)", marginBottom: 12 }}>{eyebrow}</div>
           <h1 style={{ font: "700 clamp(22px, 3.2vw, 30px)/1.15 var(--mono)", letterSpacing: "-.03em", margin: "0 0 12px" }}>{title}</h1>
-          {lede && <p style={{ font: "400 15px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 8px", maxWidth: "64ch" }}>{lede}</p>}
+          {lede && <p style={{ font: "400 15px/1.7 var(--sans)", color: "var(--mute)", margin: "0 0 8px", maxWidth: "64ch" }}>{lede}</p>}
           <div style={{ marginTop: 26 }}>{children}</div>
         </article>
       </main>
@@ -51,8 +51,8 @@ export default function PublicPage({ eyebrow, title, lede, children }: {
 
 /* Reading styles shared by the public pages. */
 export const h2: React.CSSProperties = {
-  font: "700 16px/1.3 var(--mono)", letterSpacing: "-.01em", margin: "34px 0 12px",
+  font: "700 16px/1.4 var(--mono)", letterSpacing: "-.01em", margin: "34px 0 12px",
   paddingTop: 16, borderTop: "1px solid var(--rule)",
 };
-export const p: React.CSSProperties = { font: "400 14.5px/1.65 var(--sans)", margin: "0 0 12px", maxWidth: "70ch" };
-export const small: React.CSSProperties = { font: "400 11.5px/1.6 var(--mono)", color: "var(--mute)" };
+export const p: React.CSSProperties = { font: "400 14.5px/1.75 var(--sans)", margin: "0 0 12px", maxWidth: "70ch" };
+export const small: React.CSSProperties = { font: "400 11.5px/1.7 var(--mono)", color: "var(--mute)" };

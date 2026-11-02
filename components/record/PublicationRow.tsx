@@ -16,7 +16,7 @@ export default function PublicationRow({ p, c, isNew, detailed = false }: {
   return (
     <div style={{ display: "flex", gap: 12, alignItems: "center", padding: "10px 14px", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
       <div style={{ flex: "1 1 320px", minWidth: 0 }}>
-        <div style={{ font: "500 13.5px/1.45 var(--sans)" }}>
+        <div style={{ font: "500 13.5px/1.55 var(--sans)" }}>
           {isNew && <span className="sc-badge" style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--ok)", border: "1px solid var(--ok)", padding: "1px 5px", marginRight: 7 }}>NEW</span>}
           {href ? <a href={href} target="_blank" rel="noreferrer" style={{ color: "var(--ink)" }}>{p.title || "Untitled"}</a> : (p.title || "Untitled")}
         </div>

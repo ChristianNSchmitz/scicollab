@@ -64,7 +64,7 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
 
   return (
     <div ref={box}>
-      <div style={{ font: "500 11px/1.4 var(--mono)", minHeight: 16, marginBottom: 4 }} aria-live="polite">
+      <div style={{ font: "500 11px/1.5 var(--mono)", minHeight: 16, marginBottom: 4 }} aria-live="polite">
         <span style={{ color: "var(--mute)" }}>{tips[at]}</span>{"  ·  "}{readout}
       </div>
       <svg
@@ -124,7 +124,7 @@ export default function TimelineChart({ labels, tips, rows }: { labels: string[]
       <details style={{ marginTop: 8 }}>
         <summary style={{ font: "400 11px var(--mono)", color: "var(--mute)", cursor: "pointer" }}>Show as table</summary>
         <div style={{ overflowX: "auto" }}>
-          <table style={{ borderCollapse: "collapse", font: "400 11px/1.6 var(--mono)", marginTop: 6 }}>
+          <table style={{ borderCollapse: "collapse", font: "400 11px/1.7 var(--mono)", marginTop: 6 }}>
             <thead>
               <tr>
                 <th style={cell}>Period</th>

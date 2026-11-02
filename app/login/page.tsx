@@ -66,7 +66,7 @@ function Form() {
       </label>
 
       {error && (
-        <p style={{ font: "400 11px/1.5 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "8px 10px", margin: 0 }}>
+        <p style={{ font: "400 11px/1.6 var(--mono)", color: "var(--err)", border: "1px solid var(--err)", padding: "8px 10px", margin: 0 }}>
           {error}
         </p>
       )}
@@ -94,13 +94,13 @@ export default function LoginPage() {
         </Link>
 
         <h1 style={{ font: "700 20px/1.2 var(--mono)", margin: "0 0 6px", letterSpacing: "-.02em" }}>Sign in</h1>
-        <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 22px" }}>
+        <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: "0 0 22px" }}>
           Institutional SSO and ORCID are designed on board B1 and are not connected yet — email and password for now.
         </p>
 
         <Suspense fallback={null}><Form /></Suspense>
 
-        <p style={{ font: "400 11px/1.6 var(--mono)", color: "var(--mute)", marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--rule)" }}>
+        <p style={{ font: "400 11px/1.7 var(--mono)", color: "var(--mute)", marginTop: 20, paddingTop: 16, borderTop: "1px solid var(--rule)" }}>
           No account? <Link href="/signup" style={{ color: "var(--link)" }}>Create one</Link>
         </p>
       </div>

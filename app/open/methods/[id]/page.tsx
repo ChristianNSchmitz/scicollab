@@ -71,7 +71,7 @@ export default async function OpenMethod({ params }: { params: Promise<{ id: str
         {fields.map(([k, v]) => (
           <div key={k} style={{ display: "grid", gridTemplateColumns: "minmax(90px, 140px) 1fr", gap: 12, padding: "10px 0", borderTop: "1px solid var(--rule)" }}>
             <dt style={{ font: mono(10.5, 700), letterSpacing: ".08em", textTransform: "uppercase", color: "var(--mute)" }}>{k}</dt>
-            <dd style={{ margin: 0, font: "400 14.5px/1.6 var(--sans)", whiteSpace: "pre-wrap" }}>{v}</dd>
+            <dd style={{ margin: 0, font: "400 14.5px/1.7 var(--sans)", whiteSpace: "pre-wrap" }}>{v}</dd>
           </div>
         ))}
       </dl>

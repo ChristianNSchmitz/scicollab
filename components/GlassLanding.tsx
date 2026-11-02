@@ -39,7 +39,7 @@ export default function GlassLanding({ items }: { items: ShowItem[] }) {
       <main style={{ maxWidth: 1120, margin: "0 auto", padding: "48px 20px 64px" }}>
         <section className="sc-gl-hero">
           <div>
-            <div style={{ font: "600 13px/1.3 var(--sans)", color: "var(--signal-ink)", marginBottom: 14 }}>
+            <div style={{ font: "600 13px/1.4 var(--sans)", color: "var(--signal-ink)", marginBottom: 14 }}>
               The network for scientists
             </div>
             <h1 style={{ font: "700 clamp(34px, 5.2vw, 58px)/1.04 var(--sans)", letterSpacing: "-.035em", margin: "0 0 18px" }}>
@@ -54,7 +54,7 @@ export default function GlassLanding({ items }: { items: ShowItem[] }) {
               <Link href="/signup" className="sc-gl-btn sc-gl-primary sc-gl-big">Create your account</Link>
               <Link href="/contact?topic=pilot" className="sc-gl-btn sc-gl-big">Talk to us about a lab pilot</Link>
             </div>
-            <p style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", margin: "14px 0 0" }}>
+            <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "14px 0 0" }}>
               Free for individual researchers · institutional pilots start at one lab · already a member? <Link href="/login" style={{ color: "var(--link)" }}>Sign in</Link>
             </p>
           </div>
@@ -67,8 +67,8 @@ export default function GlassLanding({ items }: { items: ShowItem[] }) {
         <section aria-label="What it does" className="sc-gl-features">
           {FEATURES.map((f) => (
             <div key={f.title} className="sc-panel" style={{ padding: "20px 20px 22px", background: "var(--surface)" }}>
-              <h2 style={{ font: "650 17px/1.3 var(--sans)", letterSpacing: "-.01em", margin: "0 0 8px" }}>{f.title}</h2>
-              <p style={{ font: "400 14.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>{f.text}</p>
+              <h2 style={{ font: "650 17px/1.4 var(--sans)", letterSpacing: "-.01em", margin: "0 0 8px" }}>{f.title}</h2>
+              <p style={{ font: "400 14.5px/1.7 var(--sans)", color: "var(--mute)", margin: 0 }}>{f.text}</p>
             </div>
           ))}
         </section>
@@ -78,7 +78,7 @@ export default function GlassLanding({ items }: { items: ShowItem[] }) {
             <h2 style={{ font: "700 clamp(22px, 2.6vw, 30px)/1.15 var(--sans)", letterSpacing: "-.025em", margin: "0 0 8px" }}>
               Someone has already solved your problem. Find them.
             </h2>
-            <p style={{ font: "400 15px/1.6 var(--sans)", color: "var(--mute)", margin: 0, maxWidth: 620 }}>
+            <p style={{ font: "400 15px/1.7 var(--sans)", color: "var(--mute)", margin: 0, maxWidth: 620 }}>
               One place for the people, discussions, data and methods of your field, instead of four tools and whoever happens to be reachable.
             </p>
           </div>

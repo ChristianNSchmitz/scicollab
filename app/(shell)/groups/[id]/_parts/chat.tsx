@@ -28,7 +28,7 @@ export default async function GroupChat({ ctx }: { ctx: GroupCtx }) {
       <PanelHead>Chat · members only</PanelHead>
       <ChatScroller count={messages.length} style={{ display: "flex", flexDirection: "column", gap: 10, padding: 14, maxHeight: "62vh", overflowY: "auto", background: "var(--bg)" }}>
         {messages.length === 0 && (
-          <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>No messages yet. Say hello to the group.</p>
+          <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: "8px 0", textAlign: "center" }}>No messages yet. Say hello to the group.</p>
         )}
         {messages.map((m: any, i: number) => {
           const mine = m.author_id === me;
@@ -40,7 +40,7 @@ export default async function GroupChat({ ctx }: { ctx: GroupCtx }) {
                 {!mine && <Avatar name={p?.display_name ?? ""} url={p?.avatar_url} size={26} />}
                 <div style={{ maxWidth: "78%" }}>
                   <div className={mine ? "sc-bubble sc-bubble-mine" : "sc-bubble"} style={{ border: `1px solid ${mine ? "transparent" : "var(--rule)"}`, borderRadius: mine ? "18px 18px 6px 18px" : "18px 18px 18px 6px", background: mine ? "color-mix(in srgb, var(--signal) 12%, var(--surface))" : "var(--surface)", padding: "8px 12px" }}>
-                    <RichText body={m.body} className="" style={{ font: "400 13.5px/1.55 var(--sans)" }} />
+                    <RichText body={m.body} className="" style={{ font: "400 13.5px/1.65 var(--sans)" }} />
                   </div>
                   <div style={{ display: "flex", gap: 8, justifyContent: mine ? "flex-end" : "flex-start", alignItems: "center", font: mono(10), color: "var(--mute)", marginTop: 3 }}>
                     <span>{mine ? "You" : p?.display_name ?? "Someone"} · {timeAgo(m.created_at)}</span>

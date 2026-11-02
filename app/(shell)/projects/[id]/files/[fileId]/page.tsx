@@ -59,7 +59,7 @@ export default async function ProjectFile({
         {head}
         <Panel style={{ borderColor: "var(--flag)" }}>
           <PanelHead>Not shared with you</PanelHead>
-          <div style={{ padding: 14, font: "400 13.5px/1.65 var(--sans)" }}>
+          <div style={{ padding: 14, font: "400 13.5px/1.75 var(--sans)" }}>
             <p style={{ margin: 0 }}>{access.why} You can see that it exists and what shape it is; the contents stay with the owner.</p>
             {access.askAt && (
               <p style={{ margin: "10px 0 0" }}>
@@ -121,12 +121,12 @@ function CsvPreview({ text }: { text: string }) {
         {body.length > shown.length ? ` · first ${shown.length} shown` : ""}
       </PanelHead>
       {notes.length > 0 && (
-        <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: mono(11.5, 400, 1.6), color: "var(--mute)" }}>
+        <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: mono(11.5, 400, 1.7), color: "var(--mute)" }}>
           {notes.map((n, i) => <div key={i}>{n}</div>)}
         </div>
       )}
       <div style={{ overflowX: "auto" }}>
-        <table style={{ borderCollapse: "collapse", width: "100%", font: mono(11.5, 400, 1.45) }}>
+        <table style={{ borderCollapse: "collapse", width: "100%", font: mono(11.5, 400, 1.55) }}>
           <thead>
             <tr>
               {header.map((h, j) => (
@@ -161,7 +161,7 @@ function CodeView({ text, label }: { text: string; label: string }) {
     <Panel>
       <PanelHead>{label} · {lines.length} line{lines.length === 1 ? "" : "s"}</PanelHead>
       <div style={{ overflowX: "auto", background: "var(--bg)" }}>
-        <pre aria-label={`${label} source`} style={{ margin: 0, padding: "10px 0", font: mono(12.5, 400, 1.55), color: "var(--ink)" }}>
+        <pre aria-label={`${label} source`} style={{ margin: 0, padding: "10px 0", font: mono(12.5, 400, 1.65), color: "var(--ink)" }}>
           {lines.map((l, i) => (
             <div key={i} style={{ display: "flex", whiteSpace: "pre" }}>
               <span aria-hidden="true" style={{ display: "inline-block", minWidth: `${width + 3}ch`, padding: "0 12px 0 14px", textAlign: "right", color: "var(--mute)", userSelect: "none", flexShrink: 0 }}>{i + 1}</span>

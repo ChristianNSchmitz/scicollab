@@ -62,7 +62,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
           <PanelHead>From your publications</PanelHead>
           {toFollow.length > 0 && (
             <>
-              <div style={{ padding: "10px 14px 4px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
+              <div style={{ padding: "10px 14px 4px", font: "400 13px/1.7 var(--sans)", color: "var(--mute)" }}>
                 {toFollow.length} of your co-authors {toFollow.length === 1 ? "is" : "are"} here.
               </div>
               {toFollow.map((m) => (
@@ -83,12 +83,12 @@ export default async function Network({ searchParams }: { searchParams: Promise<
               <div style={{ marginTop: 8 }}>
                 {co.others.slice(0, 12).map((o) => (
                   <div key={o.openalexId} style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 0", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
-                    <span style={{ flex: "1 1 200px", font: "400 13.5px/1.4 var(--sans)" }}>{o.name}</span>
+                    <span style={{ flex: "1 1 200px", font: "400 13.5px/1.5 var(--sans)" }}>{o.name}</span>
                     <span style={{ font: mono(10.5), color: "var(--mute)" }}>{o.papers} paper{o.papers > 1 ? "s" : ""}</span>
                     <InviteButton subject="Join me on SciCollab" text={inviteText(mine.display_name ?? "", o.name, origin)} />
                   </div>
                 ))}
-                <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "8px 0 0" }}>
+                <p style={{ font: "400 12.5px/1.7 var(--sans)", color: "var(--mute)", margin: "8px 0 0" }}>
                   SciCollab does not know their e-mail addresses and sends nothing; the invitation is yours to send.
                 </p>
               </div>
@@ -98,10 +98,10 @@ export default async function Network({ searchParams }: { searchParams: Promise<
       )}
 
       <form role="search" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 12 }}>
-        <label style={{ flex: "2 1 260px", font: "600 12px/1.3 var(--sans)", color: "var(--mute)" }}>Find people by technique
+        <label style={{ flex: "2 1 260px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Find people by technique
           <input name="q" defaultValue={q} placeholder="Seahorse, lipofection, qPCR, flow cytometry…" style={{ ...field, marginTop: 4 }} />
         </label>
-        <label style={{ flex: "1 1 180px", font: "600 12px/1.3 var(--sans)", color: "var(--mute)" }}>Open to
+        <label style={{ flex: "1 1 180px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Open to
           <select name="open" defaultValue={openTo} style={{ ...field, marginTop: 4 }}>
             <option value="">Anything</option>
             {OPEN_TO.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
@@ -111,7 +111,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
         <button type="submit" style={{ ...btn, height: 38 }}>Search</button>
         {(q || openTo) && <Link href={filter === "all" ? "/network" : `/network?show=${filter}`} style={{ font: "400 12.5px/38px var(--sans)", color: "var(--mute)" }}>clear</Link>}
       </form>
-      {q && <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "-4px 0 10px" }}>Strongest evidence first: worked or repeated, then listed.</p>}
+      {q && <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: "-4px 0 10px" }}>Strongest evidence first: worked or repeated, then listed.</p>}
 
       <SegTabs label="Who" style={{ margin: "0 0 10px" }} items={([["all", `Everyone · ${people?.length ?? 0}`], ["following", `Following · ${following.size}`], ["followers", `Follow you · ${followers.size}`]] as const).map(([key, label]) => ({
         href: `/network?${new URLSearchParams(Object.entries({ show: key === "all" ? undefined : key, q: q || undefined, open: openTo || undefined }).filter(([, v]) => v) as [string, string][])}`.replace(/\?$/, ""),
@@ -141,7 +141,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
               {experts?.get(p.id) && (
                 <ul style={{ margin: "7px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 3 }}>
                   {experts.get(p.id)!.slice(0, 4).map((e, i) => (
-                    <li key={i} style={{ font: "400 12.5px/1.45 var(--sans)" }}>
+                    <li key={i} style={{ font: "400 12.5px/1.55 var(--sans)" }}>
                       <span aria-hidden="true" style={{ color: e.kind === "listed" ? "var(--mute)" : "var(--ok)" }}>{e.kind === "listed" ? "·" : "✓"}</span>{" "}
                       {e.href ? <Link href={e.href} style={{ color: "var(--ink)" }}>{e.text}</Link> : <span style={{ color: "var(--mute)" }}>{e.text}</span>}
                     </li>

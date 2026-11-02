@@ -46,7 +46,7 @@ function Section({ title, cards, empty }: { title: string; cards: any[]; empty: 
               <span style={{ marginLeft: "auto", font: mono(11), color: "var(--mute)" }}>{timeAgo(c.created_at)}</span>
               <Visibility value={c.visibility} />
             </div>
-            <div style={{ font: mono(14, 500, 1.35) }}>{c.title}</div>
+            <div style={{ font: mono(14, 500, 1.45) }}>{c.title}</div>
             <div style={{ font: mono(11), color: "var(--mute)", marginTop: 4 }}>
               {c.system || "—"} · {plural(c.reproductions ?? 0, "reproduction")}
             </div>

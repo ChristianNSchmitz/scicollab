@@ -113,7 +113,7 @@ export default async function Question({ params, searchParams }: { params: Promi
                 </div>
                 {a.author_id === user!.id ? (
                   <details style={{ marginTop: 8 }}>
-                    <summary style={{ font: "400 12px/1.4 var(--sans)", color: "var(--mute)", cursor: "pointer" }}>Edit your answer</summary>
+                    <summary style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", cursor: "pointer" }}>Edit your answer</summary>
                     <form action={editAnswer.bind(null, a.id, q.id)} style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 6 }}>
                       <MentionTextarea name="body" rows={5} required defaultValue={a.body} style={field} aria-label="Edit your answer" />
                       <div><button type="submit" style={{ ...btn, height: 30 }}>Save</button></div>
@@ -130,7 +130,7 @@ export default async function Question({ params, searchParams }: { params: Promi
         {experts.length > 0 && (
           <Panel>
             <PanelHead>Who could answer this</PanelHead>
-            <div style={{ padding: "8px 14px 0", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)" }}>
+            <div style={{ padding: "8px 14px 0", font: "400 12.5px/1.7 var(--sans)", color: "var(--mute)" }}>
               Members whose techniques match this question. Mention them with @ in an answer, or send them a message.
             </div>
             {experts.map((e) => (

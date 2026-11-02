@@ -18,7 +18,7 @@ const FILE_FLASH: Record<string, string> = {
 };
 
 const row = { display: "flex", gap: 10, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" } as const;
-const emptyLine = { padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" } as const;
+const emptyLine = { padding: "12px 14px", font: "400 13px/1.7 var(--sans)", color: "var(--mute)" } as const;
 const vis = (v: string) => (v === "private" ? "private, shared with this group" : v === "lab" ? "lab" : "");
 
 /** What the members share with the group: method cards, datasets, files and projects. */
@@ -62,7 +62,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
             <div id="methods" style={{ scrollMarginTop: 72 }}><PanelHead>Methods · {methods.length}</PanelHead></div>
-            {methods.length === 0 && <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>No method cards linked to the group yet.</div>}
+            {methods.length === 0 && <div style={{ padding: "12px 14px", font: "400 13px/1.7 var(--sans)", color: "var(--mute)" }}>No method cards linked to the group yet.</div>}
             {methods.map((m: any) => (
               <div key={m.card_id} style={{ display: "flex", gap: 10, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
                 <div style={{ flex: "1 1 240px", minWidth: 0 }}>
@@ -71,8 +71,8 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
                     <span style={{ font: mono(10.5), color: "var(--mute)" }}>{m.card.code}</span>
                     {m.card.visibility !== "public" && <span style={{ font: mono(10.5), color: "var(--mute)" }}>· {m.card.visibility === "private" ? "private, shared with this group" : "lab"}</span>}
                   </div>
-                  <Link href={`/methods/${m.card_id}`} style={{ display: "block", font: mono(13, 600, 1.4), color: "var(--ink)", marginTop: 5 }}>{m.card.title}</Link>
-                  <div style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>by {name(m.card.author_id)}</div>
+                  <Link href={`/methods/${m.card_id}`} style={{ display: "block", font: mono(13, 600, 1.5), color: "var(--ink)", marginTop: 5 }}>{m.card.title}</Link>
+                  <div style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3 }}>by {name(m.card.author_id)}</div>
                 </div>
                 {(m.added_by === me || manage) && (
                   <form action={unlinkMethod.bind(null, id, m.card_id)}><button type="submit" style={small}>Unlink</button></form>
@@ -86,7 +86,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
                   {linkable.map((c: any) => <option key={c.id} value={c.id}>{c.code} · {c.title}</option>)}
                 </select>
                 <button type="submit" style={btn}>Link to the group</button>
-                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members can then read it, also when private.</span>
+                <span style={{ flexBasis: "100%", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Members can then read it, also when private.</span>
               </form>
             )}
           </Panel>
@@ -100,9 +100,9 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
                 <div style={{ flex: "1 1 240px", minWidth: 0 }}>
                   {/* Datasets live inside projects; the link only helps those on the project. */}
                   {onProject.has(d.ds.project_id)
-                    ? <Link href={`/projects/${d.ds.project_id}?tab=data`} style={{ display: "block", font: mono(13, 600, 1.4), color: "var(--ink)" }}>{d.ds.title}</Link>
-                    : <div style={{ font: mono(13, 600, 1.4) }}>{d.ds.title}</div>}
-                  {d.ds.summary && <div style={{ font: "400 12.5px/1.5 var(--sans)", marginTop: 3 }}>{String(d.ds.summary).slice(0, 240)}</div>}
+                    ? <Link href={`/projects/${d.ds.project_id}?tab=data`} style={{ display: "block", font: mono(13, 600, 1.5), color: "var(--ink)" }}>{d.ds.title}</Link>
+                    : <div style={{ font: mono(13, 600, 1.5) }}>{d.ds.title}</div>}
+                  {d.ds.summary && <div style={{ font: "400 12.5px/1.6 var(--sans)", marginTop: 3 }}>{String(d.ds.summary).slice(0, 240)}</div>}
                   <div style={{ ...note, marginTop: 3 }}>
                     by {name(d.ds.owner_id)}{d.ds.size_bytes ? ` · ${fileSize(d.ds.size_bytes)}` : ""}{d.ds.licence ? ` · ${d.ds.licence}` : ""}{vis(d.ds.visibility) ? ` · ${vis(d.ds.visibility)}` : ""}
                     {d.ds.doi && <> · <a href={String(d.ds.doi).startsWith("http") ? d.ds.doi : `https://doi.org/${d.ds.doi}`} rel="noreferrer" style={{ color: "var(--link)" }}>{d.ds.doi}</a></>}
@@ -133,15 +133,15 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
         {member && (
           <Panel>
             <div id="files" style={{ scrollMarginTop: 72 }}><PanelHead>Files · {(files ?? []).length}</PanelHead></div>
-            {sp.uploaded === "1" && <p role="status" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.5 var(--sans)", borderBottom: "1px solid var(--rule)", color: "var(--ok)" }}>File shared with the group.</p>}
-            {fileError && <p role="alert" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.5 var(--sans)", borderBottom: "1px solid var(--rule)", color: "var(--err)" }}>{fileError}</p>}
+            {sp.uploaded === "1" && <p role="status" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.6 var(--sans)", borderBottom: "1px solid var(--rule)", color: "var(--ok)" }}>File shared with the group.</p>}
+            {fileError && <p role="alert" style={{ margin: 0, padding: "9px 14px", font: "400 12.5px/1.6 var(--sans)", borderBottom: "1px solid var(--rule)", color: "var(--err)" }}>{fileError}</p>}
             {(files ?? []).length === 0 && <div style={emptyLine}>No files yet: protocols, SOPs, slides, booking sheets.</div>}
             {(files ?? []).map((f: any) => (
               <div key={f.id} style={{ ...row, padding: "10px 14px" }}>
                 <div style={{ flex: "1 1 160px", minWidth: 0 }}>
-                  <a href={`/api/group-files/${f.id}`} download={f.name} style={{ display: "block", font: mono(12.5, 600, 1.4), color: "var(--ink)", overflowWrap: "anywhere" }}>{f.name}</a>
+                  <a href={`/api/group-files/${f.id}`} download={f.name} style={{ display: "block", font: mono(12.5, 600, 1.5), color: "var(--ink)", overflowWrap: "anywhere" }}>{f.name}</a>
                   <div style={{ ...note, marginTop: 2 }}>{fileSize(f.size_bytes)} · {name(f.uploaded_by)} · {timeAgo(f.created_at)}</div>
-                  {f.note && <div style={{ font: "400 12.5px/1.5 var(--sans)", marginTop: 3 }}>{f.note}</div>}
+                  {f.note && <div style={{ font: "400 12.5px/1.6 var(--sans)", marginTop: 3 }}>{f.note}</div>}
                 </div>
                 {(f.uploaded_by === me || manage) && (
                   <form action={deleteGroupFile.bind(null, id, f.id)}><button type="submit" style={small} aria-label={`Delete ${f.name}`}>Delete</button></form>
@@ -150,7 +150,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
             ))}
             <form action={uploadGroupFile.bind(null, id)} style={{ display: "flex", flexDirection: "column", gap: 8, padding: 14 }}>
               <label htmlFor="g-file" style={hidden}>File to share</label>
-              <input id="g-file" name="file" type="file" required accept={FILE_ACCEPT} style={{ font: "400 12.5px/1.4 var(--sans)" }} />
+              <input id="g-file" name="file" type="file" required accept={FILE_ACCEPT} style={{ font: "400 12.5px/1.5 var(--sans)" }} />
               <label htmlFor="g-file-note" style={hidden}>What it is (optional)</label>
               <input id="g-file-note" name="note" maxLength={500} placeholder="What it is (optional)" style={field} />
               <div><button type="submit" style={btn}>Upload</button></div>
@@ -161,12 +161,12 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
 
           <Panel>
             <div id="projects" style={{ scrollMarginTop: 72 }}><PanelHead>Projects · {shared.length}</PanelHead></div>
-          {shared.length === 0 && <div style={{ padding: "12px 14px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>No projects shared with the group yet.</div>}
+          {shared.length === 0 && <div style={{ padding: "12px 14px", font: "400 13px/1.7 var(--sans)", color: "var(--mute)" }}>No projects shared with the group yet.</div>}
             {shared.map((s: any) => (
               <div key={s.project_id} style={{ display: "flex", gap: 10, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--rule)" }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <Link href={`/projects/${s.project_id}`} style={{ font: mono(13, 600), color: "var(--ink)" }}>{s.project.title}</Link>
-                  {s.project.summary && <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{String(s.project.summary).slice(0, 160)}</div>}
+                  {s.project.summary && <div style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", marginTop: 3 }}>{String(s.project.summary).slice(0, 160)}</div>}
                 </div>
                 {member && !onProject.has(s.project_id) && (
                   <form action={joinProject.bind(null, s.project_id)}><button type="submit" style={{ ...small, background: "var(--ink)", color: "var(--bg)" }}>Join project</button></form>
@@ -184,7 +184,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
                   {addable.map((p: any) => <option key={p.id} value={p.id}>{p.title}</option>)}
                 </select>
                 <button type="submit" style={btn}>Share with the group</button>
-                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members can then join it.</span>
+                <span style={{ flexBasis: "100%", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Members can then join it.</span>
               </form>
             )}
           </Panel>
