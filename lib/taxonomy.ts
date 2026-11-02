@@ -86,15 +86,42 @@ export const isShared = (roomId: string) => (roomById(roomId)?.houses.length ?? 
  * tagging: a tagging chore at the moment of posting is where people give up.
  * Topic comes from the room and from whatever artifact is attached.
  */
-export type Intent = "update" | "result" | "data_question" | "general" | "collab";
+export type Intent = "update" | "result" | "data_question" | "general" | "collab" | "feedback";
 
 export const INTENTS: { id: Intent; label: string; hint: string; needsArtifact: boolean }[] = [
   { id: "result",        label: "A result worth sharing",   hint: "Something worked, partly worked, or failed — and the card is attached.", needsArtifact: true },
   { id: "data_question", label: "A question about my data", hint: "You are stuck on your own run and the card comes with the question.",    needsArtifact: true },
   { id: "general",       label: "A general question",       hint: "Grants, mentorship, careers, or how other groups do something.",         needsArtifact: false },
   { id: "collab",        label: "A call for collaborators", hint: "What you need, what you offer, and by when.",                            needsArtifact: false },
+  { id: "feedback",      label: "A request for feedback",   hint: "A draft, a poster, a figure or an analysis: what feedback you want, and by when.", needsArtifact: false },
   { id: "update",        label: "News or an update",        hint: "A paper out, a talk, a picture from the bench, a link worth reading.",   needsArtifact: false },
 ];
 
 export const intentById = (id: string) => INTENTS.find((i) => i.id === id) ?? null;
 
+
+// ── feedback requests ─────────────────────────────────────────────────────
+/** What kind of feedback a request asks for (supabase/15). */
+export const FEEDBACK_KINDS = [
+  { id: "figures",    label: "Figures" },
+  { id: "statistics", label: "Statistics" },
+  { id: "methods",    label: "Methods" },
+  { id: "logic",      label: "Argument and logic" },
+  { id: "clarity",    label: "Clarity and structure" },
+  { id: "language",   label: "Language" },
+] as const;
+export const feedbackLabel = (id: string) => FEEDBACK_KINDS.find((k) => k.id === id)?.label ?? id;
+
+// ── open to ───────────────────────────────────────────────────────────────
+/** What a person is open to, shown on their profile and searchable (supabase/15). */
+export const OPEN_TO = [
+  { id: "collaborate",     label: "Collaborating" },
+  { id: "feedback",        label: "Giving feedback" },
+  { id: "feedback_wanted", label: "Getting feedback" },
+  { id: "mentoring",       label: "Mentoring" },
+  { id: "mentee",          label: "Being mentored" },
+  { id: "positions",       label: "Hiring" },
+  { id: "jobs",            label: "A new position" },
+  { id: "visiting",        label: "Visiting stays" },
+] as const;
+export const openToLabel = (id: string) => OPEN_TO.find((o) => o.id === id)?.label ?? id;

@@ -1,5 +1,7 @@
 "use server";
 
+import { OPEN_TO } from "@/lib/taxonomy";
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
@@ -28,6 +30,7 @@ export async function saveProfile(form: FormData) {
       field:        String(form.get("field") ?? "").trim().slice(0, 120),
       techniques:   String(form.get("techniques") ?? "").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 30),
       bio:          String(form.get("bio") ?? "").trim().slice(0, 600),
+      open_to:      [...new Set(form.getAll("open_to").map(String))].filter((o) => OPEN_TO.some((x) => x.id === o)),
     })
     .eq("id", user.id);
 

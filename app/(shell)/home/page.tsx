@@ -24,11 +24,14 @@ import FollowButton from "@/components/social/FollowButton";
 import QuickPost from "@/components/feed/QuickPost";
 import { imageUrls } from "@/lib/posts/images";
 import { postExtras, repostedBy } from "@/lib/posts/extras";
+import { notForChosenPeople } from "@/lib/social/groups";
+import { forYou } from "@/lib/social/for-you";
+import ForYouPanel from "@/components/dashboard/ForYouPanel";
 
 export const dynamic = "force-dynamic";
 
 /** Short names for the filter pills; the full name is the tooltip. */
-const SHORT: Record<string, string> = { result: "Results", data_question: "Data questions", general: "Questions", collab: "Collaborators", update: "News" };
+const SHORT: Record<string, string> = { result: "Results", data_question: "Data questions", general: "Questions", collab: "Collaborators", feedback: "Feedback", update: "News" };
 
 
 /**
@@ -81,7 +84,7 @@ export default async function Home({
     if ((feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length)) {
       return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>> };
     }
-    const cols = "id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, created_at";
+    const cols = "id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, audience, feedback_kinds, call_status, created_at";
     // Following: what they posted, and what they reposted (at the time of the repost).
     const reposted = feedMode === "following" ? await repostedBy(supabase, followed) : [];
     let q = supabase.from("posts").select(cols);
@@ -97,7 +100,7 @@ export default async function Home({
     const when = (p: any) => reposted.find((r) => r.post_id === p.id && r.created_at > p.created_at)?.created_at ?? p.created_at;
     const all = [...(own ?? []), ...(intent ? (shared ?? []).filter((p: any) => p.intent === intent) : shared ?? [])]
       .sort((a: any, b: any) => when(b).localeCompare(when(a))).slice(0, 40);
-    const posts = all.filter((p: any) => !p.group_id || myGroupIds.includes(p.group_id));
+    const posts = all.filter((p: any) => (!p.group_id || myGroupIds.includes(p.group_id)) && notForChosenPeople(me_)(p));
     const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
     const postIds = (posts ?? []).map((p: any) => p.id);
     const [authors, { data: cards }, { data: feedReplies }, reactions, images] = await Promise.all([
@@ -159,6 +162,7 @@ export default async function Home({
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
     [followActivity, onMine, contacts, theirPapers],
     { groups: groupList, joinable },
+    waiting,
   ] = await Promise.all([
     feed,
     research,
@@ -167,10 +171,11 @@ export default async function Home({
     myPostIds.length ? supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", myPostIds) : empty,
     social,
     groupsPanel,
+    forYou(supabase, me_),
   ]);
   const groupNames = new Map<string, { id: string; name: string }>(groupList.map((g: any) => [g.id, { id: g.id, name: g.name }]));
   // New papers: yours from the last syncs, then those of people you follow.
-  const names = await peopleById(supabase, theirPapers.map((p) => p.user));
+  const names = await peopleById(supabase, [...theirPapers.map((p) => p.user), ...waiting.feedback.map((f) => f.author_id)]);
   const year = new Date().getFullYear();
   const mineNew = [
     ...change.newPubs.map((n) => pubs.find((p) => p.openalex_id === n.openalex_id)).filter(Boolean),
@@ -238,6 +243,7 @@ export default async function Home({
 
       <GettingStarted steps={steps} />
       <Highlights biblio={biblio} change={change} pubs={pubs} papers={papers} contacts={contacts} nudges={nudges} />
+      <ForYouPanel data={waiting} names={new Map([...names].map(([id, p]) => [id, p.display_name]))} />
 
       {/* ── feed ──────────────────────────────────────────────────────── */}
       <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12, scrollMarginTop: 72 }}>

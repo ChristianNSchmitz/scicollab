@@ -11,7 +11,7 @@ import { markSeen, type GroupCtx } from "./ctx";
 export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
   const { supabase, id, g, me } = ctx;
   const { data: posts } = await supabase.from("posts")
-    .select("id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, created_at")
+    .select("id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, audience, feedback_kinds, call_status, created_at")
     .eq("group_id", id).order("created_at", { ascending: false }).limit(30);
   const postIds = (posts ?? []).map((p: any) => p.id);
   const [authors, reactions, images, { data: replies }] = await Promise.all([

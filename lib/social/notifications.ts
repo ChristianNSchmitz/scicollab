@@ -1,3 +1,4 @@
+import { myChats } from "@/lib/social/chats";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { REACTIONS } from "@/lib/social/reactions";
 
@@ -35,7 +36,7 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
   const postIds = (myPosts ?? []).map((p: any) => p.id);
   const answerIds = (myAnswers ?? []).map((a: any) => a.id);
   const attIds = [...new Set([...(incoming ?? []), ...(outgoing ?? [])].map((r: any) => r.attachment_id))];
-  const [{ data: answers }, { data: replies }, { data: atts }, { data: onPosts }, { data: onAnswers }, { data: joinRequests }, { data: ownedGroups }, { data: reposts }] = await Promise.all([
+  const [{ data: answers }, { data: replies }, { data: atts }, { data: onPosts }, { data: onAnswers }, { data: joinRequests }, { data: ownedGroups }, { data: reposts }, { data: askedMe }, { data: helpedMine }, { data: interested }] = await Promise.all([
     qIds.length ? supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds).gte("created_at", since) : empty,
     postIds.length ? supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", postIds).gte("created_at", since) : empty,
     attIds.length ? supabase.from("post_attachments").select("id, post_id").in("id", attIds) : empty,
@@ -44,7 +45,17 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     ownedIds.length ? supabase.from("group_requests").select("group_id, user_id, created_at").in("group_id", ownedIds) : empty,
     ownedIds.length ? supabase.from("groups").select("id, name").in("id", ownedIds) : empty,
     postIds.length ? supabase.from("post_reposts").select("post_id, user_id, created_at").in("post_id", postIds).gte("created_at", since) : empty,
+    // Feedback requests sent to you, your comments that helped, interest in your calls (supabase/15).
+    supabase.from("post_audience").select("post_id").eq("user_id", me),
+    supabase.from("post_replies").select("post_id, helped_at").eq("author_id", me).gte("helped_at", since),
+    postIds.length ? supabase.from("call_interest").select("post_id, user_id, created_at").in("post_id", postIds).gte("created_at", since) : empty,
   ]);
+  const feedbackIds = [...new Set([...(askedMe ?? []).map((a: any) => a.post_id), ...(helpedMine ?? []).map((h: any) => h.post_id)])];
+  const { data: feedbackPosts } = feedbackIds.length
+    ? await supabase.from("posts").select("id, title, author_id, created_at").in("id", feedbackIds)
+    : { data: [] as any[] };
+  const fbPost = (id: string) => (feedbackPosts ?? []).find((p: any) => p.id === id);
+  const chats = await myChats(supabase, me);
 
   const titleOf = (rows: any[] | null, id: string, fallback: string) => (rows ?? []).find((r: any) => r.id === id)?.title ?? fallback;
   const postOfAtt = (id: string) => (atts ?? []).find((a: any) => a.id === id)?.post_id as string | undefined;
@@ -83,6 +94,18 @@ export async function loadNotices(supabase: Client, me: string, windowDays = 30)
     ...(joinRequests ?? []).map((r: any): Notice => ({
       at: r.created_at, kind: "join request", who: r.user_id,
       text: `asked to join ${(ownedGroups ?? []).find((g: any) => g.id === r.group_id)?.name ?? "your group"}`, href: `/groups/${r.group_id}?tab=members#requests`,
+    })),
+    ...chats.filter((c) => c.unread > 0).map((c): Notice => ({
+      at: c.at, kind: "message", who: c.lastAuthor, text: `wrote in the small chat “${c.title || "with a few people"}” (${c.unread} new)`, href: `/chats/${c.id}`,
+    })),
+    ...(askedMe ?? []).map((a: any) => fbPost(a.post_id)).filter((p: any) => p && p.created_at >= since).map((p: any): Notice => ({
+      at: p.created_at, kind: "feedback", who: p.author_id, text: `asked you for feedback on “${p.title}”`, href: `/posts/${p.id}`,
+    })),
+    ...(helpedMine ?? []).filter((h: any) => fbPost(h.post_id)).map((h: any): Notice => ({
+      at: h.helped_at, kind: "feedback", who: fbPost(h.post_id).author_id, text: `marked your comment on “${fbPost(h.post_id).title}” as helpful`, href: `/posts/${h.post_id}#replies`,
+    })),
+    ...(interested ?? []).filter((i: any) => i.user_id !== me).map((i: any): Notice => ({
+      at: i.created_at, kind: "call", who: i.user_id, text: `is interested in your call “${titleOf(myPosts, i.post_id, "for collaborators")}”`, href: `/posts/${i.post_id}#call`,
     })),
     ...(reposts ?? []).filter((r: any) => r.user_id !== me).map((r: any): Notice => ({
       at: r.created_at, kind: "repost", who: r.user_id, text: `reposted “${titleOf(myPosts, r.post_id, "your post")}”`, href: `/posts/${r.post_id}`,

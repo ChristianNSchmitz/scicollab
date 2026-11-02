@@ -17,8 +17,8 @@ type Result = { ok: true } | { error: string };
 
 async function openPost(supabase: any, postId: string) {
   if (!isRowId(postId)) return null;
-  const { data } = await supabase.from("posts").select("id, title, author_id, group_id").eq("id", postId).maybeSingle();
-  return data as { id: string; title: string; author_id: string; group_id: string | null } | null;
+  const { data } = await supabase.from("posts").select("id, title, author_id, group_id, audience").eq("id", postId).maybeSingle();
+  return data as { id: string; title: string; author_id: string; group_id: string | null; audience?: string } | null;
 }
 
 export async function repost(postId: string, note: string): Promise<Result> {
@@ -27,6 +27,7 @@ export async function repost(postId: string, note: string): Promise<Result> {
   const post = await openPost(supabase, postId);
   if (!post) return { error: "That post is gone." };
   if (post.group_id) return { error: "Posts in a group stay in the group." };
+  if (post.audience === "people") return { error: "This post is only for the people its author chose." };
   if (post.author_id === user.id) return { error: "This is your own post." };
   const { data: had } = await supabase.from("post_reposts").select("post_id").eq("post_id", postId).eq("user_id", user.id).maybeSingle();
   const text = String(note ?? "").trim().slice(0, 1000);
@@ -68,6 +69,7 @@ export async function sendPost(postId: string, personId: string, note: string): 
   const post = await openPost(supabase, postId);
   if (!post) return { error: "That post is gone." };
   if (post.group_id) return { error: "Posts in a group stay in the group." };
+  if (post.audience === "people") return { error: "This post is only for the people its author chose." };
   const h = await headers();
   const base = process.env.SCICOLLAB_SITE_URL || `${h.get("x-forwarded-proto") ?? "https"}://${h.get("host")}`;
   const body = [String(note ?? "").trim().slice(0, 1500), `${post.title}\n${base}/posts/${post.id}`].filter(Boolean).join("\n\n");

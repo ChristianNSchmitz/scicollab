@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { isRowId } from "@/lib/query";
+import { PROJECT_STATUSES, PROJECT_ROLES } from "@/lib/projects";
 
 
 export async function createProject(form: FormData) {
@@ -122,5 +124,105 @@ export async function removeProjectMember(projectId: string, personId: string) {
   const { data: p } = await supabase.from("projects").select("owner_id").eq("id", projectId).maybeSingle();
   if (p?.owner_id !== user.id || personId === user.id) throw new Error("Only the owner can remove people, and not themselves.");
   await supabase.from("project_members").delete().eq("project_id", projectId).eq("user_id", personId);
+  revalidatePath(`/projects/${projectId}`);
+}
+
+// ── project workspace (supabase/16) ──────────────────────────────────────
+
+
+async function projectRole(supabase: any, projectId: string, userId: string) {
+  const [{ data: p }, { data: m }] = await Promise.all([
+    supabase.from("projects").select("owner_id").eq("id", projectId).maybeSingle(),
+    supabase.from("project_members").select("role").eq("project_id", projectId).eq("user_id", userId).maybeSingle(),
+  ]);
+  return { owner: p?.owner_id === userId, member: p?.owner_id === userId || !!m };
+}
+
+/** The owner edits the title, summary, aims, status and who can see the project. */
+export async function updateProject(projectId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const { owner } = await projectRole(supabase, projectId, user.id);
+  if (!owner) throw new Error("Only the owner can change the project.");
+  const title = String(form.get("title") ?? "").trim().slice(0, 200);
+  if (!title) redirect(`/projects/${projectId}?tab=overview&error=title#settings`);
+  const status = String(form.get("status") ?? "active");
+  const visibility = String(form.get("visibility") ?? "lab");
+  await supabase.from("projects").update({
+    title,
+    summary: String(form.get("summary") ?? "").trim().slice(0, 1000),
+    aims: String(form.get("aims") ?? "").trim().slice(0, 3000),
+    status: PROJECT_STATUSES.includes(status) ? status : "active",
+    visibility: ["private", "lab", "public"].includes(visibility) ? visibility : "lab",
+    tags: String(form.get("tags") ?? "").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 12),
+    updated_at: new Date().toISOString(),
+  }).eq("id", projectId).eq("owner_id", user.id);
+  revalidatePath(`/projects/${projectId}`);
+  revalidatePath("/projects");
+  redirect(`/projects/${projectId}?tab=overview&saved=1`);
+}
+
+export async function setProjectRole(projectId: string, personId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const { owner } = await projectRole(supabase, projectId, user.id);
+  if (!owner || personId === user.id) throw new Error("Only the owner changes roles, and not their own.");
+  const role = String(form.get("role") ?? "");
+  if (!PROJECT_ROLES.includes(role)) return;
+  await supabase.from("project_members").update({ role }).eq("project_id", projectId).eq("user_id", personId);
+  revalidatePath(`/projects/${projectId}`);
+}
+
+/** A member links one of their own method cards; everyone on the project can then read it. */
+export async function linkProjectMethod(projectId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const { member } = await projectRole(supabase, projectId, user.id);
+  const cardId = String(form.get("card") ?? "");
+  const { data: card } = isRowId(cardId) ? await supabase.from("method_cards").select("id").eq("id", cardId).eq("author_id", user.id).maybeSingle() : { data: null };
+  if (!member || !card) throw new Error("Only members link their own method cards.");
+  const { data: had } = await supabase.from("project_methods").select("card_id").eq("project_id", projectId).eq("card_id", cardId).maybeSingle();
+  if (!had) await supabase.from("project_methods").insert({ project_id: projectId, card_id: cardId, added_by: user.id, added_at: new Date().toISOString() });
+  revalidatePath(`/projects/${projectId}`);
+  revalidatePath(`/methods/${cardId}`);
+}
+
+export async function unlinkProjectMethod(projectId: string, cardId: string) {
+  const { supabase, user } = await requireUser();
+  const { owner } = await projectRole(supabase, projectId, user.id);
+  const { data: row } = await supabase.from("project_methods").select("added_by").eq("project_id", projectId).eq("card_id", cardId).maybeSingle();
+  if (!row) return;
+  if (row.added_by !== user.id && !owner) throw new Error("Only whoever linked it, or the owner, can unlink it.");
+  await supabase.from("project_methods").delete().eq("project_id", projectId).eq("card_id", cardId);
+  revalidatePath(`/projects/${projectId}`);
+  revalidatePath(`/methods/${cardId}`);
+}
+
+export async function addMilestone(projectId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  const { member } = await projectRole(supabase, projectId, user.id);
+  if (!member) throw new Error("Only members add milestones.");
+  const title = String(form.get("title") ?? "").trim().slice(0, 200);
+  if (!title) return;
+  const due = String(form.get("due") ?? "");
+  await supabase.from("project_milestones").insert({
+    project_id: projectId, title, created_by: user.id, due_on: /^\d{4}-\d{2}-\d{2}$/.test(due) ? due : null, done_at: null, done_by: null,
+  });
+  revalidatePath(`/projects/${projectId}`);
+}
+
+export async function toggleMilestone(projectId: string, milestoneId: string, done: boolean) {
+  const { supabase, user } = await requireUser();
+  const { member } = await projectRole(supabase, projectId, user.id);
+  if (!member) throw new Error("Only members tick off milestones.");
+  await supabase.from("project_milestones").update(done ? { done_at: new Date().toISOString(), done_by: user.id } : { done_at: null, done_by: null })
+    .eq("id", milestoneId).eq("project_id", projectId);
+  revalidatePath(`/projects/${projectId}`);
+}
+
+export async function deleteMilestone(projectId: string, milestoneId: string) {
+  const { supabase, user } = await requireUser();
+  const { owner } = await projectRole(supabase, projectId, user.id);
+  const { data: m } = await supabase.from("project_milestones").select("created_by").eq("id", milestoneId).eq("project_id", projectId).maybeSingle();
+  if (!m) return;
+  if (m.created_by !== user.id && !owner) throw new Error("Only whoever added it, or the owner, can delete it.");
+  await supabase.from("project_milestones").delete().eq("id", milestoneId);
   revalidatePath(`/projects/${projectId}`);
 }

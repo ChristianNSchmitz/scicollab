@@ -145,7 +145,7 @@ export async function linkDataset(groupId: string, form: FormData) {
     : { data: null };
   if (!ds) throw new Error("You can only link your own datasets.");
   const { data: already } = await supabase.from("group_datasets").select("dataset_id").eq("group_id", groupId).eq("dataset_id", datasetId).maybeSingle();
-  if (!already) await supabase.from("group_datasets").insert({ group_id: groupId, dataset_id: datasetId, added_by: user.id });
+  if (!already) await supabase.from("group_datasets").insert({ group_id: groupId, dataset_id: datasetId, added_by: user.id, added_at: new Date().toISOString() });
   revalidatePath(`/groups/${groupId}`);
 }
 

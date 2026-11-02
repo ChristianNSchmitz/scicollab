@@ -1,3 +1,4 @@
+import { openToLabel } from "@/lib/taxonomy";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ProfileData } from "@/lib/social/profile";
@@ -143,8 +144,21 @@ export function ProfileHead({ d, actions }: { d: ProfileData; actions?: ReactNod
           {[p.role_title, p.institution, p.field].filter(Boolean).join(" · ") || "No role or institution given yet."}
         </p>
         <p style={{ font: mono(10.5), color: "var(--mute)", margin: "4px 0 0" }}>Member since {p.created_at.slice(0, 7)}</p>
+        {(p.open_to ?? []).length > 0 && <OpenToChips ids={p.open_to!} style={{ marginTop: 8 }} />}
       </div>
       {actions}
     </header>
+  );
+}
+
+/** "Open to …" as small green chips: what this person welcomes being asked for. */
+export function OpenToChips({ ids, style }: { ids: string[]; style?: React.CSSProperties }) {
+  return (
+    <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center", ...style }}>
+      <span style={{ font: "600 11.5px/1 var(--sans)", color: "var(--mute)" }}>Open to</span>
+      {ids.map((id) => (
+        <span key={id} style={{ padding: "3px 9px", borderRadius: 999, font: "500 11.5px/1.3 var(--sans)", color: "var(--ok)", background: "color-mix(in srgb, var(--ok) 10%, transparent)" }}>{openToLabel(id)}</span>
+      ))}
+    </div>
   );
 }

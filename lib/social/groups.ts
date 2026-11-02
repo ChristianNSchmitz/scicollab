@@ -35,7 +35,23 @@ export async function currentGroupIds(supabase: SupabaseClient<any, any, any>, u
  * groups, current members only for a group's discussion. The database says
  * the same (posts_read); this keeps the demo store and every page honest.
  */
-export async function canReadPost(supabase: SupabaseClient<any, any, any>, post: { group_id?: string | null }, userId: string): Promise<boolean> {
-  if (!post.group_id) return true;
-  return isCurrent(await roleIn(supabase, post.group_id, userId));
+export async function canReadPost(
+  supabase: SupabaseClient<any, any, any>,
+  post: { id?: string; group_id?: string | null; audience?: string | null; author_id?: string | null },
+  userId: string,
+): Promise<boolean> {
+  if (post.group_id) return isCurrent(await roleIn(supabase, post.group_id, userId));
+  // A post for chosen people (supabase/15): its author and those people.
+  let { audience, author_id } = post;
+  if (audience === undefined && post.id) {
+    const { data } = await supabase.from("posts").select("audience, author_id").eq("id", post.id).maybeSingle();
+    audience = data?.audience; author_id = data?.author_id;
+  }
+  if (audience !== "people" || author_id === userId) return true;
+  const { data: row } = await supabase.from("post_audience").select("user_id").eq("post_id", post.id ?? "").eq("user_id", userId).maybeSingle();
+  return !!row;
 }
+
+/** Lists of posts: drop those meant for chosen people, unless written by the viewer (the database does the same, supabase/15). */
+export const notForChosenPeople = (viewer: string) => (p: { audience?: string | null; author_id?: string | null }) =>
+  p.audience !== "people" || p.author_id === viewer;

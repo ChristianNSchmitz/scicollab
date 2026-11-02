@@ -20,7 +20,7 @@ export const AXES: { key: Axis; label: string; unit: string }[] = [
   { key: "replications", label: "Replications run", unit: "runs" },
   { key: "answers",      label: "Answers given",    unit: "answers" },
   { key: "questions",    label: "Questions asked",  unit: "questions" },
-  { key: "reviews",      label: "Reviews written",  unit: "reviews" },
+  { key: "reviews",      label: "Reviews and feedback", unit: "reviews" },
   { key: "mentoring",    label: "People mentored",  unit: "people" },
   { key: "reuse",        label: "Reuse by others",  unit: "events" },
   { key: "data",         label: "Data deposited",   unit: "datasets" },
@@ -80,7 +80,7 @@ const uniq = <T,>(v: T[]) => [...new Set(v)];
 export async function loadRecord(supabase: Client, me: string, weeks: number): Promise<Record_> {
   const [
     { data: myCards }, { data: myQuestions }, { data: myAnswers }, { data: myData }, { data: profile },
-    { data: myRepros }, { data: myReviews }, { data: mentees },
+    { data: myRepros }, { data: myReviews }, { data: mentees }, { data: helpedFeedback },
   ] = await Promise.all([
     supabase.from("method_cards").select("id, code, title, outcome, visibility, tags, created_at").eq("author_id", me),
     supabase.from("questions").select("id, title, created_at").eq("author_id", me),
@@ -90,6 +90,8 @@ export async function loadRecord(supabase: Client, me: string, weeks: number): P
     supabase.from("reproductions").select("id, card_id, outcome, created_at").eq("user_id", me),
     supabase.from("reviews").select("id, card_id, verdict, created_at").eq("reviewer_id", me),
     supabase.from("mentorships").select("id, mentee_id, note, created_at").eq("mentor_id", me),
+    // Feedback on someone's draft or figure that its author marked as helpful (supabase/15).
+    supabase.from("post_replies").select("id, post_id, anchor, helped_at").eq("author_id", me).gte("helped_at", "1970-01-01"),
   ]);
 
   const cards = list(myCards), questions = list(myQuestions), answers = list(myAnswers), datasets = list(myData);
@@ -152,6 +154,11 @@ export async function loadRecord(supabase: Client, me: string, weeks: number): P
       const c = theirs(r.card_id);
       return { at: r.created_at, axis: "reviews", text: `Reviewed ${c ? `${c.code} ${c.title}` : "a card"}`, href: `/methods/${r.card_id}`, reuse: false };
     }),
+    ...list(helpedFeedback).map((h): Event => ({
+      at: h.helped_at, axis: "reviews",
+      text: `Your feedback${h.anchor ? ` on ${h.anchor}` : ""} was marked helpful by the author`,
+      href: `/posts/${h.post_id}#replies`, reuse: false,
+    })),
     ...list(mentees).map((m): Event => ({
       at: m.created_at, axis: "mentoring",
       text: `${who(m.mentee_id)} named you as a guide${m.note ? ` · “${m.note}”` : ""}`,
@@ -197,7 +204,7 @@ export async function loadRecord(supabase: Client, me: string, weeks: number): P
     replications: [["held", ofN(heldBy(list(myRepros)), list(myRepros).length)], ["failed, recorded anyway", String(list(myRepros).length - heldBy(list(myRepros)))]],
     answers:      [["accepted", ofN(accepted, answers.length)], ["questions helped", String(answeredQIds.length)]],
     questions:    [["with an accepted answer", ofN(acceptedQ.size, questions.length)], ["still open", String(questions.length - acceptedQ.size)]],
-    reviews:      [["cards reviewed", String(uniq(list(myReviews).map((r) => r.card_id)).length)], ["said clear to run", String(list(myReviews).filter((r) => r.verdict === "clear").length)]],
+    reviews:      [["cards reviewed", String(uniq(list(myReviews).map((r) => r.card_id)).length)], ["feedback that helped", String(list(helpedFeedback).length)]],
     mentoring:    [["named by them, not you", String(list(mentees).length)], ["visible to", "the two of you"]],
     reuse:        [["forks · questions carrying", `${list(forks).length} · ${list(carried).length}`], ["reproductions held", ofN(heldBy(list(reprosOnMine)), list(reprosOnMine).length)]],
     data:         [["in projects", String(uniq(datasets.map((d) => d.project_id).filter(Boolean)).length)], ["deposit from", "a project's Data tab"]],

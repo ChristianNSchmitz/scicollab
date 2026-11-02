@@ -18,7 +18,7 @@ export default async function SavedPosts() {
   const { data: saved } = await supabase.from("saved_posts").select("post_id, created_at").eq("user_id", me).order("created_at", { ascending: false }).limit(100);
   const ids = (saved ?? []).map((s: any) => s.post_id);
   const { data: rows } = ids.length
-    ? await supabase.from("posts").select("id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, created_at").in("id", ids)
+    ? await supabase.from("posts").select("id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, audience, feedback_kinds, call_status, created_at").in("id", ids)
     : { data: [] as any[] };
   // Saved order; a post that is gone, or in a group you left, drops out.
   const posts = ids.map((id) => (rows ?? []).find((p: any) => p.id === id)).filter(Boolean) as any[];

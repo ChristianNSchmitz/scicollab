@@ -27,7 +27,7 @@ export async function activityOf(
   if (!actors.length) return [];
   const since = new Date(Date.now() - (opts.days ?? 60) * DAY).toISOString();
   const [{ data: posts }, { data: answers }, { data: questions }, { data: cards }, { data: repros }, { data: joins }] = await Promise.all([
-    supabase.from("posts").select("id, author_id, room_id, group_id, title, created_at").in("author_id", actors).gte("created_at", since),
+    supabase.from("posts").select("id, author_id, room_id, group_id, audience, title, created_at").in("author_id", actors).neq("audience", "people").gte("created_at", since),
     supabase.from("answers").select("id, author_id, question_id, created_at").in("author_id", actors).gte("created_at", since),
     supabase.from("questions").select("id, author_id, title, created_at").in("author_id", actors).gte("created_at", since),
     supabase.from("method_cards").select("id, author_id, code, title, visibility, outcome, created_at").in("author_id", actors).gte("created_at", since),
