@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { mono } from "@/components/ui";
+import SegIndicator from "@/components/SegIndicator";
 
 /**
  * The one tab control used across the site: a segmented bar (feed, groups,
@@ -31,7 +32,8 @@ export default function SegTabs({ label, items, more, after, style }: {
   const open = more?.find((m) => m.active);
   const moreBadge = (more ?? []).reduce((n, m) => n + (m.badge ?? 0), 0);
   return (
-    <nav aria-label={label} className="sc-seg" style={{ display: "flex", gap: 0, margin: "0 0 16px", position: "relative", ...style }}>
+    <nav aria-label={label} className="sc-seg sc-seg-anim" style={{ display: "flex", gap: 0, margin: "0 0 16px", position: "relative", ...style }}>
+      <SegIndicator id={label} activeKey={[...items, ...(more ?? []), ...(after ?? [])].find((i) => i.active)?.href ?? ""} />
       {items.map((it) => <Tab key={it.href} item={it} />)}
       {more && more.length > 0 && (
         <details style={{ flex: "1 0 auto", position: "relative", display: "flex" }}>

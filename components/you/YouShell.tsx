@@ -39,7 +39,7 @@ export default async function YouShell({ active, children }: { active: YouTab; c
           <Link href="/settings#profile" style={{ height: 34, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 13px/1 var(--sans)", color: "var(--ink)", textDecoration: "none" }}>Edit profile</Link>
         </header>
         <SegTabs label="Your pages" items={TABS.map((t) => ({ href: t.href, label: t.label, active: t.id === active }))} />
-        {children}
+        <div key={active} className="sc-tabpane">{children}</div>
       </div>
     </div>
   );

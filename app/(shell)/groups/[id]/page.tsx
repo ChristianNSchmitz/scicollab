@@ -148,6 +148,7 @@ export default async function Group({ params, searchParams }: { params: Promise<
         more={visible.filter((t) => ["board", "tasks", "shared"].includes(t.id)).map((t) => ({ href: `/groups/${id}?tab=${t.id}`, label: t.label, active: tab === t.id, badge: badge[t.id], quiet: true }))}
         after={visible.filter((t) => t.id === "members").map((t) => ({ href: `/groups/${id}?tab=members`, label: t.label, active: tab === "members", badge: badge.members }))} />
 
+      <div key={tab} className="sc-tabpane">
       {tab === "overview" && <GroupOverview ctx={ctx} pulse={pulse} />}
       {tab === "feed" && <GroupFeed ctx={ctx} />}
       {tab === "chat" && <GroupChat ctx={ctx} />}
@@ -155,6 +156,7 @@ export default async function Group({ params, searchParams }: { params: Promise<
       {tab === "tasks" && <GroupTasks ctx={ctx} />}
       {tab === "shared" && <GroupShared ctx={ctx} />}
       {tab === "members" && <GroupMembers ctx={ctx} />}
+      </div>
     </Page>
   );
 }

@@ -333,6 +333,7 @@ export default async function Home({
           </Panel>
         )}
 
+        <div key={`${feedMode}-${intent ?? ""}-${room ?? ""}`} className="sc-tabpane" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {(posts ?? []).map((p: any) => (
           <PostCard key={p.id} p={p} author={who(p.author_id)} card={cardOf(p.method_card_id)} images={images.get(p.id)}
             reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
@@ -340,6 +341,7 @@ export default async function Home({
             extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")}
             topReply={topReply(p.id)} />
         ))}
+        </div>
         {hasMore && (
           <Link href={qs({ n: String(pageSize + 20) }).replace("#feed", `#post-${posts[posts.length - 1].id}`)} scroll={false}
             style={{ alignSelf: "center", padding: "9px 18px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", color: "var(--ink)", font: "600 13px/1 var(--sans)", textDecoration: "none" }}>

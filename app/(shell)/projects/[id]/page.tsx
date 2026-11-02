@@ -142,7 +142,7 @@ export default async function Project({
         badge: t.id === "overview" ? counts.overview : undefined, quiet: true,
       }))} />
 
-      <div className="sc-two-col">
+      <div key={active} className="sc-two-col sc-tabpane">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {active === "overview" && (
             <>

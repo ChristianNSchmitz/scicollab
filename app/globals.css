@@ -42,8 +42,8 @@
   --bg:      #0D0D0D;
   --surface: #161616;
   --ink:     #F2F0EC;
-  --mute:    #8E8B85;
-  --rule:    #2E2C29;
+  --mute:    #A9A59E;
+  --rule:    #3A3834;
   --signal:  #FF5A14;
   --flag:    #FFD400;
   --ok:      #3DBB86;
@@ -55,7 +55,7 @@
   --signal-fill: #FF5A14;
   --on-signal:   #0D0D0D;
   --flag-ink:    #E0B400;
-  --placeholder: #8E8B85;
+  --placeholder: #9C9890;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -280,10 +280,13 @@ html[data-look="glass"] {
 }
 html[data-look="glass"][data-theme="dark"] {
   --bg: #0A0B10;
-  --surface: rgba(28, 28, 32, .702);
-  --rule: rgba(235, 235, 245, .12);
-  --glass: rgba(30, 30, 36, .468);
-  --glass-edge: rgba(255, 255, 255, .169);
+  /* Slightly more contrast than before: lighter cards, clearer lines and edges,
+     and muted text that holds 7:1 on the cards instead of about 5:1. */
+  --surface: rgba(36, 36, 42, .78);
+  --rule: rgba(235, 235, 245, .18);
+  --mute: #B4B0A9;
+  --glass: rgba(34, 34, 40, .55);
+  --glass-edge: rgba(255, 255, 255, .22);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, .45);
   --card-shadow: 0 6px 24px rgba(0, 0, 0, .35);
 }
@@ -541,3 +544,23 @@ html[data-look="glass"] .sc-seg details a[aria-current="page"] { background: col
 html[data-look="glass"] .sc-seg summary { border: 0 !important; font: 600 13px/1.2 var(--sans) !important; padding: 7px 12px !important; }
 html[data-look="glass"] .sc-seg summary[aria-current="page"] { color: var(--ink) !important; }
 .sc-seg summary::-webkit-details-marker { display: none; }
+
+/* SegTabs: a highlight that slides between tabs, and new tab content fading in. */
+.sc-seg-anim > a, .sc-seg-anim > details { position: relative; z-index: 1; }
+.sc-seg-ind {
+  position: absolute; left: 0; top: 0; z-index: 0; opacity: 0; pointer-events: none;
+  border-bottom: 2px solid var(--signal);
+  transition: transform .32s cubic-bezier(.3, .7, .2, 1), width .32s cubic-bezier(.3, .7, .2, 1), opacity .15s ease;
+}
+/* Classic look: the sliding underline replaces each tab's own once it is in place. */
+.sc-seg-anim[data-ind="on"] > a[aria-current="page"] { border-bottom-color: transparent !important; }
+html[data-look="glass"] .sc-seg-ind { border-bottom: 0; border-radius: 9px; background: var(--surface); box-shadow: 0 1px 3px rgba(0, 0, 0, .10), 0 1px 1px rgba(0, 0, 0, .04); }
+html[data-look="glass"][data-theme="dark"] .sc-seg-ind { background: rgba(255, 255, 255, .22); }
+html[data-look="glass"] .sc-seg-anim[data-ind="on"] > a[aria-current="page"],
+html[data-look="glass"] .sc-seg-anim[data-ind="on"] > details > summary[aria-current="page"] { background: transparent !important; box-shadow: none !important; }
+.sc-seg-anim > a { transition: color .2s ease; }
+.sc-tabpane { animation: sc-tab-in .26s ease both; }
+@keyframes sc-tab-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sc-seg-ind, .sc-seg-anim > a { transition: none; } .sc-tabpane { animation: none; } }
+/* Dark mode: the bar itself a little lighter, for contrast. */
+html[data-look="glass"][data-theme="dark"] .sc-seg { background: rgba(160, 160, 175, .20); }
