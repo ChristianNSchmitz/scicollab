@@ -13,7 +13,7 @@ import { isConfigured } from "@/lib/mode";
  * repositories are not read.
  */
 
-import { parseRepoUrl, type Provider, type RepoRef } from "@/lib/repo-url";
+import { parseRepoUrl, checkedLink, onHost, type Provider, type RepoRef } from "@/lib/repo-url";
 export { parseRepoUrl, type Provider, type RepoRef };
 
 export type RepoCommit = { sha: string; message: string; author: string; date: string; url: string };
@@ -37,6 +37,8 @@ async function getJson(url: string, token?: string, header = "Authorization"): P
 
 /** Read a repository's public details and latest five commits from its provider. */
 export async function fetchRepo(ref: RepoRef): Promise<RepoInfo> {
+  // The link may have been edited since it was added; never fetch an address that would not be accepted now.
+  if (!checkedLink(ref)) throw new Error("not an allowed repository");
   if (ref.provider === "github") {
     const base = `https://api.github.com/repos/${ref.path}`;
     const [r, commits] = await Promise.all([getJson(base, process.env.GITHUB_TOKEN), getJson(`${base}/commits?per_page=5`, process.env.GITHUB_TOKEN).catch(() => [])]);
@@ -62,6 +64,15 @@ export async function fetchRepo(ref: RepoRef): Promise<RepoInfo> {
   };
 }
 
+/** The cache is a column members can write, so addresses in it must stay on the link's own host. */
+function cleaned(c: RepoInfo, l: RepoRef): RepoInfo {
+  return {
+    ...c,
+    webUrl: onHost(c.webUrl, l.host, l.url),
+    commits: (Array.isArray(c.commits) ? c.commits : []).map((m) => ({ ...m, url: onHost(m.url, l.host, l.url) })),
+  };
+}
+
 /** The repositories linked to a project or a group, refreshing stale caches (in parallel, briefly). */
 export async function repoLinks(supabase: SupabaseClient<any, any, any>, scope: { projectId?: string; groupId?: string }): Promise<RepoLink[]> {
   let q = supabase.from("repo_links").select("*").order("added_at", { ascending: true });
@@ -71,7 +82,8 @@ export async function repoLinks(supabase: SupabaseClient<any, any, any>, scope: 
   // The demo has no network access to rely on: it shows the seeded snapshot.
   if (!isConfigured()) return links;
   return Promise.all(links.map(async (l) => {
-    if (l.cached_at && Date.now() - +new Date(l.cached_at) < STALE_MS) return l;
+    if (!checkedLink(l)) return { ...l, cache: null, error: "this link is not an allowed repository" };
+    if (l.cached_at && Date.now() - +new Date(l.cached_at) < STALE_MS) return { ...l, cache: l.cache && cleaned(l.cache, l) };
     try {
       const cache = await fetchRepo(l);
       const cached_at = new Date().toISOString();
