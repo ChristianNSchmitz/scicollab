@@ -95,7 +95,7 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
                       {audience === "people" && (
                         <div style={{ marginTop: 8 }}>
                           <PeoplePicker name="audience_people" max={10} label="Search people by name or institution" />
-                          <p style={{ ...sub, fontWeight: 400, margin: "6px 0 0" }}>Only you and these people see the post, its files and the comments. It cannot be reposted or sent on.</p>
+                          <p style={{ ...sub, fontWeight: 400, margin: "6px 0 0" }}>Only you and these people see it.</p>
                         </div>
                       )}
                     </fieldset>

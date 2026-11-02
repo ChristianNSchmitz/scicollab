@@ -16,7 +16,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
     <PublicPage
       eyebrow="CONTACT"
       title="Talk to us"
-      lede="A question, a pilot for your lab, an article — write to us. A person from the team reads every message and answers by e-mail."
+      lede="A question or a pilot for your lab? A person answers by e-mail."
     >
       <ContactForm initialTopic={topic ? SHORTCUTS[topic] : undefined} />
       <p style={{ ...small, marginTop: 28 }}>

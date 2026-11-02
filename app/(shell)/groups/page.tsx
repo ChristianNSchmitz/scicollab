@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createGroup } from "@/app/actions/groups";
 import { Page, Panel, PanelHead, Empty, Tag, field, fieldLabel, btnPrimary, mono } from "@/components/ui";
 import TopicGroups from "@/components/social/TopicGroups";
+import { HOUSES } from "@/lib/taxonomy";
 import { ROLE_LABEL, type GroupRole } from "@/lib/social/groups";
 
 export const dynamic = "force-dynamic";
@@ -53,14 +54,13 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
   );
 
   return (
-    <Page title="Groups" lede="Two kinds. Your groups are the people you work with, a lab, a consortium or a journal club, with members and shared projects you can join. Topic groups are one per technique or shared problem: join them to see their posts in your feed.">
+    <Page title="Groups" lede="Your groups are the people you work with. Topic groups fill your feed.">
       {flash && (
         <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
       )}
       <nav aria-label="Group kinds" style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
         <a href="#people" className="sc-pill" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--ink)", color: "var(--ink)" }}>Your groups · {yours.length}</a>
         <a href="#topics" className="sc-pill" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Topic groups · {joinedTopics.size} joined</a>
-        <a href="#new" className="sc-pill" style={{ font: mono(11.5, 500), padding: "6px 11px", border: "1px solid var(--rule)", color: "var(--ink)" }}>Start a group</a>
       </nav>
       <div id="people" className="sc-two-col" style={{ scrollMarginTop: 72 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -74,9 +74,11 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
           </Panel>
         </div>
         <aside>
-          <form id="new" action={createGroup} style={{ scrollMarginTop: 72 }}>
+          {/* Folded away once you are in a group: most visits are not to start one. */}
+          <details id="new" open={!yours.length} style={{ scrollMarginTop: 72 }}>
+          <summary style={{ ...btnPrimary, borderRadius: 999, listStyle: "none", cursor: "pointer", width: "fit-content", marginBottom: 10 }}>+ Start a group</summary>
+          <form action={createGroup}>
             <Panel>
-              <PanelHead>Start a group</PanelHead>
               <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 12 }}>
                 <div>
                   <label style={fieldLabel} htmlFor="g-name">Name</label>
@@ -99,14 +101,14 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
               </div>
             </Panel>
           </form>
+          </details>
         </aside>
       </div>
       <section id="topics" style={{ scrollMarginTop: 72, marginTop: 26 }}>
         <h2 style={{ font: mono(15, 700), margin: "0 0 4px" }}>Topic groups</h2>
         <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "0 0 12px", maxWidth: "72ch" }}>
-          Every post is filed in one topic group. A topic group sits under every field it belongs to, because the same method fails the same way in different fields.
-        </p>
-        <TopicGroups joined={joinedTopics} />
+          Join topic groups to see their posts in your feed. </p>
+        <TopicGroups joined={joinedTopics} field={HOUSES.some((h) => h.id === sp.field) ? sp.field : undefined} />
       </section>
     </Page>
   );

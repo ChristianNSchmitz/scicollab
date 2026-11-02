@@ -5,7 +5,7 @@ import { Page, Panel, PanelHead, field, fieldLabel, btnPrimary, mono } from "@/c
  *  'fails under' is a first-class field rather than a note at the bottom. */
 export default function NewMethod() {
   return (
-    <Page title="Record a method" lede="Everything here is what a peer needs to reproduce the run, or to know not to try it.">
+    <Page title="Record a method" lede="What a peer needs to repeat the run.">
       <form action={createCard}>
         <div className="sc-two-col">
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -84,8 +84,7 @@ export default function NewMethod() {
                   </label>
                 ))}
                 <p style={{ font: "400 12px/1.55 var(--sans)", color: "var(--mute)", margin: "2px 0 0" }}>
-                  You can raise visibility later. Public plus a DOI is designed as irreversible — that decision is still open on board K5.
-                </p>
+                  You can raise visibility later. </p>
               </div>
             </Panel>
             <button type="submit" style={{ ...btnPrimary, height: 42, justifyContent: "center" }}>Record method</button>

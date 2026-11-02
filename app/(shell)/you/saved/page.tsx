@@ -36,9 +36,9 @@ export default async function SavedPosts() {
   const extras = await postExtras(supabase, me, posts.map((p) => p.id), new Set(), reactions);
 
   return (
-    <Page title="Saved posts" lede="Posts you kept for later. Only you see this list." actions={<Link href="/home" style={btn}>Back to the feed</Link>}>
+    <Page title="Saved posts" lede="Only you see this list." actions={<Link href="/home" style={btn}>Back to the feed</Link>}>
       <section style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 12 }}>
-        {posts.length === 0 && <Panel><Empty>Nothing saved yet. Use the ··· on a post and choose Save for later.</Empty></Panel>}
+        {posts.length === 0 && <Panel><Empty>Nothing saved yet. Use ··· on a post to save it.</Empty></Panel>}
         {posts.map((p) => (
           <PostCard key={p.id} p={p} author={people.get(p.author_id)} card={(cards ?? []).find((c: any) => c.id === p.method_card_id) ?? null}
             images={images.get(p.id)} reaction={reactions.get(p.id)} replies={(replies ?? []).filter((r: any) => r.post_id === p.id).length}

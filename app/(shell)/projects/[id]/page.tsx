@@ -204,7 +204,7 @@ export default async function Project({
 
               <Panel>
                 <PanelHead>What happened lately</PanelHead>
-                {recent.length === 0 && <Empty>Nothing yet. Notebook entries, data, commits and linked methods appear here.</Empty>}
+                {recent.length === 0 && <Empty>Nothing yet.</Empty>}
                 {recent.map((r, i) => (
                   <Link key={i} href={r.href} style={{ display: "flex", gap: 10, padding: "9px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none", font: "400 13px/1.45 var(--sans)" }}>
                     <span style={{ flex: 1, minWidth: 0 }}>{r.text}</span>
@@ -243,7 +243,7 @@ export default async function Project({
           {active === "methods" && (
             <Panel>
               <PanelHead>Method cards · {methods.length}</PanelHead>
-              {methods.length === 0 && <Empty>No method cards linked yet. Link the protocols this project runs on, so the team works from the same card.</Empty>}
+              {methods.length === 0 && <Empty>No method cards linked yet.</Empty>}
               {methods.map((m: any) => (
                 <div key={m.card_id} style={{ display: "flex", gap: 10, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
                   <div style={{ flex: "1 1 260px", minWidth: 0 }}>
@@ -272,7 +272,7 @@ export default async function Project({
                     </form>
                   )}
                   <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>
-                    Everyone on the project can read a linked card, also when it is private. <Link href="/methods/new" style={{ color: "var(--link)" }}>Record a new method</Link>.
+                    Everyone on the project can read it. <Link href="/methods/new" style={{ color: "var(--link)" }}>Record a new method</Link>.
                   </span>
                 </div>
               )}

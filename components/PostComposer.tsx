@@ -169,9 +169,7 @@ export default function PostComposer({
                       <input type="radio" name="access" value="on_request" defaultChecked style={{ marginRight: 8 }} />
                       <span style={{ font: mono(12.5, 500) }}>Request access</span>
                       <span style={{ display: "block", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>
-                        The topic group sees what it is — title, kind, size, licence — and has to ask you.
-                        You approve one researcher at a time.
-                      </span>
+                        Others see its title and size and must ask you for access. </span>
                     </label>
                     <label style={{ border: "1px solid var(--rule)", padding: "10px 11px", cursor: "pointer", background: "var(--bg)" }}>
                       <input type="radio" name="access" value="open" style={{ marginRight: 8 }} />

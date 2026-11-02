@@ -16,7 +16,7 @@ export default async function GroupBoard({ ctx }: { ctx: GroupCtx }) {
   return (
     <div className="sc-two-col">
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {notes.length === 0 && <Panel><Empty>No notes yet. Lab rules, protocols in use, booking info: whatever everyone should be able to find.</Empty></Panel>}
+        {notes.length === 0 && <Panel><Empty>No notes yet: lab rules, protocols, booking info.</Empty></Panel>}
         {notes.map((n: any) => {
           const editable = n.author_id === me || manage;
           return (
@@ -71,7 +71,7 @@ export default async function GroupBoard({ ctx }: { ctx: GroupCtx }) {
               </label>
             )}
             <div><button type="submit" style={btn}>Add to the board</button></div>
-            <span style={note}>Every member can add notes. The lead and admins pin the ones that should stay on top.</span>
+            <span style={note}>Lead and admins pin notes to the top.</span>
           </form>
         </Panel>
       </aside>

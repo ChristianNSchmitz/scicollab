@@ -27,7 +27,7 @@ const MORE = [
 
 export default function Help() {
   return (
-    <Page title="Help" lede="How to get started, and where to look when something is unclear. Press ⌘K (Ctrl K on Windows) anywhere to search.">
+    <Page title="Help" lede="Getting started. Press ⌘K (Ctrl K) anywhere to search.">
       <div className="sc-pair" style={{ gap: 14, alignItems: "start" }}>
         <Panel>
           <PanelHead>Getting started</PanelHead>

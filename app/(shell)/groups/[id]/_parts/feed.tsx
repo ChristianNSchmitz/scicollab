@@ -25,7 +25,7 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
   return (
     <section aria-label="Group feed" style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 12 }}>
       <QuickPost topics={[]} cards={[]} groupId={id} groupName={g.name} />
-      {(posts ?? []).length === 0 && <Panel><Empty>No posts yet. Start the conversation: an update, a question, a request for the lab.</Empty></Panel>}
+      {(posts ?? []).length === 0 && <Panel><Empty>No posts yet.</Empty></Panel>}
       {(posts ?? []).map((p: any) => (
         <PostCard key={p.id} p={p} author={authors.get(p.author_id)} images={images.get(p.id)} reaction={reactions.get(p.id)}
           replies={(replies ?? []).filter((r: any) => r.post_id === p.id).length} me={me} path={`/groups/${id}?tab=feed`}

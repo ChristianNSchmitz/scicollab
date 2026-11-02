@@ -128,7 +128,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                   </div>
                 )}
                 <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "10px 0 0" }}>
-                  Comment below and say where: a page, a figure panel, a line. {isMine ? "Mark the comments that helped you; it counts in the helper's record." : "The author can mark your comment as the one that helped; it counts in your record."}
+                  Say where: a page, a figure panel, a line.
                 </p>
               </div>
             )}
@@ -219,9 +219,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                 ) : (
                   <>
                     <p style={{ font: "400 13.5px/1.65 var(--sans)", color: "var(--mute)", margin: "10px 0 0" }}>
-                      You can see that this exists and what shape it is. The contents stay with the author
-                      until they grant you access.
-                    </p>
+                      The author decides who gets access. </p>
                     {a.myRequest === "pending" ? (
                       <div style={{ marginTop: 11, font: mono(11), color: "var(--flag-ink)" }}>REQUESTED — waiting on the author</div>
                     ) : a.myRequest === "denied" ? (
@@ -268,7 +266,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
           <Panel>
             <div id="replies" style={{ scrollMarginTop: 72 }}><PanelHead>Replies · {replies?.length ?? 0}</PanelHead></div>
             {(replies?.length ?? 0) === 0 ? (
-              <Empty>No replies yet. If you have run into this, say what you saw: the topic group keeps the answer next to the question.</Empty>
+              <Empty>No replies yet. Seen this before? Say what you saw.</Empty>
             ) : replies!.map((r: any) => {
               const who = replier(r.author_id);
               return (

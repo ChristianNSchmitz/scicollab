@@ -122,9 +122,7 @@ export default async function Thread({ params, searchParams }: { params: Promise
             <PanelHead>You cannot message strangers yet</PanelHead>
             <div style={{ padding: 14 }}>
               <p style={{ font: "400 14px/1.7 var(--sans)", margin: "0 0 14px" }}>
-                New accounts cannot send an unsolicited direct message. This is not about you — it is the single
-                measure that stops a research network turning into a recruiting channel.
-              </p>
+                New accounts can message people once they have posted, answered or recorded something. This keeps spam out. </p>
               <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginBottom: 8 }}>
                 THE PATH TO UNLOCKING · ANY ONE OF THESE
               </div>

@@ -33,7 +33,7 @@ export default function AboutPage() {
     <PublicPage
       eyebrow="ABOUT US"
       title="Science, easy together."
-      lede="SciCollab is a network for scientists to exchange ideas, discuss their work, and share data and methods, including the failed runs, before publication, with peers who have been there."
+      lede="A network for scientists to exchange ideas, discuss their work, and share data and methods."
     >
       <h2 style={{ ...h2, marginTop: 0, paddingTop: 0, borderTop: 0 }}>Why we exist</h2>
       <p style={p}>

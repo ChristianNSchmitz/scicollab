@@ -156,7 +156,7 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
                 </label>
               </div>
               <div><button type="submit" style={btnPrimary}>Create invitation</button></div>
-              <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>People without an account can sign up from the link; the invitation counts as their invite code.</span>
+              <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Works for people without an account too.</span>
             </form>
             {liveInvites.length > 0 && (
               <div style={{ borderTop: "1px solid var(--rule)" }}>

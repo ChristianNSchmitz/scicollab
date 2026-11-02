@@ -14,7 +14,7 @@ const ERRORS: Record<string, string> = {
 export default async function NewChat({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const { error } = await searchParams;
   return (
-    <Page title="New small chat" lede={`For three to five people from any lab: writing buddies, a mini collaboration, a few people comparing protocols. Only the people in it see it.`}
+    <Page title="New small chat" lede={`Three to five people from any lab. Only they see it.`}
       actions={<Link href="/messages" style={btn}>Back to messages</Link>}>
       <form action={createChat} style={{ maxWidth: 640 }}>
         <Panel style={{ padding: 16, display: "flex", flexDirection: "column", gap: 14 }}>

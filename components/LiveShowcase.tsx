@@ -223,7 +223,7 @@ function Slide({ item, isNew }: { item: ShowItem; isNew: boolean }) {
           {title}{byline}
           <p style={{ margin: "0 0 14px", font: "400 14px/1.6 var(--sans)" }}>{item.excerpt}</p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {item.tags.map((t) => <span key={t} style={{ font: mono(10.5), border: "1px solid var(--rule)", padding: "3px 6px", color: "var(--mute)" }}>{t}</span>)}
+            {item.tags.map((t) => <span key={t} style={{ font: mono(10.5), border: "1px solid var(--rule)", borderRadius: 999, padding: "3px 9px", color: "var(--mute)" }}>{t}</span>)}
           </div>
         </div>
       </>

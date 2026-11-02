@@ -17,7 +17,7 @@ export default async function Projects() {
   return (
     <Page
       title="Projects"
-      lede="One container per line of work — notebook entries, datasets and the people on it."
+      lede="Notebook, data, code and methods for each line of work."
       actions={<Link href="/projects/new" style={btnPrimary}>New project</Link>}
     >
       <Panel>

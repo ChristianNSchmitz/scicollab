@@ -140,10 +140,7 @@ export default function OrcidLinker({ linked, defaultName }: { linked: LinkedSum
       )}
 
       <p style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
-        The link is self-declared for now: signing in with ORCID, which proves the iD is yours, is not connected yet.
-        Publications, citations and the h-index come from OpenAlex, matched by your ORCID, and are checked every 12 hours.
-        A change on OpenAlex usually shows here within a day. If a paper is missing, fix it in ORCID or OpenAlex; it follows on the next sync.
-      </p>
+        Self-declared for now; ORCID sign-in comes later. </p>
     </div>
   );
 }

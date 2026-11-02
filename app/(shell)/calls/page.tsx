@@ -52,7 +52,7 @@ export default async function Calls({ searchParams }: { searchParams: Promise<Se
   };
 
   return (
-    <Page title="Calls for collaborators" lede="Labs looking for a technique, a system or a second pair of hands, and what they offer back. Say you are interested in two or three sentences; only the caller sees it."
+    <Page title="Calls for collaborators" lede="Labs looking for a technique or a second pair of hands. Only the caller sees who is interested."
       actions={<Link href="/post?intent=collab" style={btnPrimary}>Post a call</Link>}>
       {sp.sent === "1" && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Sent. The caller sees your interest on the call and is notified.</p>}
       <form role="search" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 12, maxWidth: 900 }}>

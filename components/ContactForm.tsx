@@ -89,9 +89,7 @@ export default function ContactForm({ initialTopic }: { initialTopic?: string })
       <label style={{ display: "flex", gap: 10, alignItems: "flex-start", font: "400 12.5px/1.55 var(--sans)", color: bad("consent") ? "var(--err)" : "var(--ink)" }}>
         <input type="checkbox" name="consent" required style={{ marginTop: 3 }} />
         <span>
-          I agree that SciCollab uses my name and e-mail address only to answer this message.
-          It is sent to the team by e-mail and not stored on the website.
-        </span>
+          Use my name and e-mail only to answer this message. </span>
       </label>
 
       <div style={bad("captcha") ? { outline: "1px solid var(--err)" } : undefined}>

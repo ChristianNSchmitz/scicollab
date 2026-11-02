@@ -87,7 +87,7 @@ export default async function Requests() {
   };
 
   return (
-    <Page title="Access requests" lede="Requests to open data or code you attached to a post, and the ones you made. You approve one researcher at a time.">
+    <Page title="Access requests" lede="Requests for data or code you attached, and the ones you made.">
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         <Panel>
           <PanelHead>Waiting on you · {pending.length}</PanelHead>

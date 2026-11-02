@@ -36,7 +36,7 @@ export default async function Ask({ searchParams }: { searchParams: Promise<{ ca
   }
 
   return (
-    <Page title="Ask a question" lede="Attach the run it came from. Peers answer conditions, not paraphrases.">
+    <Page title="Ask a question" lede="Attach the run it came from.">
       <LimitNotice show={limited} />
       <form action={askQuestion}>
         <div className="sc-two-col">

@@ -6,7 +6,7 @@ export const popover: CSSProperties = {
   // Nearly opaque: a menu over the feed must not let the feed read through.
   background: "color-mix(in srgb, var(--bg) 94%, transparent)", border: "1px solid var(--rule)", borderRadius: 14,
   boxShadow: "0 12px 36px rgba(31, 38, 60, .16), 0 2px 6px rgba(31, 38, 60, .06)",
-  WebkitBackdropFilter: "blur(22px) saturate(198%)", backdropFilter: "blur(22px) saturate(198%)",
+  WebkitBackdropFilter: "blur(24px) saturate(218%)", backdropFilter: "blur(24px) saturate(218%)",
 };
 
 export const menuItem: CSSProperties = {

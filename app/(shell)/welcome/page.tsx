@@ -25,7 +25,7 @@ export default async function Welcome({ searchParams }: { searchParams: Promise<
   return (
     <Page
       title="Pick your houses"
-      lede="A house is a broad discipline. Choosing one joins you to the topic groups inside it, and you can prune or add later. Most researchers pick two or three — the cross-disciplinary topic groups are where the useful surprises are."
+      lede="Pick two or three fields. You join their topic groups and can change them later."
     >
       {error === "none" && (
         <p role="alert" style={{ maxWidth: 900, font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>

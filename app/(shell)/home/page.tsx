@@ -45,8 +45,10 @@ const SHORT: Record<string, string> = { result: "Results", data_question: "Data 
  */
 export default async function Home({
   searchParams,
-}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string; posted?: string }> }) {
-  const { intent, room: roomParam, sync, feed: feedParam, posted } = await searchParams;
+}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string; posted?: string; n?: string }> }) {
+  const { intent, room: roomParam, sync, feed: feedParam, posted, n } = await searchParams;
+  // Twenty posts first; "Show more" asks for twenty more, up to a hundred.
+  const pageSize = Math.min(100, Math.max(20, Number(n) || 20));
   // "following": posts and activity from the people you follow, from any topic group.
   // "groups": the discussions of the groups you are in (members only).
   const feedMode = feedParam === "following" ? "following" : feedParam === "groups" ? "groups" : "topics";
@@ -82,7 +84,7 @@ export default async function Home({
 
   const feed = (async () => {
     if ((feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length)) {
-      return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>> };
+      return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false };
     }
     const cols = "id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, audience, feedback_kinds, call_status, created_at";
     // Following: what they posted, and what they reposted (at the time of the repost).
@@ -91,7 +93,7 @@ export default async function Home({
     q = feedMode === "following" ? q.in("author_id", followed)
       : feedMode === "groups" ? q.in("group_id", myGroupIds)
       : q.in("room_id", room ? [room] : myRooms);
-    q = q.order("created_at", { ascending: false }).limit(40);
+    q = q.order("created_at", { ascending: false }).limit(pageSize + 1);
     if (intent) q = q.eq("intent", intent);
     // A followed person's posts in a group you are not in stay in that group.
     const { data: own } = await q;
@@ -99,7 +101,9 @@ export default async function Home({
     const { data: shared } = repostIds.length ? await supabase.from("posts").select(cols).in("id", repostIds) : { data: [] as any[] };
     const when = (p: any) => reposted.find((r) => r.post_id === p.id && r.created_at > p.created_at)?.created_at ?? p.created_at;
     const all = [...(own ?? []), ...(intent ? (shared ?? []).filter((p: any) => p.intent === intent) : shared ?? [])]
-      .sort((a: any, b: any) => when(b).localeCompare(when(a))).slice(0, 40);
+      .sort((a: any, b: any) => when(b).localeCompare(when(a)));
+    const hasMore = all.length > pageSize;
+    all.splice(pageSize);
     const posts = all.filter((p: any) => (!p.group_id || myGroupIds.includes(p.group_id)) && notForChosenPeople(me_)(p));
     const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
     const postIds = (posts ?? []).map((p: any) => p.id);
@@ -113,7 +117,7 @@ export default async function Home({
     const extras = await postExtras(supabase, me_, postIds, following, reactions);
     const contextIds = [...extras.values()].map((e) => e.context?.personId).filter((x): x is string => !!x && !authors.has(x));
     const people = contextIds.length ? new Map([...authors, ...(await peopleById(supabase, contextIds))]) : authors;
-    return { posts, people, cards, feedReplies, reactions, images, extras };
+    return { posts, people, cards, feedReplies, reactions, images, extras, hasMore };
   })();
 
   const research = (async () => {
@@ -157,7 +161,7 @@ export default async function Home({
   ]);
 
   const [
-    { posts, people, cards, feedReplies, reactions, images, extras },
+    { posts, people, cards, feedReplies, reactions, images, extras, hasMore },
     { biblio, pubs, change, citations },
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
     [followActivity, onMine, contacts, theirPapers],
@@ -323,6 +327,12 @@ export default async function Home({
             topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null}
             extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")} />
         ))}
+        {hasMore && (
+          <Link href={qs({ n: String(pageSize + 20) }).replace("#feed", `#post-${posts[posts.length - 1].id}`)} scroll={false}
+            style={{ alignSelf: "center", padding: "9px 18px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", color: "var(--ink)", font: "600 13px/1 var(--sans)", textDecoration: "none" }}>
+            Show more
+          </Link>
+        )}
       </section>
       </div>
     </div>

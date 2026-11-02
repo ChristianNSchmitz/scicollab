@@ -22,7 +22,7 @@ export default async function Methods() {
   return (
     <Page
       title="Methods"
-      lede="A method card is structured, versioned, forkable, and explicit about the conditions under which the method fails."
+      lede="Protocols with their outcome, including when they fail."
       actions={<Link href="/methods/new" style={btnPrimary}>Record a method</Link>}
     >
       <Section title={`Yours · ${mine.length}`} cards={mine} empty="You have not recorded a method yet." />

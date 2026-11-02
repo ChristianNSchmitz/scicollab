@@ -33,7 +33,7 @@ export default async function Notifications() {
   return (
     <Page
       title="Notifications"
-      lede="Messages, mentions, replies, answers, reactions, new followers and data requests from the last 30 days, newest first. A weekly e-mail summary can be switched off in Settings."
+      lede="The last 30 days, newest first."
       actions={<div style={{ display: "flex", gap: 8 }}><Link href="/messages" style={btn}>Messages</Link><Link href="/requests" style={btn}>Data requests</Link></div>}
     >
       <Panel>

@@ -65,7 +65,7 @@ export default async function Moderation({ searchParams }: { searchParams: Promi
   return (
     <Page
       title="Moderation"
-      lede="Reports from members, oldest first, with the reported content next to each. Remove what breaks the house rules, close what was handled, dismiss what needs nothing."
+      lede="Reports from members, oldest first."
       actions={
         <nav aria-label="Reports" className="sc-seg" style={{ display: "flex" }}>
           <Link href="/moderation" aria-current={!closed ? "page" : undefined} style={{ padding: "8px 14px", font: mono(12, 600), color: "var(--ink)" }}>Open · {openCount ?? 0}</Link>

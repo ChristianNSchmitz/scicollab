@@ -68,7 +68,7 @@ export default function TermsPage() {
     <PublicPage
       eyebrow="TERMS & CONDITIONS"
       title="Terms & Conditions"
-      lede="How contributions, credit and patents work on SciCollab. In short: what is in your own Workspace stays yours; what you add to someone else's work is free to use unless you agree credit first; and nothing patentable belongs in a public thread."
+      lede="Your own work stays yours. What you add to others' work is free to use unless you agree credit first. Keep patentable ideas out of public threads."
     >
       <div role="note" className="sc-inset" style={{ border: "1px solid var(--flag)", background: "var(--bg)", padding: "12px 14px", marginBottom: 8 }}>
         <div style={{ font: "700 11px/1 var(--mono)", letterSpacing: ".1em", color: "var(--flag-ink)", marginBottom: 6 }}>DRAFT — NOT YET IN FORCE</div>

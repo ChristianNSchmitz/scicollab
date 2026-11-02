@@ -51,7 +51,7 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
         </Panel>
         <Panel style={{ padding: 14 }}>
           <div style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)" }}>
-            The group&apos;s feed, chat, notice board, tasks and files are for its members. Shared methods and projects are under <Link href={tabHref(id, "shared")} style={{ color: "var(--link)" }}>Shared</Link>.
+            Feed, chat, board, tasks and files are for members. Shared methods and projects are under <Link href={tabHref(id, "shared")} style={{ color: "var(--link)" }}>Shared</Link>.
           </div>
         </Panel>
       </div>
@@ -106,7 +106,7 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel style={(pinned ?? []).length ? { borderColor: "var(--signal)" } : undefined}>
             <PanelHead>Pinned on the board</PanelHead>
-            {(pinned ?? []).length === 0 && <Empty>Nothing pinned. The lead and admins pin lab rules, protocols and booking info on the board.</Empty>}
+            {(pinned ?? []).length === 0 && <Empty>Nothing pinned.</Empty>}
             {(pinned ?? []).map((n: any) => (
               <Link key={n.id} href={`${tabHref(id, "board")}#note-${n.id}`} style={line}>
                 <div style={{ font: mono(13, 600, 1.4) }}>{n.title}</div>

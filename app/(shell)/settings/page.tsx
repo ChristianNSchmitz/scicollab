@@ -62,7 +62,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
   const nav = [["#picture", "Picture"], ["#profile", "Profile"], ["#orcid", "ORCID & publications"], ["#privacy", "Privacy & e-mail"], ["#password", "Password"], ["#account", "Account"]];
 
   return (
-    <Page title="Settings" lede="Your picture, profile, ORCID link, who can see your profile and which e-mails you get.">
+    <Page title="Settings" lede="Profile, ORCID, privacy and e-mails.">
       <div style={{ maxWidth: 720 }}>
         <nav aria-label="Settings sections" style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
           {nav.map(([href, label]) => (
@@ -153,7 +153,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
                 </p>
                 <label style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                   <input type="checkbox" name="public_profile" defaultChecked={!!p?.public_profile} style={{ marginTop: 4 }} />
-                  <span>Show my profile to visitors who are not signed in, and allow previews when it is shared on other sites. Only your name, role, institution, about text, techniques, public method cards and publications are shown.</span>
+                  <span>Show my profile to visitors who are not signed in (name, role, institution and about text). </span>
                 </label>
                 <label style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                   <input type="checkbox" name="weekly_digest" defaultChecked={p?.weekly_digest ?? true} style={{ marginTop: 4 }} />
@@ -214,10 +214,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
                 <summary style={{ font: mono(11.5), color: "var(--err)", cursor: "pointer" }}>Delete your account</summary>
                 <form action={deleteAccount} style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
                   <p style={{ margin: 0 }}>
-                    This removes your account and everything that belongs to it, permanently: your profile and picture, method cards,
-                    questions, answers, posts, messages, the projects you own and your synced publications. It cannot be undone.
-                    Download your data first if you want a copy.
-                  </p>
+                    This permanently deletes your account and everything in it. </p>
                   <div>
                     <label style={fieldLabel} htmlFor="confirm">Type DELETE to confirm</label>
                     <input id="confirm" name="confirm" required autoComplete="off" style={{ ...field, maxWidth: 240 }} />

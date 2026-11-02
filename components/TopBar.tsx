@@ -11,16 +11,22 @@ import LookToggle from "@/components/LookToggle";
 /* Top bar — board [ 003 ]: 56px, wordmark in a 200px well, search to 660px
    with its ⌘K hint, Create, notifications, avatar with a presence dot. */
 
+/** The bell's count, kept between pages for a minute. */
+const BADGE_TTL = 60_000;
+let badge: { at: number; n: number } | null = null;
+
 export default function TopBar({ name = "", avatarUrl = null, userId = "", moderator = false }: { name?: string; avatarUrl?: string | null; userId?: string; moderator?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const [unseen, setUnseen] = useState(0);
 
   // The badge is fetched after the page is shown, so it never slows a page
-  // down; it refreshes on each navigation, and clears on Notifications.
+  // down. It is worked out from every kind of notification, so it is asked
+  // for at most once a minute, not on every click; it clears on Notifications.
   useEffect(() => {
-    if (pathname === "/notifications") { setUnseen(0); return; }
-    unseenNotifications().then(setUnseen).catch(() => {});
+    if (pathname === "/notifications") { badge = { at: Date.now(), n: 0 }; setUnseen(0); return; }
+    if (badge && Date.now() - badge.at < BADGE_TTL) { setUnseen(badge.n); return; }
+    unseenNotifications().then((n) => { badge = { at: Date.now(), n }; setUnseen(n); }).catch(() => {});
   }, [pathname]);
   const [menu, setMenu] = useState(false);
   const [dark, setDark] = useState(false);
@@ -174,7 +180,7 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "", moder
               position: "absolute", right: 0, top: 44, width: 232, zIndex: 50, padding: 6,
               background: "color-mix(in srgb, var(--bg) 94%, transparent)", border: "1px solid var(--rule)", borderRadius: 16,
               boxShadow: "0 16px 40px rgba(31, 38, 60, .18), 0 2px 6px rgba(31, 38, 60, .06)",
-              WebkitBackdropFilter: "blur(22px) saturate(198%)", backdropFilter: "blur(22px) saturate(198%)",
+              WebkitBackdropFilter: "blur(24px) saturate(218%)", backdropFilter: "blur(24px) saturate(218%)",
             }}
           >
             <div style={{ padding: "8px 10px 10px", margin: "0 0 4px", borderBottom: "1px solid var(--rule)" }}>

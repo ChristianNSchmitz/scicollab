@@ -51,7 +51,7 @@ export default async function RecordPage({ searchParams }: {
   return (
     <Page
       title="Your record"
-      lede="Everything you have contributed and what others did with it, counted, never scored. Each axis has its own scale, and every number links to the rows that produced it."
+      lede="What you contributed and what others did with it. Counted, never scored."
       actions={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
           <Link href={`/you/record/export${axis ? `?axis=${axis}` : ""}`} style={btn}>Export CSV</Link>
@@ -60,8 +60,7 @@ export default async function RecordPage({ searchParams }: {
       }
     >
       <PrivacyStrip weeks={weeks} hrefFor={(w) => q({ weeks: w })}>
-        This page is private. There is no single score, no percentile and no comparison with other researchers, and no institution can see it per person.
-      </PrivacyStrip>
+        Private. No score, no ranking, no comparison. </PrivacyStrip>
 
       {/* Nine axes, nine scales. */}
       <div style={tileGrid}>
@@ -138,8 +137,7 @@ export default async function RecordPage({ searchParams }: {
           </div>
         )}
         <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-          A read is a distinct reader in one week. Who read your work is never stored, so it cannot be shown to you or anyone else (board J2).
-        </div>
+          A read is one reader in one week. Who read is never stored. </div>
       </Panel>
 
       <Pair

@@ -9,7 +9,7 @@ export const metadata = { title: "Reset your password · SciCollab" };
 export default async function ForgotPassword({ searchParams }: { searchParams: Promise<{ sent?: string; error?: string }> }) {
   const { sent, error } = await searchParams;
   return (
-    <PublicPage eyebrow="ACCOUNT" title="Reset your password" lede="Enter the e-mail address you signed up with. We send a link that lets you choose a new password.">
+    <PublicPage eyebrow="ACCOUNT" title="Reset your password" lede="We e-mail you a link to choose a new password.">
       {sent === "1" ? (
         <p role="status" style={p}>
           If an account exists for that address, a link is on its way. It works once and for an hour.

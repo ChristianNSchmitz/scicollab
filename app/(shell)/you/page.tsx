@@ -282,8 +282,7 @@ function Publications({ pubs, runs, biblio, example, flash, c }: {
         </Link>
       )}
       <div style={{ padding: "9px 14px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-        Synced from <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID every 12 hours. If a paper is missing or wrongly attributed, it needs fixing in OpenAlex or ORCID; it will follow here on the next sync.
-      </div>
+        Synced from <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID every 12 hours. Missing papers are fixed in ORCID or OpenAlex. </div>
     </Panel>
   );
 }
@@ -344,9 +343,7 @@ function CitationPanel({ c, biblio }: { c: CitationProfile; biblio: Bibliometric
         </div>
       </div>
       <div style={{ padding: "9px 16px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-        Worked out from each paper&apos;s citations per year as OpenAlex reports them, which covers about the last ten years.
-        The current year is still filling and is drawn lighter.
-      </div>
+        From OpenAlex citations per year, about the last ten years. </div>
     </Panel>
   );
 }

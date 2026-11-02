@@ -83,7 +83,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
                   {linkable.map((c: any) => <option key={c.id} value={c.id}>{c.code} · {c.title}</option>)}
                 </select>
                 <button type="submit" style={btn}>Link to the group</button>
-                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Optional. Members of the group can then read the card, also when it is private. Unlink any time.</span>
+                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members can then read it, also when private.</span>
               </form>
             )}
           </Panel>
@@ -117,7 +117,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
                   {linkableData.map((d: any) => <option key={d.id} value={d.id}>{d.title}</option>)}
                 </select>
                 <button type="submit" style={btn}>Link to the group</button>
-                <span style={{ ...note, flexBasis: "100%" }}>Optional. Members of the group can then open the dataset, also when it is private. Unlink any time.</span>
+                <span style={{ ...note, flexBasis: "100%" }}>Members can then open it, also when private.</span>
               </form>
             )}
           </Panel>
@@ -179,7 +179,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
                   {addable.map((p: any) => <option key={p.id} value={p.id}>{p.title}</option>)}
                 </select>
                 <button type="submit" style={btn}>Share with the group</button>
-                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members of the group can then see it and join it.</span>
+                <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>Members can then join it.</span>
               </form>
             )}
           </Panel>

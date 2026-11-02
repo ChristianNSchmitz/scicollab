@@ -61,7 +61,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
   );
 
   return (
-    <Page title="Network" lede="The people here. Follow someone to see their posts, papers and answers in your Following feed; only the two of you can see that you do.">
+    <Page title="Network" lede="Find people by technique, follow them, message them.">
       {mine?.orcid && (toFollow.length > 0 || co.others.length > 0) && (
         <Panel style={{ marginBottom: 14, borderColor: "var(--signal)" }}>
           <PanelHead>From your publications</PanelHead>
@@ -116,7 +116,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
         <button type="submit" style={{ ...btn, height: 38 }}>Search</button>
         {(q || openTo) && <Link href={filter === "all" ? "/network" : `/network?show=${filter}`} style={{ font: "400 12.5px/38px var(--sans)", color: "var(--mute)" }}>clear</Link>}
       </form>
-      {q && <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "-4px 0 10px" }}>People who list “{q}”, recorded a method card with it that worked, or repeated someone&apos;s card and it held. Strongest evidence first.</p>}
+      {q && <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "-4px 0 10px" }}>Strongest evidence first: worked or repeated, then listed.</p>}
 
       <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
         {tab("all", `Everyone · ${people?.length ?? 0}`)}

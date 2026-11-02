@@ -55,7 +55,7 @@ export default async function Publications({
 
   if (biblio.state === "no-orcid" || biblio.state === "invalid-orcid") {
     return (
-      <Page title="Your publications" lede="Publications and citations come from OpenAlex, matched by your ORCID.">
+      <Page title="Your publications" lede="From OpenAlex, matched by your ORCID.">
         <Panel><Empty>
           {biblio.state === "no-orcid" ? "No ORCID linked yet." : `“${biblio.orcid}” is not a valid ORCID iD.`}{" "}
           <Link href="/settings#orcid" style={{ color: "var(--link)" }}>Link your ORCID in Settings</Link> and your publications appear here, updated automatically.
@@ -88,7 +88,7 @@ export default async function Publications({
   return (
     <Page
       title="Your publications"
-      lede="Every work OpenAlex attributes to your ORCID, with its current citations. Checked every 12 hours; nothing here is entered by hand."
+      lede="From OpenAlex, matched by your ORCID. Updated every 12 hours."
       actions={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
           <a href="/you/publications/export" download style={btn}>BibTeX</a>
@@ -166,8 +166,7 @@ export default async function Publications({
         ) : shown.map((p) => <PublicationRow key={p.openalex_id} p={p} c={c} isNew={fresh.has(p.openalex_id)} detailed />)}
         <div style={{ padding: "9px 14px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
           From <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID.
-          Per-year counts cover about the last ten years. A missing or wrongly attributed paper needs fixing in ORCID or OpenAlex; it follows on the next sync.
-        </div>
+          Missing papers are fixed in ORCID or OpenAlex. </div>
       </Panel>
 
       {runs.length > 0 && !example && (

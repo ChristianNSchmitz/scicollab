@@ -3,7 +3,7 @@ import { Page, Panel, PanelHead, field, fieldLabel, btnPrimary, mono } from "@/c
 
 export default function NewProject() {
   return (
-    <Page title="New project" lede="A container for the notebook, the datasets and the people.">
+    <Page title="New project" lede="Notebook, data, code and the people on it.">
       <form action={createProject} style={{ maxWidth: 680 }}>
         <Panel>
           <PanelHead>Project</PanelHead>

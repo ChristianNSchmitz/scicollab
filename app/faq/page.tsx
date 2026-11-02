@@ -124,7 +124,7 @@ export default function QuestionsPage() {
     <PublicPage
       eyebrow="QUESTIONS"
       title="Questions people ask us"
-      lede="Who SciCollab is for, what it solves, and how it works. Can't find yours? Ask us directly."
+      lede="Can't find your question? Ask us."
     >
       {GROUPS.map((g, gi) => (
         <section key={g.title}>

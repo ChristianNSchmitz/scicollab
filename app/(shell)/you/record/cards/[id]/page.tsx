@@ -68,8 +68,7 @@ export default async function CardAnalytics({ params, searchParams }: {
       }
     >
       <PrivacyStrip weeks={weeks} hrefFor={(w) => `/you/record/cards/${card.id}${w !== 12 ? `?weeks=${w}` : ""}`}>
-        Only you see this. Who read the card is discarded when the read is counted, so nobody, you included, can learn that a particular person opened it.
-      </PrivacyStrip>
+        Only you see this. Who read the card is never stored. </PrivacyStrip>
 
       <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginBottom: 12 }}>
         <Outcome value={card.outcome} />
@@ -105,8 +104,7 @@ export default async function CardAnalytics({ params, searchParams }: {
           </div>
         </div>
         <div style={{ padding: "0 14px 12px", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)" }}>
-          Reads are attention; a fork, a repeat or a question that carries the card is use. A card can be read many times and used twice, and that is worth seeing.
-        </div>
+          Reads are attention; forks, repeats and questions are use. </div>
       </Panel>
 
       <Pair
