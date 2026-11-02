@@ -2,6 +2,31 @@
 
 import { useLayoutEffect, useRef } from "react";
 
+// Where the bar sat on screen when a tab was clicked, so the next page can put
+// it back on the same spot whatever the browser did to the scroll position.
+let pinned: { id: string; top: number; until: number } | null = null;
+
+function holdPlace(id: string, nav: HTMLElement) {
+  const p = pinned;
+  if (!p || p.id !== id || Date.now() > p.until) return;
+  let stop = false;
+  const quit = () => { stop = true; };
+  // A scroll by the reader ends the hold at once.
+  const opts = { passive: true, once: true } as const;
+  window.addEventListener("wheel", quit, opts);
+  window.addEventListener("touchstart", quit, opts);
+  window.addEventListener("keydown", quit, { once: true });
+  const end = Date.now() + 700;
+  const fix = () => {
+    if (stop || !nav.isConnected) return;
+    const d = nav.getBoundingClientRect().top - p.top;
+    if (Math.abs(d) >= 1) window.scrollBy(0, d);
+    if (Date.now() < end) requestAnimationFrame(fix);
+    else { pinned = null; window.removeEventListener("wheel", quit); window.removeEventListener("touchstart", quit); window.removeEventListener("keydown", quit); }
+  };
+  fix();
+}
+
 /**
  * The sliding highlight behind the active tab of a SegTabs bar. On a click it
  * moves at once to the tab clicked, before the next page has loaded; between
@@ -43,6 +68,7 @@ export default function SegIndicator({ id, activeKey }: { id: string; activeKey:
       put(to, true);
     } else put(to, false);
     nav.setAttribute("data-ind", "on");
+    holdPlace(id, nav);
 
     const onClick = (e: MouseEvent) => {
       const link = (e.target as Element).closest("a");
@@ -58,6 +84,7 @@ export default function SegIndicator({ id, activeKey }: { id: string; activeKey:
         window.setTimeout(() => { delete document.documentElement.dataset.slide; }, 1200);
       }
       put(g, true);
+      pinned = { id, top: nav.getBoundingClientRect().top, until: Date.now() + 15000 };
     };
     const onResize = () => { const a = activeEl(); if (a) put(geom(a), false); };
     nav.addEventListener("click", onClick);
