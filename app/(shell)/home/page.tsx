@@ -331,7 +331,7 @@ export default async function Home({
           href: k === "topics" ? "/home" : `/home?feed=${k}`, label, active: feedMode === k,
         }))} />
         {/* Kind and topic behind one button: two rows of chips were too much on every visit. */}
-        <details className="sc-feed-filter" style={{ position: "relative" }} open={false}>
+        <details className="sc-feed-filter" data-keep-open style={{ position: "relative" }} open={false}>
           {/* A fixed width: the tabs beside it must not move when the label changes. */}
           <summary style={{ listStyle: "none", cursor: "pointer", width: 220, height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>
             Filter <span title={filterLabel} style={{ flex: 1, fontWeight: 400, color: (intent || room || openOnly || relevant) ? "var(--ink)" : "var(--mute)", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{filterLabel}</span>

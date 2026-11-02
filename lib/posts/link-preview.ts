@@ -37,7 +37,7 @@ function privateIp(ip: string): boolean {
   return v === "::" || v === "::1" || v.startsWith("fc") || v.startsWith("fd") || v.startsWith("fe8") || v.startsWith("fe9") || v.startsWith("fea") || v.startsWith("feb") || v.startsWith("ff");
 }
 
-async function safeTarget(raw: string): Promise<URL | null> {
+export async function safeTarget(raw: string): Promise<URL | null> {
   let u: URL;
   try { u = new URL(raw); } catch { return null; }
   if (u.protocol !== "https:" && u.protocol !== "http:") return null;

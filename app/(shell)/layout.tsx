@@ -1,3 +1,4 @@
+import DropdownCloser from "@/components/DropdownCloser";
 import { redirect } from "next/navigation";
 import ChatDock from "@/components/ChatDock";
 import DemoNotice from "@/components/DemoNotice";
@@ -42,6 +43,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
           the bottom tabs own that corner, so the dock hides itself there and
           Messages in the tab bar is the way in. */}
       <ChatDock />
+      <DropdownCloser />
     </div>
   );
 }

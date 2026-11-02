@@ -8,6 +8,8 @@ import { joinProject } from "@/app/actions/projects";
 import { Panel, PanelHead, Outcome, btn, field, mono } from "@/components/ui";
 import Repositories from "@/components/code/Repositories";
 import { repoLinks } from "@/lib/repos";
+import NextcloudShares from "@/components/code/NextcloudShares";
+import { ncLinks } from "@/lib/nextcloud";
 import { small, note, hidden, type GroupCtx } from "./ctx";
 
 const FILE_FLASH: Record<string, string> = {
@@ -34,7 +36,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
     member ? supabase.from("datasets").select("id, title").eq("owner_id", me).order("created_at", { ascending: false }).limit(200) : Promise.resolve({ data: [] as any[] }),
     member ? supabase.from("group_files").select("id, name, size_bytes, note, uploaded_by, created_at").eq("group_id", id).order("created_at", { ascending: false }) : Promise.resolve({ data: [] as any[] }),
   ]);
-  const repos = member ? await repoLinks(supabase, { groupId: id }) : [];
+  const [repos, clouds] = member ? await Promise.all([repoLinks(supabase, { groupId: id }), ncLinks(supabase, { groupId: id })]) : [[], []];
   const cardIds = (gm ?? []).map((m: any) => m.card_id);
   const dataIds = (gd ?? []).map((d: any) => d.dataset_id);
   const projectIds = [...new Set([...(gp ?? []).map((p: any) => p.project_id), ...(myProjects ?? []).map((p: any) => p.project_id)])];
@@ -127,6 +129,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
         )}
 
         {member && <Repositories scope="group" id={id} links={repos} canEdit={member} canManage={manage} me={me} flash={sp.repo} />}
+        {member && <NextcloudShares scope="group" id={id} links={clouds} canEdit={member} canManage={manage} me={me} flash={sp.nc} />}
       </div>
 
       <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>

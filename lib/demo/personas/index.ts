@@ -240,6 +240,31 @@ const project_milestones = [
 /* Repositories linked to projects and groups (supabase/17). Invented names under
    "scicollab-demo"; the demo never calls GitHub or GitLab, it shows this snapshot. */
 const commit = (sha: string, message: string, author: string, t: string, url: string) => ({ sha, message, author, date: at(t), url });
+/** A Nextcloud folder as Nextcloud would list it; the host is a placeholder, so the demo never calls it. */
+const ncEntry = (name: string, folder: boolean, size: number | null, t: string, base: string, dir = "/") => ({
+  name, folder, size, modified: at(t), type: null,
+  href: folder ? `${base}?path=${encodeURIComponent("/" + name)}` : `${base}/download?path=${encodeURIComponent(dir)}&files=${encodeURIComponent(name)}`,
+});
+const ncListing = (base: string, items: [string, boolean, number | null, string][]) => ({
+  entries: items.map(([n, f, sz, t]) => ncEntry(n, f, sz, t, base)), total: items.length, fetchedAt: at("2026-10-31 08:00"),
+});
+const ncLinksSeed = (cardId: string | undefined) => [
+  { id: "nc-1", group_id: "gr-ebro", method_id: null, origin: "https://cloud.ebro.example.org", host: "cloud.ebro.example.org", token: "Kq7xEbroLab24",
+    url: "https://cloud.ebro.example.org/s/Kq7xEbroLab24", label: "Ebro lab · shared data", has_password: false,
+    added_by: "u-rivera", added_at: at("2026-10-02 09:00"), cached_at: at("2026-10-31 08:00"),
+    cache: ncListing("https://cloud.ebro.example.org/s/Kq7xEbroLab24", [
+      ["flow-cytometry", true, null, "2026-10-29 17:00"], ["incubator-logs", true, null, "2026-10-28 15:00"], ["protocols", true, null, "2026-10-20 10:00"],
+      ["lab-meeting-2026-10-28.pptx", false, 3_400_000, "2026-10-28 11:30"], ["passage-series-summary.xlsx", false, 182_000, "2026-10-29 16:40"],
+      ["reagent-inventory.csv", false, 24_300, "2026-10-26 09:10"],
+    ]) },
+  ...(cardId ? [{ id: "nc-2", group_id: null, method_id: cardId, origin: "https://cloud.ebro.example.org", host: "cloud.ebro.example.org", token: "Mt3RawData9",
+    url: "https://cloud.ebro.example.org/s/Mt3RawData9", label: "Raw data and gating files", has_password: true,
+    added_by: "u-rivera", added_at: at("2026-10-10 12:00"), cached_at: at("2026-10-31 08:00"),
+    cache: ncListing("https://cloud.ebro.example.org/s/Mt3RawData9", [
+      ["fcs", true, null, "2026-10-09 18:00"], ["gating-template.wsp", false, 412_000, "2026-10-09 18:20"], ["README.md", false, 2_100, "2026-10-10 11:50"],
+    ]) }] : []),
+];
+
 const repo_links = [
   { id: "rl-1", project_id: "p-1", group_id: null, provider: "github", host: "github.com", path: "scicollab-demo/passage-series",
     url: "https://github.com/scicollab-demo/passage-series", added_by: "u-rivera", added_at: at("2026-09-26 10:00"), cached_at: at("2026-10-31 08:00"),
@@ -664,6 +689,7 @@ function build() {
     answers,
     projects: liveProjects,
     project_members: project_members.filter((m) => projectIds.has(m.project_id)),
+    nextcloud_links: ncLinksSeed(method_cards.find((c: any) => c.author_id === "u-rivera")?.id), nextcloud_secrets: [],
     repo_links: repo_links.filter((r) => (r.project_id ? projectIds.has(r.project_id) : true)),
     project_methods: project_methods.filter((m) => projectIds.has(m.project_id) && cardIds.has(m.card_id)),
     project_milestones: project_milestones.filter((m) => projectIds.has(m.project_id)),

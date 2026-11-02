@@ -10,13 +10,16 @@ import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import { recordCardRead, viaFrom } from "@/lib/record/reads";
 import { Page, Panel, PanelHead, Outcome, Tag, Visibility, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo, plural } from "@/lib/format";
+import NextcloudShares from "@/components/code/NextcloudShares";
+import { ncLinks } from "@/lib/nextcloud";
 
 export const dynamic = "force-dynamic";
 
 /** Method card, full view — board C2 screen 8. Discussion sits adjacent to the
  *  card rather than behind a tab, and lineage is drawn rather than implied. */
-export default async function MethodCard({ params }: { params: Promise<{ id: string }> }) {
+export default async function MethodCard({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ nc?: string }> }) {
   const { id } = await params;
+  const { nc } = await searchParams;
   ensureRecordSeed();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -35,6 +38,7 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
   const recommended = (recs ?? []).some((r) => r.user_id === user!.id);
 
   const isOwner = card.author_id === user!.id;
+  const clouds = await ncLinks(supabase, { methodId: card.id });
   // Counted as a read only for someone else on a shared card; who it was is not kept.
   await recordCardRead(supabase, card.id, user!.id, viaFrom((await headers()).get("referer")));
 
@@ -123,6 +127,8 @@ export default async function MethodCard({ params }: { params: Promise<{ id: str
               )}
             </div>
           </Panel>
+
+          <NextcloudShares scope="method" id={card.id} links={clouds} canEdit={isOwner} canManage={isOwner} me={user!.id} flash={nc} />
         </div>
 
         <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
