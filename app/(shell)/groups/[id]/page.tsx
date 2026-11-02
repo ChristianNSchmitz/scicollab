@@ -5,7 +5,8 @@ import { isRowId } from "@/lib/query";
 import { peopleById } from "@/lib/people";
 import { ROLE_LABEL, canManage, isCurrent, type GroupRole } from "@/lib/social/groups";
 import { joinGroup, leaveGroup, requestToJoin, withdrawRequest } from "@/app/actions/groups";
-import { Page, btn, btnPrimary, field, fieldLabel, mono } from "@/components/ui";
+import { Page, btn, btnPrimary, field, fieldLabel } from "@/components/ui";
+import SegTabs, { HeaderMenu, menuRow } from "@/components/SegTabs";
 import type { GroupCtx } from "./_parts/ctx";
 import GroupOverview, { type GroupPulse } from "./_parts/overview";
 import GroupFeed from "./_parts/feed";
@@ -97,24 +98,32 @@ export default async function Group({ params, searchParams }: { params: Promise<
   return (
     <Page
       title={g.name}
-      lede={[g.institution, `${g.access === "open" ? "Open group" : "Closed group"}, ${current.length} member${current.length === 1 ? "" : "s"}${alumni.length ? `, ${alumni.length} alumni` : ""}`].filter(Boolean).join(" · ")}
+      lede={[g.institution ? (g.institution.includes(",") ? g.institution.slice(g.institution.lastIndexOf(",") + 1).trim() : g.institution) : null,
+        g.access === "open" ? "open" : "closed",
+        `${current.length} member${current.length === 1 ? "" : "s"}`,
+        myRole === "owner" ? "you lead it" : myRole === "alumni" ? "you are alumni" : myRole ? `you are ${ROLE_LABEL[myRole].toLowerCase()}` : null].filter(Boolean).join(" · ")}
       actions={
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <Link href="/groups" style={btn}>All groups</Link>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           {!member && g.access === "open" && (
-            <form action={joinGroup.bind(null, id)}><button type="submit" style={btnPrimary}>{myRole === "alumni" ? "Rejoin group" : "Join group"}</button></form>
+            <form action={joinGroup.bind(null, id)}><button type="submit" style={{ ...btnPrimary, borderRadius: 999 }}>{myRole === "alumni" ? "Rejoin" : "Join"}</button></form>
           )}
-          {member && (
-            <form action={leaveGroup.bind(null, id)}><button type="submit" style={btn} title="You stay listed as alumni, so your work stays credited.">Leave</button></form>
-          )}
+          {manage && <Link href={`/groups/${id}?tab=members&show=invite#invite`} style={{ ...btn, borderRadius: 999 }}>Invite</Link>}
+          <HeaderMenu>
+            <Link href="/groups" className="sc-menu-item" style={menuRow}>All groups</Link>
+            {manage && <Link href={`/groups/${id}?tab=members#settings`} className="sc-menu-item" style={menuRow}>Group settings</Link>}
+            {member && (
+              <form action={leaveGroup.bind(null, id)}>
+                <button type="submit" className="sc-menu-item" style={{ ...menuRow, color: "var(--err)" }} title="You stay listed as alumni, so your work stays credited.">Leave the group</button>
+              </form>
+            )}
+          </HeaderMenu>
         </div>
       }
     >
       {flash && (
         <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
       )}
-      {tab === "overview" && g.description && <p style={{ font: "400 14px/1.7 var(--sans)", margin: "0 0 12px", maxWidth: "72ch", whiteSpace: "pre-wrap" }}>{g.description}</p>}
-      {tab === "overview" && myRole && <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "0 0 14px" }}>You are {myRole === "alumni" ? "listed as alumni" : `a ${ROLE_LABEL[myRole].toLowerCase()}`} of this group.</p>}
+      {tab === "overview" && g.description && <p style={{ font: "400 13.5px/1.6 var(--sans)", color: "var(--mute)", margin: "-8px 0 14px", maxWidth: "72ch", whiteSpace: "pre-wrap" }}>{g.description}</p>}
       {!member && g.access === "closed" && (
         (requests ?? []).some((r: any) => r.user_id === me) ? (
           <form action={withdrawRequest.bind(null, id)} style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", margin: "0 0 16px", font: "400 13.5px/1.6 var(--sans)" }}>
@@ -133,17 +142,11 @@ export default async function Group({ params, searchParams }: { params: Promise<
       )}
 
 
-      <nav aria-label="Parts of the group" className="sc-seg sc-group-tabs" style={{ display: "flex", gap: 0, margin: "0 0 16px", overflowX: "auto" }}>
-        {visible.map((t) => (
-          <Link key={t.id} href={t.id === "overview" ? `/groups/${id}` : `/groups/${id}?tab=${t.id}`} aria-current={tab === t.id ? "page" : undefined}
-            style={{ flex: "1 0 auto", textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", whiteSpace: "nowrap", color: tab === t.id ? "var(--ink)" : "var(--mute)", borderBottom: tab === t.id ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
-            {t.label}
-            {(badge[t.id] ?? 0) > 0 && (
-              <span aria-label={`, ${badge[t.id]} new or open`} style={{ marginLeft: 6, display: "inline-block", minWidth: 18, padding: "2px 5px", borderRadius: 999, background: t.id === "tasks" ? "var(--rule)" : "var(--signal)", color: t.id === "tasks" ? "var(--ink)" : "#fff", font: "700 10.5px/1.2 var(--sans)" }}>{badge[t.id]}</span>
-            )}
-          </Link>
-        ))}
-      </nav>
+      {/* Five places: the three you visit most, More for the board, tasks and what is shared, and the people. */}
+      <SegTabs label="Parts of the group"
+        items={visible.filter((t) => ["overview", "feed", "chat"].includes(t.id)).map((t) => ({ href: t.id === "overview" ? `/groups/${id}` : `/groups/${id}?tab=${t.id}`, label: t.label, active: tab === t.id, badge: badge[t.id] }))}
+        more={visible.filter((t) => ["board", "tasks", "shared"].includes(t.id)).map((t) => ({ href: `/groups/${id}?tab=${t.id}`, label: t.label, active: tab === t.id, badge: badge[t.id], quiet: true }))}
+        after={visible.filter((t) => t.id === "members").map((t) => ({ href: `/groups/${id}?tab=members`, label: t.label, active: tab === "members", badge: badge.members }))} />
 
       {tab === "overview" && <GroupOverview ctx={ctx} pulse={pulse} />}
       {tab === "feed" && <GroupFeed ctx={ctx} />}

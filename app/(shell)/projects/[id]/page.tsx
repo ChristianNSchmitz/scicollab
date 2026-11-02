@@ -7,6 +7,9 @@ import {
   updateProject, setProjectRole, linkProjectMethod, unlinkProjectMethod, addMilestone, toggleMilestone, deleteMilestone,
 } from "@/app/actions/projects";
 import { PROJECT_STATUSES, PROJECT_ROLES } from "@/lib/projects";
+import SegTabs from "@/components/SegTabs";
+import Repositories from "@/components/code/Repositories";
+import { repoLinks } from "@/lib/repos";
 import { Page, Panel, PanelHead, Empty, Tag, Visibility, Outcome, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo, bytes } from "@/lib/format";
 import Avatar from "@/components/Avatar";
@@ -42,10 +45,10 @@ export default async function Project({
   params, searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ tab?: string; saved?: string; error?: string }>;
+  searchParams: Promise<{ tab?: string; saved?: string; error?: string; repo?: string }>;
 }) {
   const { id } = await params;
-  const { tab, saved, error } = await searchParams;
+  const { tab, saved, error, repo } = await searchParams;
   const active: Tab = TABS.some((t) => t.id === tab) ? (tab as Tab) : "overview";
 
   const supabase = await createClient();
@@ -62,6 +65,7 @@ export default async function Project({
       supabase.from("project_methods").select("card_id, added_by, added_at").eq("project_id", id).order("added_at", { ascending: false }),
       supabase.from("project_milestones").select("*").eq("project_id", id),
     ]);
+  const repos = await repoLinks(supabase, { projectId: id });
 
   const ids = (members ?? []).map((m: { user_id: string }) => m.user_id);
   const { data: { user } } = await supabase.auth.getUser();
@@ -108,7 +112,7 @@ export default async function Project({
     methods: methods.length,
     notebook: entries?.length ?? 0,
     data: datasets?.length ?? 0,
-    code: files?.length ?? 0,
+    code: (files?.length ?? 0) + repos.length,
   };
 
   return (
@@ -132,19 +136,11 @@ export default async function Project({
       {saved === "1" && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Project saved.</p>}
       {error === "title" && <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", borderRadius: 12, color: "var(--err)", background: "var(--surface)" }}>A project needs a title.</p>}
       {/* The ways into a project, as one segmented control: no rule runs under it. */}
-      <nav aria-label="Project sections" className="sc-seg" style={{ display: "flex", gap: 0, marginBottom: 16, overflowX: "auto" }}>
-        {TABS.map((t) => {
-          const on = t.id === active;
-          return (
-            <Link key={t.id} href={t.id === "overview" ? `/projects/${p.id}` : `/projects/${p.id}?tab=${t.id}`} aria-current={on ? "page" : undefined}
-              style={{ flex: "1 0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "9px 14px", font: mono(12.5, 600), whiteSpace: "nowrap",
-                color: on ? "var(--ink)" : "var(--mute)", textDecoration: "none", borderBottom: on ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
-              {t.label}
-              {(t.id !== "overview" || counts.overview > 0) && <span style={{ font: mono(10.5, 500), opacity: .7 }}>{t.id === "overview" ? `${counts.overview} open` : counts[t.id]}</span>}
-            </Link>
-          );
-        })}
-      </nav>
+      <SegTabs label="Project sections" items={TABS.map((t) => ({
+        href: t.id === "overview" ? `/projects/${p.id}` : `/projects/${p.id}?tab=${t.id}`, active: t.id === active,
+        label: t.id === "overview" ? t.label : `${t.label} ${counts[t.id]}`,
+        badge: t.id === "overview" ? counts.overview : undefined, quiet: true,
+      }))} />
 
       <div className="sc-two-col">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -215,7 +211,7 @@ export default async function Project({
 
               {isOwner && (
                 <details id="settings" style={{ scrollMarginTop: 72 }} open={error === "title"}>
-                  <summary style={{ font: "500 13px/1 var(--sans)", cursor: "pointer", color: "var(--mute)" }}>Project settings</summary>
+                  <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 32, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--ink)" }}>Project settings</summary>
                   <Panel style={{ marginTop: 8 }}>
                     <form action={updateProject.bind(null, p.id)} style={{ padding: 14, display: "flex", flexDirection: "column", gap: 12 }}>
                       <div><label style={fieldLabel} htmlFor="pj-title">Title</label><input id="pj-title" name="title" defaultValue={p.title} required maxLength={200} style={field} /></div>
@@ -372,6 +368,7 @@ export default async function Project({
 
           {active === "code" && (
             <>
+              <Repositories scope="project" id={p.id} links={repos} canEdit={isMember || isOwner} canManage={isOwner} me={user!.id} flash={repo} />
               <Panel>
                 <PanelHead>Files · {files?.length ?? 0}</PanelHead>
                 {(files?.length ?? 0) === 0 ? (

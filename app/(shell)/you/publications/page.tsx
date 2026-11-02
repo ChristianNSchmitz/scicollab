@@ -1,3 +1,4 @@
+import YouShell from "@/components/you/YouShell";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, btn, field, mono } from "@/components/ui";
@@ -55,12 +56,12 @@ export default async function Publications({
 
   if (biblio.state === "no-orcid" || biblio.state === "invalid-orcid") {
     return (
-      <Page title="Your publications" lede="From OpenAlex, matched by your ORCID.">
+      <YouShell active="publications">
         <Panel><Empty>
           {biblio.state === "no-orcid" ? "No ORCID linked yet." : `“${biblio.orcid}” is not a valid ORCID iD.`}{" "}
           <Link href="/settings#orcid" style={{ color: "var(--link)" }}>Link your ORCID in Settings</Link> and your publications appear here, updated automatically.
         </Empty></Panel>
-      </Page>
+      </YouShell>
     );
   }
 
@@ -86,17 +87,12 @@ export default async function Publications({
   });
 
   return (
-    <Page
-      title="Your publications"
-      lede="From OpenAlex, matched by your ORCID. Updated every 12 hours."
-      actions={
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
-          <a href="/you/publications/export" download style={btn}>BibTeX</a>
-          <a href="/you/publications/export?format=csv" download style={btn}>CSV</a>
-          {!example && <form action={syncNow.bind(null, "/you/publications")}><button type="submit" style={btn}>Sync now</button></form>}
-        </div>
-      }
-    >
+    <YouShell active="publications">
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end", margin: "-6px 0 12px" }}>
+        <a href="/you/publications/export" download style={{ ...btn, height: 32, borderRadius: 999, border: "1px solid var(--rule)" }}>BibTeX</a>
+        <a href="/you/publications/export?format=csv" download style={{ ...btn, height: 32, borderRadius: 999, border: "1px solid var(--rule)" }}>CSV</a>
+        {!example && <form action={syncNow.bind(null, "/you/publications")}><button type="submit" style={{ ...btn, height: 32, borderRadius: 999, border: "1px solid var(--rule)" }}>Sync now</button></form>}
+      </div>
       {sp.sync && SYNC_FLASH[sp.sync] && (
         <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sp.sync]}</p>
       )}
@@ -188,6 +184,6 @@ export default async function Publications({
           ))}
         </Panel>
       )}
-    </Page>
+    </YouShell>
   );
 }

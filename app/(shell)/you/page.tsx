@@ -1,349 +1,68 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Page, Panel, PanelHead, Empty, Outcome, Tag, Visibility, btn, mono } from "@/components/ui";
-import { timeAgo, inAbout } from "@/lib/format";
-import { SYNC_FLASH } from "@/lib/openalex/messages";
-import { bibliometricsFor, loadSnapshots, type Bibliometrics } from "@/lib/record/bibliometrics";
-import { normaliseOrcid, SYNC_INTERVAL_MS } from "@/lib/openalex/sync";
-import type { PubRow, RunRow } from "@/lib/openalex/store";
-import { syncNow } from "@/app/actions/openalex";
-import { loadRecord } from "@/lib/record/metrics";
-import { buildTimeline, RANGES, type Range, type Timeline } from "@/lib/record/timeline";
-import TimelineChart from "@/components/record/TimelineChart";
-import { ensureRecordSeed } from "@/lib/record/demo-seed";
-import { loadPublications, syncIfDue, sortPublications, newIds } from "@/lib/record/publications";
-import PublicationRow from "@/components/record/PublicationRow";
-import Avatar from "@/components/Avatar";
-import { orcidUrl } from "@/lib/orcid";
-import { citationProfile, type CitationProfile } from "@/lib/record/citations";
-import YearBars from "@/components/record/YearBars";
-
+import { activityOf, activityOnMine, type Activity } from "@/lib/social/activity";
+import { peopleById } from "@/lib/people";
+import { Panel, PanelHead } from "@/components/ui";
+import ActivityList from "@/components/social/ActivityList";
+import YouShell from "@/components/you/YouShell";
 
 export const dynamic = "force-dynamic";
 
-/** Your record — board B3 screen 16. Six axes, never summed. Citations,
- *  h-index and recommendations sit above them as three separate numbers,
- *  each with its source; nothing on this page combines them. */
-export default async function You({ searchParams }: { searchParams: Promise<{ range?: string; sync?: string }> }) {
-  ensureRecordSeed();
-  const { range: rangeParam, sync: syncFlash } = await searchParams;
-  const range: Range = RANGES.some((r) => r.key === rangeParam) ? (rangeParam as Range) : "months";
+const MONTH = 30 * 864e5;
+
+/** You, Activity: three numbers that matter and one list of what happened, newest first.
+ *  The full record (every axis) and the publications have their own tabs. */
+export default async function You() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const me = user!.id;
 
-  const [{ data: profile }, { data: cards }, { count: questions }, { count: answers }, { count: datasets }] = await Promise.all([
-    supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle(),
-    supabase.from("method_cards").select("id, code, title, outcome, visibility, reproductions, created_at").eq("author_id", user!.id).order("created_at", { ascending: false }),
-    supabase.from("questions").select("id", { count: "exact", head: true }).eq("author_id", user!.id),
-    supabase.from("answers").select("id", { count: "exact", head: true }).eq("author_id", user!.id),
-    supabase.from("datasets").select("id", { count: "exact", head: true }).eq("owner_id", user!.id),
+  const [{ data: cards }, onMine, mine, { data: helped }] = await Promise.all([
+    supabase.from("method_cards").select("id, outcome").eq("author_id", me),
+    activityOnMine(supabase, me, 365),
+    activityOf(supabase, [me], { viewer: me, limit: 12, days: 60 }),
+    supabase.from("post_replies").select("post_id, anchor, helped_at").eq("author_id", me).gte("helped_at", "1970-01-01"),
   ]);
+  const { data: helpedPosts } = (helped ?? []).length
+    ? await supabase.from("posts").select("id, title, author_id").in("id", (helped ?? []).map((h: any) => h.post_id))
+    : { data: [] as any[] };
+  const askers = await peopleById(supabase, (helpedPosts ?? []).map((p: any) => p.author_id));
+  const helpedItems: Activity[] = (helped ?? []).map((h: any) => {
+    const post = (helpedPosts ?? []).find((p: any) => p.id === h.post_id);
+    return { at: h.helped_at, actor: askers.get(post?.author_id) ?? null, kind: "answer", text: `found your feedback${h.anchor ? ` on ${h.anchor}` : ""} helpful:`, title: post?.title ?? "a post", href: `/posts/${h.post_id}#replies` };
+  });
 
-  // OpenAlex: synced every 12 hours by the scheduler; a visit is the safety net.
-  await syncIfDue(user!.id, profile?.orcid, { waitForFirst: true });
-  const { pubs, runs, example: isExample } = await loadPublications(user!.id, profile?.orcid, 10);
-  const profileC = citationProfile(pubs);
-
-  // Recommendations: other people endorsing your method cards.
-  const cardIds = (cards ?? []).map((c) => c.id);
-  const [{ data: recs }, biblio] = await Promise.all([
-    cardIds.length
-      ? supabase.from("recommendations").select("card_id, created_at").in("card_id", cardIds).neq("user_id", user!.id)
-      : Promise.resolve({ data: [] as any[] }),
-    bibliometricsFor(user!.id, profile?.orcid),
-  ]);
-  const [snapshots, record] = await Promise.all([
-    loadSnapshots(supabase, user!.id, biblio),
-    loadRecord(supabase, user!.id, 12),
-  ]);
-  const timeline = buildTimeline(range, record.events, biblio, snapshots);
-
-  const recent = (recs ?? []).filter((r) => Date.now() - +new Date(r.created_at) < 28 * 864e5).length;
-  const recCards = new Set((recs ?? []).map((r) => r.card_id)).size;
-
-  const nulls = (cards ?? []).filter((c) => c.outcome === "negative").length;
-  const reproductions = (cards ?? []).reduce((n, c) => n + (c.reproductions ?? 0), 0);
-
-  const axes = [
-    ["Methods recorded", cards?.length ?? 0],
-    ["Null results recorded", nulls],
-    ["Questions asked", questions ?? 0],
-    ["Answers given", answers ?? 0],
-    ["Reproductions of your work", reproductions],
-    ["Data deposited", datasets ?? 0],
-  ] as const;
-
-  return (
-    <Page
-      title={profile?.display_name || "Your record"}
-      lede={[profile?.role_title, profile?.institution, profile?.field].filter(Boolean).join(" · ") || "Add an institution and field in Settings."}
-      actions={
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
-          <Link href="/you/publications" style={btn}>Publications →</Link>
-          <Link href="/you/record" style={btn}>Your record →</Link>
-          <Link href="/settings" style={btn}>Edit profile</Link>
-        </div>
-      }
-    >
-      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 14 }}>
-        <Avatar name={profile?.display_name ?? ""} url={profile?.avatar_url} size={56} />
-        <div style={{ font: mono(11), color: "var(--mute)", lineHeight: 1.7 }}>
-          {normaliseOrcid(profile?.orcid) ? (
-            <a href={orcidUrl(normaliseOrcid(profile?.orcid)!)} target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>
-              ORCID {normaliseOrcid(profile?.orcid)} ↗
-            </a>
-          ) : <Link href="/settings#orcid" style={{ color: "var(--link)" }}>Link your ORCID</Link>}
-          {(profile?.techniques?.length ?? 0) > 0 && <div>{profile!.techniques.slice(0, 6).join(" · ")}</div>}
-        </div>
-        {!profile?.avatar_url && <Link href="/settings#picture" style={{ font: mono(11), color: "var(--link)", marginLeft: "auto" }}>Add a picture</Link>}
-      </div>
-      <Headline biblio={biblio} recs={recs?.length ?? 0} recent={recent} recCards={recCards} />
-      <CitationPanel c={profileC} biblio={biblio} />
-      <OverTime timeline={timeline} />
-      <Publications pubs={pubs} runs={runs} biblio={biblio} example={isExample} flash={syncFlash} c={profileC} />
-
-      <Panel style={{ marginBottom: 16 }}>
-        <PanelHead>Six axes · never summed</PanelHead>
-        {/* dividers come from the 1px gap, so any column count draws them right */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: 1, background: "var(--rule)" }}>
-          {axes.map(([label, value]) => (
-            <div key={label} style={{ padding: 16, background: "var(--surface)" }}>
-              <div style={{ font: mono(26, 700), letterSpacing: "-.02em" }}>{value}</div>
-              <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 5 }}>{label}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)", font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)" }}>
-          These are never added together, and no institution can obtain them per researcher — board K5 question 9.
-        </div>
-      </Panel>
-
-      <h2 style={{ font: mono(11, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", margin: "0 0 8px" }}>Your method cards</h2>
-      <Panel>
-        {(cards?.length ?? 0) === 0 ? (
-          <Empty>Nothing recorded yet. <Link href="/methods/new" style={{ color: "var(--link)" }}>Record the first</Link>.</Empty>
-        ) : cards!.map((c) => (
-          <Link key={c.id} href={`/methods/${c.id}`} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "12px 14px", borderBottom: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
-            <Outcome value={c.outcome} />
-            <span style={{ font: mono(11), color: "var(--mute)" }}>{c.code}</span>
-            <span style={{ font: mono(13, 500), flex: "1 1 220px", minWidth: 0 }}>{c.title}</span>
-            <span style={{ font: mono(10.5), color: "var(--mute)" }}>{timeAgo(c.created_at)}</span>
-            <Visibility value={c.visibility} />
-          </Link>
-        ))}
-      </Panel>
-    </Page>
-  );
-}
-
-/** Three numbers, three sources, never combined. */
-function Headline({ biblio, recs, recent, recCards }: {
-  biblio: Bibliometrics; recs: number; recent: number; recCards: number;
-}) {
-  const ok = biblio.state === "ok" ? biblio : null;
-  const missing =
-    biblio.state === "no-orcid" ? <>Add your ORCID in <Link href="/settings" style={{ color: "var(--link)" }}>Settings</Link> to show these.</> :
-    biblio.state === "invalid-orcid" ? <>“{biblio.orcid}” is not an ORCID iD. <Link href="/settings" style={{ color: "var(--link)" }}>Fix it in Settings</Link>.</> :
-    biblio.state === "not-found" ? <>OpenAlex has no author for ORCID {biblio.orcid} yet.</> :
-    biblio.state === "pending" ? <>Fetching your record from OpenAlex for the first time…</> :
-    biblio.state === "unreachable" ? <>{biblio.message ?? "OpenAlex could not be reached."} The next sync will try again.</> : null;
-
-  const cells: { value: string | number; label: string; sub: React.ReactNode }[] = [
-    { value: ok ? ok.citations.toLocaleString("en-GB") : "—", label: "Citations",
-      sub: ok ? `+${ok.citationsThisYear} in ${ok.year} · ${ok.works} works` : missing },
-    { value: ok ? ok.hIndex : "—", label: "h-index",
-      sub: ok ? `${ok.hIndex} works cited at least ${ok.hIndex} times · i10-index ${ok.i10}` : missing },
-    { value: recs, label: "Recommendations",
-      sub: recs ? `+${recent} in 4 weeks · on ${recCards} of your cards` : <>None yet. Others can recommend your shared cards.</> },
+  const nulls = (cards ?? []).filter((c: any) => c.outcome === "negative").length;
+  const helpedMonth = (helped ?? []).filter((h: any) => Date.now() - +new Date(h.helped_at) < MONTH).length;
+  const recent = [...helpedItems, ...onMine.filter((a) => Date.now() - +new Date(a.at) < 2 * MONTH), ...mine]
+    .sort((a, b) => String(b.at).localeCompare(String(a.at))).slice(0, 12);
+  const max = Math.max(1, cards?.length ?? 0, onMine.length, (helped ?? []).length);
+  const tiles = [
+    { k: "Methods recorded", n: cards?.length ?? 0, unit: nulls ? `${nulls} null result${nulls === 1 ? "" : "s"}` : "", href: "/methods" },
+    { k: "Used by others", n: onMine.length, unit: "repeats and forks", href: "/you/record" },
+    { k: "Feedback that helped", n: (helped ?? []).length, unit: helpedMonth ? `${helpedMonth} this month` : "", href: "/you/record" },
   ];
 
   return (
-    <Panel style={{ marginBottom: 16 }}>
-      {/* dividers come from the 1px gap, so they stay right when the cells wrap */}
-      <div className="sc-three" style={{ borderBottom: "1px solid var(--rule)" }}>
-        {cells.map((c) => (
-          <div key={c.label} style={{ padding: "16px 16px 14px", background: "var(--surface)" }}>
-            <div style={{ font: mono(34, 700), letterSpacing: "-.03em" }}>{c.value}</div>
-            <div style={{ font: mono(11, 500), marginTop: 6 }}>{c.label}</div>
-            <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 4 }}>{c.sub}</div>
-          </div>
+    <YouShell active="activity">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10, marginBottom: 12 }}>
+        {tiles.map((t) => (
+          <Link key={t.k} href={t.href} className="sc-hl-tile" style={{ display: "block", textDecoration: "none", color: "var(--ink)", padding: "12px 14px" }}>
+            <span className="sc-hl-kicker">{t.k}</span>
+            <span style={{ display: "flex", alignItems: "baseline", gap: 6, marginTop: 8 }}>
+              <span className="sc-hl-big">{t.n}</span><span className="sc-hl-unit">{t.unit}</span>
+            </span>
+            <span aria-hidden="true" style={{ display: "block", height: 6, borderRadius: 999, background: "var(--rule)", marginTop: 10, overflow: "hidden" }}>
+              <span style={{ display: "block", height: "100%", width: `${Math.round((t.n / max) * 100)}%`, borderRadius: 999, background: "var(--ok)" }} />
+            </span>
+          </Link>
         ))}
       </div>
-      <div style={{ padding: "9px 16px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-        {ok ? (
-          <>
-            Citations and h-index from <a href={ok.url} target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a>
-            {ok.example ? " · example values for the demo account" : ok.updated ? `, updated ${ok.updated.slice(0, 10)}` : ""}.{" "}
-          </>
-        ) : null}
-        Recommendations are counted on SciCollab, from people other than you. The three numbers are shown separately and never combined.
-      </div>
-    </Panel>
-  );
-}
-
-/** Citations and your involvement, as running totals over the chosen range. */
-function OverTime({ timeline: t }: { timeline: Timeline }) {
-  const delta = (v: (number | null)[]) => {
-    const xs = v.filter((x): x is number => x !== null);
-    return xs.length > 1 ? xs[xs.length - 1] - xs[0] : null;
-  };
-  const dc = delta(t.citations), di = delta(t.involvement);
-  return (
-    <Panel style={{ marginBottom: 16 }}>
-      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "8px 14px", borderBottom: "1px solid var(--rule)" }}>
-        <span style={{ font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", flex: 1 }}>
-          Over time · running totals
-        </span>
-        <div style={{ display: "flex", flexWrap: "wrap", border: "1px solid var(--rule)" }} role="group" aria-label="Time range">
-          {RANGES.map((r) => (
-            <Link key={r.key} href={r.key === "months" ? "/you" : `/you?range=${r.key}`} scroll={false}
-                  aria-current={r.key === t.range ? "true" : undefined}
-                  style={{ padding: "5px 10px", font: mono(11, 500), textDecoration: "none",
-                           background: r.key === t.range ? "var(--ink)" : "transparent",
-                           color: r.key === t.range ? "var(--bg)" : "var(--ink)" }}>
-              {r.label}
-            </Link>
-          ))}
-        </div>
-      </div>
-      <div style={{ padding: "12px 14px 10px" }}>
-        <TimelineChart
-          labels={t.labels} tips={t.tips}
-          rows={[
-            { title: "Citations", unit: "citations", values: t.citations },
-            { title: "Involvement", unit: "contributions", values: t.involvement },
-          ]}
-        />
-      </div>
-      <div style={{ padding: "9px 14px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-        {dc !== null && <>Citations +{dc.toLocaleString("en-GB")} and involvement +{di} over this range. </>}
-        {t.citationsNote} Involvement counts everything you contributed: cards, null results, repeats, questions, answers, reviews and mentoring; what others did with your work is in <Link href="/you/record" style={{ color: "var(--link)" }}>Your record</Link>. Each line has its own scale.
-      </div>
-    </Panel>
-  );
-}
-
-/** The five newest publications and what changed; the full list with its
- *  statistics, search and sorting is /you/publications. */
-function Publications({ pubs, runs, biblio, example, flash, c }: {
-  pubs: PubRow[]; runs: RunRow[]; biblio: Bibliometrics; example: boolean; flash?: string; c: CitationProfile;
-}) {
-  if (biblio.state === "no-orcid" || biblio.state === "invalid-orcid") return null;
-  const last = runs.find((r) => r.status === "ok");
-  const lastAny = runs[0];
-  const synced = biblio.state === "ok" ? biblio.updated : last?.finished_at ?? null;
-  const nextIn = synced ? Math.max(0, +new Date(synced) + SYNC_INTERVAL_MS - Date.now()) : 0;
-  const fresh = newIds(runs, example, pubs);
-
-  return (
-    <Panel style={{ marginBottom: 16 }}>
-      <div id="publications" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "8px 14px", borderBottom: "1px solid var(--rule)", scrollMarginTop: 72 }}>
-        <span style={{ font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", flex: 1 }}>
-          Publications · {pubs.length} from OpenAlex{example ? " · example" : ""}
-        </span>
-        <span style={{ font: mono(10.5), color: "var(--mute)" }}>
-          {example ? "demo account, not synced" : synced ? `synced ${timeAgo(synced)} · next in ~${inAbout(nextIn)}` : "first sync pending"}
-        </span>
-        {!example && (
-          <form action={syncNow.bind(null, "/you")}><button type="submit" style={{ ...btn, height: 28, padding: "0 10px", font: mono(11, 500) }}>Sync now</button></form>
-        )}
-      </div>
-
-      {flash && SYNC_FLASH[flash] && (
-        <div role="status" style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.5 var(--sans)", background: "var(--bg)" }}>{SYNC_FLASH[flash]}</div>
-      )}
-
-      {last && !last.initial && (last.new_works > 0 || last.citations_delta !== 0 || last.removed_works > 0) && (
-        <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "400 13px/1.6 var(--sans)" }}>
-          <b style={{ font: mono(10, 700), letterSpacing: ".08em" }}>SINCE THE PREVIOUS SYNC</b>{"  "}
-          {[
-            last.citations_delta ? `${last.citations_delta > 0 ? "+" : ""}${last.citations_delta} citations` : null,
-            last.new_works ? `${last.new_works} new publication${last.new_works > 1 ? "s" : ""}` : null,
-            last.removed_works ? `${last.removed_works} no longer attributed to you by OpenAlex` : null,
-          ].filter(Boolean).join(" · ")}
-        </div>
-      )}
-
-      {lastAny && lastAny.status !== "ok" && lastAny.status !== "running" && !example && (
-        <div style={{ padding: "8px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)" }}>
-          Last attempt {timeAgo(lastAny.started_at)}: {lastAny.error ?? lastAny.status}
-        </div>
-      )}
-
-      {pubs.length === 0 ? (
-        <Empty>{biblio.state === "pending" ? "The first sync is still running. Reload in a moment." : "No publications in OpenAlex for this ORCID yet."}</Empty>
-      ) : (
-        sortPublications(pubs, "new", c).slice(0, 5).map((p) => <PublicationRow key={p.openalex_id} p={p} c={c} isNew={fresh.has(p.openalex_id)} />)
-      )}
-      {pubs.length > 0 && (
-        <Link href="/you/publications" style={{ display: "block", padding: "11px 14px", font: mono(12, 500), color: "var(--link)", borderBottom: "1px solid var(--rule)" }}>
-          All {pubs.length} publications with citations, search and sorting →
-        </Link>
-      )}
-      <div style={{ padding: "9px 14px", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-        Synced from <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID every 12 hours. Missing papers are fixed in ORCID or OpenAlex. </div>
-    </Panel>
-  );
-}
-
-/** Citations per year, the h-index year by year, and this year's most cited
- *  papers. All from the stored per-work counts; nothing is fetched here. */
-function CitationPanel({ c, biblio }: { c: CitationProfile; biblio: Bibliometrics }) {
-  if (biblio.state !== "ok") return null;
-  const perYear = biblio.countsByYear.filter((x) => x.year > c.year - 10 && x.year <= c.year)
-    .map((x) => ({ year: x.year, value: x.cited_by_count }));
-  const h = c.hIndexByYear;
-  const hLastYear = h.at(-2)?.value;
-  const cell: React.CSSProperties = { padding: "14px 16px", background: "var(--surface)", minWidth: 0 };
-  const head: React.CSSProperties = { font: mono(10, 700), letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", marginBottom: 10 };
-  const lastYearValue = perYear.find((x) => x.year === c.year - 1)?.value ?? 0;
-  return (
-    <Panel style={{ marginBottom: 16 }}>
-      <div className="sc-three">
-        <div style={cell}>
-          <div style={head}>Citations per year</div>
-          <YearBars points={perYear} unit="citations" current={c.year} />
-          <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
-            <b style={{ color: "var(--ink)" }}>{biblio.citationsThisYear}</b> so far in {c.year} · {lastYearValue} in {c.year - 1}
-          </div>
-        </div>
-        <div style={cell}>
-          <div style={head}>h-index by year</div>
-          {c.hasHistory && h.length > 0 ? (
-            <>
-              <YearBars points={h} unit="h-index" current={c.year} />
-              <div style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", marginTop: 8 }}>
-                <b style={{ color: "var(--ink)" }}>{h.at(-1)!.value}</b> now
-                {hLastYear !== undefined && <> · {h.at(-1)!.value - hLastYear >= 0 ? "+" : ""}{h.at(-1)!.value - hLastYear} since the end of {c.year - 1}</>}
-              </div>
-            </>
-          ) : (
-            <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
-              Appears after the next full sync, which stores each paper&apos;s citations per year.
-            </p>
-          )}
-        </div>
-        <div style={cell}>
-          <div style={head}>Most cited in {c.year}</div>
-          {c.topThisYear.length === 0 ? (
-            <p style={{ font: "400 12.5px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
-              {c.hasHistory ? `No citations recorded in ${c.year} yet.` : "Appears after the next full sync."}
-            </p>
-          ) : (
-            <ol style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7 }}>
-              {c.topThisYear.map((t) => (
-                <li key={t.openalex_id} style={{ display: "flex", gap: 8, font: "400 12.5px/1.4 var(--sans)" }}>
-                  <span style={{ font: mono(11, 700), minWidth: 22, textAlign: "right" }}>{t.n}</span>
-                  <span style={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{t.title}</span>
-                </li>
-              ))}
-            </ol>
-          )}
-        </div>
-      </div>
-      <div style={{ padding: "9px 16px", borderTop: "1px solid var(--rule)", font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>
-        From OpenAlex citations per year, about the last ten years. </div>
-    </Panel>
+      <Panel>
+        <PanelHead>Lately</PanelHead>
+        <ActivityList items={recent} empty="Nothing yet. Post, answer or record a method, and it shows up here." />
+        <Link href="/you/record" style={{ display: "block", padding: "10px 14px", font: "600 12.5px/1 var(--sans)", color: "var(--mute)", textDecoration: "none" }}>Full record →</Link>
+      </Panel>
+    </YouShell>
   );
 }

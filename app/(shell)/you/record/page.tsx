@@ -1,3 +1,4 @@
+import YouShell from "@/components/you/YouShell";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -49,16 +50,10 @@ export default async function RecordPage({ searchParams }: {
   };
 
   return (
-    <Page
-      title="Your record"
-      lede="What you contributed and what others did with it. Counted, never scored."
-      actions={
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
-          <Link href={`/you/record/export${axis ? `?axis=${axis}` : ""}`} style={btn}>Export CSV</Link>
-          <Link href="/you" style={btn}>Profile</Link>
-        </div>
-      }
-    >
+    <YouShell active="record">
+      <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", margin: "-6px 0 12px" }}>
+        <Link href={`/you/record/export${axis ? `?axis=${axis}` : ""}`} style={{ ...btn, height: 32, borderRadius: 999, border: "1px solid var(--rule)" }}>Export CSV</Link>
+      </div>
       <PrivacyStrip weeks={weeks} hrefFor={(w) => q({ weeks: w })}>
         Private. No score, no ranking, no comparison. </PrivacyStrip>
 
@@ -217,7 +212,7 @@ export default async function RecordPage({ searchParams }: {
           showing {Math.min(40, ledger.length)} of {ledger.length} · derived from your records, nothing is weighted or recalculated
         </div>
       </Panel>
-    </Page>
+    </YouShell>
   );
 }
 

@@ -129,8 +129,10 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
           </Panel>
         )}
         {manage && (
+          <details id="invite" open={sp.show === "invite" || !!sp.invite || sp.error === "email"} style={{ scrollMarginTop: 72 }}>
+          <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", marginBottom: 8, height: 34, padding: "0 16px", borderRadius: 999, background: "var(--signal-fill)", color: "var(--on-signal)", display: "flex", alignItems: "center", font: "600 13px/1 var(--sans)" }}>+ Invite people</summary>
           <Panel>
-            <div id="invite" style={{ scrollMarginTop: 72 }}><PanelHead>Invite people</PanelHead></div>
+            <PanelHead>Invite people</PanelHead>
             {newInvite && (
               <div style={{ padding: "12px 14px", borderBottom: "1px solid var(--rule)", background: "color-mix(in srgb, var(--ok) 8%, transparent)" }}>
                 <div style={{ font: "600 13px/1.4 var(--sans)", marginBottom: 6 }}>Your invitation link{newInvite.email ? ` for ${newInvite.email}` : ""}</div>
@@ -170,11 +172,12 @@ export default async function GroupMembers({ ctx }: { ctx: GroupCtx }) {
               </div>
             )}
           </Panel>
+          </details>
         )}
 
         {manage && (
           <details id="settings" style={{ scrollMarginTop: 72 }}>
-            <summary style={{ font: mono(12, 500), cursor: "pointer" }}>Group settings</summary>
+            <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 32, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--ink)" }}>Group settings</summary>
             <Panel style={{ marginTop: 8 }}>
               <form action={updateGroup.bind(null, id)} style={{ padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
                 <div><label style={fieldLabel} htmlFor="gs-name">Name</label><input id="gs-name" name="name" defaultValue={g.name} required minLength={2} maxLength={120} style={field} /></div>

@@ -211,7 +211,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
               </div>
 
               <details style={{ borderTop: "1px solid var(--rule)", margin: "14px -14px 0", padding: "14px 14px 0" }}>
-                <summary style={{ font: mono(11.5), color: "var(--err)", cursor: "pointer" }}>Delete your account</summary>
+                <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 32, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--err)" }}>Delete your account</summary>
                 <form action={deleteAccount} style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 10 }}>
                   <p style={{ margin: 0 }}>
                     This permanently deletes your account and everything in it. </p>

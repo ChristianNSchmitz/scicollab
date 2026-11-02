@@ -38,7 +38,7 @@ export default async function GroupBoard({ ctx }: { ctx: GroupCtx }) {
                       <form action={pinNote.bind(null, id, n.id, !n.pinned)}><button type="submit" style={small}>{n.pinned ? "Unpin" : "Pin to the top"}</button></form>
                     )}
                     <details style={{ flex: "1 1 100%" , order: 3 }}>
-                      <summary style={{ font: mono(11.5, 500), cursor: "pointer", color: "var(--mute)" }}>Edit</summary>
+                      <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 28, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--ink)" }}>Edit</summary>
                       <form action={editNote.bind(null, id, n.id)} style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
                         <label style={fieldLabel} htmlFor={`nt-${n.id}`}>Title</label>
                         <input id={`nt-${n.id}`} name="title" defaultValue={n.title} required maxLength={200} style={field} />

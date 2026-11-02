@@ -25,6 +25,7 @@ import QuickPost from "@/components/feed/QuickPost";
 import { imageUrls } from "@/lib/posts/images";
 import { postExtras, repostedBy } from "@/lib/posts/extras";
 import { notForChosenPeople } from "@/lib/social/groups";
+import SegTabs from "@/components/SegTabs";
 import { forYou } from "@/lib/social/for-you";
 import ForYouPanel from "@/components/dashboard/ForYouPanel";
 
@@ -263,14 +264,9 @@ export default async function Home({
         <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} meName={me?.display_name ?? ""} meAvatar={me?.avatar_url ?? null} />
 
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-        <nav aria-label="Which posts" className="sc-seg" style={{ display: "flex", gap: 0, flex: "1 1 360px" }}>
-          {([["topics", "Topic groups"], ["groups", `My groups · ${myGroupIds.length}`], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => (
-            <Link key={k} href={k === "topics" ? "/home#feed" : `/home?feed=${k}#feed`} aria-current={feedMode === k ? "page" : undefined}
-              style={{ flex: 1, textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", color: feedMode === k ? "var(--ink)" : "var(--mute)", borderBottom: feedMode === k ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <SegTabs label="Which posts" style={{ flex: "1 1 360px", margin: 0 }} items={([["topics", "Topic groups"], ["groups", `My groups · ${myGroupIds.length}`], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => ({
+          href: k === "topics" ? "/home#feed" : `/home?feed=${k}#feed`, label, active: feedMode === k,
+        }))} />
         {/* Kind and topic behind one button: two rows of chips were too much on every visit. */}
         <details className="sc-feed-filter" style={{ position: "relative" }} open={false}>
           <summary style={{ listStyle: "none", cursor: "pointer", height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>

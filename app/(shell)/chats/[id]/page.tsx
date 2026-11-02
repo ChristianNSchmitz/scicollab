@@ -96,7 +96,7 @@ export default async function ChatRoom({ params, searchParams }: { params: Promi
             )}
           </Panel>
           <details>
-            <summary style={{ font: "500 12.5px/1 var(--sans)", cursor: "pointer", color: "var(--mute)" }}>Rename or leave</summary>
+            <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 32, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--ink)" }}>Rename or leave</summary>
             <Panel style={{ marginTop: 8, padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
               <form action={renameChat.bind(null, id)} style={{ display: "flex", gap: 8 }}>
                 <label htmlFor="chat-rename" style={{ position: "absolute", left: -9999 }}>Name</label>

@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { Page, Panel, PanelHead, Empty, Tag, btn, field, mono } from "@/components/ui";
 import { OPEN_TO } from "@/lib/taxonomy";
+import SegTabs from "@/components/SegTabs";
 import { findExperts, type Evidence } from "@/lib/social/expertise";
 import { OpenToChips } from "@/components/social/ProfileBody";
 import Avatar from "@/components/Avatar";
@@ -53,12 +54,6 @@ export default async function Network({ searchParams }: { searchParams: Promise<
     && (!experts || experts.has(p.id))
     && (!openTo || (p.open_to ?? []).includes(openTo)))
     .sort((a: any, b: any) => (experts ? rank(experts.get(b.id)) - rank(experts.get(a.id)) : 0));
-  const tab = (key: Filter, label: string) => (
-    <Link key={key} className="sc-pill" href={key === "all" ? "/network" : `/network?show=${key}`} aria-current={filter === key ? "page" : undefined}
-      style={{ font: mono(11.5, 500), padding: "6px 11px", border: `1px solid ${filter === key ? "var(--ink)" : "var(--rule)"}`, color: "var(--ink)", textDecoration: "none", background: filter === key ? "var(--surface)" : "transparent" }}>
-      {label}
-    </Link>
-  );
 
   return (
     <Page title="Network" lede="Find people by technique, follow them, message them.">
@@ -84,7 +79,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
           )}
           {co.others.length > 0 && (
             <details style={{ padding: "10px 14px" }}>
-              <summary style={{ cursor: "pointer", font: mono(12, 500) }}>Invite co-authors who are not here yet · {co.others.length}</summary>
+              <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 32, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--ink)" }}>Invite co-authors who are not here yet · {co.others.length}</summary>
               <div style={{ marginTop: 8 }}>
                 {co.others.slice(0, 12).map((o) => (
                   <div key={o.openalexId} style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 0", borderBottom: "1px solid var(--rule)", flexWrap: "wrap" }}>
@@ -118,11 +113,10 @@ export default async function Network({ searchParams }: { searchParams: Promise<
       </form>
       {q && <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "-4px 0 10px" }}>Strongest evidence first: worked or repeated, then listed.</p>}
 
-      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
-        {tab("all", `Everyone · ${people?.length ?? 0}`)}
-        {tab("following", `Following · ${following.size}`)}
-        {tab("followers", `Follow you · ${followers.size}`)}
-      </div>
+      <SegTabs label="Who" style={{ margin: "0 0 10px" }} items={([["all", `Everyone · ${people?.length ?? 0}`], ["following", `Following · ${following.size}`], ["followers", `Follow you · ${followers.size}`]] as const).map(([key, label]) => ({
+        href: `/network?${new URLSearchParams(Object.entries({ show: key === "all" ? undefined : key, q: q || undefined, open: openTo || undefined }).filter(([, v]) => v) as [string, string][])}`.replace(/\?$/, ""),
+        label, active: filter === key,
+      }))} />
 
       <Panel>
         {shown.length === 0 ? (

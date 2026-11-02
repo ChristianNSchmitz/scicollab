@@ -1,3 +1,4 @@
+import YouShell from "@/components/you/YouShell";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { peopleById } from "@/lib/people";
@@ -36,7 +37,7 @@ export default async function SavedPosts() {
   const extras = await postExtras(supabase, me, posts.map((p) => p.id), new Set(), reactions);
 
   return (
-    <Page title="Saved posts" lede="Only you see this list." actions={<Link href="/home" style={btn}>Back to the feed</Link>}>
+    <YouShell active="saved">
       <section style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 12 }}>
         {posts.length === 0 && <Panel><Empty>Nothing saved yet. Use ··· on a post to save it.</Empty></Panel>}
         {posts.map((p) => (
@@ -46,6 +47,6 @@ export default async function SavedPosts() {
             extra={extras.get(p.id)} follows={following.has(p.author_id)} />
         ))}
       </section>
-    </Page>
+    </YouShell>
   );
 }

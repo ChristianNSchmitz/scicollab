@@ -7,6 +7,7 @@ import { timeAgo } from "@/lib/format";
 import { expressInterest } from "@/app/actions/calls";
 import { Page, Panel, Empty, btn, btnPrimary, field, mono } from "@/components/ui";
 import Avatar from "@/components/Avatar";
+import SegTabs from "@/components/SegTabs";
 import PersonLink from "@/components/social/PersonLink";
 
 export const dynamic = "force-dynamic";
@@ -44,12 +45,6 @@ export default async function Calls({ searchParams }: { searchParams: Promise<Se
   const mineOn = (id: string) => (interest ?? []).find((i: any) => i.post_id === id && i.user_id === me);
   const answers = (id: string) => (interest ?? []).filter((i: any) => i.post_id === id && i.user_id !== me).length;
   const back = `/calls?${new URLSearchParams(Object.entries({ q: sp.q, status: sp.status, due: sp.due, mine: sp.mine }).filter(([, v]) => v) as [string, string][]).toString()}`;
-  const seg = (key: string, label: string) => {
-    const on = status === key;
-    const params = new URLSearchParams(Object.entries({ q: sp.q, due: sp.due, mine: sp.mine, status: key === "open" ? undefined : key }).filter(([, v]) => v) as [string, string][]);
-    return <Link key={key} href={`/calls${params.size ? `?${params}` : ""}`} aria-current={on ? "page" : undefined}
-      style={{ flex: 1, textAlign: "center", padding: "8px 12px", font: mono(12, 600), textDecoration: "none", color: on ? "var(--ink)" : "var(--mute)", borderBottom: on ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>{label}</Link>;
-  };
 
   return (
     <Page title="Calls for collaborators" lede="Labs looking for a technique or a second pair of hands. Only the caller sees who is interested."
@@ -69,9 +64,10 @@ export default async function Calls({ searchParams }: { searchParams: Promise<Se
         <button type="submit" style={{ ...btn, height: 38 }}>Filter</button>
         {(sp.q || due || sp.mine) && <Link href={status === "open" ? "/calls" : `/calls?status=${status}`} style={{ font: "400 12.5px/38px var(--sans)", color: "var(--mute)" }}>clear</Link>}
       </form>
-      <nav aria-label="Status" className="sc-seg" style={{ display: "flex", gap: 0, marginBottom: 14, maxWidth: 900 }}>
-        {seg("open", "Open")}{seg("filled", "Filled")}{seg("closed", "Closed")}{seg("all", "All")}
-      </nav>
+      <SegTabs label="Status" style={{ maxWidth: 900, margin: "0 0 14px" }} items={([["open", "Open"], ["filled", "Filled"], ["closed", "Closed"], ["all", "All"]] as const).map(([key, label]) => {
+        const params = new URLSearchParams(Object.entries({ q: sp.q, due: sp.due, mine: sp.mine, status: key === "open" ? undefined : key }).filter(([, v]) => v) as [string, string][]);
+        return { href: `/calls${params.size ? `?${params}` : ""}`, label, active: status === key };
+      })} />
 
       <section style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 900 }}>
         {(calls ?? []).length === 0 && <Panel><Empty>No calls match. Change the filters, or <Link href="/post?intent=collab" style={{ color: "var(--link)" }}>post the first one</Link>.</Empty></Panel>}

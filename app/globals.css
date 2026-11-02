@@ -534,3 +534,10 @@ input[type="file"]::file-selector-button {
 
 /* Menu rows (account menu, post menus): a soft highlight under the pointer. */
 .sc-menu-item:hover, .sc-menu-item:focus-visible { background: color-mix(in srgb, var(--ink) 7%, transparent) !important; }
+
+/* SegTabs' "More" menu: its rows are menu rows, not segments. */
+html[data-look="glass"] .sc-seg details a { color: var(--ink) !important; font: 500 13px/1.2 var(--sans) !important; padding: 9px 10px !important; box-shadow: none !important; }
+html[data-look="glass"] .sc-seg details a[aria-current="page"] { background: color-mix(in srgb, var(--ink) 7%, transparent) !important; }
+html[data-look="glass"] .sc-seg summary { border: 0 !important; font: 600 13px/1.2 var(--sans) !important; padding: 7px 12px !important; }
+html[data-look="glass"] .sc-seg summary[aria-current="page"] { color: var(--ink) !important; }
+.sc-seg summary::-webkit-details-marker { display: none; }

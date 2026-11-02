@@ -58,15 +58,14 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
     );
   }
 
-  const [{ data: pinned }, { data: posts }, { data: chat }, { data: tasks }, { data: methods }, { data: data }, { data: files }, activity] = await Promise.all([
+  const [{ data: pinned }, { data: posts }, { data: chat }, { data: tasks }, { data: methods }, { data: data }, { data: files }] = await Promise.all([
     supabase.from("group_notes").select("id, title, body, author_id, updated_at").eq("group_id", id).eq("pinned", true).order("updated_at", { ascending: false }).limit(3),
-    supabase.from("posts").select("id, title, author_id, created_at").eq("group_id", id).order("created_at", { ascending: false }).limit(4),
-    supabase.from("group_messages").select("id, author_id, body, created_at").eq("group_id", id).order("created_at", { ascending: false }).limit(4),
+    supabase.from("posts").select("id, title, author_id, created_at").eq("group_id", id).order("created_at", { ascending: false }).limit(1),
+    supabase.from("group_messages").select("id, author_id, body, created_at").eq("group_id", id).order("created_at", { ascending: false }).limit(1),
     supabase.from("group_tasks").select("id, title, assignee_id, due_on").eq("group_id", id).is("done_at", null).limit(200),
     supabase.from("group_methods").select("card_id, added_by, added_at").eq("group_id", id).order("added_at", { ascending: false }).limit(5),
     supabase.from("group_datasets").select("dataset_id, added_by, added_at").eq("group_id", id).order("added_at", { ascending: false }).limit(5),
     supabase.from("group_files").select("id, name, uploaded_by, created_at").eq("group_id", id).order("created_at", { ascending: false }).limit(5),
-    activityOf(supabase, current.map((m: any) => m.user_id), { viewer: me, limit: 6 }),
   ]);
   const cardIds = (methods ?? []).map((m: any) => m.card_id), dataIds = (data ?? []).map((d: any) => d.dataset_id);
   const [{ data: cards }, { data: sets }] = await Promise.all([
@@ -102,8 +101,8 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
         </Tile>
       </section>
 
-      <div className="sc-two-col">
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* Below the tiles only what you act on: what is pinned, and what is yours to do. */}
+      <div className="sc-two-col" style={{ gridTemplateColumns: "minmax(0, 1.5fr) minmax(0, 1fr)" }}>
           <Panel style={(pinned ?? []).length ? { borderColor: "var(--signal)" } : undefined}>
             <PanelHead>Pinned on the board</PanelHead>
             {(pinned ?? []).length === 0 && <Empty>Nothing pinned.</Empty>}
@@ -116,40 +115,6 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
             {more(tabHref(id, "board"), "The whole board")}
           </Panel>
 
-          <Panel>
-            <PanelHead>Latest in the feed</PanelHead>
-            {(posts ?? []).length === 0 && <Empty>No posts yet.</Empty>}
-            {(posts ?? []).map((p: any) => (
-              <Link key={p.id} href={`/posts/${p.id}`} style={line}>
-                <div style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
-                  {p.created_at > ctx.since.feed && p.author_id !== me && <span style={{ font: mono(9.5, 700), color: "var(--signal-ink)", letterSpacing: ".08em" }}>NEW</span>}
-                  <span style={{ font: mono(13, 600, 1.4), flex: 1 }}>{p.title}</span>
-                </div>
-                <div style={{ ...note, marginTop: 2 }}>{name(p.author_id)} · {timeAgo(p.created_at)}</div>
-              </Link>
-            ))}
-            {more(tabHref(id, "feed"), "Open the feed")}
-          </Panel>
-
-          <Panel>
-            <PanelHead>Latest in the chat</PanelHead>
-            {(chat ?? []).length === 0 && <Empty>No messages yet.</Empty>}
-            {[...(chat ?? [])].reverse().map((m: any) => (
-              <div key={m.id} style={{ display: "flex", gap: 9, padding: "9px 14px", borderBottom: "1px solid var(--rule)" }}>
-                <Avatar name={name(m.author_id)} url={people.get(m.author_id)?.avatar_url} size={22} />
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ font: "400 13px/1.5 var(--sans)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    <b style={{ fontWeight: 600 }}>{m.author_id === me ? "You" : name(m.author_id)}</b> {m.body}
-                  </div>
-                  <div style={note}>{timeAgo(m.created_at)}</div>
-                </div>
-              </div>
-            ))}
-            {more(`${tabHref(id, "chat")}#latest`, "Open the chat")}
-          </Panel>
-        </div>
-
-        <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
             <PanelHead>To do</PanelHead>
             {shownTasks.length === 0 && <Empty>Nothing for you, and nothing waiting for someone to take it.</Empty>}
@@ -167,36 +132,6 @@ export default async function GroupOverview({ ctx, pulse }: { ctx: GroupCtx; pul
             {more(tabHref(id, "tasks"), "All tasks")}
           </Panel>
 
-          <Panel>
-            <PanelHead>Shared lately</PanelHead>
-            {recent.length === 0 && <Empty>No methods, data or files shared yet.</Empty>}
-            {recent.map((r, i) => (
-              <Link key={i} href={r.href} style={line}>
-                <div style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--mute)" }}>{r.kind.toUpperCase()}</div>
-                <div style={{ font: mono(12.5, 600, 1.4), marginTop: 3, overflowWrap: "anywhere" }}>{r.title}</div>
-                <div style={{ ...note, marginTop: 2 }}>{name(r.by)} · {timeAgo(r.at)}</div>
-              </Link>
-            ))}
-          </Panel>
-
-          {newMembers.length > 0 && (
-            <Panel>
-              <PanelHead>New in the group</PanelHead>
-              {newMembers.map((m: any) => (
-                <Link key={m.user_id} href={`/people/${m.user_id}`} style={{ ...line, display: "flex", gap: 9, alignItems: "center" }}>
-                  <Avatar name={name(m.user_id)} url={people.get(m.user_id)?.avatar_url} size={24} />
-                  <span style={{ flex: 1, font: mono(12.5, 500) }}>{name(m.user_id)}</span>
-                  <span style={note}>{ROLE_LABEL[m.role as GroupRole]} · {timeAgo(m.joined_at)}</span>
-                </Link>
-              ))}
-            </Panel>
-          )}
-
-          <Panel>
-            <PanelHead>What members did lately</PanelHead>
-            <ActivityList items={activity} empty="Nothing from the members in the last 60 days." />
-          </Panel>
-        </aside>
       </div>
     </div>
   );

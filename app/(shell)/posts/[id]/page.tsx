@@ -27,6 +27,10 @@ import { reactionsFor } from "@/lib/social/reactions";
 
 export const dynamic = "force-dynamic";
 
+/** The kind of post as one word, as in the feed. */
+const KIND: Record<string, string> = { result: "Result", data_question: "Data question", general: "Question", collab: "Call", feedback: "Feedback", update: "News" };
+const KIND_COLOUR: Record<string, string> = { result: "var(--ok)", data_question: "var(--info)", general: "var(--mute)", collab: "var(--signal-ink)", feedback: "var(--info)", update: "var(--ink)" };
+
 export default async function PostDetail({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ limited?: string; edit?: string; edited?: string; error?: string }> }) {
   const { limited, edit, edited, error } = await searchParams;
   const { id } = await params;
@@ -80,56 +84,48 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
   const spec = intentById(post.intent);
 
   return (
-    <Page
-      title={post.title}
-      lede={[spec?.label, room ? `#${room.id}` : group ? `${group.name}, members only` : null].filter(Boolean).join(" · ")}
-      actions={
-        !isMine ? <Link href={`/messages/${post.author_id}`} style={btn}>Message the author</Link> : undefined
-      }
-    >
+    <div style={{ padding: "20px 16px 64px" }}>
+    <div style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* Where it lives, as a way back: the feed and its topic, or the group. */}
+      <div style={{ font: "400 13px/1.4 var(--sans)", color: "var(--mute)" }}>
+        {group ? <Link href={`/groups/${group.id}?tab=feed`} style={{ color: "var(--mute)", textDecoration: "none" }}>← {group.name}</Link>
+          : <><Link href="/home" style={{ color: "var(--mute)", textDecoration: "none" }}>← Feed</Link>{room && <> · <Link href={`/home?room=${room.id}`} style={{ color: "var(--mute)" }}>#{room.id}</Link></>}</>}
+      </div>
       <LimitNotice show={limited} />
       {edited && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Your changes are saved.</p>}
       {error === "title" && <p role="alert" style={{ font: "400 13.5px/1.5 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", color: "var(--err)", background: "var(--surface)" }}>A post needs a title.</p>}
-      <div className="sc-two-col">
+
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Panel>
-            <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: mono(11), color: "var(--mute)", display: "flex", gap: 9, alignItems: "center" }}>
-              <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={24} />
-              <span>
-                <PersonLink id={post.author_id}>{author?.display_name ?? "Someone"}</PersonLink>
-                {author?.role_title ? ` · ${author.role_title}` : ""}
-                {author?.institution ? ` · ${author.institution}` : ""} · {timeAgo(post.created_at)}
-                {post.edited_at && <span title={`Edited ${String(post.edited_at).slice(0, 16).replace("T", " ")}`}> · edited</span>}
-              </span>
+            <div style={{ padding: "14px 16px 0", display: "flex", gap: 10, alignItems: "center" }}>
+              <Avatar name={author?.display_name ?? ""} url={author?.avatar_url} size={32} />
+              <div style={{ flex: 1, minWidth: 0, font: "400 12.5px/1.45 var(--sans)", color: "var(--mute)" }}>
+                <PersonLink id={post.author_id} style={{ font: "600 13.5px/1.45 var(--sans)", color: "var(--ink)" }}>{author?.display_name ?? "Someone"}</PersonLink>
+                {author?.institution && <> · <span title={author.institution}>{author.institution.includes(",") ? author.institution.slice(author.institution.lastIndexOf(",") + 1).trim() : author.institution}</span></>}
+                {" · "}{timeAgo(post.created_at)}{post.edited_at ? " · edited" : ""}
+                {" · "}<span style={{ fontWeight: 600, color: KIND_COLOUR[post.intent] ?? "var(--mute)" }}>{KIND[post.intent] ?? spec?.label}</span>
+                {" · "}{group ? group.name : post.audience === "people" ? "only for the people asked" : room ? `#${room.id}` : ""}
+              </div>
+              {!isMine && <Link href={`/messages/${post.author_id}`} style={{ font: "600 12.5px/1 var(--sans)", color: "var(--link)", textDecoration: "none" }}>Message</Link>}
+              <PostMenu postId={post.id} saved={extra?.saved ?? false} own={isMine} />
             </div>
+            <h1 style={{ font: "700 21px/1.3 var(--sans)", letterSpacing: "-.01em", margin: 0, padding: "12px 16px 0" }}>{post.title}</h1>
             {post.body && (
-              <div style={{ padding: 14 }}>
+              <div style={{ padding: "8px 16px 14px" }}>
                 <RichText body={post.body} mentions={postMentions.get(post.id)} />
               </div>
             )}
             {isFeedback && (
-              <div style={{ margin: "0 14px 14px", padding: "10px 12px", border: "1px solid var(--info)", borderRadius: 12 }}>
-                <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--info)", marginBottom: 6 }}>FEEDBACK WANTED</div>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", font: "400 13px/1.5 var(--sans)" }}>
-                  {(post.feedback_kinds ?? []).map((k: string) => <span key={k} style={{ padding: "2px 10px", borderRadius: 999, background: "color-mix(in srgb, var(--info) 10%, transparent)" }}>{feedbackLabel(k)}</span>)}
-                  {(post.feedback_kinds ?? []).length === 0 && <span>Any feedback</span>}
-                  {post.deadline && <span style={{ color: "var(--mute)" }}>by {post.deadline}</span>}
-                </div>
-                {(extra?.files ?? []).length > 0 && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
-                    {extra!.files.map((f) => (
-                      <a key={f.id} href={`/api/post-files/${f.id}`} target="_blank" rel="noreferrer"
-                        style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 12, border: "1px solid var(--rule)", background: "var(--bg)", color: "var(--ink)", textDecoration: "none", font: "500 13px/1.3 var(--sans)" }}>
-                        <span aria-hidden="true" style={{ font: mono(10, 700), color: "var(--err)" }}>{f.mime === "application/pdf" ? "PDF" : "IMG"}</span>
-                        <span style={{ flex: 1, overflowWrap: "anywhere" }}>{f.name}</span>
-                        <span style={{ color: "var(--mute)", fontSize: 12 }}>{fileSize(f.size_bytes)} · open</span>
-                      </a>
-                    ))}
-                  </div>
-                )}
-                <p style={{ font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", margin: "10px 0 0" }}>
-                  Say where: a page, a figure panel, a line.
-                </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center", padding: "0 16px 14px", font: "500 12.5px/1.3 var(--sans)", color: "var(--mute)" }}>
+                {(post.feedback_kinds ?? []).map((k: string) => <span key={k} style={{ padding: "5px 10px", borderRadius: 999, background: "color-mix(in srgb, var(--info) 10%, transparent)", color: "var(--ink)" }}>{feedbackLabel(k)}</span>)}
+                {post.deadline && <span>by {post.deadline}</span>}
+                {(extra?.files ?? []).map((f) => (
+                  <a key={f.id} href={`/api/post-files/${f.id}`} target="_blank" rel="noreferrer"
+                    style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 10px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--bg)", color: "var(--ink)", textDecoration: "none" }}>
+                    <span aria-hidden="true" style={{ font: mono(9, 700), color: "var(--err)" }}>{f.mime === "application/pdf" ? "PDF" : "IMG"}</span>{f.name}
+                    <span style={{ color: "var(--mute)" }}>{fileSize(f.size_bytes)}</span>
+                  </a>
+                ))}
               </div>
             )}
             {(images.get(post.id) || post.link_preview) && (
@@ -142,12 +138,11 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               <Reactions kind="post" targetId={post.id} summary={reactions.get(post.id)} own={isMine} path={`/posts/${post.id}`} />
               <span style={{ flex: 1 }} />
               <PostActions postId={post.id} inGroup={!!post.group_id} own={isMine} reposted={extra?.reposted ?? false} />
-              <PostMenu postId={post.id} saved={extra?.saved ?? false} own={isMine} />
               {(extra?.reposts ?? 0) > 0 && <span style={{ flexBasis: "100%", font: "400 12px/1.4 var(--sans)", color: "var(--mute)" }}>{extra!.reposts} {extra!.reposts === 1 ? "repost" : "reposts"}</span>}
             </div>
             {isMine && (
               <details id="edit" style={{ padding: "0 14px 12px" }} open={edit === "1" ? true : undefined}>
-                <summary style={{ font: "500 12.5px/1.4 var(--sans)", color: "var(--link)", cursor: "pointer" }}>Edit this post</summary>
+                <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 32, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--ink)" }}>Edit this post</summary>
                 <form action={editPost.bind(null, post.id)} style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
                   <label htmlFor="edit-title" style={{ position: "absolute", left: -9999 }}>Title</label>
                   <input id="edit-title" name="title" required maxLength={200} defaultValue={post.title} style={field} />
@@ -159,14 +154,11 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             )}
 
             {post.intent === "collab" && (
-              <div style={{ padding: 14, borderTop: "1px solid var(--rule)" }}>
-                <div style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--signal-ink)", marginBottom: 8 }}>THE ASK</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, font: mono(12, 400, 1.6) }}>
-                  <div><span style={{ color: "var(--mute)" }}>technique</span><br />{post.technique || "—"}</div>
-                  <div><span style={{ color: "var(--mute)" }}>system</span><br />{post.organism || "—"}</div>
-                  <div><span style={{ color: "var(--mute)" }}>by</span><br />{post.deadline || "—"}</div>
-                  <div><span style={{ color: "var(--mute)" }}>offered back</span><br />{post.offer || "—"}</div>
-                </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center", padding: "0 16px 14px", font: "500 12.5px/1.3 var(--sans)", color: "var(--mute)" }}>
+                {post.technique && <span style={{ padding: "5px 10px", borderRadius: 999, background: "color-mix(in srgb, var(--signal) 10%, transparent)", color: "var(--ink)" }}>{post.technique}</span>}
+                {post.organism && <span style={{ padding: "5px 10px", borderRadius: 999, background: "color-mix(in srgb, var(--signal) 10%, transparent)", color: "var(--ink)" }}>{post.organism}</span>}
+                {post.deadline && <span>by {post.deadline}</span>}
+                {post.offer && <span>· offers {post.offer}</span>}
               </div>
             )}
           </Panel>
@@ -271,20 +263,32 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               const who = replier(r.author_id);
               return (
                 <div key={r.id} id={`reply-${r.id}`} style={{ padding: 14, borderBottom: "1px solid var(--rule)", scrollMarginTop: 72 }}>
-                  <div style={{ display: "flex", gap: 9, alignItems: "center", font: mono(11), color: "var(--mute)", marginBottom: 7 }}>
-                    <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={22} />
+                  <div style={{ display: "flex", gap: 9, alignItems: "center", font: "400 12.5px/1.45 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>
+                    <Avatar name={who?.display_name ?? ""} url={who?.avatar_url} size={26} />
                     <span style={{ flex: 1 }}>
-                      <PersonLink id={r.author_id}>{who?.display_name ?? "Someone"}</PersonLink>{who?.institution ? ` · ${who.institution}` : ""} · {timeAgo(r.created_at)}
+                      <PersonLink id={r.author_id} style={{ font: "600 13px/1.45 var(--sans)", color: "var(--ink)" }}>{who?.display_name ?? "Someone"}</PersonLink> · {timeAgo(r.created_at)}
                       {r.anchor && <span style={{ marginLeft: 8, padding: "2px 9px", borderRadius: 999, background: "color-mix(in srgb, var(--info) 12%, transparent)", color: "var(--ink)", font: "600 11.5px/1.4 var(--sans)" }}>{r.anchor}</span>}
                       {r.helped_at && <span style={{ marginLeft: 6, padding: "2px 9px", borderRadius: 999, background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", font: "600 11.5px/1.4 var(--sans)" }}>✓ Helped the author</span>}
                       {r.author_id === post.author_id && <span style={{ marginLeft: 6, color: "var(--ink)" }}>· author</span>}
                       {r.edited_at && <span> · edited</span>}
                     </span>
-                    {r.author_id === user!.id && (
-                      <form action={deleteReply.bind(null, r.id, post.id)}>
-                        <button type="submit" style={{ background: "transparent", border: 0, padding: 0, font: mono(11), color: "var(--mute)", cursor: "pointer" }}>delete</button>
-                      </form>
-                    )}
+                    {/* Edit and delete (yours) or report (others') behind one ··· per reply. */}
+                    <details style={{ position: "relative" }}>
+                      <summary aria-label="More for this reply" style={{ listStyle: "none", cursor: "pointer", width: 28, height: 28, borderRadius: 999, display: "grid", placeItems: "center", color: "var(--mute)", font: "700 15px/1 var(--sans)" }}>···</summary>
+                      <div style={{ position: "absolute", right: 0, top: 32, zIndex: 20, width: "min(320px, 80vw)", padding: 10, borderRadius: 14, border: "1px solid var(--rule)", background: "color-mix(in srgb, var(--bg) 94%, transparent)", boxShadow: "0 12px 36px rgba(31, 38, 60, .16)", display: "flex", flexDirection: "column", gap: 8 }}>
+                        {r.author_id === user!.id ? (
+                          <>
+                            <form action={editReply.bind(null, r.id, post.id)} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                              <MentionTextarea name="body" rows={3} required maxLength={5000} defaultValue={r.body} style={field} aria-label="Edit your reply" />
+                              <div><button type="submit" style={{ ...btn, height: 30, borderRadius: 999 }}>Save</button></div>
+                            </form>
+                            <form action={deleteReply.bind(null, r.id, post.id)}>
+                              <button type="submit" style={{ border: 0, background: "none", padding: 0, color: "var(--err)", font: "500 13px/1.4 var(--sans)", cursor: "pointer" }}>Delete this reply</button>
+                            </form>
+                          </>
+                        ) : <ReportButton kind="reply" targetId={r.id} label="Report this reply" />}
+                      </div>
+                    </details>
                   </div>
                   <RichText body={r.body} mentions={replyMentions.get(r.id)} />
                   {isMine && r.author_id !== user!.id && (
@@ -293,17 +297,6 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                         {r.helped_at ? "✓ This helped (undo)" : "This helped"}
                       </button>
                     </form>
-                  )}
-                  {r.author_id === user!.id ? (
-                    <details style={{ marginTop: 6 }}>
-                      <summary style={{ font: "400 12px/1.4 var(--sans)", color: "var(--mute)", cursor: "pointer" }}>edit</summary>
-                      <form action={editReply.bind(null, r.id, post.id)} style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 6 }}>
-                        <MentionTextarea name="body" rows={3} required maxLength={5000} defaultValue={r.body} style={field} aria-label="Edit your reply" />
-                        <div><button type="submit" style={{ ...btn, height: 30 }}>Save</button></div>
-                      </form>
-                    </details>
-                  ) : (
-                    <div style={{ marginTop: 6 }}><ReportButton kind="reply" targetId={r.id} /></div>
                   )}
                 </div>
               );
@@ -320,9 +313,9 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               <button type="submit" style={{ ...btnPrimary, marginTop: 10 }}>Reply</button>
             </form>
           </Panel>
-        </div>
 
-        <aside style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+
+
           {isCall && (
             <Panel style={callStatus === "open" ? { border: "1px solid var(--signal)" } : undefined}>
               <div id="call" style={{ scrollMarginTop: 72 }}><PanelHead>Call for collaborators · {callStatus === "open" ? "open" : callStatus}</PanelHead></div>
@@ -393,43 +386,17 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
               </div>
             </Panel>
           )}
-          {post.audience === "people" ? null : group ? (
-            <Panel>
-              <PanelHead>Group discussion</PanelHead>
-              <div style={{ padding: 14 }}>
-                <Link href={`/groups/${group.id}`} style={{ font: mono(13.5, 500), color: "var(--ink)" }}>{group.name}</Link>
-                <p style={{ font: "400 13px/1.55 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>Only the group&apos;s members can see this post and its replies.</p>
-              </div>
-            </Panel>
-          ) : (
-          <Panel>
-            <PanelHead>Topic group</PanelHead>
-            <div style={{ padding: 14 }}>
-              <Link href={`/home?room=${post.room_id}`} style={{ font: mono(13.5, 500), color: "var(--ink)" }}>#{post.room_id}</Link>
-              <p style={{ font: "400 13px/1.55 var(--sans)", color: "var(--mute)", margin: "6px 0 10px" }}>{room?.blurb}</p>
-              <div style={{ font: mono(9.5, 700), letterSpacing: ".09em", color: "var(--mute)", marginBottom: 6 }}>APPEARS IN</div>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                {housesOfRoom(post.room_id).map((h) => <Tag key={h.id}>{h.name}</Tag>)}
-              </div>
-            </div>
-          </Panel>
-          )}
           {isMine && (
             <details>
-              <summary style={{ font: mono(11.5), color: "var(--err)", cursor: "pointer" }}>Delete this post</summary>
+              <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", height: 32, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", font: "600 12.5px/1 var(--sans)", color: "var(--err)" }}>Delete this post</summary>
               <form action={deletePost.bind(null, post.id)} style={{ marginTop: 8 }}>
                 <p style={{ font: "400 13px/1.5 var(--sans)", margin: "0 0 8px", color: "var(--mute)" }}>The post and its replies are removed for everyone.</p>
                 <button type="submit" style={{ ...btn, borderColor: "var(--err)", color: "var(--err)" }}>Delete post and replies</button>
               </form>
             </details>
           )}
-          {post.intent === "collab" && !isMine && (
-            <Link href={`/messages/${post.author_id}`} style={{ ...btnPrimary, justifyContent: "center" }}>
-              Offer to collaborate
-            </Link>
-          )}
-        </aside>
-      </div>
-    </Page>
+        </div>
+    </div>
+    </div>
   );
 }

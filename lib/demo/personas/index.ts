@@ -237,6 +237,34 @@ const project_milestones = [
   id: `ms-${i + 1}`, project_id, title, due_on: day(due), done_at: done ? at(done) : null, done_by: done ? created_by : null, created_by, created_at: at(t as string),
 }));
 
+/* Repositories linked to projects and groups (supabase/17). Invented names under
+   "scicollab-demo"; the demo never calls GitHub or GitLab, it shows this snapshot. */
+const commit = (sha: string, message: string, author: string, t: string, url: string) => ({ sha, message, author, date: at(t), url });
+const repo_links = [
+  { id: "rl-1", project_id: "p-1", group_id: null, provider: "github", host: "github.com", path: "scicollab-demo/passage-series",
+    url: "https://github.com/scicollab-demo/passage-series", added_by: "u-rivera", added_at: at("2026-09-26 10:00"), cached_at: at("2026-10-31 08:00"),
+    cache: { name: "scicollab-demo/passage-series", description: "Analysis of transfection efficiency across passage number (p8 to p24). R and Quarto.",
+      stars: 4, forks: 1, language: "R", defaultBranch: "main", updatedAt: at("2026-10-29 17:20"), webUrl: "https://github.com/scicollab-demo/passage-series",
+      commits: [
+        commit("a91c0e2", "Add p22 and p24 replicates", "Alex Rivera", "2026-10-29 17:20", "https://github.com/scicollab-demo/passage-series"),
+        commit("5d3f9b1", "Trend test instead of ANOVA for ordered passages", "Alex Rivera", "2026-10-27 11:05", "https://github.com/scicollab-demo/passage-series"),
+        commit("c02e7aa", "Flow gating as a function, not a notebook cell", "Maja Lindqvist", "2026-10-22 09:40", "https://github.com/scicollab-demo/passage-series"),
+      ] } },
+  { id: "rl-2", project_id: "p-2", group_id: null, provider: "gitlab", host: "gitlab.com", path: "scicollab-demo/incubator-logger",
+    url: "https://gitlab.com/scicollab-demo/incubator-logger", added_by: "u-lindqvist", added_at: at("2026-10-17 09:30"), cached_at: at("2026-10-31 08:00"),
+    cache: { name: "scicollab-demo/incubator-logger", description: "Raspberry Pi logger for CO₂ and temperature in three incubator bays.",
+      stars: 2, forks: 0, language: null, defaultBranch: "main", updatedAt: at("2026-10-28 15:00"), webUrl: "https://gitlab.com/scicollab-demo/incubator-logger",
+      commits: [
+        commit("e81c30f", "Poll every hour instead of every minute", "Maja Lindqvist", "2026-10-28 15:00", "https://gitlab.com/scicollab-demo/incubator-logger"),
+        commit("17b2d4c", "Calibrate bay 3 against the reference meter", "Maja Lindqvist", "2026-10-21 10:10", "https://gitlab.com/scicollab-demo/incubator-logger"),
+      ] } },
+  { id: "rl-3", project_id: null, group_id: "gr-ebro", provider: "github", host: "github.com", path: "scicollab-demo/bench-protocols",
+    url: "https://github.com/scicollab-demo/bench-protocols", added_by: "u-rivera", added_at: at("2026-10-01 09:00"), cached_at: at("2026-10-31 08:00"),
+    cache: { name: "scicollab-demo/bench-protocols", description: "Protocols and SOPs of the Rivera–Lindqvist bench, as Markdown.",
+      stars: 1, forks: 0, language: "Markdown", defaultBranch: "main", updatedAt: at("2026-10-23 16:30"), webUrl: "https://github.com/scicollab-demo/bench-protocols",
+      commits: [ commit("9f40a11", "Freezer defrost SOP", "Maja Lindqvist", "2026-10-23 16:30", "https://github.com/scicollab-demo/bench-protocols") ] } },
+];
+
 const project_members = [
   { project_id: "pj-lena",   user_id: "u-lena",   role: "owner",       created_at: at("2026-08-01 15:20") },
   { project_id: "pj-mateo",  user_id: "u-mateo",  role: "owner",       created_at: at("2026-08-27 12:40") },
@@ -636,6 +664,7 @@ function build() {
     answers,
     projects: liveProjects,
     project_members: project_members.filter((m) => projectIds.has(m.project_id)),
+    repo_links: repo_links.filter((r) => (r.project_id ? projectIds.has(r.project_id) : true)),
     project_methods: project_methods.filter((m) => projectIds.has(m.project_id) && cardIds.has(m.card_id)),
     project_milestones: project_milestones.filter((m) => projectIds.has(m.project_id)),
     eln_entries,
