@@ -75,29 +75,37 @@ export default function TabBar() {
       {open && (
         <div className="sc-sheet" role="dialog" aria-modal="true" aria-label="More destinations">
           <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, bottom: "calc(56px + env(safe-area-inset-bottom))", zIndex: 41, background: "rgba(13,13,13,.35)" }} />
+          {/* A rounded sheet with rounded tiles: the same shapes as the rest of the site. */}
           <div style={{
-            position: "fixed", left: 0, right: 0, bottom: "calc(56px + env(safe-area-inset-bottom))", zIndex: 42,
-            maxHeight: "75vh", overflowY: "auto", background: "var(--surface)", borderTop: "1px solid var(--ink)",
+            position: "fixed", left: 8, right: 8, bottom: "calc(64px + env(safe-area-inset-bottom))", zIndex: 42,
+            maxHeight: "75vh", overflowY: "auto", padding: 12, borderRadius: 24,
+            background: "color-mix(in srgb, var(--bg) 94%, transparent)", border: "1px solid var(--rule)",
+            boxShadow: "0 18px 48px rgba(31, 38, 60, .22)",
+            WebkitBackdropFilter: "blur(27px) saturate(218%)", backdropFilter: "blur(27px) saturate(218%)",
           }}>
-            <div style={{ display: "flex", alignItems: "center", padding: "12px 16px", borderBottom: "1px solid var(--rule)" }}>
-              <span style={{ font: "700 11px/1 var(--mono)", letterSpacing: ".1em", textTransform: "uppercase", color: "var(--mute)", flex: 1 }}>More</span>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close" style={{ background: "transparent", border: "1px solid var(--rule)", padding: "6px 10px", font: "500 11px/1 var(--mono)", color: "var(--ink)", cursor: "pointer" }}>Close</button>
+            <div style={{ display: "flex", alignItems: "center", padding: "2px 4px 10px" }}>
+              <span style={{ font: "700 15px/1 var(--sans)", color: "var(--ink)", flex: 1 }}>More</span>
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close"
+                style={{ height: 30, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", font: "600 12.5px/1 var(--sans)", color: "var(--ink)", cursor: "pointer" }}>Close</button>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, background: "var(--rule)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
               {more.map((m) => (
                 <Link key={m.href} href={m.href} aria-current={active(m.href) ? "page" : undefined}
-                      style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 7, padding: "16px 6px",
+                      style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 7, padding: "14px 6px", borderRadius: 16,
+                               border: "1px solid var(--rule)",
                                background: active(m.href) ? "var(--ink)" : "var(--surface)", color: active(m.href) ? "var(--bg)" : "var(--ink)",
-                               textDecoration: "none", font: "500 11px/1.2 var(--mono)", textAlign: "center" }}>
+                               textDecoration: "none", font: "500 12px/1.2 var(--sans)", textAlign: "center" }}>
                   <Icon d={m.d} />{m.label}
                 </Link>
               ))}
             </div>
-            <button type="button" onClick={toggleTheme}
-                    style={{ width: "100%", padding: "14px 16px", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", textAlign: "left", font: "500 12px/1 var(--mono)", color: "var(--ink)", cursor: "pointer" }}>
-              {dark ? "Light mode" : "Dark mode"}
-            </button>
-            <LookToggle style={{ width: "100%", padding: "14px 16px", background: "transparent", border: 0, borderTop: "1px solid var(--rule)", textAlign: "left", font: "500 12px/1 var(--mono)", color: "var(--ink)", cursor: "pointer" }} />
+            <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+              <button type="button" onClick={toggleTheme}
+                      style={{ flex: 1, height: 40, borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", font: "600 13px/1 var(--sans)", color: "var(--ink)", cursor: "pointer" }}>
+                {dark ? "Light mode" : "Dark mode"}
+              </button>
+              <LookToggle style={{ flex: 1, height: 40, borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", font: "600 13px/1 var(--sans)", color: "var(--ink)", cursor: "pointer" }} />
+            </div>
           </div>
         </div>
       )}

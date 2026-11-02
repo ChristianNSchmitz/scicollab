@@ -507,7 +507,7 @@ html[data-look="glass"] .sc-auth-card {
     left: 12px !important; right: 12px !important; bottom: calc(10px + env(safe-area-inset-bottom)) !important;
     padding-bottom: 0 !important; border: 1px solid var(--glass-edge) !important; border-radius: 28px; overflow: hidden;
   }
-  html[data-look="glass"] .sc-sheet > div:last-child { border-radius: 22px 22px 0 0; border-top: 0 !important; }
+  html[data-look="glass"] .sc-sheet > div:last-child { border-radius: 24px; border: 1px solid var(--glass-edge) !important; }
   /* The active tab: a soft lozenge behind it and the icon in the accent, as on iOS. */
   html[data-look="glass"] .sc-tab-on { top: 6px !important; bottom: 6px; left: 8% !important; right: 8% !important; height: auto !important; border-radius: 20px; background: rgba(120, 120, 128, .14) !important; }
   html[data-look="glass"] .sc-tabbar [aria-current="page"] svg { color: var(--signal-ink); position: relative; }
