@@ -34,3 +34,23 @@ export function parseRepoUrl(raw: string): RepoRef | null {
   return null;
 }
 
+
+/**
+ * A stored link is only as trustworthy as its row: any member of the project
+ * can edit host and path through the database API. So the check made when the
+ * link was added is made again before the server fetches anything.
+ */
+export function checkedLink(l: { provider: string; host: string; path: string; url: string }): RepoRef | null {
+  const ref = parseRepoUrl(l.url);
+  return ref && ref.provider === l.provider && ref.host === l.host && ref.path === l.path ? ref : null;
+}
+
+/** A cached address is shown only when it stays on the link's own host. */
+export function onHost(address: unknown, host: string, fallback: string): string {
+  try {
+    const u = new URL(String(address));
+    const same = u.hostname === host || (host === "github.com" && u.hostname === "www.github.com");
+    if (u.protocol === "https:" && same) return u.toString();
+  } catch { /* not an address */ }
+  return fallback;
+}
