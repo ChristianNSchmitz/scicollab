@@ -8,14 +8,19 @@ import { isConfigured } from "@/lib/mode";
 import { roleIn, isCurrent, canManage } from "@/lib/social/groups";
 import { parseRepoUrl, fetchRepo } from "@/lib/repos";
 
-/** Linking GitHub and GitLab repositories to a project or a group (supabase/17). */
+/** Linking GitHub and GitLab repositories to a project, a group (supabase/17) or a method card (supabase/20). */
 
-type Scope = "project" | "group";
+type Scope = "project" | "group" | "method";
 const back = (scope: Scope, id: string, extra = "") =>
-  scope === "project" ? `/projects/${id}?tab=code${extra}#repos` : `/groups/${id}?tab=shared${extra}#repos`;
+  scope === "project" ? `/projects/${id}?tab=code${extra}#repos`
+  : scope === "method" ? `/methods/${id}${extra ? `?${extra.slice(1)}` : ""}#repos`
+  : `/groups/${id}?tab=shared${extra}#repos`;
+const pagePath = (scope: Scope, id: string) => (scope === "project" ? `/projects/${id}` : scope === "method" ? `/methods/${id}` : `/groups/${id}`);
+const column = (scope: Scope) => (scope === "project" ? "project_id" : scope === "method" ? "method_id" : "group_id");
 
 async function mayUse(supabase: any, scope: Scope, id: string, userId: string) {
   if (scope === "group") return isCurrent(await roleIn(supabase, id, userId));
+  if (scope === "method") return (await supabase.from("method_cards").select("author_id").eq("id", id).maybeSingle()).data?.author_id === userId;
   const [{ data: p }, { data: m }] = await Promise.all([
     supabase.from("projects").select("owner_id").eq("id", id).maybeSingle(),
     supabase.from("project_members").select("user_id").eq("project_id", id).eq("user_id", userId).maybeSingle(),
@@ -28,7 +33,7 @@ export async function linkRepo(scope: Scope, id: string, form: FormData) {
   if (!isRowId(id) || !(await mayUse(supabase, scope, id, user.id))) throw new Error("Only members can link repositories.");
   const ref = parseRepoUrl(String(form.get("url") ?? ""));
   if (!ref) redirect(back(scope, id, "&repo=bad"));
-  const col = scope === "project" ? "project_id" : "group_id";
+  const col = column(scope);
   const { data: had } = await supabase.from("repo_links").select("id").eq(col, id).eq("host", ref.host).eq("path", ref.path).maybeSingle();
   if (had) redirect(back(scope, id, "&repo=had"));
   let cache = null, cached_at = null;
@@ -43,30 +48,31 @@ export async function linkRepo(scope: Scope, id: string, form: FormData) {
   await supabase.from("repo_links").insert({
     [col]: id, provider: ref.provider, host: ref.host, path: ref.path, url: ref.url, added_by: user.id, added_at: new Date().toISOString(), cache, cached_at,
   });
-  revalidatePath(scope === "project" ? `/projects/${id}` : `/groups/${id}`);
+  revalidatePath(pagePath(scope, id));
   redirect(back(scope, id, "&repo=linked"));
 }
 
 export async function unlinkRepo(scope: Scope, id: string, linkId: string) {
   const { supabase, user } = await requireUser();
-  const { data: l } = await supabase.from("repo_links").select("added_by").eq("id", linkId).maybeSingle();
+  const { data: l } = await supabase.from("repo_links").select("added_by").eq("id", linkId).eq(column(scope), id).maybeSingle();
   if (!l) return;
   let owner = false;
   if (scope === "group") owner = canManage(await roleIn(supabase, id, user.id));
+  else if (scope === "method") owner = await mayUse(supabase, scope, id, user.id);
   else owner = (await supabase.from("projects").select("owner_id").eq("id", id).maybeSingle()).data?.owner_id === user.id;
   if (l.added_by !== user.id && !owner) throw new Error("Only whoever linked it, or the owner, can remove it.");
   await supabase.from("repo_links").delete().eq("id", linkId);
-  revalidatePath(scope === "project" ? `/projects/${id}` : `/groups/${id}`);
+  revalidatePath(pagePath(scope, id));
 }
 
 export async function refreshRepo(scope: Scope, id: string, linkId: string) {
   const { supabase, user } = await requireUser();
   if (!(await mayUse(supabase, scope, id, user.id)) || !isConfigured()) return;
-  const { data: l } = await supabase.from("repo_links").select("*").eq("id", linkId).maybeSingle();
+  const { data: l } = await supabase.from("repo_links").select("*").eq("id", linkId).eq(column(scope), id).maybeSingle();
   if (!l) return;
   try {
     const cache = await fetchRepo(l);
     await supabase.from("repo_links").update({ cache, cached_at: new Date().toISOString() }).eq("id", linkId);
   } catch { /* keep the last snapshot */ }
-  revalidatePath(scope === "project" ? `/projects/${id}` : `/groups/${id}`);
+  revalidatePath(pagePath(scope, id));
 }

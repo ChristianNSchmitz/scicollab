@@ -26,14 +26,14 @@ const pill = { height: 28, padding: "0 12px", borderRadius: 999, border: "1px so
  * latest commits, and a way to it. Members link one by pasting its URL.
  */
 export default function Repositories({ scope, id, links, canEdit, canManage, me, flash }: {
-  scope: "project" | "group"; id: string; links: RepoLink[]; canEdit: boolean; canManage: boolean; me: string; flash?: string;
+  scope: "project" | "group" | "method"; id: string; links: RepoLink[]; canEdit: boolean; canManage: boolean; me: string; flash?: string;
 }) {
   const f = flash ? FLASH[flash] : null;
   return (
     <Panel>
       <div id="repos" style={{ scrollMarginTop: 72 }}><PanelHead>Repositories · {links.length}</PanelHead></div>
       {f && <p role={f.error ? "alert" : "status"} style={{ margin: 0, padding: "9px 14px", borderBottom: "1px solid var(--rule)", font: "400 12.5px/1.6 var(--sans)", color: f.error ? "var(--err)" : "var(--ok)" }}>{f.text}</p>}
-      {links.length === 0 && <Empty>No repository linked yet.</Empty>}
+      {links.length === 0 && <Empty>{scope === "method" ? "Link the code behind this method: analysis scripts, pipelines, instrument settings." : "No repository linked yet."}</Empty>}
       {links.map((l) => {
         const c = l.cache;
         return (

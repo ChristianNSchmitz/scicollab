@@ -12,14 +12,16 @@ import { Page, Panel, PanelHead, Outcome, Tag, Visibility, btn, btnPrimary, mono
 import { timeAgo, plural } from "@/lib/format";
 import NextcloudShares from "@/components/code/NextcloudShares";
 import { ncLinks } from "@/lib/nextcloud";
+import Repositories from "@/components/code/Repositories";
+import { repoLinks } from "@/lib/repos";
 
 export const dynamic = "force-dynamic";
 
 /** Method card, full view — board C2 screen 8. Discussion sits adjacent to the
  *  card rather than behind a tab, and lineage is drawn rather than implied. */
-export default async function MethodCard({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ nc?: string }> }) {
+export default async function MethodCard({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ nc?: string; repo?: string }> }) {
   const { id } = await params;
-  const { nc } = await searchParams;
+  const { nc, repo } = await searchParams;
   ensureRecordSeed();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -38,7 +40,7 @@ export default async function MethodCard({ params, searchParams }: { params: Pro
   const recommended = (recs ?? []).some((r) => r.user_id === user!.id);
 
   const isOwner = card.author_id === user!.id;
-  const clouds = await ncLinks(supabase, { methodId: card.id });
+  const [clouds, repos] = await Promise.all([ncLinks(supabase, { methodId: card.id }), repoLinks(supabase, { methodId: card.id })]);
   // Counted as a read only for someone else on a shared card; who it was is not kept.
   await recordCardRead(supabase, card.id, user!.id, viaFrom((await headers()).get("referer")));
 
@@ -127,6 +129,8 @@ export default async function MethodCard({ params, searchParams }: { params: Pro
               )}
             </div>
           </Panel>
+
+          {(isOwner || repos.length > 0) && <Repositories scope="method" id={card.id} links={repos} canEdit={isOwner} canManage={isOwner} me={user!.id} flash={repo} />}
 
           <NextcloudShares scope="method" id={card.id} links={clouds} canEdit={isOwner} canManage={isOwner} me={user!.id} flash={nc} />
         </div>

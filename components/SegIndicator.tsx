@@ -54,10 +54,17 @@ export default function SegIndicator({ id, activeKey }: { id: string; activeKey:
       ind.style.opacity = "1";
       try { sessionStorage.setItem(storeKey, JSON.stringify(g)); } catch {}
     };
-    const activeEl = () => nav.querySelector(':scope > a[aria-current="page"], :scope > details > summary[aria-current="page"]');
+    // The first visible one: on a phone "More" is hidden and its items are tabs of their own.
+    const activeEl = () => [...nav.querySelectorAll(':scope > a[aria-current="page"], :scope > details > summary[aria-current="page"]')]
+      .find((el) => (el as HTMLElement).getClientRects().length > 0) ?? null;
 
     const target = activeEl();
     if (!target) { ind.style.opacity = "0"; nav.removeAttribute("data-ind"); return; }
+    // A bar that scrolls sideways (phone): bring the active tab into view.
+    if (nav.scrollWidth > nav.clientWidth) {
+      const t = target as HTMLElement;
+      if (t.offsetLeft < nav.scrollLeft || t.offsetLeft + t.offsetWidth > nav.scrollLeft + nav.clientWidth) nav.scrollLeft = Math.max(0, t.offsetLeft - 24);
+    }
     // Start where the highlight was on the previous page, then slide.
     let from: { x: number; y: number; w: number; h: number } | null = null;
     try { from = JSON.parse(sessionStorage.getItem(storeKey) ?? "null"); } catch {}

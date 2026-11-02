@@ -73,10 +73,10 @@ function cleaned(c: RepoInfo, l: RepoRef): RepoInfo {
   };
 }
 
-/** The repositories linked to a project or a group, refreshing stale caches (in parallel, briefly). */
-export async function repoLinks(supabase: SupabaseClient<any, any, any>, scope: { projectId?: string; groupId?: string }): Promise<RepoLink[]> {
+/** The repositories linked to a project, a group or a method card, refreshing stale caches (in parallel, briefly). */
+export async function repoLinks(supabase: SupabaseClient<any, any, any>, scope: { projectId?: string; groupId?: string; methodId?: string }): Promise<RepoLink[]> {
   let q = supabase.from("repo_links").select("*").order("added_at", { ascending: true });
-  q = scope.projectId ? q.eq("project_id", scope.projectId) : q.eq("group_id", scope.groupId ?? "");
+  q = scope.projectId ? q.eq("project_id", scope.projectId) : scope.methodId ? q.eq("method_id", scope.methodId) : q.eq("group_id", scope.groupId ?? "");
   const { data } = await q;
   const links = (data ?? []) as RepoLink[];
   // The demo has no network access to rely on: it shows the seeded snapshot.

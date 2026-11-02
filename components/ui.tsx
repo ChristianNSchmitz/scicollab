@@ -96,6 +96,8 @@ export const btn: CSSProperties = {
   height: 34, padding: "0 14px", display: "inline-flex", alignItems: "center", gap: 7,
   border: "1px solid var(--ink)", background: "transparent", color: "var(--ink)",
   font: mono(12, 500), cursor: "pointer", textDecoration: "none",
+  // Round in the glass look (--r-btn), square in the classic one.
+  borderRadius: "var(--r-btn, 0)",
 };
 
 export const btnPrimary: CSSProperties = {

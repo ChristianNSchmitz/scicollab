@@ -690,7 +690,17 @@ function build() {
     projects: liveProjects,
     project_members: project_members.filter((m) => projectIds.has(m.project_id)),
     nextcloud_links: ncLinksSeed(method_cards.find((c: any) => c.author_id === "u-rivera")?.id), nextcloud_secrets: [],
-    repo_links: repo_links.filter((r) => (r.project_id ? projectIds.has(r.project_id) : true)),
+    repo_links: [
+      ...repo_links.filter((r) => (r.project_id ? projectIds.has(r.project_id) : true)),
+      // The code behind one of Alex's method cards.
+      ...method_cards.filter((c: any) => c.author_id === "u-rivera").slice(0, 1).map((c: any) => ({
+        id: "rl-m1", project_id: null, group_id: null, method_id: c.id, provider: "github", host: "github.com", path: "scicollab-demo/qpcr-efficiency",
+        url: "https://github.com/scicollab-demo/qpcr-efficiency", added_by: "u-rivera", added_at: at("2026-10-12 09:00"), cached_at: at("2026-10-31 08:00"),
+        cache: { name: "scicollab-demo/qpcr-efficiency", description: "Standard curves and efficiency from Cq values, with the outlier rule written down.",
+          stars: 3, forks: 1, language: "Python", defaultBranch: "main", updatedAt: at("2026-10-27 14:00"), webUrl: "https://github.com/scicollab-demo/qpcr-efficiency",
+          commits: [commit("3be91f0", "Flag slopes outside -3.1 to -3.6", "Alex Rivera", "2026-10-27 14:00", "https://github.com/scicollab-demo/qpcr-efficiency")] },
+      })),
+    ],
     project_methods: project_methods.filter((m) => projectIds.has(m.project_id) && cardIds.has(m.card_id)),
     project_milestones: project_milestones.filter((m) => projectIds.has(m.project_id)),
     eln_entries,
