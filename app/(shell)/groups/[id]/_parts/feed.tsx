@@ -18,10 +18,16 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
     peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
     reactionsFor(supabase, "post", postIds, me),
     imageUrls(supabase, posts ?? []),
-    postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : Promise.resolve({ data: [] as any[] }),
+    postIds.length ? supabase.from("post_replies").select("id, post_id, author_id, body, created_at, helped_at").in("post_id", postIds).order("created_at", { ascending: false }) : Promise.resolve({ data: [] as any[] }),
     markSeen(supabase, id, me, "feed"),
   ]);
   const extras = await postExtras(supabase, me, postIds, new Set(), reactions);
+  const repliers = await peopleById(supabase, (replies ?? []).map((r: any) => r.author_id));
+  const topReply = (id: string) => {
+    const rs = (replies ?? []).filter((r: any) => r.post_id === id);
+    const r = rs.find((x: any) => x.helped_at) ?? rs[0];
+    return r ? { body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: repliers.get(r.author_id) } : null;
+  };
   return (
     <section aria-label="Group feed" style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 12 }}>
       <QuickPost topics={[]} cards={[]} groupId={id} groupName={g.name} />
@@ -29,7 +35,7 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
       {(posts ?? []).map((p: any) => (
         <PostCard key={p.id} p={p} author={authors.get(p.author_id)} images={images.get(p.id)} reaction={reactions.get(p.id)}
           replies={(replies ?? []).filter((r: any) => r.post_id === p.id).length} me={me} path={`/groups/${id}?tab=feed`}
-          topicHref={(r) => `/home?room=${r}`} group={null} extra={extras.get(p.id)} />
+          topicHref={(r) => `/home?room=${r}`} group={null} extra={extras.get(p.id)} topReply={topReply(p.id)} />
       ))}
     </section>
   );

@@ -3,8 +3,8 @@ import { REACTIONS, type ReactionSummary } from "@/lib/social/reactions";
 
 /**
  * What a post card shows besides the post itself: how often it was
- * reposted, whether you reposted or saved it, and the line on top that says
- * why it is in your feed ("Maja reposted this", "Temi found this useful").
+ * reposted, whether you reposted or saved it, and the line on top when
+ * someone you follow reposted it ("Maja reposted this", with her note).
  */
 export type PostExtra = {
   reposts: number;
@@ -12,7 +12,7 @@ export type PostExtra = {
   saved: boolean;
   /** Files attached to a feedback request. */
   files: { id: string; name: string; mime: string; size_bytes: number }[];
-  /** Who you follow did something with it, and what; first one wins. */
+  /** Someone you follow reposted it: the latest one, with their note. */
   context?: { personId: string; text: string; note?: string };
 };
 
@@ -36,13 +36,6 @@ export async function postExtras(
     };
     const byFollowed = rs.filter((r: any) => following.has(r.user_id)).sort((a: any, b: any) => b.created_at.localeCompare(a.created_at))[0];
     if (byFollowed) extra.context = { personId: byFollowed.user_id, text: "reposted this", note: byFollowed.note || undefined };
-    else {
-      const s = reactions.get(id);
-      for (const r of REACTIONS) {
-        const who = s?.who[r.key].find((u) => following.has(u));
-        if (who) { extra.context = { personId: who, text: r.key === "useful" ? "found this useful" : r.key === "seen" ? "has seen this too" : "can help with this" }; break; }
-      }
-    }
     out.set(id, extra);
   }
   return out;

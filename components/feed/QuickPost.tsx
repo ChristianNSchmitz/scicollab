@@ -6,6 +6,7 @@ import { createPost, type PostState } from "@/app/actions/posts";
 import { INTENTS, FEEDBACK_KINDS, type Intent } from "@/lib/taxonomy";
 import { Panel, field, btnPrimary, mono } from "@/components/ui";
 import MentionTextarea from "@/components/social/MentionTextarea";
+import Avatar from "@/components/Avatar";
 import ImagePicker from "@/components/feed/ImagePicker";
 import PeoplePicker from "@/components/feed/PeoplePicker";
 
@@ -20,10 +21,12 @@ type Card = { id: string; code: string; title: string };
  * the kinds of feedback wanted, a deadline, and who sees it: a topic group
  * or only the people chosen. The full form (/post) adds project data.
  */
-export default function QuickPost({ topics, cards, defaultTopic, groupId, groupName }: {
+export default function QuickPost({ topics, cards, defaultTopic, groupId, groupName, meName, meAvatar }: {
   topics: Topic[]; cards: Card[]; defaultTopic?: string;
   /** Post into this group's members-only discussion instead of a topic group. */
   groupId?: string; groupName?: string;
+  /** Your name and picture beside the one-line field. */
+  meName?: string; meAvatar?: string | null;
 }) {
   const [state, action, pending] = useActionState<PostState, FormData>(createPost, null);
   const [open, setOpen] = useState(false);
@@ -51,10 +54,15 @@ export default function QuickPost({ topics, cards, defaultTopic, groupId, groupN
   return (
     <form id="compose" onSubmit={submit} style={{ scrollMarginTop: 72 }}>
       <Panel>
-        <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
-          <label htmlFor="qp-title" style={{ position: "absolute", left: -9999 }}>Title</label>
-          <input id="qp-title" name="title" required maxLength={200} onFocus={() => setOpen(true)} style={{ ...field, font: "500 14px/1.4 var(--sans)" }}
-            placeholder={groupId ? `Write to ${groupName ?? "the group"}: an update, a question, a request…` : "Share something: a result, a question, a paper, a picture from the bench…"} />
+        <div style={{ padding: open ? 14 : 10, display: "flex", flexDirection: "column", gap: 10 }}>
+          {/* One line until you start: your picture and a rounded field. */}
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            {meName !== undefined && <Avatar name={meName} url={meAvatar ?? null} size={30} />}
+            <label htmlFor="qp-title" style={{ position: "absolute", left: -9999 }}>Title</label>
+            <input id="qp-title" name="title" required maxLength={200} onFocus={() => setOpen(true)}
+              style={{ ...field, flex: 1, height: 40, borderRadius: open ? 12 : 999, padding: "0 16px", font: "500 14px/1.4 var(--sans)" }}
+              placeholder={groupId ? `Write to ${groupName ?? "the group"}…` : open ? "Title" : "Share a result, a question, a draft for feedback…"} />
+          </div>
           {open && (
             <>
               <label htmlFor="qp-body" style={{ position: "absolute", left: -9999 }}>Text</label>

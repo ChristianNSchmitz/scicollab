@@ -66,7 +66,7 @@ export default async function Home({
   const [{ data: mine }, { data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }, { data: myPosts }, following, { data: myCards }, { data: myGroups }] =
     await Promise.all([
       supabase.from("user_rooms").select("room_id").eq("user_id", me_),
-      supabase.from("profiles").select("orcid, role_title, institution, bio, avatar_url, techniques").eq("id", me_).maybeSingle(),
+      supabase.from("profiles").select("display_name, orcid, role_title, institution, bio, avatar_url, techniques").eq("id", me_).maybeSingle(),
       supabase.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", me_).is("read_at", null),
       supabase.from("access_requests").select("id, attachment_id, created_at").eq("owner_id", me_).eq("status", "pending"),
       supabase.from("questions").select("id, title").eq("author_id", me_),
@@ -110,12 +110,13 @@ export default async function Home({
     const [authors, { data: cards }, { data: feedReplies }, reactions, images] = await Promise.all([
       peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
       cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : empty,
-      postIds.length ? supabase.from("post_replies").select("post_id").in("post_id", postIds) : empty,
+      postIds.length ? supabase.from("post_replies").select("id, post_id, author_id, body, created_at, helped_at").in("post_id", postIds).order("created_at", { ascending: false }) : empty,
       reactionsFor(supabase, "post", postIds, me_),
       imageUrls(supabase, posts ?? []),
     ]);
     const extras = await postExtras(supabase, me_, postIds, following, reactions);
-    const contextIds = [...extras.values()].map((e) => e.context?.personId).filter((x): x is string => !!x && !authors.has(x));
+    const contextIds = [...[...extras.values()].map((e) => e.context?.personId), ...(feedReplies ?? []).map((r: any) => r.author_id)]
+      .filter((x): x is string => !!x && !authors.has(x));
     const people = contextIds.length ? new Map([...authors, ...(await peopleById(supabase, contextIds))]) : authors;
     return { posts, people, cards, feedReplies, reactions, images, extras, hasMore };
   })();
@@ -193,6 +194,13 @@ export default async function Home({
   const who = (id: string) => people.get(id);
   const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
   const replyCount = (id: string) => (feedReplies ?? []).filter((r: any) => r.post_id === id).length;
+  // One reply under each post: the one that helped its author, else the latest.
+  const topReply = (id: string) => {
+    const rs = (feedReplies ?? []).filter((r: any) => r.post_id === id);
+    const r = rs.find((x: any) => x.helped_at) ?? rs[0];
+    return r ? { body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) } : null;
+  };
+  const filterLabel = [intent ? SHORT[intent] ?? intent : "All kinds", feedMode === "topics" ? (room ? `#${room}` : "all topics") : null].filter(Boolean).join(" · ");
   const requestPosts = [...new Set((atts ?? []).map((a: any) => a.post_id))];
   const week = 7 * 864e5;
   const freshAnswers = (qAnswers ?? []).filter((a: any) => a.author_id !== me_ && Date.now() - +new Date(a.created_at) < week);
@@ -210,7 +218,7 @@ export default async function Home({
   };
 
   const pill = (active: boolean): React.CSSProperties => ({
-    font: mono(11, 500), padding: "5px 10px", border: "1px solid var(--rule)",
+    font: "500 12px/1 var(--sans)", padding: "7px 11px", borderRadius: 999, border: "1px solid var(--rule)",
     background: active ? "var(--ink)" : "transparent",
     color: active ? "var(--bg)" : "var(--ink)", textDecoration: "none", whiteSpace: "nowrap",
   });
@@ -252,9 +260,10 @@ export default async function Home({
       {/* ── feed ──────────────────────────────────────────────────────── */}
       <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12, scrollMarginTop: 72 }}>
         {posted && <p role="status" style={{ font: "400 13.5px/1.5 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Posted.</p>}
-        <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} />
+        <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} meName={me?.display_name ?? ""} meAvatar={me?.avatar_url ?? null} />
 
-        <nav aria-label="Which posts" className="sc-seg" style={{ display: "flex", gap: 0 }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <nav aria-label="Which posts" className="sc-seg" style={{ display: "flex", gap: 0, flex: "1 1 360px" }}>
           {([["topics", "Topic groups"], ["groups", `My groups · ${myGroupIds.length}`], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => (
             <Link key={k} href={k === "topics" ? "/home#feed" : `/home?feed=${k}#feed`} aria-current={feedMode === k ? "page" : undefined}
               style={{ flex: 1, textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", color: feedMode === k ? "var(--ink)" : "var(--mute)", borderBottom: feedMode === k ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
@@ -262,6 +271,33 @@ export default async function Home({
             </Link>
           ))}
         </nav>
+        {/* Kind and topic behind one button: two rows of chips were too much on every visit. */}
+        <details className="sc-feed-filter" style={{ position: "relative" }} open={false}>
+          <summary style={{ listStyle: "none", cursor: "pointer", height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>
+            Filter <span style={{ fontWeight: 400, color: "var(--mute)" }}>{filterLabel}</span>
+          </summary>
+          <div style={{ position: "absolute", right: 0, top: 42, zIndex: 30, width: "min(420px, 90vw)", padding: 12, borderRadius: 16, border: "1px solid var(--rule)", background: "color-mix(in srgb, var(--bg) 94%, transparent)", boxShadow: "0 16px 40px rgba(31, 38, 60, .18)", WebkitBackdropFilter: "blur(27px) saturate(218%)", backdropFilter: "blur(27px) saturate(218%)", display: "flex", flexDirection: "column", gap: 10 }}>
+            <div>
+              <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Kind</div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                <Link href={qs({ intent: undefined })} style={pill(!intent)}>All</Link>
+                {INTENTS.map((i) => <Link key={i.id} href={qs({ intent: i.id })} style={pill(intent === i.id)} title={i.label}>{SHORT[i.id] ?? i.label}</Link>)}
+              </div>
+            </div>
+            {feedMode === "topics" && (
+              <div>
+                <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Topic</div>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  <Link href={qs({ room: undefined })} style={pill(!room)}>All yours</Link>
+                  {myRooms.map((r) => <Link key={r} href={qs({ room: r })} style={pill(room === r)}>#{r}</Link>)}
+                  <Link href="/groups#topics" style={{ font: "500 12px/26px var(--sans)", color: "var(--link)", whiteSpace: "nowrap" }}>more →</Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </details>
+        {(intent || room) && <Link href={qs({ intent: undefined, room: undefined })} aria-label="Clear the filter" style={{ font: "500 12.5px/1 var(--sans)", color: "var(--mute)" }}>clear</Link>}
+        </div>
 
         {feedMode === "following" && followed.length === 0 && (
           <Panel>
@@ -278,26 +314,6 @@ export default async function Home({
             <ActivityList items={followActivity.filter((a) => a.kind !== "post").slice(0, 8)} empty="" />
           </Panel>
         )}
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <div className="sc-filter" role="group" aria-label="Kind of post">
-            <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginRight: 4 }}>KIND</span>
-            <Link href={qs({ intent: undefined })} style={pill(!intent)}>All</Link>
-            {INTENTS.map((i) => (
-              <Link key={i.id} href={qs({ intent: i.id })} style={pill(intent === i.id)} title={i.label}>{SHORT[i.id] ?? i.label}</Link>
-            ))}
-          </div>
-          {feedMode === "topics" && (
-            <div className="sc-filter" role="group" aria-label="Topic group">
-              <span style={{ font: mono(9.5, 700), letterSpacing: ".1em", color: "var(--mute)", marginRight: 4 }}>TOPIC</span>
-              <Link href={qs({ room: undefined })} style={pill(!room)}>All yours</Link>
-              {myRooms.map((r) => (
-                <Link key={r} href={qs({ room: r })} style={pill(room === r)}>#{r}</Link>
-              ))}
-              <Link href="/groups#topics" style={{ font: mono(11, 500), color: "var(--link)", marginLeft: 4, whiteSpace: "nowrap" }}>more →</Link>
-            </div>
-          )}
-        </div>
 
         {feedMode === "groups" && (
           <p style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)", margin: 0 }}>
@@ -325,7 +341,8 @@ export default async function Home({
           <PostCard key={p.id} p={p} author={who(p.author_id)} card={cardOf(p.method_card_id)} images={images.get(p.id)}
             reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
             topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null}
-            extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")} />
+            extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")}
+            topReply={topReply(p.id)} />
         ))}
         {hasMore && (
           <Link href={qs({ n: String(pageSize + 20) }).replace("#feed", `#post-${posts[posts.length - 1].id}`)} scroll={false}
