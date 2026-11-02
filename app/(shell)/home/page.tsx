@@ -276,10 +276,12 @@ export default async function Home({
         }))} />
         {/* Kind and topic behind one button: two rows of chips were too much on every visit. */}
         <details className="sc-feed-filter" style={{ position: "relative" }} open={false}>
-          <summary style={{ listStyle: "none", cursor: "pointer", height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>
-            Filter <span style={{ fontWeight: 400, color: "var(--mute)" }}>{filterLabel}</span>
+          {/* A fixed width: the tabs beside it must not move when the label changes. */}
+          <summary style={{ listStyle: "none", cursor: "pointer", width: 220, height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>
+            Filter <span title={filterLabel} style={{ fontWeight: 400, color: (intent || room) ? "var(--ink)" : "var(--mute)", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{filterLabel}</span>
           </summary>
           <div style={{ position: "absolute", right: 0, top: 42, zIndex: 30, width: "min(420px, 90vw)", padding: 12, borderRadius: 16, border: "1px solid var(--rule)", background: "color-mix(in srgb, var(--bg) 94%, transparent)", boxShadow: "0 16px 40px rgba(31, 38, 60, .18)", WebkitBackdropFilter: "blur(27px) saturate(218%)", backdropFilter: "blur(27px) saturate(218%)", display: "flex", flexDirection: "column", gap: 10 }}>
+            {(intent || room) && <Link href={qs({ intent: undefined, room: undefined }, false)} scroll={false} style={{ alignSelf: "flex-end", font: "600 12.5px/1 var(--sans)", color: "var(--link)", textDecoration: "none" }}>Clear filter</Link>}
             <div>
               <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Kind</div>
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -299,7 +301,6 @@ export default async function Home({
             )}
           </div>
         </details>
-        {(intent || room) && <Link href={qs({ intent: undefined, room: undefined }, false)} scroll={false} aria-label="Clear the filter" style={{ font: "500 12.5px/1 var(--sans)", color: "var(--mute)" }}>clear</Link>}
         </div>
 
         {feedMode === "following" && followed.length === 0 && (

@@ -19,7 +19,8 @@ function Tab({ item }: { item: SegItem }) {
   return (
     // scroll={false}: switching tabs keeps the page where it is, it does not jump to the top or an anchor.
     <Link href={item.href} scroll={false} aria-current={item.active ? "page" : undefined}
-      style={{ flex: "1 0 auto", textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", whiteSpace: "nowrap",
+      // Equal shares of the bar, so a tab never changes size when another one is chosen.
+      style={{ flex: "1 1 0", minWidth: "max-content", textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", whiteSpace: "nowrap",
         color: item.active ? "var(--ink)" : "var(--mute)", borderBottom: item.active ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
       {item.label}
       {(item.badge ?? 0) > 0 && <span aria-label={`, ${item.badge} new or open`} style={badgeStyle(item.quiet)}>{item.badge}</span>}
@@ -37,7 +38,7 @@ export default function SegTabs({ label, items, more, after, style }: {
       <SegIndicator id={label} activeKey={[...items, ...(more ?? []), ...(after ?? [])].find((i) => i.active)?.href ?? ""} />
       {items.map((it) => <Tab key={it.href} item={it} />)}
       {more && more.length > 0 && (
-        <details style={{ flex: "1 0 auto", position: "relative", display: "flex" }}>
+        <details style={{ flex: "1 1 0", minWidth: "max-content", position: "relative", display: "flex" }}>
           <summary aria-current={open ? "page" : undefined}
             style={{ flex: 1, listStyle: "none", cursor: "pointer", textAlign: "center", padding: "9px 12px", font: mono(12, 600), whiteSpace: "nowrap", borderRadius: 9,
               color: open ? "var(--ink)" : "var(--mute)", background: open ? "var(--surface)" : "transparent", boxShadow: open ? "0 1px 3px rgba(0,0,0,.10)" : undefined,
