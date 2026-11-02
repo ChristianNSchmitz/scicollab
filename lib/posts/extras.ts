@@ -34,8 +34,15 @@ export async function postExtras(
       reposts: rs.length, reposted: rs.some((r: any) => r.user_id === me), saved: savedSet.has(id),
       files: (files ?? []).filter((f: any) => f.post_id === id),
     };
-    const byFollowed = rs.filter((r: any) => following.has(r.user_id)).sort((a: any, b: any) => b.created_at.localeCompare(a.created_at))[0];
-    if (byFollowed) extra.context = { personId: byFollowed.user_id, text: "reposted this", note: byFollowed.note || undefined };
+    // Several people you follow reposting the same post: one line, not one card each.
+    const followedReposts = rs.filter((r: any) => following.has(r.user_id)).sort((a: any, b: any) => String(b.created_at ?? "").localeCompare(String(a.created_at ?? "")));
+    const byFollowed = followedReposts.find((r: any) => r.note) ?? followedReposts[0];
+    const others = followedReposts.length - 1;
+    if (byFollowed) extra.context = {
+      personId: byFollowed.user_id,
+      text: others > 0 ? `and ${others} other${others > 1 ? "s" : ""} you follow reposted this` : "reposted this",
+      note: byFollowed.note || undefined,
+    };
     out.set(id, extra);
   }
   return out;

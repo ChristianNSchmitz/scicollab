@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { replyInline } from "@/app/actions/posts";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { repost, undoRepost, sendPost } from "@/app/actions/post-interactions";
 import { findPeople } from "@/app/actions/chat";
@@ -31,14 +33,19 @@ function useOutside(open: boolean, close: () => void) {
 const field = { width: "100%", border: "1px solid var(--rule)", borderRadius: 12, background: "var(--bg)", color: "var(--ink)", font: "400 13px/1.6 var(--sans)", padding: "8px 10px" } as const;
 const primary = { height: 32, padding: "0 14px", border: 0, borderRadius: 999, background: "var(--ink)", color: "var(--bg)", font: "600 12.5px/1 var(--sans)", cursor: "pointer" } as const;
 
+/** Opens the reply field under a post (InlineReply): the Reply button, the "r" key. */
+export const REPLY_EVENT = "sc-feed-reply";
+
 /**
  * Reply, Repost and Send along the bottom of a post. Reposting puts the post
  * in your followers' feeds, with a line of your own if you like; sending
  * shares it with one person as a direct message. Posts in a group stay in
  * the group, so they only get Reply.
  */
-export default function PostActions({ postId, inGroup, own, reposted: initialReposted }: {
+export default function PostActions({ postId, inGroup, own, reposted: initialReposted, replyInPlace = true }: {
   postId: string; inGroup: boolean; own: boolean; reposted: boolean;
+  /** False on the post page, which has its own reply form further down. */
+  replyInPlace?: boolean;
 }) {
   const [menu, setMenu] = useState<"" | "repost" | "send">("");
   const [reposted, setReposted] = useState(initialReposted);
@@ -66,9 +73,10 @@ export default function PostActions({ postId, inGroup, own, reposted: initialRep
 
   return (
     <div ref={box} style={{ position: "relative", display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
-      <Link href={`/posts/${postId}#replies`} style={actionBtn}>
-        <IconReply />Reply
-      </Link>
+      {!replyInPlace ? <Link href={`/posts/${postId}#replies`} style={actionBtn}><IconReply />Reply</Link>
+        : <button type="button" onClick={() => window.dispatchEvent(new CustomEvent(REPLY_EVENT, { detail: { id: postId, toggle: true } }))} style={actionBtn}>
+          <IconReply />Reply
+        </button>}
       {!inGroup && !own && (
         <button type="button" aria-expanded={menu === "repost"} aria-haspopup="menu" onClick={() => { setMenu(menu === "repost" ? "" : "repost"); setThoughts(null); setStatus(""); }}
           style={{ ...actionBtn, color: reposted ? "var(--ok)" : "var(--mute)" }}>
@@ -141,5 +149,54 @@ export default function PostActions({ postId, inGroup, own, reposted: initialRep
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * The reply field right under a post in the feed, so you answer without
+ * leaving it. Opened by the Reply button or the "r" key.
+ */
+export function InlineReply({ postId }: { postId: string }) {
+  const [open, setOpen] = useState(false);
+  const [reply, setReply] = useState("");
+  const [status, setStatus] = useState("");
+  const [pending, start] = useTransition();
+  const box = useRef<HTMLTextAreaElement>(null);
+  const router = useRouter();
+  useEffect(() => {
+    const on = (e: Event) => {
+      const d = (e as CustomEvent).detail as { id: string; toggle?: boolean } | string;
+      const id = typeof d === "string" ? d : d.id;
+      if (id !== postId) return;
+      setStatus("");
+      setOpen((o) => (typeof d !== "string" && d.toggle ? !o : true));
+    };
+    window.addEventListener(REPLY_EVENT, on);
+    return () => window.removeEventListener(REPLY_EVENT, on);
+  }, [postId]);
+  useEffect(() => { if (open) box.current?.focus(); }, [open]);
+  const send = () => {
+    if (!reply.trim()) return;
+    start(async () => {
+      const r = await replyInline(postId, reply);
+      if ("error" in r) { setStatus(r.error); return; }
+      setReply(""); setOpen(false); setStatus("Reply posted.");
+      router.refresh();
+    });
+  };
+  if (!open) return status ? <div role="status" style={{ padding: "0 14px 10px", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>{status}</div> : null;
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); send(); }} style={{ display: "flex", gap: 8, alignItems: "flex-end", padding: "0 12px 12px 14px" }}>
+      <label htmlFor={`reply-${postId}`} style={{ position: "absolute", left: -9999 }}>Your reply</label>
+      <textarea id={`reply-${postId}`} ref={box} rows={1} maxLength={5000} value={reply} placeholder="Write a reply…"
+        onChange={(e) => { setReply(e.target.value); e.target.style.height = "auto"; e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`; }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); send(); }
+          if (e.key === "Escape") setOpen(false);
+        }}
+        style={{ ...field, flex: 1, borderRadius: 18, padding: "8px 14px", resize: "none", minHeight: 38 }} />
+      <button type="submit" disabled={pending || !reply.trim()} style={{ ...primary, height: 36, opacity: reply.trim() ? 1 : .5 }}>{pending ? "…" : "Reply"}</button>
+      {status && <span role="status" style={{ font: "400 12px/1.5 var(--sans)", color: "var(--err)" }}>{status}</span>}
+    </form>
   );
 }

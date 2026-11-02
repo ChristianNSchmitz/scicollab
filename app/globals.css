@@ -579,3 +579,8 @@ html[data-look="glass"][data-theme="dark"] .sc-seg { background: rgba(160, 160, 
 
 /* Sliding tab content must not make the page scroll sideways for a moment. */
 main { overflow-x: clip; }
+
+/* Feed: posts you already opened are quieter; j/k mark the current one. */
+.sc-post.sc-seen { opacity: .72; transition: opacity .2s ease; }
+.sc-post.sc-seen:hover, .sc-post.sc-seen:focus-within { opacity: 1; }
+.sc-post.sc-current > * { outline: 2px solid var(--signal); outline-offset: 2px; border-radius: 18px; }

@@ -28,11 +28,18 @@ import { notForChosenPeople } from "@/lib/social/groups";
 import SegTabs from "@/components/SegTabs";
 import { forYou } from "@/lib/social/for-you";
 import ForYouPanel from "@/components/dashboard/ForYouPanel";
+import { cookies } from "next/headers";
+import { mutesOf } from "@/lib/posts/mutes";
+import type { HelpStatus } from "@/components/feed/PostCard";
+import { FeedVisit, FeedLive, AutoMore, FeedKeys, MutedList } from "@/components/feed/FeedClient";
+import { VISIT_COOKIE, SESSION_COOKIE } from "@/lib/posts/visit";
 
 export const dynamic = "force-dynamic";
 
 /** Short names for the filter pills; the full name is the tooltip. */
 const SHORT: Record<string, string> = { result: "Results", data_question: "Data questions", general: "Questions", collab: "Collaborators", feedback: "Feedback", update: "News" };
+/** Kinds of post that ask for help, and so are open until someone answers. */
+const HELP = new Set(["feedback", "general", "data_question"]);
 
 
 /**
@@ -46,10 +53,15 @@ const SHORT: Record<string, string> = { result: "Results", data_question: "Data 
  */
 export default async function Home({
   searchParams,
-}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string; posted?: string; n?: string }> }) {
-  const { intent, room: roomParam, sync, feed: feedParam, posted, n } = await searchParams;
-  // Twenty posts first; "Show more" asks for twenty more, up to a hundred.
-  const pageSize = Math.min(100, Math.max(20, Number(n) || 20));
+}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string; posted?: string; n?: string; open?: string; sort?: string }> }) {
+  const { intent, room: roomParam, sync, feed: feedParam, posted, n, open: openParam, sort: sortParam } = await searchParams;
+  // Twenty posts first; scrolling down asks for twenty more, up to two hundred.
+  const pageSize = Math.min(200, Math.max(20, Number(n) || 20));
+  const openOnly = openParam === "1";
+  const relevant = sortParam === "relevant";
+  // Your previous visit (components/feed/FeedClient.tsx keeps it): posts after it are new.
+  const jar = await cookies();
+  const lastVisit = [jar.get(SESSION_COOKIE)?.value, jar.get(VISIT_COOKIE)?.value].find((v) => v && !Number.isNaN(Date.parse(v))) ?? null;
   // "following": posts and activity from the people you follow, from any topic group.
   // "groups": the discussions of the groups you are in (members only).
   const feedMode = feedParam === "following" ? "following" : feedParam === "groups" ? "groups" : "topics";
@@ -64,7 +76,7 @@ export default async function Home({
   // round trip; the longest chain is about four.
   ensureRecordSeed();
   const empty = Promise.resolve({ data: [] as any[] });
-  const [{ data: mine }, { data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }, { data: myPosts }, following, { data: myCards }, { data: myGroups }] =
+  const [{ data: mine }, { data: me }, { count: unread }, { data: myRequests }, { data: myQuestions }, { data: myPosts }, following, { data: myCards }, { data: myGroups }, mutes] =
     await Promise.all([
       supabase.from("user_rooms").select("room_id").eq("user_id", me_),
       supabase.from("profiles").select("display_name, orcid, role_title, institution, bio, avatar_url, techniques").eq("id", me_).maybeSingle(),
@@ -75,6 +87,7 @@ export default async function Home({
       followingOf(supabase, me_),
       supabase.from("method_cards").select("id, code, title").eq("author_id", me_).order("created_at", { ascending: false }),
       supabase.from("group_members").select("group_id, role").eq("user_id", me_),
+      mutesOf(supabase, me_),
     ]);
   const followed = [...following];
   const myGroupIds = (myGroups ?? []).filter((g: any) => g.role !== "alumni").map((g: any) => g.group_id);
@@ -84,42 +97,69 @@ export default async function Home({
   if (myRooms.length === 0) redirect("/welcome");
 
   const feed = (async () => {
-    if ((feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length)) {
-      return { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false };
-    }
+    const none = { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false, status: new Map<string, HelpStatus>(), openCount: 0 };
+    // Muted topic groups leave "all topics"; picked on their own in the Filter, they still show.
+    const roomScope = room ? [room] : myRooms.filter((r) => !mutes.rooms.has(r));
+    if ((feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length) || (feedMode === "topics" && !roomScope.length)) return none;
     const cols = "id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, audience, feedback_kinds, call_status, created_at";
     // Following: what they posted, and what they reposted (at the time of the repost).
     const reposted = feedMode === "following" ? await repostedBy(supabase, followed) : [];
     let q = supabase.from("posts").select(cols);
     q = feedMode === "following" ? q.in("author_id", followed)
       : feedMode === "groups" ? q.in("group_id", myGroupIds)
-      : q.in("room_id", room ? [room] : myRooms);
-    q = q.order("created_at", { ascending: false }).limit(pageSize + 1);
+      : q.in("room_id", roomScope);
+    // A window of recent posts: enough to leave out what you muted, to find the
+    // open requests and to rank by relevance, and still one query.
+    q = q.order("created_at", { ascending: false }).limit(Math.max(200, pageSize + 1));
     if (intent) q = q.eq("intent", intent);
-    // A followed person's posts in a group you are not in stay in that group.
     const { data: own } = await q;
     const repostIds = reposted.map((r) => r.post_id).filter((id) => !(own ?? []).some((p: any) => p.id === id));
     const { data: shared } = repostIds.length ? await supabase.from("posts").select(cols).in("id", repostIds) : { data: [] as any[] };
     const when = (p: any) => reposted.find((r) => r.post_id === p.id && r.created_at > p.created_at)?.created_at ?? p.created_at;
-    const all = [...(own ?? []), ...(intent ? (shared ?? []).filter((p: any) => p.intent === intent) : shared ?? [])]
+    // A followed person's posts in a group you are not in stay in that group.
+    const candidates = [...(own ?? []), ...(intent ? (shared ?? []).filter((p: any) => p.intent === intent) : shared ?? [])]
+      .filter((p: any) => (!p.group_id || myGroupIds.includes(p.group_id)) && notForChosenPeople(me_)(p))
+      .filter((p: any) => !mutes.posts.has(p.id) && !mutes.people.has(p.author_id) && (room || p.group_id || !mutes.rooms.has(p.room_id)))
       .sort((a: any, b: any) => when(b).localeCompare(when(a)));
-    const hasMore = all.length > pageSize;
-    all.splice(pageSize);
-    const posts = all.filter((p: any) => (!p.group_id || myGroupIds.includes(p.group_id)) && notForChosenPeople(me_)(p));
-    const cardIds = [...new Set((posts ?? []).map((p: any) => p.method_card_id).filter(Boolean))];
-    const postIds = (posts ?? []).map((p: any) => p.id);
+
+    // Requests for help: open (no reply from anyone else), answered, or helped.
+    const helpIds = candidates.filter((p: any) => HELP.has(p.intent)).map((p: any) => p.id);
+    const { data: helpReplies } = helpIds.length ? await supabase.from("post_replies").select("post_id, author_id, helped_at").in("post_id", helpIds) : { data: [] as any[] };
+    const status = new Map<string, HelpStatus>();
+    for (const p of candidates.filter((p: any) => HELP.has(p.intent))) {
+      const rs = (helpReplies ?? []).filter((r: any) => r.post_id === p.id && r.author_id !== p.author_id);
+      status.set(p.id, rs.some((r: any) => r.helped_at) ? "helped" : rs.length ? "answered" : "open");
+    }
+    const openCount = [...status.values()].filter((v) => v === "open").length;
+    let ranked = openOnly ? candidates.filter((p: any) => status.get(p.id) === "open") : candidates;
+    if (relevant) {
+      // Relevant: your techniques, people you follow, requests still waiting, then age.
+      const mineT = ((me?.techniques ?? []) as string[]).map((t) => t.toLowerCase()).filter((t) => t.length > 2);
+      const score = (p: any) => {
+        const text = `${p.technique ?? ""} ${p.organism ?? ""} ${p.title ?? ""} ${p.body ?? ""}`.toLowerCase();
+        const days = (Date.now() - +new Date(when(p))) / 864e5;
+        return (mineT.some((t) => text.includes(t)) ? 4 : 0) + (following.has(p.author_id) ? 2 : 0)
+          + (status.get(p.id) === "open" ? 2 : 0) + (p.intent === "collab" && (p.call_status ?? "open") === "open" ? 1 : 0)
+          + (p.author_id === me_ ? -2 : 0) - days / 4;
+      };
+      ranked = [...ranked].sort((a, b) => score(b) - score(a));
+    }
+    const hasMore = ranked.length > pageSize;
+    const posts = ranked.slice(0, pageSize);
+    const cardIds = [...new Set(posts.map((p: any) => p.method_card_id).filter(Boolean))];
+    const postIds = posts.map((p: any) => p.id);
     const [authors, { data: cards }, { data: feedReplies }, reactions, images] = await Promise.all([
-      peopleById(supabase, (posts ?? []).map((p: any) => p.author_id)),
+      peopleById(supabase, posts.map((p: any) => p.author_id)),
       cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : empty,
       postIds.length ? supabase.from("post_replies").select("id, post_id, author_id, body, created_at, helped_at").in("post_id", postIds).order("created_at", { ascending: false }) : empty,
       reactionsFor(supabase, "post", postIds, me_),
-      imageUrls(supabase, posts ?? []),
+      imageUrls(supabase, posts),
     ]);
     const extras = await postExtras(supabase, me_, postIds, following, reactions);
     const contextIds = [...[...extras.values()].map((e) => e.context?.personId), ...(feedReplies ?? []).map((r: any) => r.author_id)]
       .filter((x): x is string => !!x && !authors.has(x));
     const people = contextIds.length ? new Map([...authors, ...(await peopleById(supabase, contextIds))]) : authors;
-    return { posts, people, cards, feedReplies, reactions, images, extras, hasMore };
+    return { posts, people, cards, feedReplies, reactions, images, extras, hasMore, status, openCount };
   })();
 
   const research = (async () => {
@@ -163,7 +203,7 @@ export default async function Home({
   ]);
 
   const [
-    { posts, people, cards, feedReplies, reactions, images, extras, hasMore },
+    { posts, people, cards, feedReplies, reactions, images, extras, hasMore, status, openCount },
     { biblio, pubs, change, citations },
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
     [followActivity, onMine, contacts, theirPapers],
@@ -179,6 +219,9 @@ export default async function Home({
     groupsPanel,
     forYou(supabase, me_),
   ]);
+  // An empty "My groups": a few open groups to join instead of a sentence.
+  const { data: suggestGroups } = feedMode === "groups" && !myGroupIds.length
+    ? await supabase.from("groups").select("id, name, description, access").eq("access", "open").limit(3) : { data: [] as any[] };
   const groupNames = new Map<string, { id: string; name: string }>(groupList.map((g: any) => [g.id, { id: g.id, name: g.name }]));
   // New papers: yours from the last syncs, then those of people you follow.
   const names = await peopleById(supabase, [...theirPapers.map((p) => p.user), ...waiting.feedback.map((f) => f.author_id)]);
@@ -208,7 +251,20 @@ export default async function Home({
     return rs.filter((r: any) => r !== top).reverse().slice(0, 30)
       .map((r: any) => ({ body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) }));
   };
-  const filterLabel = [intent ? SHORT[intent] ?? intent : "All kinds", feedMode === "topics" ? (room ? `#${room}` : "all topics") : null].filter(Boolean).join(" · ");
+  const filterLabel = [relevant ? "Relevant" : null, openOnly ? "Open only" : null, intent ? SHORT[intent] ?? intent : "All kinds", feedMode === "topics" ? (room ? `#${room}` : "all topics") : null].filter(Boolean).join(" · ");
+  // Posts since your last visit; in the latest-first order a line marks where they end.
+  const isNew = (p: any) => !!lastVisit && p.author_id !== me_ && p.created_at > lastVisit;
+  const newCount = posts.filter(isNew).length;
+  const lineAfter = !relevant && newCount > 0 && newCount < posts.length ? posts.findLastIndex((p: any) => isNew(p)) : -1;
+  const [mutedPeople, { data: mutedPosts }] = await Promise.all([
+    mutes.people.size ? peopleById(supabase, [...mutes.people]) : Promise.resolve(new Map()),
+    mutes.posts.size ? supabase.from("posts").select("id, title").in("id", [...mutes.posts]) : empty,
+  ]);
+  const short = (t: string) => (t.length > 28 ? t.slice(0, 27) + "…" : t);
+  const mutedItems = mutes.list.map((m) => ({ ...m, label: m.kind === "room" ? `#${m.target}`
+    : m.kind === "person" ? mutedPeople.get(m.target)?.display_name ?? "A person"
+    : `“${short((mutedPosts ?? []).find((x: any) => x.id === m.target)?.title ?? "A post")}”` }));
+  const liveQuery = new URLSearchParams(Object.entries({ feed: feedMode === "topics" ? "" : feedMode, room: room ?? "", intent: intent ?? "" }).filter(([, v]) => v)).toString();
   const requestPosts = [...new Set((atts ?? []).map((a: any) => a.post_id))];
   const week = 7 * 864e5;
   const freshAnswers = (qAnswers ?? []).filter((a: any) => a.author_id !== me_ && Date.now() - +new Date(a.created_at) < week);
@@ -219,7 +275,7 @@ export default async function Home({
 
   const qs = (patch: Record<string, string | undefined>, anchor = true) => {
     const sp = new URLSearchParams();
-    const merged = { feed: feedMode === "topics" ? undefined : feedMode, intent, room, ...patch };
+    const merged = { feed: feedMode === "topics" ? undefined : feedMode, intent, room, open: openOnly ? "1" : undefined, sort: relevant ? "relevant" : undefined, ...patch };
     Object.entries(merged).forEach(([k, v]) => { if (v) sp.set(k, v); });
     const s = sp.toString();
     return (s ? `/home?${s}` : "/home") + (anchor ? "#feed" : "");
@@ -278,10 +334,27 @@ export default async function Home({
         <details className="sc-feed-filter" style={{ position: "relative" }} open={false}>
           {/* A fixed width: the tabs beside it must not move when the label changes. */}
           <summary style={{ listStyle: "none", cursor: "pointer", width: 220, height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>
-            Filter <span title={filterLabel} style={{ fontWeight: 400, color: (intent || room) ? "var(--ink)" : "var(--mute)", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{filterLabel}</span>
+            Filter <span title={filterLabel} style={{ flex: 1, fontWeight: 400, color: (intent || room || openOnly || relevant) ? "var(--ink)" : "var(--mute)", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{filterLabel}</span>
+            {openCount > 0 && <span title={`${openCount} request${openCount > 1 ? "s" : ""} for help without a reply`} style={{ flex: "0 0 auto", padding: "3px 7px", borderRadius: 999, background: "var(--signal)", color: "#fff", font: "700 11px/1 var(--sans)" }}>{openCount} open</span>}
           </summary>
           <div style={{ position: "absolute", right: 0, top: 42, zIndex: 30, width: "min(420px, 90vw)", padding: 12, borderRadius: 16, border: "1px solid var(--rule)", background: "color-mix(in srgb, var(--bg) 94%, transparent)", boxShadow: "0 16px 40px rgba(31, 38, 60, .18)", WebkitBackdropFilter: "blur(27px) saturate(218%)", backdropFilter: "blur(27px) saturate(218%)", display: "flex", flexDirection: "column", gap: 10 }}>
-            {(intent || room) && <Link href={qs({ intent: undefined, room: undefined }, false)} scroll={false} style={{ alignSelf: "flex-end", font: "600 12.5px/1 var(--sans)", color: "var(--link)", textDecoration: "none" }}>Clear filter</Link>}
+            {(intent || room || openOnly || relevant) && <Link href={qs({ intent: undefined, room: undefined, open: undefined, sort: undefined }, false)} scroll={false} style={{ alignSelf: "flex-end", font: "600 12.5px/1 var(--sans)", color: "var(--link)", textDecoration: "none" }}>Clear filter</Link>}
+            <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
+              <div>
+                <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Order</div>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <Link href={qs({ sort: undefined }, false)} scroll={false} style={pill(!relevant)}>Latest</Link>
+                  <Link href={qs({ sort: "relevant" }, false)} scroll={false} style={pill(relevant)} title="Your techniques, people you follow and open requests first">Relevant</Link>
+                </div>
+              </div>
+              <div>
+                <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Show</div>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <Link href={qs({ open: undefined }, false)} scroll={false} style={pill(!openOnly)}>All</Link>
+                  <Link href={qs({ open: "1" }, false)} scroll={false} style={pill(openOnly)} title="Questions and feedback requests nobody has answered yet">Open only{openCount ? ` · ${openCount}` : ""}</Link>
+                </div>
+              </div>
+            </div>
             <div>
               <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Kind</div>
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -299,16 +372,27 @@ export default async function Home({
                 </div>
               </div>
             )}
+            <MutedList items={mutedItems} />
           </div>
         </details>
         </div>
 
         {feedMode === "following" && followed.length === 0 && (
           <Panel>
-            <Empty>
-              You do not follow anyone yet. Follow people from their profile or from the{" "}
-              <Link href="/network" style={{ color: "var(--link)" }}>Network</Link> page; your co-authors are suggested there.
-            </Empty>
+            <div style={{ padding: "14px 14px 6px", font: "600 13.5px/1.4 var(--sans)" }}>Follow a few people to fill this tab</div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {contacts.slice(0, 3).map(({ person: c, reason }: any) => (
+                <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 14px", borderTop: "1px solid var(--rule)" }}>
+                  <Avatar name={c.display_name ?? ""} url={c.avatar_url} size={32} />
+                  <Link href={`/people/${c.id}`} style={{ flex: 1, minWidth: 0, color: "var(--ink)", textDecoration: "none" }}>
+                    <span style={{ display: "block", font: "600 13.5px/1.4 var(--sans)" }}>{c.display_name}</span>
+                    <span style={{ display: "block", font: "400 12.5px/1.4 var(--sans)", color: "var(--mute)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{reason || c.institution || ""}</span>
+                  </Link>
+                  <FollowButton personId={c.id} following={false} inline />
+                </div>
+              ))}
+            </div>
+            <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)" }}><Link href="/network" style={{ font: "600 12.5px/1.4 var(--sans)", color: "var(--link)", textDecoration: "none" }}>More people →</Link></div>
           </Panel>
         )}
 
@@ -319,7 +403,7 @@ export default async function Home({
           </Panel>
         )}
 
-        {feedMode === "groups" && (
+        {feedMode === "groups" && myGroupIds.length > 0 && (
           <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
             Discussions inside your groups, seen only by their members. To post in one, open the group.
           </p>
@@ -327,35 +411,46 @@ export default async function Home({
         {(posts?.length ?? 0) === 0 && (feedMode === "topics" || (feedMode === "following" && followed.length > 0)) && (
           <Panel>
             <Empty>
-              Nothing here yet. Post the first thing above, or{" "}
-              <Link href="/groups#topics" style={{ color: "var(--link)" }}>join more topic groups</Link>.
+              {openOnly ? <>No open requests right now. <Link href={qs({ open: undefined }, false)} scroll={false} style={{ color: "var(--link)" }}>Show all posts</Link>.</>
+                : <>Nothing here yet. Post the first thing above, or <Link href="/groups#topics" style={{ color: "var(--link)" }}>join more topic groups</Link>.</>}
             </Empty>
           </Panel>
         )}
         {(posts?.length ?? 0) === 0 && feedMode === "groups" && (
           <Panel>
             <Empty>
-              {myGroupIds.length ? "No discussions in your groups yet." : "You are not in a group yet."}{" "}
-              <Link href="/groups" style={{ color: "var(--link)" }}>{myGroupIds.length ? "Open a group to start one" : "Find or start one"}</Link>.
+              {myGroupIds.length ? <>No discussions in your groups yet. <Link href="/groups" style={{ color: "var(--link)" }}>Open a group to start one</Link>.</> : "You are not in a group yet. Groups open to everyone:"}
             </Empty>
+            {(suggestGroups ?? []).map((g: any) => (
+              <Link key={g.id} href={`/groups/${g.id}`} style={{ display: "block", padding: "10px 14px", borderTop: "1px solid var(--rule)", color: "var(--ink)", textDecoration: "none" }}>
+                <span style={{ display: "block", font: "600 13.5px/1.4 var(--sans)" }}>{g.name} <span style={{ color: "var(--link)", fontWeight: 600 }}>· Join →</span></span>
+                {g.description && <span style={{ display: "block", font: "400 12.5px/1.5 var(--sans)", color: "var(--mute)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{g.description}</span>}
+              </Link>
+            ))}
+            {!myGroupIds.length && <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)" }}><Link href="/groups" style={{ font: "600 12.5px/1.4 var(--sans)", color: "var(--link)", textDecoration: "none" }}>All groups, or start one →</Link></div>}
           </Panel>
         )}
 
-        <div key={`${feedMode}-${intent ?? ""}-${room ?? ""}`} className="sc-tabpane" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        {(posts ?? []).map((p: any) => (
-          <PostCard key={p.id} p={p} author={who(p.author_id)} card={cardOf(p.method_card_id)} images={images.get(p.id)}
+        <FeedVisit />
+        <FeedKeys />
+        <FeedLive since={posts.length ? posts.reduce((m: string, p: any) => (p.created_at > m ? p.created_at : m), posts[0].created_at) : null} query={liveQuery} />
+        <div id="feed-posts" key={`${feedMode}-${intent ?? ""}-${room ?? ""}-${openOnly}-${relevant}`} className="sc-tabpane" style={{ display: "flex", flexDirection: "column", gap: 20, scrollMarginTop: 90 }}>
+        {(posts ?? []).map((p: any, i: number) => (
+          <div key={p.id} style={{ display: "contents" }}>
+          <PostCard p={p} author={who(p.author_id)} card={cardOf(p.method_card_id)} images={images.get(p.id)}
             reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
             topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null}
             extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")}
-            topReply={topReply(p.id)} moreReplies={moreReplies(p.id)} />
+            topReply={topReply(p.id)} moreReplies={moreReplies(p.id)} status={status.get(p.id)} isNew={isNew(p)} />
+          {i === lineAfter && (
+            <div role="separator" aria-label="Earlier posts" style={{ display: "flex", alignItems: "center", gap: 10, font: "600 12px/1 var(--sans)", color: "var(--mute)" }}>
+              <span style={{ flex: 1, height: 1, background: "var(--rule)" }} />You are up to date · earlier posts<span style={{ flex: 1, height: 1, background: "var(--rule)" }} />
+            </div>
+          )}
+          </div>
         ))}
         </div>
-        {hasMore && (
-          <Link href={qs({ n: String(pageSize + 20) }).replace("#feed", `#post-${posts[posts.length - 1].id}`)} scroll={false}
-            style={{ alignSelf: "center", padding: "9px 18px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", color: "var(--ink)", font: "600 13px/1 var(--sans)", textDecoration: "none" }}>
-            Show more
-          </Link>
-        )}
+        {hasMore && <AutoMore href={qs({ n: String(pageSize + 20) }, false)} />}
       </section>
       </div>
     </div>

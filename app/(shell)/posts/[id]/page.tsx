@@ -17,6 +17,7 @@ import MentionTextarea from "@/components/social/MentionTextarea";
 import Reactions from "@/components/social/Reactions";
 import ReportButton from "@/components/ReportButton";
 import PostActions from "@/components/feed/PostActions";
+import { MarkSeen } from "@/components/feed/FeedClient";
 import PostMenu from "@/components/feed/PostMenu";
 import { postExtras } from "@/lib/posts/extras";
 import { canReadPost } from "@/lib/social/groups";
@@ -85,6 +86,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
 
   return (
     <div style={{ padding: "20px 16px 64px" }}>
+    <MarkSeen id={post.id} />
     <div style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
       {/* Where it lives, as a way back: the feed and its topic, or the group. */}
       <div style={{ font: "400 13px/1.5 var(--sans)", color: "var(--mute)" }}>
@@ -137,7 +139,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
             <div style={{ padding: "10px 14px", borderTop: "1px solid var(--rule)", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
               <Reactions kind="post" targetId={post.id} summary={reactions.get(post.id)} own={isMine} path={`/posts/${post.id}`} />
               <span style={{ flex: 1 }} />
-              <PostActions postId={post.id} inGroup={!!post.group_id} own={isMine} reposted={extra?.reposted ?? false} />
+              <PostActions postId={post.id} inGroup={!!post.group_id} own={isMine} reposted={extra?.reposted ?? false} replyInPlace={false} />
               {(extra?.reposts ?? 0) > 0 && <span style={{ flexBasis: "100%", font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}>{extra!.reposts} {extra!.reposts === 1 ? "repost" : "reposts"}</span>}
             </div>
             {isMine && (

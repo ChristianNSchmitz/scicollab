@@ -4,7 +4,7 @@ import PersonLink from "@/components/social/PersonLink";
 import Reactions from "@/components/social/Reactions";
 import RichText from "@/components/RichText";
 import { PostImages, LinkCard } from "@/components/feed/PostMedia";
-import PostActions from "@/components/feed/PostActions";
+import PostActions, { InlineReply } from "@/components/feed/PostActions";
 import PostMenu from "@/components/feed/PostMenu";
 import ExpandText from "@/components/feed/ExpandText";
 import FollowButton from "@/components/social/FollowButton";
@@ -14,6 +14,7 @@ import { roomById, intentById, feedbackLabel } from "@/lib/taxonomy";
 import { fileSize } from "@/lib/social/group-files";
 import type { Person } from "@/lib/people";
 import { REACTIONS, type ReactionSummary } from "@/lib/social/reactions";
+import { doiOf } from "@/lib/posts/doi";
 import type { PostExtra } from "@/lib/posts/extras";
 
 /** The kind of post as one short word in the meta line. */
@@ -36,7 +37,15 @@ const INTENT_COLOUR: Record<string, string> = {
  * that says why the post is in your feed; `follows` says whether you follow
  * the author, so the card can offer to.
  */
-export default function PostCard({ p, author, card, images, reaction, replies, me, path, topicHref, group, extra, follows, contextPerson, topReply, moreReplies }: {
+/** Whether a request for help still waits for it. */
+export type HelpStatus = "open" | "answered" | "helped";
+const STATUS: Record<HelpStatus, { text: string; colour: string; hint: string }> = {
+  open: { text: "Open", colour: "var(--signal-ink)", hint: "No reply yet" },
+  answered: { text: "Answered", colour: "var(--mute)", hint: "Has replies" },
+  helped: { text: "Helped", colour: "var(--ok)", hint: "A reply helped the author" },
+};
+
+export default function PostCard({ p, author, card, images, reaction, replies, me, path, topicHref, group, extra, follows, contextPerson, topReply, moreReplies, status, isNew }: {
   p: any; author?: Person; card?: { id: string; code: string; title: string; outcome: any } | null;
   images?: string[]; reaction?: ReactionSummary; replies: number; me: string; path: string;
   topicHref: (room: string) => string; group?: { id: string; name: string } | null;
@@ -45,6 +54,10 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
   topReply?: { body: string; created_at: string; helped?: boolean; author?: Person } | null;
   /** The other replies, oldest first: opened in place with "View all". */
   moreReplies?: { body: string; created_at: string; helped?: boolean; author?: Person }[];
+  /** For questions and feedback requests: open, answered or helped. */
+  status?: HelpStatus;
+  /** Posted since your last visit. */
+  isNew?: boolean;
 }) {
   const spec = intentById(p.intent);
   const own = p.author_id === me;
@@ -52,7 +65,7 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
   const reposts = extra?.reposts ?? 0;
   const ctx = extra?.context;
   return (
-    <article id={`post-${p.id}`} style={{ scrollMarginTop: 72 }}>
+    <article id={`post-${p.id}`} data-post={p.id} data-author={p.author_id} data-room={p.group_id ? undefined : p.room_id} className="sc-post" style={{ scrollMarginTop: 72 }}>
       <Panel>
         {ctx && (
           <div style={{ padding: "10px 14px 0", font: "400 12.5px/1.55 var(--sans)", color: "var(--mute)" }}>
@@ -71,6 +84,8 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
             {place(author?.institution) && <> · <span title={author?.institution}>{place(author?.institution)}</span></>}
             {" · "}{timeAgo(p.created_at)}
             {" · "}<span title={spec?.label} style={{ fontWeight: 600, color: INTENT_COLOUR[p.intent] ?? "var(--mute)" }}>{KIND[p.intent] ?? spec?.label ?? p.intent}</span>
+            {status && <span title={STATUS[status].hint} style={{ marginLeft: 6, padding: "1px 8px", borderRadius: 999, border: `1px solid ${STATUS[status].colour}`, color: STATUS[status].colour, font: "600 11px/1.5 var(--sans)", whiteSpace: "nowrap" }}>{STATUS[status].text}</span>}
+            {isNew && <span className="sc-new-dot" title="New since your last visit" style={{ marginLeft: 6, display: "inline-block", width: 7, height: 7, borderRadius: 999, background: "var(--signal)", verticalAlign: "middle" }} />}
             {" · "}
             {p.group_id
               ? (group ? <Link href={`/groups/${group.id}`} style={{ color: "var(--ink)" }}>{group.name}</Link> : "group")
@@ -78,14 +93,14 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
               : <Link href={topicHref(p.room_id)} title={roomById(p.room_id)?.name} style={{ color: "var(--ink)" }}>#{p.room_id}</Link>}
           </div>
           {!own && follows === false && <FollowButton personId={p.author_id} following={false} inline />}
-          <PostMenu postId={p.id} saved={extra?.saved ?? false} own={own} />
+          <PostMenu postId={p.id} saved={extra?.saved ?? false} own={own} authorId={p.author_id} authorName={author?.display_name} room={p.group_id ? null : p.room_id} />
         </div>
 
         <div style={{ padding: "8px 14px 14px" }}>
-          <Link href={`/posts/${p.id}`} style={{ font: mono(15, 700, 1.45), color: "var(--ink)", textDecoration: "none" }}>{p.title}</Link>
+          <Link href={`/posts/${p.id}`} className="sc-post-title" style={{ font: mono(15, 700, 1.45), color: "var(--ink)", textDecoration: "none" }}>{p.title}</Link>
           {p.body && <div style={{ marginTop: 8 }}><ExpandText long={p.body.length > 280 || p.body.split("\n").length > 4}><RichText body={p.body} style={{ font: "400 13.5px/1.75 var(--sans)" }} /></ExpandText></div>}
           <PostImages urls={images} title={p.title} />
-          <LinkCard preview={p.link_preview} />
+          <LinkCard preview={p.link_preview} doi={p.link_preview ? null : doiOf(p.body)} />
 
           {card && (
             <Link href={`/methods/${card.id}`} className="sc-inset" style={{ display: "block", marginTop: 11, border: "1px solid var(--rule)", borderRadius: 12, background: "var(--bg)", padding: "10px 12px", color: "var(--ink)" }}>
@@ -147,7 +162,6 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
                 </summary>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 4 }}>
                   {moreReplies!.map((r, i) => <ReplyBubble key={i} r={r} />)}
-                  <Link href={`/posts/${p.id}#replies`} style={{ font: "600 12.5px/1.5 var(--sans)", color: "var(--link)", textDecoration: "none", padding: "2px" }}>Write a reply →</Link>
                 </div>
               </details>
             )}
@@ -165,6 +179,7 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
           <Reactions kind="post" targetId={p.id} summary={reaction} own={own} path={path} />
           <PostActions postId={p.id} inGroup={!!p.group_id || p.audience === "people"} own={own} reposted={extra?.reposted ?? false} />
         </div>
+        <InlineReply postId={p.id} />
       </Panel>
     </article>
   );

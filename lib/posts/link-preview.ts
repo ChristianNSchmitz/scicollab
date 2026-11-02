@@ -14,7 +14,7 @@ import { isIP } from "node:net";
  * tell a third-party server who is reading the feed.
  */
 
-export type LinkPreview = { url: string; title: string; description: string; site: string };
+export type LinkPreview = { url: string; title: string; description: string; site: string; kind?: "paper" };
 
 const URL_RE = /\bhttps?:\/\/[^\s<>"'()]+[^\s<>"'().,;:!?]/i;
 const MAX_BYTES = 512 * 1024;

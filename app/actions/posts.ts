@@ -12,6 +12,7 @@ import { recordMentions } from "@/lib/social/mentions";
 import { roleIn, isCurrent, canReadPost } from "@/lib/social/groups";
 import { storeImages, removeImages, MAX_IMAGES, IMAGE_TYPES, MAX_IMAGE_BYTES } from "@/lib/posts/images";
 import { firstUrl, linkPreview } from "@/lib/posts/link-preview";
+import { doiOf, paperPreview } from "@/lib/posts/doi";
 
 export type PostState = { error: string } | null;
 
@@ -137,9 +138,12 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
   // the image paths include its id, and a slow website must not lose the post.
   const body = text(form, "body", 10000);
   const url = firstUrl(body);
+  // A DOI, also as a doi.org link, becomes a paper card instead of a page preview.
+  const doi = doiOf(body);
   const [stored, preview] = await Promise.all([
     images.length ? storeImages(supabase, user.id, data.id, images) : Promise.resolve([]),
-    url ? linkPreview(url).catch(() => null) : Promise.resolve(null),
+    doi && (!url || /doi\.org\//i.test(url)) ? paperPreview(doi)
+      : url ? linkPreview(url).catch(() => null) : Promise.resolve(null),
   ]);
   if (stored.length || preview) {
     await supabase.from("posts").update({ ...(stored.length ? { images: stored } : {}), ...(preview ? { link_preview: preview } : {}) }).eq("id", data.id);
@@ -183,6 +187,23 @@ export async function replyToPost(postId: string, form: FormData) {
   revalidatePath(`/posts/${postId}`);
   revalidatePath("/home");
   redirect(`/posts/${postId}#replies`);
+}
+
+/** The same reply, written in the feed: it answers with a result instead of
+ *  leaving the feed for the post page. */
+export async function replyInline(postId: string, body: string): Promise<{ ok: true } | { error: string }> {
+  const { supabase, user } = await requireUser();
+  const text_ = String(body ?? "").trim().slice(0, 5000);
+  if (!text_) return { error: "Write something first." };
+  if (await overLimit(supabase, "reply", user.id)) return { error: "That is a lot of replies in a short time. Try again in a few minutes." };
+  const { data: post } = isRowId(postId) ? await supabase.from("posts").select("id, group_id, audience, author_id").eq("id", postId).maybeSingle() : { data: null };
+  if (!post || !(await canReadPost(supabase, post, user.id))) return { error: "That post is gone." };
+  const { data: reply, error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body: text_, anchor: "", helped_at: null, created_at: new Date().toISOString() }).select("id").single();
+  if (error || !reply) return { error: "The reply did not go through." };
+  await recordMentions(supabase, user.id, "reply", reply.id, `/posts/${postId}#replies`, text_);
+  revalidatePath(`/posts/${postId}`);
+  revalidatePath("/home");
+  return { ok: true };
 }
 
 export async function deleteReply(replyId: string, postId: string) {

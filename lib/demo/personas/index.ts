@@ -686,7 +686,7 @@ function build() {
     group_projects: group_projects.filter((g) => projectIds.has(g.project_id)),
     group_methods: group_methods.filter((g) => cardIds.has(g.card_id)),
     group_messages, group_notes, group_tasks, group_files, group_visits: [],
-    post_reposts: post_reposts.filter((r) => postIds.has(r.post_id)), saved_posts: [],
+    post_reposts: post_reposts.filter((r) => postIds.has(r.post_id)), saved_posts: [], feed_mutes: [],
     post_audience, post_files, call_interest, chat_rooms, chat_room_members, chat_room_messages,
     group_datasets: group_datasets.filter((g) => dataIds.has(g.dataset_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
