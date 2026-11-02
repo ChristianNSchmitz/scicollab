@@ -217,12 +217,12 @@ export default async function Home({
   const repliedPosts = [...new Set(freshReplies.map((r: any) => r.post_id))];
   const topics = myRooms.map((r) => ({ id: r, name: roomById(r)?.name ?? r }));
 
-  const qs = (patch: Record<string, string | undefined>) => {
+  const qs = (patch: Record<string, string | undefined>, anchor = true) => {
     const sp = new URLSearchParams();
     const merged = { feed: feedMode === "topics" ? undefined : feedMode, intent, room, ...patch };
     Object.entries(merged).forEach(([k, v]) => { if (v) sp.set(k, v); });
     const s = sp.toString();
-    return s ? `/home?${s}#feed` : "/home#feed";
+    return (s ? `/home?${s}` : "/home") + (anchor ? "#feed" : "");
   };
 
   const pill = (active: boolean): React.CSSProperties => ({
@@ -272,7 +272,7 @@ export default async function Home({
 
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <SegTabs label="Which posts" style={{ flex: "1 1 360px", margin: 0 }} items={([["topics", "Topic groups"], ["groups", `My groups · ${myGroupIds.length}`], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => ({
-          href: k === "topics" ? "/home#feed" : `/home?feed=${k}#feed`, label, active: feedMode === k,
+          href: k === "topics" ? "/home" : `/home?feed=${k}`, label, active: feedMode === k,
         }))} />
         {/* Kind and topic behind one button: two rows of chips were too much on every visit. */}
         <details className="sc-feed-filter" style={{ position: "relative" }} open={false}>
@@ -283,23 +283,23 @@ export default async function Home({
             <div>
               <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Kind</div>
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                <Link href={qs({ intent: undefined })} style={pill(!intent)}>All</Link>
-                {INTENTS.map((i) => <Link key={i.id} href={qs({ intent: i.id })} style={pill(intent === i.id)} title={i.label}>{SHORT[i.id] ?? i.label}</Link>)}
+                <Link href={qs({ intent: undefined }, false)} scroll={false} style={pill(!intent)}>All</Link>
+                {INTENTS.map((i) => <Link key={i.id} href={qs({ intent: i.id }, false)} scroll={false} style={pill(intent === i.id)} title={i.label}>{SHORT[i.id] ?? i.label}</Link>)}
               </div>
             </div>
             {feedMode === "topics" && (
               <div>
                 <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Topic</div>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  <Link href={qs({ room: undefined })} style={pill(!room)}>All yours</Link>
-                  {myRooms.map((r) => <Link key={r} href={qs({ room: r })} style={pill(room === r)}>#{r}</Link>)}
+                  <Link href={qs({ room: undefined }, false)} scroll={false} style={pill(!room)}>All yours</Link>
+                  {myRooms.map((r) => <Link key={r} href={qs({ room: r }, false)} scroll={false} style={pill(room === r)}>#{r}</Link>)}
                   <Link href="/groups#topics" style={{ font: "500 12px/26px var(--sans)", color: "var(--link)", whiteSpace: "nowrap" }}>more →</Link>
                 </div>
               </div>
             )}
           </div>
         </details>
-        {(intent || room) && <Link href={qs({ intent: undefined, room: undefined })} aria-label="Clear the filter" style={{ font: "500 12.5px/1 var(--sans)", color: "var(--mute)" }}>clear</Link>}
+        {(intent || room) && <Link href={qs({ intent: undefined, room: undefined }, false)} scroll={false} aria-label="Clear the filter" style={{ font: "500 12.5px/1 var(--sans)", color: "var(--mute)" }}>clear</Link>}
         </div>
 
         {feedMode === "following" && followed.length === 0 && (

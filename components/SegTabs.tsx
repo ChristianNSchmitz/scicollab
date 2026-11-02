@@ -17,7 +17,8 @@ const badgeStyle = (quiet?: boolean) => ({
 
 function Tab({ item }: { item: SegItem }) {
   return (
-    <Link href={item.href} aria-current={item.active ? "page" : undefined}
+    // scroll={false}: switching tabs keeps the page where it is, it does not jump to the top or an anchor.
+    <Link href={item.href} scroll={false} aria-current={item.active ? "page" : undefined}
       style={{ flex: "1 0 auto", textAlign: "center", padding: "9px 12px", font: mono(12, 600), textDecoration: "none", whiteSpace: "nowrap",
         color: item.active ? "var(--ink)" : "var(--mute)", borderBottom: item.active ? "2px solid var(--signal)" : "1px solid var(--rule)" }}>
       {item.label}
@@ -48,7 +49,7 @@ export default function SegTabs({ label, items, more, after, style }: {
             background: "color-mix(in srgb, var(--bg) 94%, transparent)", boxShadow: "0 12px 36px rgba(31, 38, 60, .16)",
             WebkitBackdropFilter: "blur(27px) saturate(218%)", backdropFilter: "blur(27px) saturate(218%)" }}>
             {more.map((m) => (
-              <Link key={m.href} href={m.href} className="sc-menu-item" aria-current={m.active ? "page" : undefined}
+              <Link key={m.href} href={m.href} scroll={false} className="sc-menu-item" aria-current={m.active ? "page" : undefined}
                 style={{ display: "flex", justifyContent: "space-between", padding: "9px 10px", borderRadius: 10, font: "500 13px/1.2 var(--sans)", textDecoration: "none",
                   color: "var(--ink)", background: m.active ? "color-mix(in srgb, var(--ink) 7%, transparent)" : undefined }}>
                 {m.label}{(m.badge ?? 0) > 0 && <span style={badgeStyle(m.quiet)}>{m.badge}</span>}
