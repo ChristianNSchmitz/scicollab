@@ -559,7 +559,8 @@ html[data-look="glass"][data-theme="dark"] .sc-seg-ind { background: rgba(255, 2
 html[data-look="glass"] .sc-seg-anim[data-ind="on"] > a[aria-current="page"],
 html[data-look="glass"] .sc-seg-anim[data-ind="on"] > details > summary[aria-current="page"] { background: transparent !important; box-shadow: none !important; }
 .sc-seg-anim > a { transition: color .2s ease; }
-.sc-tabpane { animation: sc-tab-in .26s ease both; }
+/* min-height: a short tab must not make the page shorter than the screen, or the browser pulls the view up. */
+.sc-tabpane { animation: sc-tab-in .26s ease both; min-height: 100vh; }
 /* After a tab click the new content slides in from the side of the tab chosen. */
 html[data-slide="right"] .sc-tabpane { animation: sc-slide-from-right .34s cubic-bezier(.3, .7, .2, 1) both; }
 html[data-slide="left"] .sc-tabpane { animation: sc-slide-from-left .34s cubic-bezier(.3, .7, .2, 1) both; }
