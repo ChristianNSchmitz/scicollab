@@ -201,6 +201,13 @@ export default async function Home({
     const r = rs.find((x: any) => x.helped_at) ?? rs[0];
     return r ? { body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) } : null;
   };
+  // The rest of the thread, oldest first, to open in place.
+  const moreReplies = (id: string) => {
+    const rs = (feedReplies ?? []).filter((r: any) => r.post_id === id);
+    const top = rs.find((x: any) => x.helped_at) ?? rs[0];
+    return rs.filter((r: any) => r !== top).reverse().slice(0, 30)
+      .map((r: any) => ({ body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) }));
+  };
   const filterLabel = [intent ? SHORT[intent] ?? intent : "All kinds", feedMode === "topics" ? (room ? `#${room}` : "all topics") : null].filter(Boolean).join(" · ");
   const requestPosts = [...new Set((atts ?? []).map((a: any) => a.post_id))];
   const week = 7 * 864e5;
@@ -339,7 +346,7 @@ export default async function Home({
             reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
             topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null}
             extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")}
-            topReply={topReply(p.id)} />
+            topReply={topReply(p.id)} moreReplies={moreReplies(p.id)} />
         ))}
         </div>
         {hasMore && (

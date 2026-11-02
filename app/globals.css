@@ -560,7 +560,21 @@ html[data-look="glass"] .sc-seg-anim[data-ind="on"] > a[aria-current="page"],
 html[data-look="glass"] .sc-seg-anim[data-ind="on"] > details > summary[aria-current="page"] { background: transparent !important; box-shadow: none !important; }
 .sc-seg-anim > a { transition: color .2s ease; }
 .sc-tabpane { animation: sc-tab-in .26s ease both; }
+/* After a tab click the new content slides in from the side of the tab chosen. */
+html[data-slide="right"] .sc-tabpane { animation: sc-slide-from-right .34s cubic-bezier(.3, .7, .2, 1) both; }
+html[data-slide="left"] .sc-tabpane { animation: sc-slide-from-left .34s cubic-bezier(.3, .7, .2, 1) both; }
+@keyframes sc-slide-from-right { from { opacity: 0; transform: translateX(48px); } to { opacity: 1; transform: none; } }
+@keyframes sc-slide-from-left { from { opacity: 0; transform: translateX(-48px); } to { opacity: 1; transform: none; } }
 @keyframes sc-tab-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .sc-seg-ind, .sc-seg-anim > a { transition: none; } .sc-tabpane { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .sc-seg-ind, .sc-seg-anim > a { transition: none; } .sc-tabpane, html[data-slide] .sc-tabpane { animation: none; } }
 /* Dark mode: the bar itself a little lighter, for contrast. */
 html[data-look="glass"][data-theme="dark"] .sc-seg { background: rgba(160, 160, 175, .20); }
+
+/* "View all replies" in the feed: the summary says what a click will do. */
+.sc-more-replies > summary::-webkit-details-marker { display: none; }
+.sc-more-replies .sc-when-open, .sc-more-replies[open] .sc-when-closed { display: none; }
+.sc-more-replies[open] .sc-when-open { display: inline; }
+.sc-more-replies[open] > div { animation: sc-tab-in .22s ease both; }
+
+/* Sliding tab content must not make the page scroll sideways for a moment. */
+main { overflow-x: clip; }
