@@ -9,7 +9,7 @@ export default function Loading() {
     animation: "scpulse 1.6s ease-in-out infinite",
   });
   return (
-    <div role="status" aria-live="polite" style={{ padding: "24px 16px 64px" }}>
+    <div role="status" aria-live="polite" data-nav-skeleton style={{ padding: "24px 16px 64px" }}>
       <span style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>Loading…</span>
       <div style={{ maxWidth: "var(--content-max)", margin: "0 auto" }}>
         <div style={{ paddingBottom: 14, marginBottom: 20, borderBottom: "1px solid var(--ink)", display: "flex", flexDirection: "column", gap: 10 }}>

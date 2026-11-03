@@ -337,6 +337,31 @@ html[data-look="glass"] .sc-dock {
   border-radius: 18px 18px 0 0; overflow: hidden;
 }
 
+/* The loading screen for a page change that takes more than a second (components/NavLoader.tsx).
+   It covers the page area only and lets clicks through. */
+.sc-navload {
+  pointer-events: none; display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  -webkit-backdrop-filter: blur(8px) saturate(140%); backdrop-filter: blur(8px) saturate(140%);
+  animation: sc-navload-in .25s ease-out both;
+}
+.sc-navload-card { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.sc-navload-ring {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--ink) 14%, transparent); border-top-color: var(--signal-fill);
+  animation: sc-navload-spin .8s linear infinite;
+}
+.sc-navload-text { font: 600 13px/1 var(--sans); color: var(--mute); }
+.sc-navload-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; overflow: hidden; }
+.sc-navload-bar::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 34%; background: var(--signal-fill); animation: sc-navload-slide 1.15s ease-in-out infinite; }
+@keyframes sc-navload-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sc-navload-spin { to { transform: rotate(360deg); } }
+@keyframes sc-navload-slide { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+@media (prefers-reduced-motion: reduce) {
+  .sc-navload, .sc-navload-ring, .sc-navload-bar::after { animation: none; }
+  .sc-navload-bar::after { width: 100%; opacity: .5; }
+}
+
 /* A data set, code file or notebook entry reached from a link inside its project: show which one. */
 .sc-linkable:target { background: color-mix(in srgb, var(--signal) 9%, transparent); }
 

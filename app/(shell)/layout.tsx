@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import DropdownCloser from "@/components/DropdownCloser";
+import NavLoader from "@/components/NavLoader";
 import { redirect } from "next/navigation";
 import ChatDock from "@/components/ChatDock";
 import DemoNotice from "@/components/DemoNotice";
@@ -44,6 +46,8 @@ export default async function ShellLayout({ children }: { children: React.ReactN
           Messages in the tab bar is the way in. */}
       <ChatDock />
       <DropdownCloser />
+      {/* useSearchParams needs a boundary; the loader renders nothing until a change is slow. */}
+      <Suspense fallback={null}><NavLoader /></Suspense>
     </div>
   );
 }
