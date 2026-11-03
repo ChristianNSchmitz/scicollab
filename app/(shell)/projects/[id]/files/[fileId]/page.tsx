@@ -5,6 +5,8 @@ import { isConfigured } from "@/lib/mode";
 import { loadProjectFile, readDemoFile, parseCsv } from "@/lib/demo/files";
 import { Page, Panel, PanelHead, Empty, Visibility, btnPrimary, mono } from "@/components/ui";
 import { bytes, timeAgo } from "@/lib/format";
+import { linkIndex, entryLabel } from "@/lib/data-links";
+import LinkChips from "@/components/projects/LinkChips";
 
 export const dynamic = "force-dynamic";
 
@@ -76,6 +78,30 @@ export default async function ProjectFile({
     );
   }
 
+  // How this file connects to the rest of its project. Only the project's people see it
+  // (supabase/22): a dataset can be opened by more people than its notebook can.
+  const { data: member } = await supabase.from("project_members").select("user_id").eq("project_id", project.id).eq("user_id", user.id).maybeSingle();
+  const onProject = !!member || project.owner_id === user.id;
+  let connections: { label: string; chips: { href: string; text: string }[] }[] = [];
+  if (onProject) {
+    const [{ data: rows }, { data: codeRows }, { data: entryRows }, { data: dataRows }] = await Promise.all([
+      supabase.from("dataset_links").select("dataset_id, code_file_id, entry_id").eq("project_id", project.id),
+      supabase.from("code_files").select("id, path").eq("project_id", project.id),
+      supabase.from("eln_entries").select("id, body, created_at").eq("project_id", project.id),
+      supabase.from("datasets").select("id, title").eq("project_id", project.id),
+    ]);
+    const idx = linkIndex(rows ?? []);
+    const at = (tabName: string, hash: string) => `/projects/${project.id}?tab=${tabName}#${hash}`;
+    const pick = <T extends { id: string }>(list: T[] | null, ids: string[]) => ids.map((i) => (list ?? []).find((x) => x.id === i)).filter(Boolean) as T[];
+    connections = kind === "dataset"
+      ? [
+          { label: "PRODUCED WITH", chips: pick(codeRows, idx.codeOf(item.id)).sort((a, b) => a.path.localeCompare(b.path)).map((f) => ({ href: at("code", `code-${f.id}`), text: f.path })) },
+          { label: "RESULTS NOTED IN", chips: pick(entryRows, idx.entriesOf(item.id)).sort((a, b) => String(a.created_at).localeCompare(String(b.created_at))).map((e) => ({ href: at("notebook", `entry-${e.id}`), text: entryLabel(e.body, e.created_at) })) },
+        ]
+      : [{ label: "USED FOR", chips: pick(dataRows, idx.datasetsOfCode(item.id)).map((d) => ({ href: at("data", `data-${d.id}`), text: d.title })) }];
+  }
+  const connected = connections.some((c) => c.chips.length > 0);
+
   const raw = item.file_path ? await readDemoFile(item.file_path) : null;
   const actions = raw ? (
     <a href={download} style={{ ...btnPrimary, textDecoration: "none" }} download>Download</a>
@@ -85,6 +111,20 @@ export default async function ProjectFile({
     <Page title={title} lede={kind === "dataset" ? item.summary || undefined : item.last_change ? `Last change: ${item.last_change}` : undefined} actions={actions}>
       {head}
       <div style={{ font: mono(10.5), color: "var(--ok)", marginBottom: 12 }}>{access.why.toUpperCase()}</div>
+      {onProject && (
+        <Panel style={{ marginBottom: 12 }}>
+          <PanelHead>{kind === "dataset" ? "Code and notebook behind this data" : "Data this code was used for"}</PanelHead>
+          <div style={{ padding: "4px 14px 14px" }}>
+            {connected ? connections.map((c) => <LinkChips key={c.label} label={c.label} chips={c.chips} />) : (
+              <p style={{ font: "400 13px/1.7 var(--sans)", color: "var(--mute)", margin: "10px 0 0" }}>
+                Not linked to anything yet. {kind === "dataset"
+                  ? <>The owner can tie it to the code that produced it and the notebook entries about it from the <Link href={back} style={{ color: "var(--link)" }}>Data tab</Link>.</>
+                  : <>Link it from a dataset on the <Link href={`/projects/${project.id}?tab=data`} style={{ color: "var(--link)" }}>Data tab</Link>.</>}
+              </p>
+            )}
+          </div>
+        </Panel>
+      )}
       {!raw ? (
         <Panel>
           <Empty>

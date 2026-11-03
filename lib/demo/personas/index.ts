@@ -728,6 +728,19 @@ function build() {
   const attachmentIds = has(attachments);
   const onCard = <T extends { card_id: string }>(rows: T[]) => rows.filter((r) => cardIds.has(r.card_id));
 
+  /* Alex's passage-curve project, as a worked example of linking data, code and notebook.
+     The headline dataset is produced by a chain of three scripts (gate, fit, plot) and its
+     numbers are discussed in both notebook entries; the others show the simpler cases. Links
+     are optional everywhere else. Only the people on the project see them. */
+  const entryIds = has(eln_entries);
+  const dataset_links = ([
+    ["d-1", "cf-2", null], ["d-1", "cf-3", null], ["d-1", "cf-4", null], ["d-1", null, "e-1"], ["d-1", null, "e-2"],
+    ["d-2", "cf-2", null], ["d-2", null, "e-1"],
+    ["d-3", "cf-3", null], ["d-3", null, "e-2"],
+  ] as [string, string | null, string | null][])
+    .filter(([d, c, e]) => dataIds.has(d) && (!c || codeIds.has(c)) && (!e || entryIds.has(e)))
+    .map(([d, c, e], i) => ({ id: `dl-${i + 1}`, project_id: "p-1", dataset_id: d, code_file_id: c, entry_id: e, created_by: "u-rivera", created_at: at("2026-10-14 16:30") }));
+
   return {
     profiles,
     method_cards,
@@ -757,6 +770,7 @@ function build() {
     datasets,
     code_files,
     code_commits,
+    dataset_links,
     post_attachments: attachments,
     access_requests: access_requests.filter((r) => attachmentIds.has(r.attachment_id)),
     reproductions: onCard(reproductions),

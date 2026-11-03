@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import {
   addEntry, depositDataset, joinProject, leaveProject, addProjectMember, removeProjectMember,
-  updateProject, setProjectRole, linkProjectMethod, unlinkProjectMethod, addMilestone, toggleMilestone, deleteMilestone,
+  updateProject, setProjectRole, linkProjectMethod, unlinkProjectMethod, addMilestone, toggleMilestone, deleteMilestone, setDatasetLinks,
 } from "@/app/actions/projects";
 import { PROJECT_STATUSES, PROJECT_ROLES } from "@/lib/projects";
 import SegTabs from "@/components/SegTabs";
@@ -12,6 +12,9 @@ import Repositories from "@/components/code/Repositories";
 import { repoLinks } from "@/lib/repos";
 import { Page, Panel, PanelHead, Empty, Tag, Visibility, Outcome, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
 import { timeAgo, bytes } from "@/lib/format";
+import { linkIndex, entryLabel, canEditLinks } from "@/lib/data-links";
+import LinkChips from "@/components/projects/LinkChips";
+import LinkEditor from "@/components/projects/LinkEditor";
 import Avatar from "@/components/Avatar";
 import RichText from "@/components/RichText";
 
@@ -45,17 +48,17 @@ export default async function Project({
   params, searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ tab?: string; saved?: string; error?: string; repo?: string }>;
+  searchParams: Promise<{ tab?: string; saved?: string; error?: string; repo?: string; linked?: string }>;
 }) {
   const { id } = await params;
-  const { tab, saved, error, repo } = await searchParams;
+  const { tab, saved, error, repo, linked: linksSaved } = await searchParams;
   const active: Tab = TABS.some((t) => t.id === tab) ? (tab as Tab) : "overview";
 
   const supabase = await createClient();
   const { data: p } = await supabase.from("projects").select("*").eq("id", id).maybeSingle();
   if (!p) notFound();
 
-  const [{ data: entries }, { data: members }, { data: datasets }, { data: files }, { data: commits }, { data: linked }, { data: milestones }] =
+  const [{ data: entries }, { data: members }, { data: datasets }, { data: files }, { data: commits }, { data: linked }, { data: milestones }, { data: linkRows }] =
     await Promise.all([
       supabase.from("eln_entries").select("*").eq("project_id", id).order("created_at", { ascending: false }),
       supabase.from("project_members").select("user_id, role").eq("project_id", id),
@@ -64,6 +67,7 @@ export default async function Project({
       supabase.from("code_commits").select("*").eq("project_id", id).order("created_at", { ascending: false }).limit(10),
       supabase.from("project_methods").select("card_id, added_by, added_at").eq("project_id", id).order("added_at", { ascending: false }),
       supabase.from("project_milestones").select("*").eq("project_id", id),
+      supabase.from("dataset_links").select("dataset_id, code_file_id, entry_id").eq("project_id", id),
     ]);
   const repos = await repoLinks(supabase, { projectId: id });
 
@@ -103,6 +107,22 @@ export default async function Project({
     : [{ data: [] as any[] }, { data: [] as any[] }];
   const canJoin = !isMember && (myShareGroups?.length ?? 0) > 0;
   const isOwner = p.owner_id === user?.id;
+
+  // Links between data, code and notebook: only the people on the project see them. The
+  // database policy says so too (supabase/22); the demo store has none, so it is stated here.
+  const onProject = isMember || isOwner;
+  const dataLinks = linkIndex(onProject ? (linkRows ?? []) : []);
+  const fileById = new Map((files ?? []).map((f: any) => [f.id, f]));
+  const entryById = new Map((entries ?? []).map((e: any) => [e.id, e]));
+  const dataById = new Map((datasets ?? []).map((d: any) => [d.id, d]));
+  const tabHref = (t: string, hash: string) => `/projects/${p.id}?tab=${t}#${hash}`;
+  const codeChips = (datasetId: string) => dataLinks.codeOf(datasetId).map((i) => fileById.get(i)).filter(Boolean)
+    .sort((a: any, b: any) => a.path.localeCompare(b.path)).map((f: any) => ({ href: tabHref("code", `code-${f.id}`), text: f.path }));
+  const noteChips = (datasetId: string) => dataLinks.entriesOf(datasetId).map((i) => entryById.get(i)).filter(Boolean)
+    .sort((a: any, b: any) => String(a.created_at).localeCompare(String(b.created_at)))
+    .map((e: any) => ({ href: tabHref("notebook", `entry-${e.id}`), text: entryLabel(e.body, e.created_at) }));
+  const dataChips = (ids: string[]) => ids.map((i) => dataById.get(i)).filter(Boolean)
+    .map((d: any) => ({ href: tabHref("data", `data-${d.id}`), text: d.title }));
   const { data: everyone } = isOwner
     ? await supabase.from("profiles").select("id, display_name, institution").order("display_name").limit(1000)
     : { data: [] as any[] };
@@ -133,6 +153,7 @@ export default async function Project({
           Join to read and add to its notebook, data and code.
         </p>
       )}
+      {linksSaved === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Links saved.</p>}
       {saved === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Project saved.</p>}
       {error === "title" && <p role="alert" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--err)", borderRadius: 12, color: "var(--err)", background: "var(--surface)" }}>A project needs a title.</p>}
       {/* The ways into a project, as one segmented control: no rule runs under it. */}
@@ -291,11 +312,12 @@ export default async function Project({
               {(entries?.length ?? 0) === 0 ? (
                 <Empty>No entries yet.</Empty>
               ) : entries!.map((e: any) => (
-                <div key={e.id} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
+                <div key={e.id} id={`entry-${e.id}`} className="sc-linkable" style={{ padding: 14, borderBottom: "1px solid var(--rule)", scrollMarginTop: 72 }}>
                   <div style={{ font: mono(10.5), color: "var(--mute)", marginBottom: 7 }}>
                     {new Date(e.created_at).toISOString().slice(0, 16).replace("T", " ")} · signed · {timeAgo(e.created_at)}
                   </div>
                   <RichText body={e.body} />
+                  <LinkChips label="ABOUT THE DATA" chips={dataChips(dataLinks.datasetsOfEntry(e.id))} />
                 </div>
               ))}
             </Panel>
@@ -307,7 +329,7 @@ export default async function Project({
               {(datasets?.length ?? 0) === 0 ? (
                 <Empty>No datasets deposited in this project yet.</Empty>
               ) : datasets!.map((d: any) => (
-                <div key={d.id} style={{ padding: 14, borderBottom: "1px solid var(--rule)" }}>
+                <div key={d.id} id={`data-${d.id}`} className="sc-linkable" style={{ padding: 14, borderBottom: "1px solid var(--rule)", scrollMarginTop: 72 }}>
                   <div style={{ display: "flex", gap: 9, alignItems: "center", flexWrap: "wrap", marginBottom: 6 }}>
                     <Visibility value={d.visibility} />
                     {d.doi && <span style={{ font: mono(10.5), color: "var(--mute)" }}>{d.doi}</span>}
@@ -324,6 +346,16 @@ export default async function Project({
                     <p style={{ font: "400 13.5px/1.7 var(--sans)", color: "var(--mute)", margin: "6px 0 0" }}>{d.summary}</p>
                   )}
                   <div style={{ marginTop: 9 }}><Tag>{d.licence}</Tag></div>
+                  <LinkChips label="PRODUCED WITH" chips={codeChips(d.id)} />
+                  <LinkChips label="RESULTS NOTED IN" chips={noteChips(d.id)} />
+                  {user && canEditLinks({ userId: user.id, projectOwnerId: p.owner_id, datasetOwnerId: d.owner_id, onProject }) && (
+                    <LinkEditor
+                      action={setDatasetLinks.bind(null, p.id, d.id)}
+                      code={(files ?? []).map((f: any) => ({ id: f.id, text: f.path }))}
+                      entries={(entries ?? []).map((e: any) => ({ id: e.id, text: entryLabel(e.body, e.created_at) }))}
+                      linkedCode={dataLinks.codeOf(d.id)} linkedEntries={dataLinks.entriesOf(d.id)}
+                    />
+                  )}
                 </div>
               ))}
               {isMember && <details style={{ padding: 14 }}>
@@ -374,7 +406,7 @@ export default async function Project({
                 {(files?.length ?? 0) === 0 ? (
                   <Empty>No code in this project yet.</Empty>
                 ) : files!.map((f: any) => (
-                  <div key={f.id} style={{ display: "flex", gap: 12, alignItems: "baseline", padding: "10px 14px", borderBottom: "1px solid var(--rule)" }}>
+                  <div key={f.id} id={`code-${f.id}`} className="sc-linkable" style={{ display: "flex", gap: 12, alignItems: "baseline", flexWrap: "wrap", padding: "10px 14px", borderBottom: "1px solid var(--rule)", scrollMarginTop: 72 }}>
                     <span style={{ font: mono(12.5, 500), minWidth: 0, flex: 1, wordBreak: "break-all" }}>
                       {f.file_path ? (
                         <Link href={`/projects/${p.id}/files/${f.id}`} style={{ color: "var(--ink)" }}>{f.path}</Link>
@@ -383,6 +415,7 @@ export default async function Project({
                     {f.language && <Tag>{f.language}</Tag>}
                     <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{bytes(f.size_bytes)}</span>
                     <span style={{ font: mono(10.5), color: "var(--mute)", whiteSpace: "nowrap" }}>{timeAgo(f.updated_at)}</span>
+                    <div style={{ flexBasis: "100%" }}><LinkChips label="USED FOR" chips={dataChips(dataLinks.datasetsOfCode(f.id))} /></div>
                   </div>
                 ))}
               </Panel>

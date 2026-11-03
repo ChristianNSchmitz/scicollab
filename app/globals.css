@@ -337,6 +337,9 @@ html[data-look="glass"] .sc-dock {
   border-radius: 18px 18px 0 0; overflow: hidden;
 }
 
+/* A data set, code file or notebook entry reached from a link inside its project: show which one. */
+.sc-linkable:target { background: color-mix(in srgb, var(--signal) 9%, transparent); }
+
 /* The closed chat bar is the one thing meant to be seen from across the page, so
    it takes the accent fill instead of the glass, which made it blend in. The open
    conversation panel stays glass. Both looks; the more specific selectors beat

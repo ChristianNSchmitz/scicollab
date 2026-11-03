@@ -65,7 +65,7 @@ const KEYS = {
 /** Insert order: everything a row points at is written before it. */
 const ORDER = [
   "method_cards", "questions", "answers", "projects", "project_members", "eln_entries", "datasets",
-  "code_files", "code_commits", "groups", "group_members", "group_projects", "group_methods",
+  "code_files", "code_commits", "dataset_links", "groups", "group_members", "group_projects", "group_methods",
   "group_messages", "group_notes", "group_tasks", "group_datasets", "group_files", "posts",
   "post_replies", "post_attachments", "access_requests", "post_reposts", "post_audience", "post_files",
   "call_interest", "chat_rooms", "chat_room_members", "chat_room_messages", "messages", "user_rooms",
@@ -81,7 +81,7 @@ const REFS = {
   requester_id: USERS, reporter_id: USERS, resolved_by: USERS, mentioned_id: USERS,
   method_card_id: "method_cards", card_id: "method_cards", forked_from: "method_cards", method_id: "method_cards",
   post_id: "posts", project_id: "projects", group_id: "groups", question_id: "questions",
-  dataset_id: "datasets", code_file_id: "code_files", attachment_id: "post_attachments",
+  dataset_id: "datasets", code_file_id: "code_files", entry_id: "eln_entries", attachment_id: "post_attachments",
 };
 /** Files kept inline in the demo, and where the live site keeps them. */
 const BUCKETS = { post_files: ["post-files", "post_id"], group_files: ["group-files", "group_id"] };

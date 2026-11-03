@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { isRowId } from "@/lib/query";
 import { PROJECT_STATUSES, PROJECT_ROLES } from "@/lib/projects";
+import { planLinks, canEditLinks } from "@/lib/data-links";
 
 
 export async function createProject(form: FormData) {
@@ -225,4 +226,54 @@ export async function deleteMilestone(projectId: string, milestoneId: string) {
   if (m.created_by !== user.id && !owner) throw new Error("Only whoever added it, or the owner, can delete it.");
   await supabase.from("project_milestones").delete().eq("id", milestoneId);
   revalidatePath(`/projects/${projectId}`);
+}
+
+/**
+ * Which code files and notebook entries a dataset is linked to (supabase/22).
+ * Optional, and replaced as a whole from the form: what is ticked is linked,
+ * what is not ticked is not. Only the dataset's owner or the project's owner
+ * may do it, and only for things in this same project. The database policy
+ * says the same; this gives the clear message, and holds in the demo store,
+ * which has no policies.
+ */
+export async function setDatasetLinks(projectId: string, datasetId: string, form: FormData) {
+  const { supabase, user } = await requireUser();
+  if (!isRowId(projectId) || !isRowId(datasetId)) throw new Error("That dataset was not found.");
+
+  const [{ data: project }, { data: dataset }, { data: member }] = await Promise.all([
+    supabase.from("projects").select("id, owner_id").eq("id", projectId).maybeSingle(),
+    supabase.from("datasets").select("id, owner_id, project_id").eq("id", datasetId).maybeSingle(),
+    supabase.from("project_members").select("user_id").eq("project_id", projectId).eq("user_id", user.id).maybeSingle(),
+  ]);
+  if (!project || !dataset || dataset.project_id !== projectId) throw new Error("That dataset is not in this project.");
+  const onProject = !!member || project.owner_id === user.id;
+  if (!onProject) throw new Error("Only people on this project can link its data.");
+  if (!canEditLinks({ userId: user.id, projectOwnerId: project.owner_id, datasetOwnerId: dataset.owner_id, onProject })) {
+    throw new Error("Only the dataset's owner or the project's owner can change its links.");
+  }
+
+  const [{ data: files }, { data: entries }, { data: current }] = await Promise.all([
+    supabase.from("code_files").select("id").eq("project_id", projectId),
+    supabase.from("eln_entries").select("id").eq("project_id", projectId),
+    supabase.from("dataset_links").select("code_file_id, entry_id").eq("dataset_id", datasetId),
+  ]);
+  const ids = (rows: any[] | null, col: string) => new Set((rows ?? []).map((r) => r[col]).filter(Boolean) as string[]);
+  const ticked = (name: string) => new Set(form.getAll(name).map(String).filter(isRowId));
+
+  const code = planLinks(ids(current, "code_file_id"), ticked("code"), ids(files, "id"));
+  const notes = planLinks(ids(current, "entry_id"), ticked("entry"), ids(entries, "id"));
+
+  const add = [
+    ...code.add.map((id) => ({ project_id: projectId, dataset_id: datasetId, code_file_id: id, created_by: user.id })),
+    ...notes.add.map((id) => ({ project_id: projectId, dataset_id: datasetId, entry_id: id, created_by: user.id })),
+  ];
+  if (add.length) {
+    const { error } = await supabase.from("dataset_links").insert(add);
+    if (error) throw new Error(error.message);
+  }
+  if (code.remove.length) await supabase.from("dataset_links").delete().eq("dataset_id", datasetId).in("code_file_id", code.remove);
+  if (notes.remove.length) await supabase.from("dataset_links").delete().eq("dataset_id", datasetId).in("entry_id", notes.remove);
+
+  revalidatePath(`/projects/${projectId}`);
+  redirect(`/projects/${projectId}?tab=data&linked=1#data-${datasetId}`);
 }
