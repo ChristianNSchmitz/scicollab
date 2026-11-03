@@ -155,6 +155,8 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
    left side by side, on its top once the pair stacks. */
 .sc-pair-second { border-left: 1px solid var(--rule); }
 .sc-tabbar, .sc-sheet, .sc-top-create-short, .sc-demo-short, .sc-land-mobile { display: none; }
+/* Account button: the first name on desktop. The initial letter is only the phone fallback (see the 760px block). */
+.sc-top-initial { display: none !important; }
 
 /* Site footer inside the app: keep its last row clear of the docked chat (38px tall). */
 .sc-footer-dock { padding-bottom: 54px !important; }
@@ -185,6 +187,8 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
   .sc-top-search { flex: 0 0 auto !important; width: 38px; height: 38px !important; justify-content: center; border: 0 !important; background: transparent !important; padding: 0 !important; margin: 0 !important; }
   .sc-top-search-text, .sc-top-kbd, .sc-top-theme, .sc-top-create-long { display: none !important; }
   .sc-top-create-short { display: inline; }
+  .sc-top-name, .sc-top-dot { display: none !important; }
+  .sc-top-initial { display: flex !important; }
   .sc-top-create { padding: 9px 12px !important; }
 
   .sc-demo-long { display: none; }

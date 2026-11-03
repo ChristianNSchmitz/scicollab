@@ -12,6 +12,20 @@ export function initialsOf(name: string): string {
   return letter ? letter.toUpperCase() : "·";
 }
 
+/**
+ * The first name, as people are addressed: academic titles, "(example)" notes
+ * and a leading initial ("S. Bhatt" is Bhatt) are skipped, an email's local
+ * part stands in when there is no name, and a very long name is cut so it
+ * cannot push the top bar around.
+ */
+export function firstNameOf(name: string): string {
+  const clean = (name || "").replace(/\([^)]*\)/g, " ").trim();
+  const base = clean.includes("@") ? clean.split("@")[0].replace(/[._-]+/g, " ") : clean;
+  const words = base.split(/\s+/).filter((w) => w && !TITLES.test(w));
+  const word = words.find((w) => !/^\p{L}\.?$/u.test(w)) ?? words[0] ?? "";
+  return word.length > 16 ? word.slice(0, 15) + "…" : word;
+}
+
 /** "1 fork", "3 forks" — a count with its noun in the right number. */
 export function plural(n: number, one: string, many = `${one}s`): string {
   return `${n} ${n === 1 ? one : many}`;

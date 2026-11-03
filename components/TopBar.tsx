@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
+import { parseAvatar } from "@/lib/avatar";
+import { firstNameOf } from "@/lib/format";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { signOut as serverSignOut } from "@/app/actions/demo-auth";
@@ -18,6 +20,8 @@ let badge: { at: number; n: number } | null = null;
 export default function TopBar({ name = "", avatarUrl = null, userId = "", moderator = false }: { name?: string; avatarUrl?: string | null; userId?: string; moderator?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
+  const first = firstNameOf(name);
+  const hasPicture = parseAvatar(avatarUrl).kind !== "initial";
   const [unseen, setUnseen] = useState(0);
 
   // The badge is fetched after the page is shown, so it never slows a page
@@ -158,15 +162,19 @@ export default function TopBar({ name = "", avatarUrl = null, userId = "", moder
       </Link>
 
       <div style={{ position: "relative" }}>
+        {/* The first name, not a letter: "A" meant little. A picture or icon still shows beside it.
+            On a phone there is no room for the name, so the avatar (the initial, if no picture) comes back. */}
         <button
           onClick={() => setMenu((v) => !v)}
-          style={{ ...ghost, display: "flex", alignItems: "center", gap: 8, padding: 4, border: "1px solid var(--rule)" }}
-          aria-label="Account"
+          style={{ ...ghost, display: "flex", alignItems: "center", gap: 8, padding: "4px 8px 4px 4px", minHeight: 36, border: "1px solid var(--rule)" }}
+          aria-label={first ? `Account, ${first}` : "Account"}
         >
-          <span style={{ position: "relative", display: "flex" }}>
+          {!hasPicture && <span className="sc-top-dot" aria-hidden="true" style={{ width: 8, height: 8, marginLeft: 8, borderRadius: "50%", background: "var(--ok)", flex: "none" }} />}
+          <span className={hasPicture ? undefined : "sc-top-initial"} style={{ position: "relative", display: "flex" }}>
             <Avatar name={name} url={avatarUrl} size={26} />
             <span style={{ position: "absolute", right: -3, bottom: -3, width: 9, height: 9, background: "var(--ok)", border: "1px solid var(--surface)", borderRadius: "50%" }} />
           </span>
+          {first && <span className="sc-top-name" style={{ font: "600 13px/1 var(--sans)", color: "var(--ink)", maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{first}</span>}
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" strokeWidth="1.8" strokeLinecap="round">
             <path d="m6 9 6 6 6-6" />
           </svg>
