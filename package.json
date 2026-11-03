@@ -6,7 +6,8 @@
     "dev": "next dev -p 4400",
     "build": "next build",
     "start": "next start -p 4400",
-    "test": "node --experimental-strip-types --no-warnings --test tests/*.test.ts"
+    "test": "node --experimental-strip-types --no-warnings --test tests/*.test.ts && npm run test:access",
+    "test:access": "node --experimental-transform-types --no-warnings --import ./tests/access/register.mjs --test tests/access/*.test.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

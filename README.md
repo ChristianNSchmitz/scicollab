@@ -90,6 +90,30 @@ a real person. Sign in as any of them:
 - `scripts/seed-demo.mjs` (the live database's demo accounts) is unchanged
   and still uses the older board names.
 
+### The demo community on the deployed site
+
+The deployed site reads the real database, not the demo store, so the
+community above does not appear there by itself. `scripts/seed-personas.mjs`
+loads it into the real database:
+
+```bash
+node scripts/seed-personas.mjs                  # dry run: shows what it would write
+node scripts/seed-personas.mjs --yes            # writes it
+node scripts/seed-personas.mjs --remove --yes   # undo: deletes the 12 accounts and all they own
+```
+
+- Needs `SCICOLLAB_PERSONA_PASSWORD` in `.env.local`: one password, 12
+  characters or more, for all 12 accounts. The passwords in the table above
+  are public and are not used.
+- Running it again adds only what is new; rows and profiles already there,
+  including edits made on the site, are left as they are.
+- Because the site is public: every profile says it is invented and is
+  visible to signed-in members only, and none gets the e-mail digest. The
+  moderation role, the two invented reports and the GitHub, GitLab and
+  Nextcloud links are not loaded. Data and code files show as records but
+  cannot be opened.
+- `--remove` also deletes the replies real members wrote on these posts.
+
 ### Database
 
 Run these in the Supabase SQL editor, in this order. Each is safe to re-run.
