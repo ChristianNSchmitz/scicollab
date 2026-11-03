@@ -141,6 +141,30 @@ export const CASES: Case[] = [
   // ── rooms
   { name: "rooms.joinRoom", owner: "u-lena", stranger: "allow", run: async () => (await A("rooms")).joinRoom("western-blot") },
 
+  // ── researcher round: events, jobs and funding, CV, papers (supabase/21)
+  { name: "events.createEvent (in a group, members only)", owner: "u-rivera", stranger: "deny", run: async () => (await A("events")).createEvent("gr-ebro", form({ title: "Journal club", kind: "journal_club", starts: "2026-12-01T10:00", tz: "Europe/Berlin" })) },
+  { name: "events.createEvent (open event)", owner: "u-lena", stranger: "allow", run: async () => (await A("events")).createEvent(null, form({ title: "Open meeting", kind: "conference", starts: "2026-12-01T10:00", tz: "Europe/Berlin" })) },
+  { name: "events.deleteEvent (someone else's event)", owner: "u-okafor", stranger: "deny", run: async () => (await A("events")).deleteEvent("ev-3") },
+  { name: "events.rsvp (group event, members only)", owner: "u-rivera", stranger: "deny", run: async () => (await A("events")).rsvp("ev-1", "maybe") },
+  { name: "events.rsvp (open event)", owner: "u-lena", stranger: "allow", run: async () => (await A("events")).rsvp("ev-4", "going") },
+  { name: "opportunities.postOpportunity", owner: "u-lena", stranger: "allow", run: async () => (await A("opportunities")).postOpportunity(form({ kind: "job", title: "Postdoc", deadline: "2027-01-31" })) },
+  { name: "opportunities.setOpportunityStatus (only who posted it)", owner: "u-ingrid", stranger: "deny", run: async () => (await A("opportunities")).setOpportunityStatus("op-1", "closed") },
+  { name: "opportunities.deleteOpportunity (only who posted it)", owner: "u-ingrid", stranger: "deny", run: async () => (await A("opportunities")).deleteOpportunity("op-1") },
+  { name: "opportunities.saveOpportunity", owner: "u-lena", stranger: "allow", run: async () => (await A("opportunities")).saveOpportunity("op-1", true) },
+  { name: "cv.addCvEntry", owner: "u-lena", stranger: "allow", run: async () => (await A("cv")).addCvEntry(form({ kind: "position", title: "Postdoc", start_on: "2024-01" })) },
+  { name: "cv.updateCvEntry (someone else's CV)", owner: "u-rivera", stranger: "deny", run: async () => (await A("cv")).updateCvEntry("cv-1", form({ kind: "position", title: "Edited" })) },
+  { name: "cv.deleteCvEntry (someone else's CV)", owner: "u-rivera", stranger: "deny", run: async () => (await A("cv")).deleteCvEntry("cv-1") },
+  { name: "papers.requestFullText", owner: "u-lena", stranger: "allow", run: async () => (await A("papers")).requestFullText("W-example-0", form({ message: "please" })) },
+  { name: "papers.decideFullText (authors only)", owner: "u-rivera", stranger: "deny", run: async () => (await A("papers")).decideFullText("W-example-0", "prq-1", "declined") },
+  { name: "papers.uploadPaperFile (authors only)", owner: "u-rivera", stranger: "deny", run: async () => (await A("papers")).uploadPaperFile("W-example-0", form({ file: new File(["%PDF-1.4"], "paper.pdf", { type: "application/pdf" }), access: "private", version: "accepted" })) },
+  { name: "papers.commentOnPaper", owner: "u-lena", stranger: "allow", run: async () => (await A("papers")).commentOnPaper("W-example-0", form({ body: "Nice" })) },
+  { name: "papers.deletePaperComment (someone else's comment)", owner: "u-rivera", stranger: "deny", run: async () => (await A("papers")).deletePaperComment("W-example-0", "pcm-1") },
+  { name: "papers.followPaper", owner: "u-lena", stranger: "allow", run: async () => (await A("papers")).followPaper("W-example-0", true) },
+  { name: "feed.mute", owner: "u-lena", stranger: "allow", run: async () => (await A("feed")).mute("person", "u-jonas") },
+  { name: "nextcloud.unlinkNextcloud (group members' folder)", owner: "u-rivera", stranger: "deny", run: async () => (await A("nextcloud")).unlinkNextcloud("group", "gr-ebro", "nc-1") },
+  { name: "nextcloud.linkNextcloud (members only)", owner: "", stranger: "deny", run: async () => (await A("nextcloud")).linkNextcloud("group", "gr-ebro", form({ url: "https://cloud.example.org/s/AbC123xyz" })) },
+  { name: "repos.unlinkRepo (a method card's repository)", owner: "u-rivera", stranger: "deny", run: async () => { const r = first("repo_links", (x) => x.method_id); return (await A("repos")).unlinkRepo("method", r.method_id, r.id); } },
+
   // ── reads that must not leak to a stranger
   { name: "attachments.pendingFor (only the owner sees requests)", owner: "u-rivera", stranger: "deny", read: true, run: async () => (await A("attachments")).pendingFor("p-2") },
 ];

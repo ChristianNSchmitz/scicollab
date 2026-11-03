@@ -19,6 +19,8 @@ const PUBLIC = [
   "/api/showcase",
   // Public profiles and method cards, for visitors (app/open/*).
   "/open",
+  // The installable app: its manifest and the service worker for push messages.
+  "/manifest.webmanifest", "/sw.js",
 ];
 
 /* A signed-out visitor following a link to a profile or a method card gets

@@ -265,6 +265,52 @@ const ncLinksSeed = (cardId: string | undefined) => [
     ]) }] : []),
 ];
 
+// ── researcher round (supabase/21): CV, jobs and funding, events, a paper request ──
+const cvRows: [string, string, string, string, string, string, string, string][] = [
+  ["u-rivera", "position", "Postdoctoral researcher", "Ebro Institute of Cell Biology (EICB), cell engineering", "Zaragoza", "2023-02", "", "Transfection efficiency across passage number; method cards for every run, including the failures."],
+  ["u-rivera", "position", "Research assistant", "Instituto de Salud Carlos III", "Madrid", "2021-10", "2023-01", ""],
+  ["u-rivera", "education", "PhD in Molecular Biology", "Universidad Autónoma de Madrid", "Madrid", "2017-10", "2021-09", "Thesis: lipid-based delivery in primary fibroblasts."],
+  ["u-rivera", "education", "MSc Biotechnology", "Universidad de Zaragoza", "Zaragoza", "2015-09", "2017-07", ""],
+  ["u-rivera", "grant", "Juan de la Cierva postdoctoral fellowship (example)", "Agencia Estatal de Investigación, principal investigator", "", "2023-02", "2025-01", ""],
+  ["u-rivera", "award", "Best poster, Spanish Society for Cell Biology meeting (example)", "SEBC", "", "2022", "", ""],
+  ["u-rivera", "supervision", "2 master's theses, 1 doctoral student (co-supervision)", "EICB", "", "2023", "", ""],
+  ["u-rivera", "teaching", "Practical course: transfection and flow cytometry", "Universidad de Zaragoza", "", "2024", "", "Two weeks a year, 12 students."],
+  ["u-rivera", "service", "Reviewer for Scientific Reports and PLOS ONE", "", "", "2022", "", ""],
+  ["u-rivera", "break", "Parental leave", "", "", "2024-03", "2024-08", ""],
+  ["u-lindqvist", "position", "Research engineer", "Ebro Institute of Cell Biology (EICB)", "Zaragoza", "2024-01", "", ""],
+  ["u-lindqvist", "education", "MSc Engineering Physics", "Lund University", "Lund", "2018", "2020", ""],
+];
+const cv_entries = cvRows.map(([user_id, kind, title, org, place, start_on, end_on, detail], i) => ({ id: `cv-${i + 1}`, user_id, kind, title, org, place, start_on, end_on, detail, created_at: at("2026-10-01 10:00") }));
+
+/** A date some weeks after the story's end, as YYYY-MM-DD. */
+const ahead = (days: number) => new Date(Date.parse(at("2026-11-01 12:00")) + days * 864e5).toISOString().slice(0, 10);
+const oppRows: [string, string, string, string, string, string, number, string[], string[], string, string][] = [
+  ["job", "Postdoc in single-cell transfection screens (100%, 3 years)", "Lund Stem Cell Center", "Lund", "Postdoc", "u-ingrid", 24, ["transfection", "flow cytometry", "CRISPR"], ["transfection"], "Join a small team running arrayed transfection screens in iPSC-derived cells. You bring wet-lab experience with delivery methods; we bring automation and a 4-laser sorter. Example posting.", "https://example.org/jobs/lund-postdoc"],
+  ["job", "PhD position: incubator microclimate and reproducibility", "Ebro Institute of Cell Biology (EICB)", "Zaragoza", "PhD", "u-rivera", 40, ["cell culture", "automation", "R"], ["cell-culture"], "Four years, fully funded. How much of our 'biological variability' is the incubator? Sensors, logs, and a lot of control runs. Example posting.", ""],
+  ["job", "Research technician, flow cytometry core (part time possible)", "Ebro Institute of Cell Biology (EICB)", "Zaragoza", "Technician", "u-lindqvist", 18, ["flow cytometry"], [], "Run the core's two analysers, train users, keep the QC log. Example posting.", ""],
+  ["job", "Data scientist for imaging pipelines", "Institute of Molecular Medicine", "Lisbon", "Data scientist", "u-okafor", 30, ["Python", "image analysis"], ["stats-and-code"], "Build and maintain the institute's image analysis pipelines; Python, napari, cluster. Example posting.", ""],
+  ["funding", "Walter Benjamin Programme (research stay or position)", "Deutsche Forschungsgemeinschaft (DFG)", "Germany", "Fellowship", "u-ingrid", 0, [], ["grants-careers"], "Funds early-career researchers for their own project at an institution of their choice. Rolling submission; check dfg.de for the current rules.", "https://www.dfg.de"],
+  ["funding", "Marie Skłodowska-Curie Postdoctoral Fellowships", "European Commission", "Europe", "Fellowship", "u-okafor", 45, [], ["grants-careers"], "Two-year European fellowships with a host of your choice. The date here is an example; check the Funding and Tenders portal.", "https://marie-sklodowska-curie-actions.ec.europa.eu"],
+  ["funding", "Small grants for replication studies (example)", "Example Foundation for Open Science", "International", "Project grant", "u-rivera", 21, ["cell culture"], ["negative-results"], "Up to 20 000 for repeating a published protocol and publishing the outcome either way. Invented for the demo.", ""],
+];
+const opportunities = oppRows.map(([kind, title, org, place, level, posted_by, days, techniques, topics, body, url], i) => ({
+  id: `op-${i + 1}`, kind, title, org, place, level, url, deadline: days ? ahead(days) : null, topics, techniques, body, posted_by, status: "open", created_at: at(`2026-10-${String(20 + (i % 9)).padStart(2, "0")} 09:00`),
+}));
+
+/** A time some days after the story's end, at a given UTC hour. */
+const soon = (days: number, hour: number) => new Date(Date.parse(at("2026-11-01 00:00")) + days * 864e5 + hour * 36e5).toISOString();
+const events = [
+  { id: "ev-1", group_id: "gr-ebro", kind: "journal_club", title: "Journal club: passage effects on lipofection", starts_at: soon(3, 14), ends_at: soon(3, 15), location: "Seminar room 2, EICB", online_url: "", body: "Maja presents. Read the Methods and Fig. 3 beforehand.", created_by: "u-lindqvist", created_at: at("2026-10-29 10:00") },
+  { id: "ev-2", group_id: "gr-ebro", kind: "lab_meeting", title: "Lab meeting: incubator logs, first full week", starts_at: soon(7, 9), ends_at: soon(7, 10), location: "Bench office", online_url: "https://meet.example.org/ebro-lab", body: "", created_by: "u-rivera", created_at: at("2026-10-30 08:00") },
+  { id: "ev-3", group_id: "gr-transfection", kind: "journal_club", title: "Transfection journal club: one failed run each", starts_at: soon(10, 16), ends_at: soon(10, 17), location: "", online_url: "https://meet.example.org/transfection-jc", body: "Bring one run that did not work and what you changed.", created_by: "u-okafor", created_at: at("2026-10-28 18:00") },
+  { id: "ev-4", group_id: null, kind: "conference", title: "European Cell Culture Meeting (example)", starts_at: soon(40, 8), ends_at: soon(42, 16), location: "Lisbon", online_url: "", body: "Three days on reproducibility in cell culture. Abstract deadline in two weeks. Invented for the demo.", created_by: "u-okafor", created_at: at("2026-10-25 12:00") },
+  { id: "ev-5", group_id: "gr-ebro", kind: "talk", title: "Seminar: what the CO₂ sensor did not tell us", starts_at: soon(-10, 15), ends_at: soon(-10, 16), location: "Lecture hall B", online_url: "", body: "", created_by: "u-rivera", created_at: at("2026-10-15 09:00") },
+];
+const event_attendees = [
+  ["ev-1", "u-lindqvist", "going"], ["ev-1", "u-rivera", "going"], ["ev-2", "u-rivera", "going"], ["ev-3", "u-okafor", "going"], ["ev-3", "u-bhatt", "maybe"],
+  ["ev-4", "u-okafor", "going"], ["ev-5", "u-rivera", "going"], ["ev-5", "u-lindqvist", "going"],
+].map(([event_id, user_id, status]) => ({ event_id, user_id, status, created_at: at("2026-10-30 12:00") }));
+
 const repo_links = [
   { id: "rl-1", project_id: "p-1", group_id: null, provider: "github", host: "github.com", path: "scicollab-demo/passage-series",
     url: "https://github.com/scicollab-demo/passage-series", added_by: "u-rivera", added_at: at("2026-09-26 10:00"), cached_at: at("2026-10-31 08:00"),
@@ -727,6 +773,11 @@ function build() {
     group_datasets: group_datasets.filter((g) => dataIds.has(g.dataset_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [],
+    cv_entries, opportunities, opportunity_saves: [{ opportunity_id: "op-5", user_id: "u-rivera", created_at: at("2026-10-31 09:00") }],
+    events, event_attendees, push_subscriptions: [],
+    paper_files: [], paper_follows: [],
+    paper_requests: [{ id: "prq-1", work_id: "W-example-0", requester_id: "u-bhatt", message: "I am comparing delivery protocols for my thesis chapter; the supplementary table would help a lot.", status: "open", decided_by: null, created_at: at("2026-10-30 17:00"), decided_at: null }],
+    paper_comments: [{ id: "pcm-1", work_id: "W-example-0", author_id: "u-lindqvist", body: "We saw the same drop above passage 18 with a different reagent. Happy to share the gating template.", created_at: at("2026-10-29 11:00") }],
     group_requests: [], group_invites: [],
     moderators: [{ user_id: "u-mod", added_at: at("2026-07-20 09:50") }],
     reports: [

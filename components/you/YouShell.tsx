@@ -6,16 +6,17 @@ import Avatar from "@/components/Avatar";
 import SegTabs from "@/components/SegTabs";
 
 /**
- * Your own space, one header for four tabs: Activity, Record, Publications
- * and Saved. Who you are and what you are open to sit in the header, so the
+ * Your own space, one header for five tabs: Activity, Record, Publications,
+ * CV and Saved. Who you are and what you are open to sit in the header, so the
  * tabs below only hold their own content.
  */
-export type YouTab = "activity" | "record" | "publications" | "saved";
+export type YouTab = "activity" | "record" | "publications" | "cv" | "saved";
 
 const TABS: { id: YouTab; label: string; href: string }[] = [
   { id: "activity", label: "Activity", href: "/you" },
   { id: "record", label: "Record", href: "/you/record" },
   { id: "publications", label: "Publications", href: "/you/publications" },
+  { id: "cv", label: "CV", href: "/you/cv" },
   { id: "saved", label: "Saved", href: "/you/saved" },
 ];
 

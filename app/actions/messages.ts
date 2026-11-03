@@ -1,5 +1,6 @@
 "use server";
 
+import { notifyNow, nameOf, quote, snippet } from "@/lib/notify";
 import { overLimit } from "@/lib/ratelimit";
 import { isRowId } from "@/lib/query";
 import { revalidatePath } from "next/cache";
@@ -70,6 +71,7 @@ export async function sendMessage(recipientId: string, form: FormData) {
     sender_id: user.id, recipient_id: recipientId, body, method_card_id: card,
   });
   if (error) throw new Error(error.message);
+  await notifyNow([recipientId], { kind: "message", title: `Message from ${await nameOf(supabase, user.id)}`, body: snippet(body, 140), href: `/messages/${user.id}` }, user.id);
   revalidatePath(`/messages/${recipientId}`);
   revalidatePath("/messages");
 }

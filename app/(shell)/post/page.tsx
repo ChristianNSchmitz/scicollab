@@ -7,8 +7,8 @@ export const dynamic = "force-dynamic";
 
 export default async function Compose({
   searchParams,
-}: { searchParams: Promise<{ room?: string; intent?: string; card?: string }> }) {
-  const { room, intent, card } = await searchParams;
+}: { searchParams: Promise<{ room?: string; intent?: string; card?: string; title?: string }> }) {
+  const { room, intent, card, title } = await searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -45,7 +45,7 @@ export default async function Compose({
         rooms={rooms}
         cards={(cards ?? []) as { id: string; code: string; title: string }[]}
         defaultRoom={room}
-        defaultIntent={intent}
+        defaultIntent={intent} defaultTitle={String(title ?? "").slice(0, 200)}
         defaultCard={card}
         attachables={attachables}
       />

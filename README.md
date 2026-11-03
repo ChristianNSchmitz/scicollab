@@ -190,6 +190,21 @@ written to the server log instead of being sent, and the page says so.
 | `CONTACT_FROM_EMAIL` | A sender address verified in Brevo. |
 | `CONTACT_TO_EMAIL` | Who receives the messages (comma-separated). Kept out of the code on purpose. |
 
+**Notifications right away.** Replies, answers, mentions, data and
+full-text requests, interest in a call, direct messages and new group events
+reach the person at once: by e-mail (the Brevo variables above) and as a push
+message on devices where they switched it on in Settings. Each member can turn
+either off. Push needs a key pair:
+
+| Variable | Needed for |
+|---|---|
+| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` | Push messages. Make a pair with `node scripts/vapid-keys.mjs`. |
+| `VAPID_SUBJECT` | Optional contact for the push services (`mailto:…`). |
+| `SCICOLLAB_NEXTCLOUD_HOSTS` | Optional. Which Nextcloud servers may be linked (comma-separated). |
+
+On an iPhone, push works once SciCollab is added to the home screen
+(iOS 16.4 or later); the site has a web app manifest for that.
+
 ## OpenAlex sync
 
 Each researcher's author record and publications are synced from OpenAlex by

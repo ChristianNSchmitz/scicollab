@@ -21,10 +21,10 @@ type Attachable = { value: string; project: string; label: string; kind: string 
  * courtesy layer, not the guard.
  */
 export default function PostComposer({
-  rooms, cards, attachables = [], defaultRoom, defaultIntent, defaultCard,
+  rooms, cards, attachables = [], defaultRoom, defaultIntent, defaultCard, defaultTitle,
 }: {
   rooms: Room[]; cards: Card[]; attachables?: Attachable[];
-  defaultRoom?: string; defaultIntent?: string; defaultCard?: string;
+  defaultRoom?: string; defaultIntent?: string; defaultCard?: string; defaultTitle?: string;
 }) {
   const [attach, setAttach] = useState("");
   const [state, action, pending] = useActionState<PostState, FormData>(createPost, null);
@@ -98,7 +98,7 @@ export default function PostComposer({
           </div>
           <div>
             <label style={fieldLabel} htmlFor="title">Title</label>
-            <input id="title" name="title" required style={field} placeholder="Say the finding or the problem in one line" />
+            <input id="title" name="title" required defaultValue={defaultTitle} style={field} placeholder="Say the finding or the problem in one line" />
           </div>
           <div>
             <label style={fieldLabel} htmlFor="body">Detail</label>

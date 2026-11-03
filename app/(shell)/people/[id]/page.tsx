@@ -11,6 +11,8 @@ import FollowButton from "@/components/social/FollowButton";
 import ReportButton from "@/components/ReportButton";
 import ActivityList from "@/components/social/ActivityList";
 import Avatar from "@/components/Avatar";
+import CvPanel from "@/components/cv/CvPanel";
+import type { CvEntry } from "@/lib/cv";
 import { Panel, PanelHead, Tag, btn, mono } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -32,9 +34,11 @@ export default async function Person({ params }: { params: Promise<{ id: string 
   if (!d) notFound();
   const isMe = id === me;
 
-  const [co, activity] = await Promise.all([
+  const [co, activity, { data: cv }, { data: cvp }] = await Promise.all([
     coauthorsOf(supabase, id, d.person.orcid, myFollows),
     activityOf(supabase, [id], { viewer: me, limit: 8 }),
+    supabase.from("cv_entries").select("*").eq("user_id", id),
+    supabase.from("profiles").select("cv_summary").eq("id", id).maybeSingle(),
   ]);
   const coMembers = co.members.filter((m) => m.person.id !== me);
 
@@ -67,6 +71,7 @@ export default async function Person({ params }: { params: Promise<{ id: string 
         )}
         <ProfileBody d={d} side={
           <>
+            <CvPanel entries={(cv ?? []) as CvEntry[]} summary={cvp?.cv_summary ?? ""} isMe={isMe} />
             <Panel>
               <PanelHead>Recent activity</PanelHead>
               <ActivityList items={activity} compact empty="Nothing in the last 60 days." />

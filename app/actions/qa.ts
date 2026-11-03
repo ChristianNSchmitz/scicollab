@@ -1,5 +1,6 @@
 "use server";
 
+import { notifyNow, nameOf, quote, snippet } from "@/lib/notify";
 import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -40,6 +41,8 @@ export async function postAnswer(questionId: string, form: FormData) {
     .single();
   if (error) throw new Error(error.message);
   await recordMentions(supabase, user.id, "answer", data.id, `/questions/${questionId}`, body);
+  const { data: q } = await supabase.from("questions").select("author_id, title").eq("id", questionId).maybeSingle();
+  if (q) await notifyNow([q.author_id], { kind: "answer", title: `${await nameOf(supabase, user.id)} answered ${quote(q.title)}`, body: snippet(body), href: `/questions/${questionId}` }, user.id);
   revalidatePath(`/questions/${questionId}`);
 }
 

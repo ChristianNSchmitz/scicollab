@@ -5,6 +5,9 @@ import { changePassword } from "@/app/actions/password";
 import { cookies } from "next/headers";
 import { RECOVERY_COOKIE } from "@/lib/recovery";
 import { Page, Panel, PanelHead, field, fieldLabel, btn, btnPrimary, mono } from "@/components/ui";
+import PushSetup from "@/components/settings/PushSetup";
+import { saveNotifications } from "@/app/actions/push";
+import { memberMailConfigured } from "@/lib/mail";
 import { deleteAccount } from "@/app/actions/account";
 import AvatarPicker from "@/components/settings/AvatarPicker";
 import OrcidLinker, { type LinkedSummary } from "@/components/settings/OrcidLinker";
@@ -17,6 +20,7 @@ export const dynamic = "force-dynamic";
 const FLASH: Record<string, { text: string; error?: boolean }> = {
   "saved=profile":   { text: "Profile saved." },
   "saved=privacy":   { text: "Privacy settings saved." },
+  "saved=notifications": { text: "Notification settings saved." },
   "saved=password":  { text: "Password changed." },
   "reset=1":         { text: "Choose a new password below. You do not need the old one for the next ten minutes." },
   "error=pwshort":   { text: "The new password needs at least 8 characters.", error: true },
@@ -40,6 +44,7 @@ export default async function Settings({ searchParams }: { searchParams: Promise
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: p } = await supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle();
+  const mailReady = memberMailConfigured();
   const recovering = (await cookies()).get(RECOVERY_COOKIE)?.value === user!.id;
 
   const orcid = normaliseOrcid(p?.orcid);
@@ -138,6 +143,29 @@ export default async function Settings({ searchParams }: { searchParams: Promise
             <PanelHead>ORCID &amp; publications</PanelHead>
             <div style={{ padding: 14 }}>
               <OrcidLinker linked={linked} defaultName={p?.display_name ?? ""} />
+            </div>
+          </Panel>
+        </section>
+
+        <section id="notifications" style={{ scrollMarginTop: 72, marginBottom: 14 }}>
+          <Panel>
+            <PanelHead>Notifications right away</PanelHead>
+            <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 12, font: "400 13.5px/1.7 var(--sans)" }}>
+              <p style={{ margin: 0, color: "var(--mute)" }}>
+                For what needs an answer: a reply to your post, an answer to your question, a request for your data or a paper, a mention, interest in your call, a direct message, a new event in your group.
+              </p>
+              <form action={saveNotifications} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <label style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <input type="checkbox" name="notify_email" defaultChecked={p?.notify_email ?? true} style={{ marginTop: 4 }} />
+                  <span>E-mail me right away{mailReady ? "" : <span style={{ color: "var(--mute)" }}> (e-mail is not set up on this server yet)</span>}</span>
+                </label>
+                <label style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <input type="checkbox" name="notify_push" defaultChecked={p?.notify_push ?? true} style={{ marginTop: 4 }} />
+                  <span>Push messages on the devices where I switch them on</span>
+                </label>
+                <div><button type="submit" style={{ ...btnPrimary, height: 38 }}>Save</button></div>
+              </form>
+              <PushSetup publicKey={process.env.VAPID_PUBLIC_KEY ?? null} />
             </div>
           </Panel>
         </section>

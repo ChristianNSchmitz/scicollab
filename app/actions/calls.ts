@@ -1,5 +1,6 @@
 "use server";
 
+import { notifyNow, nameOf, quote, snippet } from "@/lib/notify";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
@@ -28,7 +29,10 @@ export async function expressInterest(postId: string, form: FormData) {
   const pitch = String(form.get("pitch") ?? "").trim().slice(0, 1000);
   const { data: had } = await supabase.from("call_interest").select("user_id").eq("post_id", postId).eq("user_id", user.id).maybeSingle();
   if (had) await supabase.from("call_interest").update({ pitch }).eq("post_id", postId).eq("user_id", user.id);
-  else await supabase.from("call_interest").insert({ post_id: postId, user_id: user.id, pitch, shortlisted: false });
+  else {
+    await supabase.from("call_interest").insert({ post_id: postId, user_id: user.id, pitch, shortlisted: false });
+    await notifyNow([call.author_id], { kind: "interest", title: `${await nameOf(supabase, user.id)} is interested in your call`, body: snippet(pitch), href: `/posts/${postId}#call` }, user.id);
+  }
   revalidatePath(`/posts/${postId}`);
   revalidatePath("/calls");
   const back = String(form.get("back") ?? "");

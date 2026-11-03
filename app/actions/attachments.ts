@@ -1,5 +1,6 @@
 "use server";
 
+import { notifyNow, nameOf, quote, snippet } from "@/lib/notify";
 import { bytes } from "@/lib/format";
 import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
@@ -102,6 +103,7 @@ export async function requestAccess(attachmentId: string, formData: FormData) {
     message: String(formData.get("message") ?? "").trim(),
     decided_at: null,
   });
+  await notifyNow([att.owner_id], { kind: "request", title: `${await nameOf(supabase, user.id)} asks for access to your data`, body: snippet(String(formData.get("message") ?? "")), href: "/requests" }, user.id);
   revalidatePath(`/posts/${att.post_id}`);
 }
 

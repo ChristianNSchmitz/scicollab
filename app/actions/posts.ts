@@ -1,5 +1,6 @@
 "use server";
 
+import { notifyNow, nameOf, quote, snippet } from "@/lib/notify";
 import { overLimit } from "@/lib/ratelimit";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -119,7 +120,10 @@ export async function createPost(_prev: PostState, form: FormData): Promise<Post
     .single();
   if (error) return { error: error.message };
 
-  if (people.length) await supabase.from("post_audience").insert(people.map((user_id) => ({ post_id: data.id, user_id })));
+  if (people.length) {
+    await supabase.from("post_audience").insert(people.map((user_id) => ({ post_id: data.id, user_id })));
+    await notifyNow(people, { kind: "feedback", title: `${await nameOf(supabase, user.id)} asks you for feedback`, body: quote(title), href: `/posts/${data.id}` }, user.id);
+  }
   if (files.length) await storePostFiles(supabase, user.id, data.id, files);
 
   if (attachment) {
@@ -184,6 +188,7 @@ export async function replyToPost(postId: string, form: FormData) {
   const { data: reply, error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body, anchor, helped_at: null }).select("id").single();
   if (error) throw new Error(error.message);
   await recordMentions(supabase, user.id, "reply", reply.id, `/posts/${postId}#replies`, body);
+  await notifyReply(supabase, post, user.id, body);
   revalidatePath(`/posts/${postId}`);
   revalidatePath("/home");
   redirect(`/posts/${postId}#replies`);
@@ -201,9 +206,16 @@ export async function replyInline(postId: string, body: string): Promise<{ ok: t
   const { data: reply, error } = await supabase.from("post_replies").insert({ post_id: postId, author_id: user.id, body: text_, anchor: "", helped_at: null, created_at: new Date().toISOString() }).select("id").single();
   if (error || !reply) return { error: "The reply did not go through." };
   await recordMentions(supabase, user.id, "reply", reply.id, `/posts/${postId}#replies`, text_);
+  await notifyReply(supabase, post, user.id, text_);
   revalidatePath(`/posts/${postId}`);
   revalidatePath("/home");
   return { ok: true };
+}
+
+/** The post's author hears about a reply right away (lib/notify.ts). */
+async function notifyReply(supabase: any, post: { id: string; author_id: string }, from: string, body: string) {
+  const { data: p } = await supabase.from("posts").select("title").eq("id", post.id).maybeSingle();
+  await notifyNow([post.author_id], { kind: "reply", title: `${await nameOf(supabase, from)} replied to ${quote(p?.title)}`, body: snippet(body), href: `/posts/${post.id}#replies` }, from);
 }
 
 export async function deleteReply(replyId: string, postId: string) {

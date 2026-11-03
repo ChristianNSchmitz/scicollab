@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   title: "SciCollab",
   description:
     "The network for scientists: exchange ideas, discuss your work in groups, and share data and methods, including the runs that didn't work.",
+  icons: { apple: "/apple-touch-icon.png" },
+  appleWebApp: { capable: true, title: "SciCollab", statusBarStyle: "default" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

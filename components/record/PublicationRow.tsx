@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { PubRow } from "@/lib/openalex/store";
 import type { CitationProfile } from "@/lib/record/citations";
 import { lastYearOf, pubLink, thisYearOf } from "@/lib/record/publications";
@@ -18,7 +19,9 @@ export default function PublicationRow({ p, c, isNew, detailed = false }: {
       <div style={{ flex: "1 1 320px", minWidth: 0 }}>
         <div style={{ font: "500 13.5px/1.55 var(--sans)" }}>
           {isNew && <span className="sc-badge" style={{ font: mono(9.5, 700), letterSpacing: ".08em", color: "var(--ok)", border: "1px solid var(--ok)", padding: "1px 5px", marginRight: 7 }}>NEW</span>}
-          {href ? <a href={href} target="_blank" rel="noreferrer" style={{ color: "var(--ink)" }}>{p.title || "Untitled"}</a> : (p.title || "Untitled")}
+          {/* The paper's own page: full text, requests, discussion. The DOI stays one click away. */}
+          <Link href={`/papers/${p.openalex_id}`} style={{ color: "var(--ink)" }}>{p.title || "Untitled"}</Link>
+          {href && <a href={href} target="_blank" rel="noreferrer" aria-label="Open at the publisher" style={{ marginLeft: 6, color: "var(--mute)", textDecoration: "none" }}>↗</a>}
         </div>
         <div style={{ font: mono(10.5), color: "var(--mute)", marginTop: 3 }}>
           {[p.venue, p.year, p.type, detailed && p.doi ? `doi ${p.doi}` : null].filter(Boolean).join(" · ")}

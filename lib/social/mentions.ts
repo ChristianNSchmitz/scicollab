@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { notifyNow, nameOf, snippet } from "@/lib/notify";
 import { peopleById } from "@/lib/people";
 
 type Client = SupabaseClient<any, any, any>;
@@ -48,6 +49,7 @@ export async function recordMentions(
   await supabase.from("mentions").insert(people.map((p) => ({
     author_id: authorId, mentioned_id: p.id, source_kind: kind, source_id: sourceId, href,
   })));
+  await notifyNow(people.map((p) => p.id), { kind: "mention", title: `${await nameOf(supabase, authorId)} mentioned you`, body: snippet(text), href }, authorId);
 }
 
 /** The people mentioned in each of these texts, for rendering their names as links. */
