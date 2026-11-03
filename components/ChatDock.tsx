@@ -136,7 +136,7 @@ export default function ChatDock() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="sc-dock"
+        className="sc-dock sc-dock-closed"
         style={{ ...shell, height: 38, flexDirection: "row", alignItems: "center", gap: 9, padding: "0 12px", cursor: "pointer", textAlign: "left" }}
         aria-label="Open chat"
       >
@@ -144,8 +144,9 @@ export default function ChatDock() {
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
         <span style={{ font: mono(12, 500), flex: 1 }}>Chat</span>
+        {/* Inverted: the closed bar is already the accent colour, so an accent badge would vanish on it. */}
         {unread > 0 && (
-          <span style={{ font: mono(10, 700), background: "var(--signal-fill)", color: "var(--on-signal)", padding: "2px 6px" }}>{unread}</span>
+          <span style={{ font: mono(10, 700), background: "var(--on-signal)", color: "var(--signal-fill)", padding: "2px 6px", borderRadius: 999 }}>{unread}</span>
         )}
       </button>
     );

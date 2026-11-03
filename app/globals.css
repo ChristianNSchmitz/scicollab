@@ -333,6 +333,21 @@ html[data-look="glass"] .sc-dock {
   border-radius: 18px 18px 0 0; overflow: hidden;
 }
 
+/* The closed chat bar is the one thing meant to be seen from across the page, so
+   it takes the accent fill instead of the glass, which made it blend in. The open
+   conversation panel stays glass. Both looks; the more specific selectors beat
+   the glass rules above. */
+.sc-dock.sc-dock-closed,
+html[data-look="glass"] .sc-dock.sc-dock-closed {
+  background: var(--signal-fill) !important; color: var(--on-signal) !important;
+  border-color: var(--signal-fill) !important;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: 0 -2px 16px color-mix(in srgb, var(--signal-fill) 38%, transparent) !important;
+  transition: filter .12s ease, transform .12s ease;
+}
+.sc-dock.sc-dock-closed:hover { filter: brightness(1.1); transform: translateY(-2px); }
+.sc-dock.sc-dock-closed:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
 /* The rail: no panel of its own, a rounded pill for where you are. */
 html[data-look="glass"] .sc-rail {
   background: transparent !important; border-right: 0 !important;
