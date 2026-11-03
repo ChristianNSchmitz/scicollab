@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { isRowId } from "@/lib/query";
+import { safeBack } from "@/lib/calls";
 
 /**
  * Calls for collaborators (supabase/15): say you are interested with a short
@@ -34,16 +35,17 @@ export async function expressInterest(postId: string, form: FormData) {
     await notifyNow([call.author_id], { kind: "interest", title: `${await nameOf(supabase, user.id)} is interested in your call`, body: snippet(pitch), href: `/posts/${postId}#call` }, user.id);
   }
   revalidatePath(`/posts/${postId}`);
-  revalidatePath("/calls");
-  const back = String(form.get("back") ?? "");
-  redirect(back.startsWith("/calls") ? `${back}${back.includes("?") ? "&" : "?"}sent=1#call-${postId}` : `/posts/${postId}?interest=1#call`);
+  revalidatePath("/home");
+  // Back to the feed, or the Calls tab, where the person was; anything else goes to the call itself.
+  const back = safeBack(form.get("back"));
+  redirect(back ? `${back}${back.includes("?") ? "&" : "?"}sent=1#post-${postId}` : `/posts/${postId}?interest=1#call`);
 }
 
 export async function withdrawInterest(postId: string) {
   const { supabase, user } = await requireUser();
   await supabase.from("call_interest").delete().eq("post_id", postId).eq("user_id", user.id);
   revalidatePath(`/posts/${postId}`);
-  revalidatePath("/calls");
+  revalidatePath("/home");
 }
 
 export async function setShortlisted(postId: string, personId: string, on: boolean) {
@@ -62,6 +64,5 @@ export async function setCallStatus(postId: string, form: FormData) {
   if (!(STATUSES as readonly string[]).includes(status)) return;
   await supabase.from("posts").update({ call_status: status }).eq("id", postId).eq("author_id", user.id);
   revalidatePath(`/posts/${postId}`);
-  revalidatePath("/calls");
   revalidatePath("/home");
 }

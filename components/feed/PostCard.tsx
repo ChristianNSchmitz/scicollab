@@ -6,6 +6,7 @@ import RichText from "@/components/RichText";
 import { PostImages, LinkCard } from "@/components/feed/PostMedia";
 import PostActions, { InlineReply } from "@/components/feed/PostActions";
 import PostMenu from "@/components/feed/PostMenu";
+import CallActions, { type CallInfo } from "@/components/feed/CallActions";
 import ExpandText from "@/components/feed/ExpandText";
 import FollowButton from "@/components/social/FollowButton";
 import { Panel, Outcome, mono } from "@/components/ui";
@@ -45,7 +46,7 @@ const STATUS: Record<HelpStatus, { text: string; colour: string; hint: string }>
   helped: { text: "Helped", colour: "var(--ok)", hint: "A reply helped the author" },
 };
 
-export default function PostCard({ p, author, card, images, reaction, replies, me, path, topicHref, group, extra, follows, contextPerson, topReply, moreReplies, status, isNew }: {
+export default function PostCard({ p, author, card, images, reaction, replies, me, path, topicHref, group, extra, follows, contextPerson, topReply, moreReplies, status, isNew, call }: {
   p: any; author?: Person; card?: { id: string; code: string; title: string; outcome: any } | null;
   images?: string[]; reaction?: ReactionSummary; replies: number; me: string; path: string;
   topicHref: (room: string) => string; group?: { id: string; name: string } | null;
@@ -58,6 +59,8 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
   status?: HelpStatus;
   /** Posted since your last visit. */
   isNew?: boolean;
+  /** For a call for collaborators: what the viewer has with it. Without it the card shows no way to answer (group feeds). */
+  call?: CallInfo;
 }) {
   const spec = intentById(p.intent);
   const own = p.author_id === me;
@@ -148,6 +151,11 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
                 {p.deadline && <div>by · {p.deadline}</div>}
                 {p.offer && <div>offered back · {p.offer}</div>}
               </div>
+            </div>
+          )}
+          {p.intent === "collab" && call && (
+            <div style={{ marginTop: 10, display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+              <CallActions postId={p.id} authorId={p.author_id} authorName={author?.display_name} me={me} status={p.call_status} info={call} />
             </div>
           )}
         </div>

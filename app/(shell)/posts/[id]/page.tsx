@@ -365,7 +365,7 @@ export default async function PostDetail({ params, searchParams }: { params: Pro
                   <span style={{ font: "400 12px/1.6 var(--sans)", color: "var(--mute)" }}>Only the caller sees it.</span>
                 </form>
               ) : (
-                <div style={{ padding: 14, font: "400 13px/1.65 var(--sans)", color: "var(--mute)" }}>This call is {callStatus}. <Link href="/calls" style={{ color: "var(--link)" }}>See open calls</Link>.</div>
+                <div style={{ padding: 14, font: "400 13px/1.65 var(--sans)", color: "var(--mute)" }}>This call is {callStatus}. <Link href="/home?feed=calls" style={{ color: "var(--link)" }}>See open calls</Link>.</div>
               )}
             </Panel>
           )}

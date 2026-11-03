@@ -3,7 +3,7 @@ import Link from "next/link";
 import Avatar from "@/components/Avatar";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Panel, PanelHead, Empty, mono } from "@/components/ui";
+import { Panel, PanelHead, Empty, mono, btn, btnPrimary, field } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
 import { roomById, INTENTS } from "@/lib/taxonomy";
 import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibliometrics";
@@ -11,6 +11,9 @@ import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue } from "@/lib/record/publications";
 import Highlights, { type NewPaper, type Nudge } from "@/components/dashboard/Highlights";
 import PostCard from "@/components/feed/PostCard";
+import CallCard from "@/components/feed/CallCard";
+import type { CallInfo } from "@/components/feed/CallActions";
+import { callFilters, callsHref } from "@/lib/calls";
 import GettingStarted, { type Step } from "@/components/dashboard/GettingStarted";
 import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
@@ -53,8 +56,10 @@ const HELP = new Set(["feedback", "general", "data_question"]);
  */
 export default async function Home({
   searchParams,
-}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string; posted?: string; n?: string; open?: string; sort?: string }> }) {
-  const { intent, room: roomParam, sync, feed: feedParam, posted, n, open: openParam, sort: sortParam } = await searchParams;
+}: { searchParams: Promise<{ intent?: string; room?: string; sync?: string; feed?: string; posted?: string; n?: string; open?: string; sort?: string; q?: string; status?: string; due?: string; mine?: string; sent?: string }> }) {
+  const sp = await searchParams;
+  const { intent, room: roomParam, sync, feed: feedParam, posted, n, open: openParam, sort: sortParam, sent } = sp;
+  const cf = callFilters(sp);
   // Twenty posts first; scrolling down asks for twenty more, up to two hundred.
   const pageSize = Math.min(200, Math.max(20, Number(n) || 20));
   const openOnly = openParam === "1";
@@ -64,7 +69,8 @@ export default async function Home({
   const lastVisit = [jar.get(SESSION_COOKIE)?.value, jar.get(VISIT_COOKIE)?.value].find((v) => v && !Number.isNaN(Date.parse(v))) ?? null;
   // "following": posts and activity from the people you follow, from any topic group.
   // "groups": the discussions of the groups you are in (members only).
-  const feedMode = feedParam === "following" ? "following" : feedParam === "groups" ? "groups" : "topics";
+  // "calls": open calls for collaborators from everywhere, not only your topic groups.
+  const feedMode = feedParam === "following" ? "following" : feedParam === "groups" ? "groups" : feedParam === "calls" ? "calls" : "topics";
   const room = feedMode === "topics" ? roomParam : undefined;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -97,10 +103,10 @@ export default async function Home({
   if (myRooms.length === 0) redirect("/welcome");
 
   const feed = (async () => {
-    const none = { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false, status: new Map<string, HelpStatus>(), openCount: 0 };
+    const none = { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false, status: new Map<string, HelpStatus>(), openCount: 0, callRows: [] as any[] };
     // Muted topic groups leave "all topics"; picked on their own in the Filter, they still show.
     const roomScope = room ? [room] : myRooms.filter((r) => !mutes.rooms.has(r));
-    if ((feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length) || (feedMode === "topics" && !roomScope.length)) return none;
+    if (feedMode === "calls" || (feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length) || (feedMode === "topics" && !roomScope.length)) return none;
     const cols = "id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, audience, feedback_kinds, call_status, created_at";
     // Following: what they posted, and what they reposted (at the time of the repost).
     const reposted = feedMode === "following" ? await repostedBy(supabase, followed) : [];
@@ -148,19 +154,44 @@ export default async function Home({
     const posts = ranked.slice(0, pageSize);
     const cardIds = [...new Set(posts.map((p: any) => p.method_card_id).filter(Boolean))];
     const postIds = posts.map((p: any) => p.id);
-    const [authors, { data: cards }, { data: feedReplies }, reactions, images] = await Promise.all([
+    const callIds = posts.filter((p: any) => p.intent === "collab").map((p: any) => p.id);
+    const [authors, { data: cards }, { data: feedReplies }, reactions, images, { data: callRows }] = await Promise.all([
       peopleById(supabase, posts.map((p: any) => p.author_id)),
       cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : empty,
       postIds.length ? supabase.from("post_replies").select("id, post_id, author_id, body, created_at, helped_at").in("post_id", postIds).order("created_at", { ascending: false }) : empty,
       reactionsFor(supabase, "post", postIds, me_),
       imageUrls(supabase, posts),
+      // Your own answers, and the answers to your calls (nobody else's).
+      callIds.length ? supabase.from("call_interest").select("post_id, user_id, shortlisted").in("post_id", callIds) : empty,
     ]);
     const extras = await postExtras(supabase, me_, postIds, following, reactions);
     const contextIds = [...[...extras.values()].map((e) => e.context?.personId), ...(feedReplies ?? []).map((r: any) => r.author_id)]
       .filter((x): x is string => !!x && !authors.has(x));
     const people = contextIds.length ? new Map([...authors, ...(await peopleById(supabase, contextIds))]) : authors;
-    return { posts, people, cards, feedReplies, reactions, images, extras, hasMore, status, openCount };
+    return { posts, people, cards, feedReplies, reactions, images, extras, hasMore, status, openCount, callRows: callRows ?? [] };
   })();
+
+  // The Calls view: open calls from the whole platform, filtered by technique, deadline and status.
+  const callsView = (async () => {
+    if (feedMode !== "calls") return null;
+    let q = supabase.from("posts")
+      .select("id, author_id, room_id, title, body, technique, organism, deadline, offer, call_status, created_at")
+      .eq("intent", "collab").is("group_id", null).order("created_at", { ascending: false }).limit(100);
+    if (cf.status !== "all") q = q.eq("call_status", cf.status);
+    if (cf.term) q = q.or(`title.ilike.%${cf.term}%,body.ilike.%${cf.term}%,technique.ilike.%${cf.term}%,organism.ilike.%${cf.term}%,offer.ilike.%${cf.term}%`);
+    if (cf.due) q = q.lte("deadline", cf.due);
+    if (cf.mine) q = q.eq("author_id", me_);
+    const { data: calls } = await q;
+    const ids = (calls ?? []).map((c: any) => c.id);
+    const [people, { data: rows }] = await Promise.all([
+      peopleById(supabase, (calls ?? []).map((c: any) => c.author_id)),
+      ids.length ? supabase.from("call_interest").select("post_id, user_id, shortlisted").in("post_id", ids) : empty,
+    ]);
+    return { calls: calls ?? [], people, rows: rows ?? [] };
+  })();
+  // The count on the Calls tab: open calls from other people.
+  const openCalls = supabase.from("posts").select("id", { count: "exact", head: true })
+    .eq("intent", "collab").is("group_id", null).eq("call_status", "open").neq("author_id", me_);
 
   const research = (async () => {
     // An overdue OpenAlex sync runs after the page is sent; the next visit shows it.
@@ -203,12 +234,14 @@ export default async function Home({
   ]);
 
   const [
-    { posts, people, cards, feedReplies, reactions, images, extras, hasMore, status, openCount },
+    { posts, people, cards, feedReplies, reactions, images, extras, hasMore, status, openCount, callRows },
     { biblio, pubs, change, citations },
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
     [followActivity, onMine, contacts, theirPapers],
     { groups: groupList, joinable },
     waiting,
+    callsData,
+    { count: openCallCount },
   ] = await Promise.all([
     feed,
     research,
@@ -218,6 +251,8 @@ export default async function Home({
     social,
     groupsPanel,
     forYou(supabase, me_),
+    callsView,
+    openCalls,
   ]);
   // An empty "My groups": a few open groups to join instead of a sentence.
   const { data: suggestGroups } = feedMode === "groups" && !myGroupIds.length
@@ -281,6 +316,13 @@ export default async function Home({
     return (s ? `/home?${s}` : "/home") + (anchor ? "#feed" : "");
   };
 
+  // What you have with each call: your own answer, and how many answered yours.
+  const callInfo = (postId: string, rows: any[], back: string): CallInfo => {
+    const mineRow = rows.find((i: any) => i.post_id === postId && i.user_id === me_);
+    return { my: mineRow ? { shortlisted: !!mineRow.shortlisted } : null, answers: rows.filter((i: any) => i.post_id === postId && i.user_id !== me_).length, back };
+  };
+  const callsBack = callsHref({ q: cf.term, due: cf.due, mine: cf.mine ? "1" : "", status: cf.status });
+
   const pill = (active: boolean): React.CSSProperties => ({
     font: "500 12px/1 var(--sans)", padding: "7px 11px", borderRadius: 999, border: "1px solid var(--rule)",
     background: active ? "var(--ink)" : "transparent",
@@ -324,13 +366,17 @@ export default async function Home({
       {/* ── feed ──────────────────────────────────────────────────────── */}
       <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20, scrollMarginTop: 72 }}>
         {posted && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Posted.</p>}
+        {sent === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Sent. The caller sees your interest on the call and is notified.</p>}
         <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} meName={me?.display_name ?? ""} meAvatar={me?.avatar_url ?? null} />
 
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-        <SegTabs label="Which posts" style={{ flex: "1 1 360px", margin: 0 }} items={([["topics", "Topic groups"], ["groups", `My groups · ${myGroupIds.length}`], ["following", `Following · ${followed.length}`]] as const).map(([k, label]) => ({
+        <SegTabs label="Which posts" style={{ flex: "1 1 360px", margin: 0 }} items={([["topics", "Topic groups"], ["groups", `My groups · ${myGroupIds.length}`], ["following", `Following · ${followed.length}`], ["calls", "Calls"]] as const).map(([k, label]) => ({
           href: k === "topics" ? "/home" : `/home?feed=${k}`, label, active: feedMode === k,
+          // Open calls from other people, as a quiet count: it is an invitation, not an alarm.
+          ...(k === "calls" ? { badge: openCallCount ?? 0, quiet: true } : {}),
         }))} />
         {/* Kind and topic behind one button: two rows of chips were too much on every visit. */}
+        {feedMode !== "calls" && (
         <details className="sc-feed-filter" data-keep-open style={{ position: "relative" }} open={false}>
           {/* A fixed width: the tabs beside it must not move when the label changes. */}
           <summary style={{ listStyle: "none", cursor: "pointer", width: 220, height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>
@@ -375,6 +421,7 @@ export default async function Home({
             <MutedList items={mutedItems} />
           </div>
         </details>
+        )}
         </div>
 
         {feedMode === "following" && followed.length === 0 && (
@@ -431,9 +478,41 @@ export default async function Home({
           </Panel>
         )}
 
+        {feedMode === "calls" && callsData && (
+          <>
+            <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+              Labs looking for a technique or a second pair of hands, from everywhere, not only your topic groups. Only the caller sees who is interested.
+            </p>
+            <form role="search" action="/home" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
+              <input type="hidden" name="feed" value="calls" />
+              {cf.status !== "open" && <input type="hidden" name="status" value={cf.status} />}
+              <label style={{ flex: "2 1 240px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Technique, system or any word
+                <input name="q" defaultValue={cf.term} placeholder="Seahorse, iPSC neurons, CRISPR…" style={{ ...field, marginTop: 4 }} />
+              </label>
+              <label style={{ flex: "1 1 150px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Deadline before
+                <input name="due" type="date" defaultValue={cf.due} style={{ ...field, marginTop: 4 }} />
+              </label>
+              <label style={{ display: "flex", gap: 6, alignItems: "center", font: "400 13px/1 var(--sans)", height: 38 }}>
+                <input type="checkbox" name="mine" value="1" defaultChecked={cf.mine} /> Only my calls
+              </label>
+              <button type="submit" style={{ ...btn, height: 38 }}>Filter</button>
+              {(cf.term || cf.due || cf.mine) && <Link href={callsHref({ status: cf.status })} scroll={false} style={{ font: "400 12.5px/38px var(--sans)", color: "var(--mute)" }}>clear</Link>}
+              <Link href="/post?intent=collab" style={{ ...btnPrimary, height: 38, marginLeft: "auto" }}>Post a call</Link>
+            </form>
+            <SegTabs label="Call status" style={{ margin: 0 }} items={([["open", "Open"], ["filled", "Filled"], ["closed", "Closed"], ["all", "All"]] as const).map(([key, label]) => ({
+              href: callsHref({ q: cf.term, due: cf.due, mine: cf.mine ? "1" : "", status: key }), label, active: cf.status === key,
+            }))} />
+            <div key={`calls-${cf.status}-${cf.term}-${cf.due}-${cf.mine}`} className="sc-tabpane" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {callsData.calls.length === 0 && <Panel><Empty>No calls match. Change the filters, or <Link href="/post?intent=collab" style={{ color: "var(--link)" }}>post the first one</Link>.</Empty></Panel>}
+              {callsData.calls.map((c: any) => <CallCard key={c.id} c={c} author={callsData.people.get(c.author_id)} me={me_} info={callInfo(c.id, callsData.rows, callsBack)} />)}
+            </div>
+          </>
+        )}
+
         <FeedVisit />
         <FeedKeys />
         <FeedLive since={posts.length ? posts.reduce((m: string, p: any) => (p.created_at > m ? p.created_at : m), posts[0].created_at) : null} query={liveQuery} />
+        {feedMode !== "calls" && (
         <div id="feed-posts" key={`${feedMode}-${intent ?? ""}-${room ?? ""}-${openOnly}-${relevant}`} className="sc-tabpane" style={{ display: "flex", flexDirection: "column", gap: 20, scrollMarginTop: 90 }}>
         {(posts ?? []).map((p: any, i: number) => (
           <div key={p.id} style={{ display: "contents" }}>
@@ -441,7 +520,8 @@ export default async function Home({
             reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
             topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null}
             extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")}
-            topReply={topReply(p.id)} moreReplies={moreReplies(p.id)} status={status.get(p.id)} isNew={isNew(p)} />
+            topReply={topReply(p.id)} moreReplies={moreReplies(p.id)} status={status.get(p.id)} isNew={isNew(p)}
+            call={p.intent === "collab" ? callInfo(p.id, callRows, qs({}, false)) : undefined} />
           {i === lineAfter && (
             <div role="separator" aria-label="Earlier posts" style={{ display: "flex", alignItems: "center", gap: 10, font: "600 12px/1 var(--sans)", color: "var(--mute)" }}>
               <span style={{ flex: 1, height: 1, background: "var(--rule)" }} />You are up to date · earlier posts<span style={{ flex: 1, height: 1, background: "var(--rule)" }} />
@@ -450,6 +530,7 @@ export default async function Home({
           </div>
         ))}
         </div>
+        )}
         {hasMore && <AutoMore href={qs({ n: String(pageSize + 20) }, false)} />}
       </section>
       </div>
