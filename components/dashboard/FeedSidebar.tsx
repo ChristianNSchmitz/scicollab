@@ -8,6 +8,7 @@ import Avatar from "@/components/Avatar";
 import FollowButton from "@/components/social/FollowButton";
 import { Panel, PanelHead } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
+import AdSlot from "@/components/AdSlot";
 
 export type Nudge = { href: string; text: string };
 /** Someone's reply to one of your posts, or answer to one of your questions. */
@@ -30,7 +31,7 @@ export default function FeedSidebar({ biblio, change, pubs, contacts, responses,
       <Citations biblio={biblio} change={change} pubs={pubs} />
       <Responses items={responses} more={moreResponses} />
       <People contacts={contacts} />
-      <AdSlot />
+      <AdSlot className="sc-hide-narrow" />
     </aside>
   );
 }
@@ -124,18 +125,5 @@ function People({ contacts }: { contacts: Contact[] }) {
         )}
       </Block>
     </div>
-  );
-}
-
-/**
- * Room for advertising, at the size ad networks call a medium rectangle
- * (300 × 250). Nothing is served yet: this keeps the place so the column does
- * not move when something is. Put the ad inside this element.
- */
-function AdSlot() {
-  return (
-    <aside aria-label="Advertisement" className="sc-ad sc-hide-narrow">
-      <span>Advertisement</span>
-    </aside>
   );
 }

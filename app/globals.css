@@ -119,6 +119,9 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 .sc-feed-aside { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 /* Ad slot: a medium rectangle (300 x 250) that keeps its place until an ad is put in it. */
 .sc-ad { display: grid; place-items: center; min-height: 250px; border: 1px dashed var(--rule); color: var(--mute); font: 600 11px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
+/* Banner: 728 x 90 under the heading of a browse page; a little lower on a phone. */
+.sc-ad-banner { max-width: 728px; min-height: 90px; margin: 0 0 16px; }
+@media (max-width: 760px) { .sc-ad-banner { min-height: 64px; } }
 /* The dashboard band on top of the feed: three slim tiles, then a row of chips. */
 .sc-hl        { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .sc-hl-4      { grid-template-columns: repeat(4, minmax(0, 1fr)); }

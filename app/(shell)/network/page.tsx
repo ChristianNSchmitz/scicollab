@@ -56,7 +56,7 @@ export default async function Network({ searchParams }: { searchParams: Promise<
     .sort((a: any, b: any) => (experts ? rank(experts.get(b.id)) - rank(experts.get(a.id)) : 0));
 
   return (
-    <Page title="Network" lede="Find people by technique, follow them, message them.">
+    <Page title="Network" ad lede="Find people by technique, follow them, message them.">
       {mine?.orcid && (toFollow.length > 0 || co.others.length > 0) && (
         <Panel style={{ marginBottom: 14, borderColor: "var(--signal)" }}>
           <PanelHead>From your publications</PanelHead>

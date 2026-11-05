@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
+import AdSlot from "@/components/AdSlot";
 
 /* The classic house rules from board [ 001 ]: no gradients, no shadows, no
    rounded cards, no illustration; elevation is a border plus a background
@@ -13,10 +14,12 @@ import type { CSSProperties, ReactNode } from "react";
 export const mono = (size: number, weight = 400, lh = 1) =>
   `${weight} ${size < 11 ? Math.min(11, size + 1.5) : size}px/${lh} var(--mono)`;
 
-export function Page({ title, lede, actions, eyebrow, children }: {
+export function Page({ title, lede, actions, eyebrow, ad, children }: {
   title: string; lede?: string; actions?: ReactNode;
   /** A small line above the heading, e.g. the project a tab belongs to. */
   eyebrow?: ReactNode;
+  /** Reserve a banner for an advertisement under the heading. Browse pages only. */
+  ad?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -30,6 +33,7 @@ export function Page({ title, lede, actions, eyebrow, children }: {
           </div>
           {actions}
         </header>
+        {ad && <AdSlot shape="banner" />}
         {children}
       </div>
     </div>

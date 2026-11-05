@@ -37,7 +37,7 @@ export default async function Events({ searchParams }: { searchParams: Promise<{
   const pill = (on: boolean) => ({ font: "500 12.5px/1 var(--sans)", padding: "8px 12px", borderRadius: 999, border: "1px solid var(--rule)", background: on ? "var(--ink)" : "var(--surface)", color: on ? "var(--bg)" : "var(--ink)", textDecoration: "none" });
 
   return (
-    <Page title="Events" lede="Talks, journal clubs and lab meetings in your groups, and open meetings and conferences.">
+    <Page title="Events" ad lede="Talks, journal clubs and lab meetings in your groups, and open meetings and conferences.">
       {sp.added === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Event added.</p>}
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
         <Link href="/events" style={pill(show === "all")}>All</Link>

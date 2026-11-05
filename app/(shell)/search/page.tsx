@@ -34,7 +34,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
   const total = cards.length + questions.length + people.length + projects.length + posts.length + groups.length;
 
   return (
-    <Page title="Search" lede="Posts, methods, questions, people, groups and projects.">
+    <Page title="Search" ad lede="Posts, methods, questions, people, groups and projects.">
       <form style={{ display: "flex", gap: 8, marginBottom: 16, maxWidth: 720 }}>
         <input name="q" defaultValue={q} style={{ ...field, height: 40 }} placeholder="passage number, HEK293T, transfection…" autoFocus />
         <button type="submit" style={{ ...btnPrimary, height: 40 }}>Search</button>

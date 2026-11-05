@@ -21,6 +21,7 @@ export default async function Methods() {
 
   return (
     <Page
+      ad
       title="Methods"
       lede="Protocols with their outcome, including when they fail."
       actions={<Link href="/methods/new" style={btnPrimary}>Record a method</Link>}

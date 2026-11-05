@@ -54,7 +54,7 @@ export default async function Groups({ searchParams }: { searchParams: Promise<R
   );
 
   return (
-    <Page title="Groups" lede="Your groups are the people you work with. Topic groups fill your feed.">
+    <Page title="Groups" ad lede="Your groups are the people you work with. Topic groups fill your feed.">
       {flash && (
         <p role={flash.error ? "alert" : "status"} style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: `1px solid ${flash.error ? "var(--err)" : "var(--ok)"}`, background: "var(--surface)" }}>{flash.text}</p>
       )}

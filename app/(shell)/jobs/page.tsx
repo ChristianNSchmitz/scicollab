@@ -70,9 +70,9 @@ export default async function Jobs({ searchParams }: { searchParams: Promise<Sea
   const pill = (on: boolean) => ({ font: "500 12.5px/1 var(--sans)", padding: "8px 12px", borderRadius: 999, border: "1px solid var(--rule)", background: on ? "var(--ink)" : "var(--surface)", color: on ? "var(--bg)" : "var(--ink)", textDecoration: "none", whiteSpace: "nowrap" as const });
 
   return (
-    <Page title="Jobs and funding" lede={kind === "job" ? "Positions from PhD to group leader, posted by the labs themselves." : "Fellowships and grants, sorted by deadline."}
+    <Page title="Jobs and funding" ad lede={kind === "job" ? "Positions from PhD to group leader, posted by the labs themselves." : "Fellowships and grants, sorted by deadline."}
       actions={<a href="#post" style={btnPrimary}>{kind === "job" ? "Post a position" : "Post a funding call"}</a>}>
-      <SegTabs label="Jobs or funding" items={[{ href: "/jobs", label: "Jobs", active: kind === "job" }, { href: "/jobs?kind=funding", label: "Funding", active: kind === "funding" }]} />
+      <SegTabs label="Open positions or funding" items={[{ href: "/jobs", label: "Open positions", active: kind === "job" }, { href: "/jobs?kind=funding", label: "Funding", active: kind === "funding" }]} />
       {sp.posted === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--ok)", borderRadius: 12, background: "var(--surface)" }}>Posted.</p>}
 
       <form role="search" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 10 }}>
