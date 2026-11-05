@@ -56,3 +56,11 @@ export function bytes(n: number): string {
 export function inAbout(ms: number): string {
   return ms < 3600e3 ? `${Math.max(1, Math.round(ms / 60e3))} min` : `${Math.round(ms / 3600e3)} h`;
 }
+
+/** The first words of a reply, cut at a word: enough to tell what it says. */
+export function snippetOf(body: string, max = 90): string {
+  const flat = String(body ?? "").replace(/\s+/g, " ").trim();
+  if (flat.length <= max) return flat;
+  const cut = flat.slice(0, max - 1);
+  return cut.slice(0, Math.max(cut.lastIndexOf(" "), Math.floor(max / 2))).trimEnd() + "…";
+}

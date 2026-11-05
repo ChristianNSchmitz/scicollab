@@ -4,12 +4,12 @@ import Avatar from "@/components/Avatar";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Panel, PanelHead, Empty, mono, btn, btnPrimary, field } from "@/components/ui";
-import { timeAgo } from "@/lib/format";
+import { timeAgo, snippetOf } from "@/lib/format";
 import { roomById, INTENTS } from "@/lib/taxonomy";
 import { bibliometricsFor, loadSnapshots, recentChange } from "@/lib/record/bibliometrics";
 import { citationProfile } from "@/lib/record/citations";
 import { loadPublications, syncIfDue } from "@/lib/record/publications";
-import Highlights, { type NewPaper, type Nudge } from "@/components/dashboard/Highlights";
+import FeedSidebar, { RESPONSES_SHOWN, type Nudge, type Response } from "@/components/dashboard/FeedSidebar";
 import PostCard from "@/components/feed/PostCard";
 import CallCard from "@/components/feed/CallCard";
 import type { CallInfo } from "@/components/feed/CallActions";
@@ -18,7 +18,7 @@ import GettingStarted, { type Step } from "@/components/dashboard/GettingStarted
 import { SYNC_FLASH } from "@/lib/openalex/messages";
 import { ensureRecordSeed } from "@/lib/record/demo-seed";
 import { followingOf } from "@/lib/social/follows";
-import { activityOf, activityOnMine, newPapers } from "@/lib/social/activity";
+import { activityOf, activityOnMine } from "@/lib/social/activity";
 import { peopleYouMayKnow } from "@/lib/social/contacts";
 import { coauthorsOf } from "@/lib/social/coauthors";
 import { reactionsFor } from "@/lib/social/reactions";
@@ -89,7 +89,7 @@ export default async function Home({
       supabase.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", me_).is("read_at", null),
       supabase.from("access_requests").select("id, attachment_id, created_at").eq("owner_id", me_).eq("status", "pending"),
       supabase.from("questions").select("id, title").eq("author_id", me_),
-      supabase.from("posts").select("id").eq("author_id", me_),
+      supabase.from("posts").select("id, title").eq("author_id", me_),
       followingOf(supabase, me_),
       supabase.from("method_cards").select("id, code, title").eq("author_id", me_).order("created_at", { ascending: false }),
       supabase.from("group_members").select("group_id, role").eq("user_id", me_),
@@ -229,15 +229,14 @@ export default async function Home({
     feedMode === "following" ? activityOf(supabase, followed, { viewer: me_, limit: 12 }) : Promise.resolve([]),
     activityOnMine(supabase, me_),
     coauthorsOf(supabase, me_, me?.orcid, following)
-      .then((co) => peopleYouMayKnow(supabase, me_, { coauthors: co.members, following, myRooms, limit: 4 })),
-    newPapers(supabase, followed.slice(0, 30), new Date(Date.now() - 30 * 864e5).toISOString()),
+      .then((co) => peopleYouMayKnow(supabase, me_, { coauthors: co.members, following, myRooms, limit: 3 })),
   ]);
 
   const [
     { posts, people, cards, feedReplies, reactions, images, extras, hasMore, status, openCount, callRows },
     { biblio, pubs, change, citations },
     { data: atts }, { data: qAnswers }, { data: repliesToMe },
-    [followActivity, onMine, contacts, theirPapers],
+    [followActivity, onMine, contacts],
     { groups: groupList, joinable },
     waiting,
     callsData,
@@ -246,8 +245,9 @@ export default async function Home({
     feed,
     research,
     requestAtts.length ? supabase.from("post_attachments").select("id, post_id").in("id", requestAtts) : empty,
-    qIds.length ? supabase.from("answers").select("question_id, author_id, created_at").in("question_id", qIds) : empty,
-    myPostIds.length ? supabase.from("post_replies").select("post_id, author_id, created_at").in("post_id", myPostIds) : empty,
+    // The latest answers to your questions and replies to your posts, from other people.
+    qIds.length ? supabase.from("answers").select("id, question_id, author_id, body, created_at").in("question_id", qIds).neq("author_id", me_).order("created_at", { ascending: false }).limit(12) : empty,
+    myPostIds.length ? supabase.from("post_replies").select("id, post_id, author_id, body, created_at").in("post_id", myPostIds).neq("author_id", me_).order("created_at", { ascending: false }).limit(12) : empty,
     social,
     groupsPanel,
     forYou(supabase, me_),
@@ -258,17 +258,27 @@ export default async function Home({
   const { data: suggestGroups } = feedMode === "groups" && !myGroupIds.length
     ? await supabase.from("groups").select("id, name, description, access").eq("access", "open").limit(3) : { data: [] as any[] };
   const groupNames = new Map<string, { id: string; name: string }>(groupList.map((g: any) => [g.id, { id: g.id, name: g.name }]));
-  // New papers: yours from the last syncs, then those of people you follow.
-  const names = await peopleById(supabase, [...theirPapers.map((p) => p.user), ...waiting.feedback.map((f) => f.author_id)]);
-  const year = new Date().getFullYear();
-  const mineNew = [
-    ...change.newPubs.map((n) => pubs.find((p) => p.openalex_id === n.openalex_id)).filter(Boolean),
-    ...pubs.filter((p) => Date.now() - +new Date(p.first_seen_at) < 30 * 864e5 && (p.year ?? 0) >= year - 1),
-  ].filter((p, i, all) => all.findIndex((x) => x!.openalex_id === p!.openalex_id) === i) as typeof pubs;
-  const papers: NewPaper[] = [
-    ...mineNew.map((p) => ({ title: p.title, who: null, href: p.doi ? `https://doi.org/${p.doi}` : "/you/publications" })),
-    ...theirPapers.sort((a, b) => b.at.localeCompare(a.at)).map((p) => ({ title: p.title, who: names.get(p.user)?.display_name ?? null, href: p.href })),
-  ];
+  // Replies to your posts and answers to your questions in the last two weeks,
+  // newest first: the column shows the latest few, with the name of who wrote.
+  const recentSince = Date.now() - 14 * 864e5;
+  const postTitle = new Map<string, string>((myPosts ?? []).map((p: any) => [p.id, p.title]));
+  const questionTitle = new Map<string, string>((myQuestions ?? []).map((q: any) => [q.id, q.title]));
+  const received = [
+    ...(repliesToMe ?? []).map((r: any) => ({ id: `r-${r.id}`, whoId: r.author_id as string, body: r.body as string, at: r.created_at as string, href: `/posts/${r.post_id}#replies`, about: postTitle.get(r.post_id) ?? "your post" })),
+    ...(qAnswers ?? []).map((a: any) => ({ id: `a-${a.id}`, whoId: a.author_id as string, body: a.body as string, at: a.created_at as string, href: `/questions/${a.question_id}`, about: questionTitle.get(a.question_id) ?? "your question" })),
+  ].filter((r) => +new Date(r.at) > recentSince).sort((a, b) => b.at.localeCompare(a.at));
+  // One line per post or question, not per reply: the latest reply speaks, the rest are counted.
+  const topicsReplied = [...received.reduce((m, r) => {
+    const t = m.get(r.href);
+    if (t) t.people.add(r.whoId); else m.set(r.href, { latest: r, people: new Set([r.whoId]) });
+    return m;
+  }, new Map<string, { latest: (typeof received)[number]; people: Set<string> }>()).values()];
+  const shownTopics = topicsReplied.slice(0, RESPONSES_SHOWN);
+  const names = await peopleById(supabase, [...shownTopics.map((t) => t.latest.whoId), ...waiting.feedback.map((f) => f.author_id)]);
+  const responses: Response[] = shownTopics.map(({ latest: r, people: ps }) => ({
+    id: r.id, href: r.href, whoId: r.whoId, who: names.get(r.whoId)?.display_name ?? "Someone", avatar: names.get(r.whoId)?.avatar_url ?? null,
+    snippet: snippetOf(r.body, 70), about: r.about, at: r.at, others: ps.size - 1,
+  }));
 
   const who = (id: string) => people.get(id);
   const cardOf = (id: string | null) => (cards ?? []).find((c: any) => c.id === id);
@@ -301,11 +311,6 @@ export default async function Home({
     : `“${short((mutedPosts ?? []).find((x: any) => x.id === m.target)?.title ?? "A post")}”` }));
   const liveQuery = new URLSearchParams(Object.entries({ feed: feedMode === "topics" ? "" : feedMode, room: room ?? "", intent: intent ?? "" }).filter(([, v]) => v)).toString();
   const requestPosts = [...new Set((atts ?? []).map((a: any) => a.post_id))];
-  const week = 7 * 864e5;
-  const freshAnswers = (qAnswers ?? []).filter((a: any) => a.author_id !== me_ && Date.now() - +new Date(a.created_at) < week);
-  const answeredQ = [...new Set(freshAnswers.map((a: any) => a.question_id))];
-  const freshReplies = (repliesToMe ?? []).filter((r: any) => r.author_id !== me_ && Date.now() - +new Date(r.created_at) < week);
-  const repliedPosts = [...new Set(freshReplies.map((r: any) => r.post_id))];
   const topics = myRooms.map((r) => ({ id: r, name: roomById(r)?.name ?? r }));
 
   const qs = (patch: Record<string, string | undefined>, anchor = true) => {
@@ -333,8 +338,6 @@ export default async function Home({
   const nudges = [
     unread ? { href: "/messages", text: `${unread} unread message${unread > 1 ? "s" : ""}` } : null,
     (myRequests ?? []).length ? { href: (myRequests ?? []).length === 1 && requestPosts[0] ? `/posts/${requestPosts[0]}` : "/requests", text: `${(myRequests ?? []).length} data request${(myRequests ?? []).length > 1 ? "s" : ""} to decide` } : null,
-    freshReplies.length ? { href: repliedPosts.length === 1 ? `/posts/${repliedPosts[0]}#replies` : "/notifications", text: `${freshReplies.length} new repl${freshReplies.length > 1 ? "ies" : "y"} to your posts` } : null,
-    freshAnswers.length ? { href: answeredQ.length === 1 ? `/questions/${answeredQ[0]}` : "/notifications", text: `${freshAnswers.length} new answer${freshAnswers.length > 1 ? "s" : ""} to your questions` } : null,
     ...groupList.filter((g: any) => joinable.get(g.id)).map((g: any) => ({ href: `/groups/${g.id}`, text: `${g.name}: ${joinable.get(g.id)} project${joinable.get(g.id)! > 1 ? "s" : ""} to join` })),
     onMine.length ? { href: "/you/record", text: `${onMine.length} reproduction${onMine.length > 1 ? "s and forks" : " or fork"} of your work` } : null,
   ].filter(Boolean) as Nudge[];
@@ -359,8 +362,16 @@ export default async function Home({
         <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: "0 0 12px", padding: "10px 12px", border: "1px solid var(--rule)", background: "var(--surface)" }}>{SYNC_FLASH[sync]}</p>
       )}
 
+      {/* Feed on the left; on the right your citations, replies to you, people to meet and an ad slot. */}
+      <div className="sc-feed-grid">
+      <div style={{ minWidth: 0 }}>
       <GettingStarted steps={steps} />
-      <Highlights biblio={biblio} change={change} pubs={pubs} papers={papers} contacts={contacts} nudges={nudges} />
+      {nudges.length > 0 && (
+        <nav aria-label="Waiting on you" className="sc-chips" style={{ margin: "0 0 12px" }}>
+          {nudges.map((n) => <Link key={n.text} href={n.href} className="sc-chip">{n.text} →</Link>)}
+        </nav>
+      )}
+
       <ForYouPanel data={waiting} names={new Map([...names].map(([id, p]) => [id, p.display_name]))} />
 
       {/* ── feed ──────────────────────────────────────────────────────── */}
@@ -533,6 +544,11 @@ export default async function Home({
         )}
         {hasMore && <AutoMore href={qs({ n: String(pageSize + 20) }, false)} />}
       </section>
+      </div>
+      <div className="sc-home-aside">
+        <FeedSidebar biblio={biblio} change={change} pubs={pubs} contacts={contacts} responses={responses} moreResponses={Math.max(0, topicsReplied.length - RESPONSES_SHOWN)} />
+      </div>
+      </div>
       </div>
     </div>
   );

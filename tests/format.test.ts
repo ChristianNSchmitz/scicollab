@@ -36,3 +36,12 @@ test("the first name and the avatar letter agree on who the person is", () => {
     assert.equal(initialsOf(name), firstNameOf(name)[0].toUpperCase(), name);
   }
 });
+
+test("snippetOf keeps a short reply whole and cuts a long one at a word", async () => {
+  const { snippetOf } = await import("../lib/format.ts");
+  assert.equal(snippetOf("  Try  a lower\nvoltage "), "Try a lower voltage");
+  const long = "Lower the voltage and add the Mg2+ before the wash step, then repeat the run on a fresh plate to confirm it".repeat(2);
+  const out = snippetOf(long, 40);
+  assert.ok(out.length <= 40 && out.endsWith("…"), out);
+  assert.ok(!/\s…$/.test(out));
+});

@@ -114,6 +114,11 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
    !important for that reason only.
    ───────────────────────────────────────────────────────────────────────── */
 .sc-two-col { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+/* The feed with its column on the right: citations, replies to you, people, an ad slot. */
+.sc-feed-grid  { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+.sc-feed-aside { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+/* Ad slot: a medium rectangle (300 x 250) that keeps its place until an ad is put in it. */
+.sc-ad { display: grid; place-items: center; min-height: 250px; border: 1px dashed var(--rule); color: var(--mute); font: 600 11px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
 /* The dashboard band on top of the feed: three slim tiles, then a row of chips. */
 .sc-hl        { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .sc-hl-4      { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -146,6 +151,15 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
   .sc-hl-big     { font-size: 22px; }
   .sc-chips      { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; }
 }
+/* In the feed column the citations tile keeps its full size on a phone, since it is not one of three side by side. */
+@media (max-width: 760px) {
+  .sc-feed-aside .sc-hl-tile   { padding: 10px 12px; }
+  .sc-feed-aside .sc-hl-detail { display: block; }
+  .sc-feed-aside .sc-hl-aside  { display: block; }
+  .sc-feed-aside .sc-hl-unit   { display: inline; }
+  .sc-feed-aside .sc-hl-kicker { font-size: 10px; letter-spacing: .1em; }
+  .sc-feed-aside .sc-hl-big    { font-size: 28px; }
+}
 @keyframes sc-hl-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .sc-hl-dot { animation: none; } }
 /* The dashboard on the landing page: three columns on a wide screen, then two, then one. */
@@ -168,7 +182,8 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 }
 
 @media (max-width: 900px) {
-  .sc-two-col { grid-template-columns: minmax(0, 1fr); }
+  .sc-two-col, .sc-feed-grid { grid-template-columns: minmax(0, 1fr); }
+  .sc-feed-aside { margin-top: 0; }
   /* On a narrow screen the dashboard column comes before the feed, and the
      room lists are dropped: the feed's own room filter already shows them. */
   .sc-home-aside { order: -1; }
