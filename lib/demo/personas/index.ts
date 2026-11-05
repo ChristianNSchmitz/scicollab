@@ -563,6 +563,11 @@ const post_reposts = [
 ].map(([post_id, user_id, note, t]) => ({ id: `rp-${post_id}-${user_id}`, post_id, user_id, note, created_at: at(t) }));
 
 /* Feedback requests, collaboration calls and small chats (supabase/15). */
+const MENTION_POSTS = [
+  { id: "mp-1", author_id: "u-okafor", room_id: "cell-culture", intent: "general", at: "2026-11-03 16:20",
+    title: "Passage 18 drift: has anyone seen the same on a second incubator?",
+    body: "Temi here. @Alex Rivera you logged the CO2 drift on bay 2: did the pH shift show up in your p18 runs as well? Would like to compare before I change the protocol." },
+];
 const pdf = (title: string) => {
   const text = `BT /F1 18 Tf 60 760 Td (${title}) Tj 0 -28 Td /F1 11 Tf (Example file in the SciCollab demo. Invented content.) Tj ET`;
   const objs = [
@@ -664,6 +669,11 @@ function build() {
   for (const c of CALL_POSTS) posts.push({
     id: c.id, author_id: c.author_id, room_id: c.room_id, intent: "collab", title: c.title, body: c.body,
     method_card_id: null, project_id: null, technique: c.technique, organism: c.organism, deadline: day(c.deadline), offer: c.offer, created_at: at(c.at),
+  } as any);
+  // A post that mentions Alex, so the feed holds it at the top (and the mention shows in notifications).
+  for (const m of MENTION_POSTS) posts.push({
+    id: m.id, author_id: m.author_id, room_id: m.room_id, intent: m.intent, title: m.title, body: m.body,
+    method_card_id: null, project_id: null, technique: "", organism: "", deadline: null, offer: "", created_at: at(m.at),
   } as any);
   // Every post: who it is for, what feedback it asks, whether a call is still open.
   for (const p of posts as any[]) { p.audience ??= "topic"; p.feedback_kinds ??= []; p.call_status ??= "open"; }
@@ -786,7 +796,7 @@ function build() {
     post_audience, post_files, call_interest, chat_rooms, chat_room_members, chat_room_messages,
     group_datasets: group_datasets.filter((g) => dataIds.has(g.dataset_id)),
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
-    mentions: [],
+    mentions: [{ id: "mn-1", author_id: "u-okafor", mentioned_id: "u-rivera", source_kind: "post", source_id: "mp-1", href: "/posts/mp-1", created_at: at("2026-11-03 16:20") }],
     cv_entries, opportunities, opportunity_saves: [{ opportunity_id: "op-5", user_id: "u-rivera", created_at: at("2026-10-31 09:00") }],
     events, event_attendees, push_subscriptions: [],
     paper_files: [], paper_follows: [],

@@ -116,7 +116,9 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 .sc-two-col { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
 /* The feed with its column on the right: citations, replies to you, people, an ad slot. */
 .sc-feed-grid  { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
-.sc-feed-aside { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.sc-feed-aside { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 12px; border-radius: 20px;
+  /* A tinted, bordered column: it stands apart from the feed, and the cards inside keep their own surface. */
+  background: color-mix(in srgb, var(--signal) 9%, var(--bg)); border: 1px solid color-mix(in srgb, var(--signal) 28%, var(--rule)); }
 /* Ad slot: a medium rectangle (300 x 250) that keeps its place until an ad is put in it. */
 .sc-ad { display: grid; place-items: center; min-height: 250px; border: 1px dashed var(--rule); color: var(--mute); font: 600 11px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
 /* Banner: 728 x 90 under the heading of a browse page; a little lower on a phone. */
