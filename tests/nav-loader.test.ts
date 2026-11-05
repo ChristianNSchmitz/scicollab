@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isPageNavigation, navigationFinished, LOADER_DELAY_MS } from "../lib/nav-loader.ts";
+import { isPageNavigation, navigationFinished, LOADER_DELAY_MS, VEIL_DELAY_MS } from "../lib/nav-loader.ts";
 
 const here = "https://scicollab.net/home?feed=calls";
 const go = (href: string, extra: Partial<Parameters<typeof isPageNavigation>[0]> = {}) =>
@@ -51,10 +51,12 @@ test("a link that opens elsewhere, downloads, or is modified-clicked is not a pa
   assert.equal(go("/groups", { target: "_self" }), true);
 });
 
-test("a change is not finished while the address is unchanged, or while the grey placeholder is still up", () => {
-  const base = { startedAt: "/groups", now: "/groups", placeholderShown: false };
-  assert.equal(navigationFinished(base), false);                                           // still on the old page
-  assert.equal(navigationFinished({ ...base, now: "/jobs", placeholderShown: true }), false);  // address changed at once, page not there yet
-  assert.equal(navigationFinished({ ...base, now: "/jobs", placeholderShown: false }), true);  // the real page arrived
-  assert.equal(navigationFinished({ ...base, now: "/groups?tab=data", placeholderShown: false }), true); // a tab or filter arrived
+test("a change is finished when the address is no longer the one it started from", () => {
+  assert.equal(navigationFinished({ startedAt: "/groups", now: "/groups" }), false);          // still on the old page
+  assert.equal(navigationFinished({ startedAt: "/groups", now: "/jobs" }), true);             // the new page arrived
+  assert.equal(navigationFinished({ startedAt: "/groups", now: "/groups?tab=data" }), true);  // a tab or filter arrived
+});
+
+test("the page is dimmed only after the loader has been up a while, so a page just behind it is not covered for a flash", () => {
+  assert.ok(VEIL_DELAY_MS >= 400 && VEIL_DELAY_MS < LOADER_DELAY_MS * 2);
 });

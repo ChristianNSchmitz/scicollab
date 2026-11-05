@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { isPageNavigation, navigationFinished, LOADER_DELAY_MS } from "@/lib/nav-loader";
+import { isPageNavigation, navigationFinished, LOADER_DELAY_MS, VEIL_DELAY_MS } from "@/lib/nav-loader";
 
 /** If the address never changes (a click that turned out not to navigate), stop waiting. */
 const GIVE_UP_MS = 20_000;
@@ -10,21 +10,22 @@ const GIVE_UP_MS = 20_000;
 type Box = { top: number; left: number; width: number };
 
 /**
- * The loading screen for a slow page change. Quick changes never show it: it
- * appears only if the page is still not there a full second after the click
- * (LOADER_DELAY_MS). Before that the page's own placeholder (app/(shell)/loading.tsx)
- * answers the click at once.
+ * The loading screen for a slow page change. Quick changes never show it: the
+ * old page simply stays until the new one is there (there is no placeholder
+ * page in between: swapping one in and out again looked like a flicker). The
+ * pointer turns to the "busy" cursor at once; if the page is still not there a
+ * full second after the click (LOADER_DELAY_MS) a thin bar starts moving along
+ * the top of the page, and only VEIL_DELAY_MS later is the page dimmed under a
+ * spinner. So a page that arrives just after the second is never covered for a
+ * split second, which is what a loading screen that appears and vanishes at
+ * once looks like.
  *
  * It covers the page area only, so the top bar, the side navigation and the chat
  * stay usable, and it lets clicks through: choosing somewhere else while waiting
- * simply starts over. It covers the case the placeholder cannot: moving between
- * tabs or filters of the same page, where the old page would otherwise sit
- * untouched until the new one arrives.
+ * simply starts over. It covers moving between tabs or filters of the same page
+ * as well as other pages.
  *
  * Which clicks count, and when a change is over, is decided in lib/nav-loader.ts.
- * The address changing is not enough: the app often changes it at once and shows
- * the grey placeholder until the real page arrives, so the loading screen stays
- * until the address has changed and the placeholder is gone.
  */
 export default function NavLoader() {
   const pathname = usePathname();
@@ -41,15 +42,16 @@ export default function NavLoader() {
     window.clearInterval(timers.current.watch);
     timers.current = {};
     startedAt.current = null;
+    document.documentElement.removeAttribute("data-navigating");
     setBox(null);
   };
   const where = () => location.pathname + location.search;
   const checkFinished = () => {
     if (startedAt.current === null) return;
-    if (navigationFinished({ startedAt: startedAt.current, now: where(), placeholderShown: !!document.querySelector("[data-nav-skeleton]") })) stop();
+    if (navigationFinished({ startedAt: startedAt.current, now: where() })) stop();
   };
 
-  // The address changed: that is the end of the change only if the placeholder is gone too.
+  // The address changed: the new page is there.
   useEffect(() => { current.current = here; checkFinished(); }, [here]);
 
   useEffect(() => {
@@ -58,7 +60,8 @@ export default function NavLoader() {
       window.clearTimeout(timers.current.giveUp);
       window.clearInterval(timers.current.watch);
       startedAt.current = where();
-      // The placeholder going away is a change of the page, not of the address: watch for it.
+      document.documentElement.setAttribute("data-navigating", "");
+      // The address is also checked on a timer, in case the change lands between renders.
       timers.current.watch = window.setInterval(checkFinished, 150);
       timers.current.show = window.setTimeout(() => {
         const page = document.querySelector("main.sc-main")?.getBoundingClientRect();
@@ -108,9 +111,11 @@ export default function NavLoader() {
     <div data-nav-loader role="status" aria-live="polite" className="sc-navload"
       style={{ position: "fixed", top: box.top, left: box.left, width: box.width, bottom: 0, zIndex: 25 }}>
       <div className="sc-navload-bar" aria-hidden="true" />
-      <div className="sc-navload-card">
-        <span className="sc-navload-ring" aria-hidden="true" />
-        <span className="sc-navload-text">Loading…</span>
+      <div className="sc-navload-veil" style={{ animationDelay: `${VEIL_DELAY_MS}ms` }}>
+        <div className="sc-navload-card">
+          <span className="sc-navload-ring" aria-hidden="true" />
+          <span className="sc-navload-text">Loading…</span>
+        </div>
       </div>
     </div>
   );

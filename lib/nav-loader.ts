@@ -11,6 +11,9 @@
 /** How long a page change may take before the loading screen appears. Quicker ones never show it. */
 export const LOADER_DELAY_MS = 1000;
 
+/** After it appears, how long before the page is dimmed under the spinner. Until then only the thin bar on top moves, so a page that arrives just after the delay is not covered for a split second. */
+export const VEIL_DELAY_MS = 600;
+
 /** Routes that answer with a file or data, not a page: following them leaves the page where it is. */
 const NOT_PAGES = /^\/(api|auth)(\/|$)|\/(download|export)$/;
 
@@ -35,12 +38,11 @@ export function isPageNavigation(a: {
 }
 
 /**
- * Has the page change finished? Not when the address changes: the app often
- * changes the address at once and shows the page's grey placeholder
- * (app/(shell)/loading.tsx, marked data-nav-skeleton) until the real page
- * arrives. It has finished when the address is not the one the change started
- * from and the placeholder is gone.
+ * Has the page change finished? When the address is not the one the change
+ * started from: the app changes it only when the new page arrives, since there
+ * is no placeholder page in between (a grey stand-in swapped in for a moment
+ * and then swapped out again looked like a flicker, so it was removed).
  */
-export function navigationFinished(a: { startedAt: string; now: string; placeholderShown: boolean }): boolean {
-  return a.now !== a.startedAt && !a.placeholderShown;
+export function navigationFinished(a: { startedAt: string; now: string }): boolean {
+  return a.now !== a.startedAt;
 }
