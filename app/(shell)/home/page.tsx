@@ -36,6 +36,7 @@ import { mutesOf } from "@/lib/posts/mutes";
 import type { HelpStatus } from "@/components/feed/PostCard";
 import { FeedVisit, FeedLive, AutoMore, FeedKeys, MutedList } from "@/components/feed/FeedClient";
 import { VISIT_COOKIE, SESSION_COOKIE } from "@/lib/posts/visit";
+import { SEEN_COOKIE, isSeen, parseSeen } from "@/lib/seen";
 
 export const dynamic = "force-dynamic";
 
@@ -103,7 +104,7 @@ export default async function Home({
   if (myRooms.length === 0) redirect("/welcome");
 
   const feed = (async () => {
-    const none = { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false, status: new Map<string, HelpStatus>(), openCount: 0, callRows: [] as any[], pinnedWhy: new Map<string, string[]>() };
+    const none = { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false, status: new Map<string, HelpStatus>(), openCount: 0, callRows: [] as any[], pinnedWhy: new Map<string, { reasons: string[]; at: string }>() };
     // Muted topic groups leave "all topics"; picked on their own in the Filter, they still show.
     const roomScope = room ? [room] : myRooms.filter((r) => !mutes.rooms.has(r));
     if (feedMode === "calls" || (feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length) || (feedMode === "topics" && !roomScope.length)) return none;
@@ -125,7 +126,8 @@ export default async function Home({
     // Held at the top whatever the filter: your own posts that got a reply this week,
     // and posts (or replies) that mention you. They are fetched on their own and
     // taken out of the list below so none shows twice.
-    const pinnedWhy = new Map<string, string[]>();
+    const pinnedWhy = new Map<string, { reasons: string[]; at: string }>();
+    const seenPinned = parseSeen(jar.get(SEEN_COOKIE)?.value);
     let pinned: any[] = [];
     {
       const since = new Date(Date.now() - 7 * 864e5).toISOString();
@@ -141,7 +143,8 @@ export default async function Home({
       for (const r of gotReplies ?? []) note(r.post_id, r.created_at, "New reply on your post");
       for (const m of ments ?? []) if (m.source_kind === "post") note(m.source_id, m.created_at, "Mentions you");
       for (const r of mentionedReplies ?? []) note(r.post_id, replyMentions.find((m: any) => m.source_id === r.id)?.created_at ?? since, "Mentions you");
-      const ids = [...at.keys()].sort((a, b) => at.get(b)!.localeCompare(at.get(a)!)).slice(0, 10);
+      // What you have already looked at is not held again, unless something newer happened on it.
+      const ids = [...at.keys()].filter((id) => !isSeen(seenPinned, id, at.get(id)!)).sort((a, b) => at.get(b)!.localeCompare(at.get(a)!)).slice(0, 10);
       const { data: found } = ids.length ? await supabase.from("posts").select(cols).in("id", ids) : { data: [] as any[] };
       pinned = (found ?? [])
         .filter((p: any) => (!p.group_id || myGroupIds.includes(p.group_id)) && notForChosenPeople(me_)(p) && !mutes.posts.has(p.id) && !mutes.people.has(p.author_id))
@@ -149,7 +152,7 @@ export default async function Home({
       for (const p of pinned) {
         // Your own post does not mention you to yourself.
         const reasons = [...(why.get(p.id) ?? [])].filter((r) => !(r === "Mentions you" && p.author_id === me_));
-        if (reasons.length) pinnedWhy.set(p.id, reasons); 
+        if (reasons.length) pinnedWhy.set(p.id, { reasons, at: at.get(p.id)! });
       }
       pinned = pinned.filter((p: any) => pinnedWhy.has(p.id));
     }

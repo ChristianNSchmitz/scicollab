@@ -1,3 +1,4 @@
+import PinnedStrip from "@/components/feed/PinnedStrip";
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
 import PersonLink from "@/components/social/PersonLink";
@@ -59,8 +60,8 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
   status?: HelpStatus;
   /** Posted since your last visit. */
   isNew?: boolean;
-  /** Why this post is held at the top of the feed: "New reply", "Mentions you". */
-  pinned?: string[];
+  /** Why this post is held at the top of the feed ("New reply on your post", "Mentions you"), and the time of that activity. */
+  pinned?: { reasons: string[]; at: string };
   /** For a call for collaborators: what the viewer has with it. Without it the card shows no way to answer (group feeds). */
   call?: CallInfo;
 }) {
@@ -71,13 +72,8 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
   const ctx = extra?.context;
   return (
     <article id={`post-${p.id}`} data-post={p.id} data-author={p.author_id} data-room={p.group_id ? undefined : p.room_id} className="sc-post" style={{ scrollMarginTop: 72 }}>
-      <Panel style={pinned?.length ? { borderColor: "var(--signal)" } : undefined}>
-        {pinned && pinned.length > 0 && (
-          <div className="sc-pinned" style={{ padding: "7px 14px", display: "flex", alignItems: "center", gap: 8, font: "600 12px/1.4 var(--sans)", color: "var(--signal-ink)", background: "color-mix(in srgb, var(--signal) 9%, transparent)", borderBottom: "1px solid var(--rule)" }}>
-            <span aria-hidden="true" style={{ width: 7, height: 7, borderRadius: 999, background: "var(--signal)" }} />
-            {pinned.join(" · ")}
-          </div>
-        )}
+      <Panel style={pinned ? { borderColor: "var(--signal)" } : undefined}>
+        {pinned && <PinnedStrip postId={p.id} at={pinned.at} reasons={pinned.reasons} />}
         {ctx && (
           <div style={{ padding: "10px 14px 0", font: "400 12.5px/1.55 var(--sans)", color: "var(--mute)" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 7 }}>
