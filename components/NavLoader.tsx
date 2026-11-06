@@ -13,7 +13,7 @@ type Box = { top: number; left: number; width: number };
  * The loading screen for a slow page change. Quick changes never show it: the
  * old page simply stays until the new one is there (there is no placeholder
  * page in between: swapping one in and out again looked like a flicker). The
- * pointer turns to the "busy" cursor at once; if the page is still not there a
+ * pointer stays as it is (no "busy" cursor); if the page is still not there a
  * full second after the click (LOADER_DELAY_MS) a thin bar starts moving along
  * the top of the page, and only VEIL_DELAY_MS later is the page dimmed under a
  * spinner. So a page that arrives just after the second is never covered for a
