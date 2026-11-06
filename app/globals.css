@@ -122,6 +122,9 @@ input::placeholder, textarea::placeholder { color: var(--placeholder); }
 /* Ad slot: a medium rectangle (300 x 250) that keeps its place until an ad is put in it. */
 .sc-ad { display: grid; place-items: center; min-height: 250px; border: 1px dashed var(--rule); color: var(--mute); font: 600 11px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
 /* In the feed's tinted column the ad keeps a neutral surface of its own: no colour from the column. */
+/* The feed's column: its boxes are solid, so the orange of the column does not shine through. */
+.sc-feed-aside .sc-panel, .sc-feed-aside .sc-hl-tile { background: #fff !important; }
+html[data-theme="dark"] .sc-feed-aside .sc-panel, html[data-theme="dark"] .sc-feed-aside .sc-hl-tile { background: #1d1d22 !important; }
 .sc-home-aside .sc-ad, .sc-ad-col .sc-ad { background: #fff; border: 1px dashed rgba(0, 0, 0, .16); border-radius: 16px; color: #8a8a8e; }
 html[data-theme="dark"] .sc-home-aside .sc-ad, html[data-theme="dark"] .sc-ad-col .sc-ad { background: #1d1d22; border-color: rgba(255, 255, 255, .16); color: #9a9aa0; }
 /* Browse pages (Page with ad): the same ad column as the feed's, on wide screens only. */
