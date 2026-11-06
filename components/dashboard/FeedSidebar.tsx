@@ -27,12 +27,15 @@ export default function FeedSidebar({ biblio, change, pubs, contacts, responses,
   biblio: Bibliometrics; change: RecentChange; pubs: PubRow[]; contacts: Contact[]; responses: Response[]; moreResponses: number;
 }) {
   return (
-    <aside aria-label="Your activity" className="sc-feed-aside">
-      <Citations biblio={biblio} change={change} pubs={pubs} />
-      <Responses items={responses} more={moreResponses} />
-      <People contacts={contacts} />
-      <AdSlot className="sc-hide-narrow" />
-    </aside>
+    <>
+      <aside aria-label="Your activity" className="sc-feed-aside">
+        <Citations biblio={biblio} change={change} pubs={pubs} />
+        <Responses items={responses} more={moreResponses} />
+        <People contacts={contacts} />
+      </aside>
+      {/* Outside the tinted column, so it can stay in view while the feed scrolls. */}
+      <AdSlot className="sc-hide-narrow sc-ad-sticky" />
+    </>
   );
 }
 

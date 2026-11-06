@@ -35,7 +35,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
       <TopBar name={name} avatarUrl={profile?.avatar_url ?? null} userId={user.id} moderator={moderator} />
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
         <Rail />
-        <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "auto", background: "var(--bg)", display: "flex", flexDirection: "column" }}>
+        <main className="sc-main" style={{ flex: 1, minWidth: 0, overflowX: "clip", background: "var(--bg)", display: "flex", flexDirection: "column" }}>
           <div style={{ flex: 1 }}>{children}</div>
           <SiteFooter clearDock />
         </main>
