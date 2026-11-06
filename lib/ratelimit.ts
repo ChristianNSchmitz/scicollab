@@ -19,6 +19,7 @@ export const LIMITS = {
   reply:    { table: "post_replies",    column: "author_id",    max: 30, minutes: 60, noun: "replies" },
   opportunity: { table: "opportunities", column: "posted_by",   max: 10, minutes: 1440, noun: "jobs and funding calls" },
   event:    { table: "events",          column: "created_by",   max: 20, minutes: 1440, noun: "events" },
+  story:    { table: "stories",         column: "author_id",    max: 20, minutes: 1440, noun: "stories" },
   request:  { table: "access_requests", column: "requester_id", max: 20, minutes: 60, noun: "access requests" },
 } satisfies Record<string, Limit>;
 

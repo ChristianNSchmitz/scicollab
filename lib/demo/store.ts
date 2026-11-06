@@ -14,12 +14,21 @@
  * ".ex". The written content is lib/demo/personas/content.json.
  */
 
-import { PERSONA_ACCOUNTS, ACCOUNT_ALIASES, personaTables } from "./personas";
+import { PERSONA_ACCOUNTS, ACCOUNT_ALIASES, personaTables, at } from "./personas";
+import { crowdTables } from "./personas/crowd";
 
 export type Visibility = "private" | "lab" | "public";
 
 /** The board's researcher persona, now Alex Rivera.ex. Kept as an id other modules use. */
 export const ME = "u-rivera";
+
+/** The written personas plus the generated crowd (personas/crowd.ts): the crowd is
+ *  for the local demo only, so scripts/seed-personas.mjs, which reads personaTables, never sees it. */
+function localWorld() {
+  const t = personaTables() as Record<string, Record<string, any>[]>;
+  crowdTables(at, t);
+  return t;
+}
 export const DEMO_EMAIL = "demo@scicollab.test";
 export const DEMO_PASSWORD = "reproduce";
 
@@ -88,7 +97,7 @@ export function emailTaken(email: string): boolean {
 const __sc = globalThis as { __scicollabTables?: Record<string, Record<string, unknown>[]> };
 
 export const tables: Record<string, Record<string, unknown>[]> =
-  (__sc.__scicollabTables ??= personaTables());
+  (__sc.__scicollabTables ??= localWorld());
 
 /** Account deletion in demo mode: the sign-in, the profile and every row the
  *  person authored or received, removed in place so other references to the
