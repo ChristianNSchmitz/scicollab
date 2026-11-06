@@ -61,7 +61,6 @@ export default async function Home({
   const sp = await searchParams;
   const { intent, room: roomParam, sync, feed: feedParam, posted, n, open: openParam, sort: sortParam, sent } = sp;
   const cf = callFilters(sp);
-  // Twenty posts first; scrolling down asks for twenty more, up to two hundred.
   // Ten posts first, so the page arrives quickly; more load as you scroll (AutoMore).
   const pageSize = Math.min(200, Math.max(10, Number(n) || 10));
   const openOnly = openParam === "1";
@@ -345,6 +344,10 @@ export default async function Home({
     const r = rs.find((x: any) => x.helped_at) ?? rs[0];
     return r ? { id: r.id, body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) } : null;
   };
+  // The Filter button and its panel, the same on every tab (Calls included), so the tabs never move.
+  const filterSummary: React.CSSProperties = { listStyle: "none", cursor: "pointer", width: 220, height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" };
+  const filterPanel: React.CSSProperties = { position: "absolute", right: 0, top: 42, zIndex: 30, width: "min(420px, 90vw)", padding: 12, borderRadius: 16, border: "1px solid var(--rule)", background: "color-mix(in srgb, var(--bg) 94%, transparent)", boxShadow: "0 16px 40px rgba(31, 38, 60, .18)", WebkitBackdropFilter: "blur(27px) saturate(218%)", backdropFilter: "blur(27px) saturate(218%)", display: "flex", flexDirection: "column", gap: 10 };
+  const callsLabel = [{ open: "Open", filled: "Filled", closed: "Closed", all: "All calls" }[cf.status as string] ?? "Open", cf.term ? `“${cf.term}”` : null, cf.due ? `by ${cf.due}` : null, cf.mine ? "mine" : null].filter(Boolean).join(" · ");
   const filterLabel = [relevant ? "Relevant" : null, openOnly ? "Open only" : null, intent ? SHORT[intent] ?? intent : "All kinds", feedMode === "topics" ? (room ? `#${room}` : "all topics") : null].filter(Boolean).join(" · ");
   // Posts since your last visit; in the latest-first order a line marks where they end.
   const isNew = (p: any) => !pinnedWhy.has(p.id) && !!lastVisit && p.author_id !== me_ && p.created_at > lastVisit;
@@ -432,14 +435,49 @@ export default async function Home({
           ...(k === "calls" ? { badge: openCallCount ?? 0, quiet: true } : {}),
         }))} />
         {/* Kind and topic behind one button: two rows of chips were too much on every visit. */}
+        {feedMode === "calls" && (
+        // The same Filter button in the same place as on the other tabs, with the call filters inside.
+        <details className="sc-feed-filter" data-keep-open style={{ position: "relative" }} open={false}>
+          <summary style={filterSummary}>
+            Filter <span title={callsLabel} style={{ flex: 1, fontWeight: 400, color: (cf.term || cf.due || cf.mine || cf.status !== "open") ? "var(--ink)" : "var(--mute)", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{callsLabel}</span>
+          </summary>
+          <div style={filterPanel}>
+            {(cf.term || cf.due || cf.mine || cf.status !== "open") && <Link href={callsHref({})} scroll={false} style={{ alignSelf: "flex-end", font: "600 12.5px/1 var(--sans)", color: "var(--link)", textDecoration: "none" }}>Clear filter</Link>}
+            <div>
+              <div style={{ font: "600 12px/1 var(--sans)", color: "var(--mute)", marginBottom: 6 }}>Status</div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {([["open", "Open"], ["filled", "Filled"], ["closed", "Closed"], ["all", "All"]] as const).map(([key, label]) => (
+                  <Link key={key} href={callsHref({ q: cf.term, due: cf.due, mine: cf.mine ? "1" : "", status: key })} scroll={false} style={pill(cf.status === key)}>{label}</Link>
+                ))}
+              </div>
+            </div>
+            <form role="search" action="/home" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <input type="hidden" name="feed" value="calls" />
+              {cf.status !== "open" && <input type="hidden" name="status" value={cf.status} />}
+              <label style={{ font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Technique, system or any word
+                <input name="q" defaultValue={cf.term} placeholder="Seahorse, iPSC neurons, CRISPR…" style={{ ...field, marginTop: 4 }} />
+              </label>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
+                <label style={{ flex: "1 1 150px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Deadline before
+                  <input name="due" type="date" defaultValue={cf.due} style={{ ...field, marginTop: 4 }} />
+                </label>
+                <label style={{ display: "flex", gap: 6, alignItems: "center", font: "400 13px/1 var(--sans)", height: 38 }}>
+                  <input type="checkbox" name="mine" value="1" defaultChecked={cf.mine} /> Only my calls
+                </label>
+              </div>
+              <div><button type="submit" style={{ ...btnPrimary, height: 34 }}>Apply</button></div>
+            </form>
+          </div>
+        </details>
+        )}
         {feedMode !== "calls" && (
         <details className="sc-feed-filter" data-keep-open style={{ position: "relative" }} open={false}>
           {/* A fixed width: the tabs beside it must not move when the label changes. */}
-          <summary style={{ listStyle: "none", cursor: "pointer", width: 220, height: 36, padding: "0 14px", borderRadius: 999, border: "1px solid var(--rule)", background: "var(--surface)", display: "flex", alignItems: "center", gap: 6, font: "600 13px/1 var(--sans)", color: "var(--ink)", whiteSpace: "nowrap" }}>
+          <summary style={filterSummary}>
             Filter <span title={filterLabel} style={{ flex: 1, fontWeight: 400, color: (intent || room || openOnly || relevant) ? "var(--ink)" : "var(--mute)", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{filterLabel}</span>
             {openCount > 0 && <span title={`${openCount} request${openCount > 1 ? "s" : ""} for help without a reply`} style={{ flex: "0 0 auto", padding: "3px 7px", borderRadius: 999, background: "var(--signal)", color: "#fff", font: "700 11px/1 var(--sans)" }}>{openCount} open</span>}
           </summary>
-          <div style={{ position: "absolute", right: 0, top: 42, zIndex: 30, width: "min(420px, 90vw)", padding: 12, borderRadius: 16, border: "1px solid var(--rule)", background: "color-mix(in srgb, var(--bg) 94%, transparent)", boxShadow: "0 16px 40px rgba(31, 38, 60, .18)", WebkitBackdropFilter: "blur(27px) saturate(218%)", backdropFilter: "blur(27px) saturate(218%)", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={filterPanel}>
             {(intent || room || openOnly || relevant) && <Link href={qs({ intent: undefined, room: undefined, open: undefined, sort: undefined }, false)} scroll={false} style={{ alignSelf: "flex-end", font: "600 12.5px/1 var(--sans)", color: "var(--link)", textDecoration: "none" }}>Clear filter</Link>}
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
               <div>
@@ -536,28 +574,12 @@ export default async function Home({
 
         {feedMode === "calls" && callsData && (
           <>
-            <p style={{ font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
-              Labs looking for a technique or a second pair of hands, from everywhere, not only your topic groups. Only the caller sees who is interested.
-            </p>
-            <form role="search" action="/home" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
-              <input type="hidden" name="feed" value="calls" />
-              {cf.status !== "open" && <input type="hidden" name="status" value={cf.status} />}
-              <label style={{ flex: "2 1 240px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Technique, system or any word
-                <input name="q" defaultValue={cf.term} placeholder="Seahorse, iPSC neurons, CRISPR…" style={{ ...field, marginTop: 4 }} />
-              </label>
-              <label style={{ flex: "1 1 150px", font: "600 12px/1.4 var(--sans)", color: "var(--mute)" }}>Deadline before
-                <input name="due" type="date" defaultValue={cf.due} style={{ ...field, marginTop: 4 }} />
-              </label>
-              <label style={{ display: "flex", gap: 6, alignItems: "center", font: "400 13px/1 var(--sans)", height: 38 }}>
-                <input type="checkbox" name="mine" value="1" defaultChecked={cf.mine} /> Only my calls
-              </label>
-              <button type="submit" style={{ ...btn, height: 38 }}>Filter</button>
-              {(cf.term || cf.due || cf.mine) && <Link href={callsHref({ status: cf.status })} scroll={false} style={{ font: "400 12.5px/38px var(--sans)", color: "var(--mute)" }}>clear</Link>}
-              <Link href="/post?intent=collab" style={{ ...btnPrimary, height: 38, marginLeft: "auto" }}>Post a call</Link>
-            </form>
-            <SegTabs label="Call status" style={{ margin: 0 }} items={([["open", "Open"], ["filled", "Filled"], ["closed", "Closed"], ["all", "All"]] as const).map(([key, label]) => ({
-              href: callsHref({ q: cf.term, due: cf.due, mine: cf.mine ? "1" : "", status: key }), label, active: cf.status === key,
-            }))} />
+            <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+              <p style={{ flex: "1 1 300px", font: "400 13px/1.6 var(--sans)", color: "var(--mute)", margin: 0 }}>
+                Labs looking for a technique or a second pair of hands, from everywhere, not only your topic groups. Only the caller sees who is interested.
+              </p>
+              <Link href="/post?intent=collab" style={{ ...btnPrimary, height: 34 }}>Post a call</Link>
+            </div>
             <div key={`calls-${cf.status}-${cf.term}-${cf.due}-${cf.mine}`} className="sc-tabpane" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {callsData.calls.length === 0 && <Panel><Empty>No calls match. Change the filters, or <Link href="/post?intent=collab" style={{ color: "var(--link)" }}>post the first one</Link>.</Empty></Panel>}
               {callsData.calls.map((c: any) => <CallCard key={c.id} c={c} author={callsData.people.get(c.author_id)} me={me_} info={callInfo(c.id, callsData.rows, callsBack)} />)}
