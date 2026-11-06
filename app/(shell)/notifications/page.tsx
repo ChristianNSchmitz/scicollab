@@ -26,9 +26,10 @@ export default async function Notifications() {
   ]);
   const seenAt: string | null = profile?.notifications_seen_at ?? null;
   // Seen once shown. A write during render is fine here: it changes nothing on this page.
-  await supabase.from("profiles").update({ notifications_seen_at: new Date().toISOString() }).eq("id", me);
-
-  const people = await peopleById(supabase, items.map((i) => i.who));
+  const [people] = await Promise.all([
+    peopleById(supabase, items.map((i) => i.who)),
+    supabase.from("profiles").update({ notifications_seen_at: new Date().toISOString() }).eq("id", me),
+  ]);
 
   return (
     <Page

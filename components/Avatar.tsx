@@ -12,11 +12,8 @@ export default function Avatar({
   name, url, size = 26,
 }: { name: string; url?: string | null; size?: number }) {
   const a = parseAvatar(url);
-  const box: React.CSSProperties = {
-    width: size, height: size, flex: "none", border: "1px solid var(--ink)",
-    display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
-    background: "var(--bg)",
-  };
+  // The shared part of the look is the .sc-avatar class (globals.css); only the size is per use.
+  const box: React.CSSProperties = { width: size, height: size };
 
   if (a.kind === "image") {
     // eslint-disable-next-line @next/next/no-img-element

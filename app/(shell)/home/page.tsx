@@ -62,7 +62,8 @@ export default async function Home({
   const { intent, room: roomParam, sync, feed: feedParam, posted, n, open: openParam, sort: sortParam, sent } = sp;
   const cf = callFilters(sp);
   // Twenty posts first; scrolling down asks for twenty more, up to two hundred.
-  const pageSize = Math.min(200, Math.max(20, Number(n) || 20));
+  // Ten posts first, so the page arrives quickly; more load as you scroll (AutoMore).
+  const pageSize = Math.min(200, Math.max(10, Number(n) || 10));
   const openOnly = openParam === "1";
   const relevant = sortParam === "relevant";
   // Your previous visit (components/feed/FeedClient.tsx keeps it): posts after it are new.
@@ -103,29 +104,25 @@ export default async function Home({
   // A new account with no topic groups gets the picker, never an empty page.
   if (myRooms.length === 0) redirect("/welcome");
 
+  // Asked now, used at the end: they only depend on what is already known.
+  // An empty "My groups" suggests a few open groups to join.
+  const suggestP = feedMode === "groups" && !myGroupIds.length
+    ? supabase.from("groups").select("id, name, description, access").eq("access", "open").limit(3) : empty;
+  const mutedP = Promise.all([
+    mutes.people.size ? peopleById(supabase, [...mutes.people]) : Promise.resolve(new Map() as Awaited<ReturnType<typeof peopleById>>),
+    mutes.posts.size ? supabase.from("posts").select("id, title").in("id", [...mutes.posts]) : empty,
+  ]);
+
   const feed = (async () => {
     const none = { posts: [] as any[], people: new Map() as Awaited<ReturnType<typeof peopleById>>, cards: [] as any[], feedReplies: [] as any[], reactions: new Map() as Awaited<ReturnType<typeof reactionsFor>>, images: new Map<string, string[]>(), extras: new Map() as Awaited<ReturnType<typeof postExtras>>, hasMore: false, status: new Map<string, HelpStatus>(), openCount: 0, callRows: [] as any[], pinnedWhy: new Map<string, { reasons: string[]; at: string }>() };
     // Muted topic groups leave "all topics"; picked on their own in the Filter, they still show.
     const roomScope = room ? [room] : myRooms.filter((r) => !mutes.rooms.has(r));
     if (feedMode === "calls" || (feedMode === "following" && !followed.length) || (feedMode === "groups" && !myGroupIds.length) || (feedMode === "topics" && !roomScope.length)) return none;
     const cols = "id, author_id, room_id, group_id, intent, title, body, method_card_id, technique, organism, deadline, offer, images, link_preview, audience, feedback_kinds, call_status, created_at";
-    // Following: what they posted, and what they reposted (at the time of the repost).
-    const reposted = feedMode === "following" ? await repostedBy(supabase, followed) : [];
-    let q = supabase.from("posts").select(cols);
-    q = feedMode === "following" ? q.in("author_id", followed)
-      : feedMode === "groups" ? q.in("group_id", myGroupIds)
-      : q.in("room_id", roomScope);
-    // A window of recent posts: enough to leave out what you muted, to find the
-    // open requests and to rank by relevance, and still one query.
-    q = q.order("created_at", { ascending: false }).limit(Math.max(200, pageSize + 1));
-    if (intent) q = q.eq("intent", intent);
-    const { data: own } = await q;
-    const repostIds = reposted.map((r) => r.post_id).filter((id) => !(own ?? []).some((p: any) => p.id === id));
-    const { data: shared } = repostIds.length ? await supabase.from("posts").select(cols).in("id", repostIds) : { data: [] as any[] };
-    const when = (p: any) => reposted.find((r) => r.post_id === p.id && r.created_at > p.created_at)?.created_at ?? p.created_at;
     // Held at the top whatever the filter: your own posts that got a reply this week,
     // and posts (or replies) that mention you. They are fetched on their own and
     // taken out of the list below so none shows twice.
+    async function heldAtTop() {
     const pinnedWhy = new Map<string, { reasons: string[]; at: string }>();
     const seenPinned = parseSeen(jar.get(SEEN_COOKIE)?.value);
     let pinned: any[] = [];
@@ -134,10 +131,11 @@ export default async function Home({
       const ownIds = (myPosts ?? []).map((x: any) => x.id);
       const [{ data: gotReplies }, { data: ments }] = await Promise.all([
         ownIds.length ? supabase.from("post_replies").select("post_id, created_at").in("post_id", ownIds).neq("author_id", me_).gte("created_at", since) : empty,
-        supabase.from("mentions").select("source_kind, source_id, created_at").eq("mentioned_id", me_).in("source_kind", ["post", "reply"]).gte("created_at", since),
+        supabase.from("mentions").select("source_kind, source_id, href, created_at").eq("mentioned_id", me_).in("source_kind", ["post", "reply"]).gte("created_at", since),
       ]);
       const replyMentions = (ments ?? []).filter((m: any) => m.source_kind === "reply");
-      const { data: mentionedReplies } = replyMentions.length ? await supabase.from("post_replies").select("id, post_id").in("id", replyMentions.map((m: any) => m.source_id)) : { data: [] as any[] };
+      // A reply's mention links to its post (/posts/<id>#replies): no extra query for the post.
+      const mentionedReplies = replyMentions.map((m: any) => ({ id: m.source_id, post_id: /^\/posts\/([A-Za-z0-9-]+)/.exec(String(m.href ?? ""))?.[1] })).filter((r): r is { id: string; post_id: string } => !!r.post_id);
       const at = new Map<string, string>(), why = new Map<string, Set<string>>();
       const note = (id: string, when: string, reason: string) => { if (!at.has(id) || when > at.get(id)!) at.set(id, when); why.set(id, new Set([...(why.get(id) ?? []), reason])); };
       for (const r of gotReplies ?? []) note(r.post_id, r.created_at, "New reply on your post");
@@ -156,6 +154,27 @@ export default async function Home({
       }
       pinned = pinned.filter((p: any) => pinnedWhy.has(p.id));
     }
+    return { pinned, pinnedWhy };
+    }
+
+    // Following: what they posted, and what they reposted (at the time of the repost).
+    // The independent questions go out together; each round trip to the
+    // database costs tens of milliseconds, and they used to wait on each other.
+    const repostedP = feedMode === "following" ? repostedBy(supabase, followed) : Promise.resolve([] as { post_id: string; created_at: string }[]);
+    let q = supabase.from("posts").select(cols);
+    q = feedMode === "following" ? q.in("author_id", followed)
+      : feedMode === "groups" ? q.in("group_id", myGroupIds)
+      : q.in("room_id", roomScope);
+    // A window of recent posts: enough to leave out what you muted, to find the
+    // open requests and to rank by relevance, and still one query.
+    q = q.order("created_at", { ascending: false }).limit(Math.max(200, pageSize + 1));
+    if (intent) q = q.eq("intent", intent);
+    const pinnedP = heldAtTop();
+    const [{ data: own }, reposted] = await Promise.all([q, repostedP]);
+    const repostIds = reposted.map((r) => r.post_id).filter((id) => !(own ?? []).some((p: any) => p.id === id));
+    const { data: shared } = repostIds.length ? await supabase.from("posts").select(cols).in("id", repostIds) : { data: [] as any[] };
+    const when = (p: any) => reposted.find((r) => r.post_id === p.id && r.created_at > p.created_at)?.created_at ?? p.created_at;
+    const { pinned, pinnedWhy } = await pinnedP;
 
     // A followed person's posts in a group you are not in stay in that group.
     const candidates = [...(own ?? []), ...(intent ? (shared ?? []).filter((p: any) => p.intent === intent) : shared ?? [])]
@@ -192,7 +211,7 @@ export default async function Home({
     const cardIds = [...new Set(posts.map((p: any) => p.method_card_id).filter(Boolean))];
     const postIds = posts.map((p: any) => p.id);
     const callIds = posts.filter((p: any) => p.intent === "collab").map((p: any) => p.id);
-    const [authors, { data: cards }, { data: feedReplies }, reactions, images, { data: callRows }] = await Promise.all([
+    const [authors, { data: cards }, { data: feedReplies }, reactions, images, { data: callRows }, extras] = await Promise.all([
       peopleById(supabase, posts.map((p: any) => p.author_id)),
       cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, system").in("id", cardIds) : empty,
       postIds.length ? supabase.from("post_replies").select("id, post_id, author_id, body, created_at, helped_at").in("post_id", postIds).order("created_at", { ascending: false }) : empty,
@@ -200,8 +219,8 @@ export default async function Home({
       imageUrls(supabase, posts),
       // Your own answers, and the answers to your calls (nobody else's).
       callIds.length ? supabase.from("call_interest").select("post_id, user_id, shortlisted").in("post_id", callIds) : empty,
+      postExtras(supabase, me_, postIds, following),
     ]);
-    const extras = await postExtras(supabase, me_, postIds, following, reactions);
     const contextIds = [...[...extras.values()].map((e) => e.context?.personId), ...(feedReplies ?? []).map((r: any) => r.author_id)]
       .filter((x): x is string => !!x && !authors.has(x));
     const people = contextIds.length ? new Map([...authors, ...(await peopleById(supabase, contextIds))]) : authors;
@@ -291,9 +310,6 @@ export default async function Home({
     callsView,
     openCalls,
   ]);
-  // An empty "My groups": a few open groups to join instead of a sentence.
-  const { data: suggestGroups } = feedMode === "groups" && !myGroupIds.length
-    ? await supabase.from("groups").select("id, name, description, access").eq("access", "open").limit(3) : { data: [] as any[] };
   const groupNames = new Map<string, { id: string; name: string }>(groupList.map((g: any) => [g.id, { id: g.id, name: g.name }]));
   // Replies to your posts and answers to your questions in the last two weeks,
   // newest first: the column shows the latest few, with the name of who wrote.
@@ -311,7 +327,10 @@ export default async function Home({
     return m;
   }, new Map<string, { latest: (typeof received)[number]; people: Set<string> }>()).values()];
   const shownTopics = topicsReplied.slice(0, RESPONSES_SHOWN);
-  const names = await peopleById(supabase, [...shownTopics.map((t) => t.latest.whoId), ...waiting.feedback.map((f) => f.author_id)]);
+  const [names, { data: suggestGroups }, [mutedPeople, { data: mutedPosts }]] = await Promise.all([
+    peopleById(supabase, [...shownTopics.map((t) => t.latest.whoId), ...waiting.feedback.map((f) => f.author_id)]),
+    suggestP, mutedP,
+  ]);
   const responses: Response[] = shownTopics.map(({ latest: r, people: ps }) => ({
     id: r.id, href: r.href, whoId: r.whoId, who: names.get(r.whoId)?.display_name ?? "Someone", avatar: names.get(r.whoId)?.avatar_url ?? null,
     snippet: snippetOf(r.body, 70), about: r.about, at: r.at, others: ps.size - 1,
@@ -324,24 +343,13 @@ export default async function Home({
   const topReply = (id: string) => {
     const rs = (feedReplies ?? []).filter((r: any) => r.post_id === id);
     const r = rs.find((x: any) => x.helped_at) ?? rs[0];
-    return r ? { body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) } : null;
-  };
-  // The rest of the thread, oldest first, to open in place.
-  const moreReplies = (id: string) => {
-    const rs = (feedReplies ?? []).filter((r: any) => r.post_id === id);
-    const top = rs.find((x: any) => x.helped_at) ?? rs[0];
-    return rs.filter((r: any) => r !== top).reverse().slice(0, 30)
-      .map((r: any) => ({ body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) }));
+    return r ? { id: r.id, body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: people.get(r.author_id) } : null;
   };
   const filterLabel = [relevant ? "Relevant" : null, openOnly ? "Open only" : null, intent ? SHORT[intent] ?? intent : "All kinds", feedMode === "topics" ? (room ? `#${room}` : "all topics") : null].filter(Boolean).join(" · ");
   // Posts since your last visit; in the latest-first order a line marks where they end.
   const isNew = (p: any) => !pinnedWhy.has(p.id) && !!lastVisit && p.author_id !== me_ && p.created_at > lastVisit;
   const newCount = posts.filter(isNew).length;
   const lineAfter = !relevant && newCount > 0 && newCount < posts.length ? posts.findLastIndex((p: any) => isNew(p)) : -1;
-  const [mutedPeople, { data: mutedPosts }] = await Promise.all([
-    mutes.people.size ? peopleById(supabase, [...mutes.people]) : Promise.resolve(new Map()),
-    mutes.posts.size ? supabase.from("posts").select("id, title").in("id", [...mutes.posts]) : empty,
-  ]);
   const short = (t: string) => (t.length > 28 ? t.slice(0, 27) + "…" : t);
   const mutedItems = mutes.list.map((m) => ({ ...m, label: m.kind === "room" ? `#${m.target}`
     : m.kind === "person" ? mutedPeople.get(m.target)?.display_name ?? "A person"
@@ -568,7 +576,7 @@ export default async function Home({
             reaction={reactions.get(p.id)} replies={replyCount(p.id)} me={me_} path="/home"
             topicHref={(r) => qs({ room: r, feed: undefined })} group={groupNames.get(p.group_id) ?? null}
             extra={extras.get(p.id)} follows={following.has(p.author_id)} contextPerson={who(extras.get(p.id)?.context?.personId ?? "")}
-            topReply={topReply(p.id)} moreReplies={moreReplies(p.id)} status={status.get(p.id)} isNew={isNew(p)} pinned={pinnedWhy.get(p.id)}
+            topReply={topReply(p.id)} status={status.get(p.id)} isNew={isNew(p)} pinned={pinnedWhy.get(p.id)}
             call={p.intent === "collab" ? callInfo(p.id, callRows, qs({}, false)) : undefined} />
           {i === lineAfter && (
             <div role="separator" aria-label="Earlier posts" style={{ display: "flex", alignItems: "center", gap: 10, font: "600 12px/1 var(--sans)", color: "var(--mute)" }}>

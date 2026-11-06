@@ -6,7 +6,7 @@ import { replyInline } from "@/app/actions/posts";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { repost, undoRepost, sendPost } from "@/app/actions/post-interactions";
 import { findPeople } from "@/app/actions/chat";
-import { popover, menuItem, actionBtn } from "./popover";
+import { popover, menuItem } from "./popover";
 
 
 const svg = { width: 17, height: 17, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true } as const;
@@ -73,18 +73,18 @@ export default function PostActions({ postId, inGroup, own, reposted: initialRep
 
   return (
     <div ref={box} style={{ position: "relative", display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
-      {!replyInPlace ? <Link href={`/posts/${postId}#replies`} style={actionBtn}><IconReply />Reply</Link>
-        : <button type="button" onClick={() => window.dispatchEvent(new CustomEvent(REPLY_EVENT, { detail: { id: postId, toggle: true } }))} style={actionBtn}>
+      {!replyInPlace ? <Link href={`/posts/${postId}#replies`} className="sc-act"><IconReply />Reply</Link>
+        : <button type="button" onClick={() => window.dispatchEvent(new CustomEvent(REPLY_EVENT, { detail: { id: postId, toggle: true } }))} className="sc-act">
           <IconReply />Reply
         </button>}
       {!inGroup && !own && (
         <button type="button" aria-expanded={menu === "repost"} aria-haspopup="menu" onClick={() => { setMenu(menu === "repost" ? "" : "repost"); setThoughts(null); setStatus(""); }}
-          style={{ ...actionBtn, color: reposted ? "var(--ok)" : "var(--mute)" }}>
+          className="sc-act" style={reposted ? { color: "var(--ok)" } : undefined}>
           <IconRepost />{reposted ? "Reposted" : "Repost"}
         </button>
       )}
       {!inGroup && (
-        <button type="button" aria-expanded={menu === "send"} aria-haspopup="dialog" onClick={() => { setMenu(menu === "send" ? "" : "send"); setStatus(""); setTo(null); setQ(""); setNote(""); }} style={actionBtn}>
+        <button type="button" aria-expanded={menu === "send"} aria-haspopup="dialog" onClick={() => { setMenu(menu === "send" ? "" : "send"); setStatus(""); setTo(null); setQ(""); setNote(""); }} className="sc-act">
           <IconSend />Send
         </button>
       )}

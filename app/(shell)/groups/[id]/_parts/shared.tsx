@@ -26,6 +26,8 @@ const vis = (v: string) => (v === "private" ? "private, shared with this group" 
 /** What the members share with the group: method cards, datasets, files and projects. */
 export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
   const { supabase, id, me, member, manage, sp } = ctx;
+  // Repositories and Nextcloud folders go out with the rest, not after it.
+  const linksP = member ? Promise.all([repoLinks(supabase, { groupId: id }), ncLinks(supabase, { groupId: id })]) : Promise.resolve([[], []] as [Awaited<ReturnType<typeof repoLinks>>, Awaited<ReturnType<typeof ncLinks>>]);
   const [{ data: gp }, { data: myProjects }, { data: gm }, { data: myCards }, { data: gd }, { data: myData }, { data: files }] = await Promise.all([
     supabase.from("group_projects").select("project_id, added_by").eq("group_id", id),
     supabase.from("project_members").select("project_id").eq("user_id", me),
@@ -36,7 +38,7 @@ export default async function GroupShared({ ctx }: { ctx: GroupCtx }) {
     member ? supabase.from("datasets").select("id, title").eq("owner_id", me).order("created_at", { ascending: false }).limit(200) : Promise.resolve({ data: [] as any[] }),
     member ? supabase.from("group_files").select("id, name, size_bytes, note, uploaded_by, created_at").eq("group_id", id).order("created_at", { ascending: false }) : Promise.resolve({ data: [] as any[] }),
   ]);
-  const [repos, clouds] = member ? await Promise.all([repoLinks(supabase, { groupId: id }), ncLinks(supabase, { groupId: id })]) : [[], []];
+  const [repos, clouds] = await linksP;
   const cardIds = (gm ?? []).map((m: any) => m.card_id);
   const dataIds = (gd ?? []).map((d: any) => d.dataset_id);
   const projectIds = [...new Set([...(gp ?? []).map((p: any) => p.project_id), ...(myProjects ?? []).map((p: any) => p.project_id)])];

@@ -26,14 +26,7 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
   const topReply = (id: string) => {
     const rs = (replies ?? []).filter((r: any) => r.post_id === id);
     const r = rs.find((x: any) => x.helped_at) ?? rs[0];
-    return r ? { body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: repliers.get(r.author_id) } : null;
-  };
-  // The rest of the thread, oldest first, to open in place.
-  const moreReplies = (id: string) => {
-    const rs = (replies ?? []).filter((r: any) => r.post_id === id);
-    const top = rs.find((x: any) => x.helped_at) ?? rs[0];
-    return rs.filter((r: any) => r !== top).reverse().slice(0, 30)
-      .map((r: any) => ({ body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: repliers.get(r.author_id) }));
+    return r ? { id: r.id, body: r.body, created_at: r.created_at, helped: !!r.helped_at, author: repliers.get(r.author_id) } : null;
   };
   return (
     <section aria-label="Group feed" style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 20 }}>
@@ -42,7 +35,7 @@ export default async function GroupFeed({ ctx }: { ctx: GroupCtx }) {
       {(posts ?? []).map((p: any) => (
         <PostCard key={p.id} p={p} author={authors.get(p.author_id)} images={images.get(p.id)} reaction={reactions.get(p.id)}
           replies={(replies ?? []).filter((r: any) => r.post_id === p.id).length} me={me} path={`/groups/${id}?tab=feed`}
-          topicHref={(r) => `/home?room=${r}`} group={null} extra={extras.get(p.id)} topReply={topReply(p.id)} moreReplies={moreReplies(p.id)} />
+          topicHref={(r) => `/home?room=${r}`} group={null} extra={extras.get(p.id)} topReply={topReply(p.id)} />
       ))}
     </section>
   );

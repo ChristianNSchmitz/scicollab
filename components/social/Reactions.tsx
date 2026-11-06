@@ -5,11 +5,9 @@ import { useRouter } from "next/navigation";
 import { toggleReaction } from "@/app/actions/social";
 import { REACTIONS, type ReactionKey, type ReactionSummary, type ReactionTarget } from "@/lib/social/reactions";
 
-const pill = (on: boolean): React.CSSProperties => ({
-  display: "inline-flex", alignItems: "center", gap: 6, height: 28, padding: "0 10px", borderRadius: 999,
-  border: `1px solid ${on ? "var(--ink)" : "var(--rule)"}`, background: on ? "var(--ink)" : "transparent",
-  color: on ? "var(--bg)" : "var(--ink)", font: "500 11.5px/1 var(--mono)", cursor: "pointer",
-});
+// The pill look lives in globals.css (.sc-react): it repeats on every post, and a
+// class costs a few bytes where the same inline style cost two hundred, twice
+// (in the HTML and again in the page data).
 
 /** The three reactions on a post or an answer, toggled with one click. */
 export default function Reactions({ kind, targetId, summary, own, path }: {
@@ -25,14 +23,14 @@ export default function Reactions({ kind, targetId, summary, own, path }: {
     const any = REACTIONS.filter((r) => counts[r.key] > 0);
     if (!any.length) return null;
     return (
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {any.map((r) => <span key={r.key} className="sc-react-own" style={{ ...pill(false), cursor: "default" }}>{r.label} · {counts[r.key]}</span>)}
+      <div className="sc-pills">
+        {any.map((r) => <span key={r.key} className="sc-react sc-react-own">{r.label} · {counts[r.key]}</span>)}
       </div>
     );
   }
 
   return (
-    <div role="group" aria-label="Reactions" style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+    <div role="group" aria-label="Reactions" className="sc-pills">
       {REACTIONS.map((r) => {
         const on = mine.includes(r.key);
         return (
@@ -41,7 +39,7 @@ export default function Reactions({ kind, targetId, summary, own, path }: {
             type="button"
             aria-pressed={on}
             title={r.hint}
-            style={pill(on)}
+            className="sc-react"
             onClick={() => {
               setMine(on ? mine.filter((k) => k !== r.key) : [...mine, r.key]);
               setCounts({ ...counts, [r.key]: counts[r.key] + (on ? -1 : 1) });

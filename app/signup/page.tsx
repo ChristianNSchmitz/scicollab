@@ -4,7 +4,6 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { createAccount } from "@/app/actions/signup";
 import { demoSignUp, backendConfigured } from "@/app/actions/demo-auth";
 
@@ -14,6 +13,11 @@ import { demoSignUp, backendConfigured } from "@/app/actions/demo-auth";
 export default function SignupPage() {
   return <Suspense fallback={null}><Signup /></Suspense>;
 }
+
+
+/** The Supabase browser client, loaded only when someone signs in: it is most of
+ *  this page's JavaScript, and the demo never needs it. */
+const browserClient = () => import("@/lib/supabase/client").then((m) => m.createClient());
 
 function Signup() {
   const router = useRouter();
@@ -55,7 +59,7 @@ function Signup() {
     const result = await createAccount(form);
     if (!result.ok) { setBusy(false); setError(result.error); return; }
 
-    const { error: signInError } = await createClient().auth.signInWithPassword({
+    const { error: signInError } = await (await browserClient()).auth.signInWithPassword({
       email: email.trim(), password,
     });
     setBusy(false);

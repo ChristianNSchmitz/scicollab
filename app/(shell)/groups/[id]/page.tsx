@@ -60,15 +60,15 @@ export default async function Group({ params, searchParams }: { params: Promise<
   const { data: { user } } = await supabase.auth.getUser();
   const me = user!.id;
 
-  const { data: g } = await supabase.from("groups").select("*").eq("id", id).maybeSingle();
-  if (!g) notFound();
-
-  const [{ data: members }, { data: requests }, { data: visit }] = await Promise.all([
+  // One round trip for the group and who is in it (they do not depend on each other).
+  const [{ data: g }, { data: members }, { data: requests }, { data: visit }] = await Promise.all([
+    supabase.from("groups").select("*").eq("id", id).maybeSingle(),
     supabase.from("group_members").select("user_id, role, joined_at").eq("group_id", id),
     // Admins see every request; anyone else only their own (RLS, supabase/10-journeys.sql).
     supabase.from("group_requests").select("user_id").eq("group_id", id),
     supabase.from("group_visits").select("feed_seen_at, chat_seen_at").eq("group_id", id).eq("user_id", me).maybeSingle(),
   ]);
+  if (!g) notFound();
   const mine = (members ?? []).find((m: any) => m.user_id === me);
   const myRole = mine?.role as GroupRole | undefined;
   const member = isCurrent(myRole);

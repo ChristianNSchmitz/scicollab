@@ -4,8 +4,12 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { demoSignIn, backendConfigured } from "@/app/actions/demo-auth";
+
+
+/** The Supabase browser client, loaded only when someone signs in: it is most of
+ *  this page's JavaScript, and the demo never needs it. */
+const browserClient = () => import("@/lib/supabase/client").then((m) => m.createClient());
 
 function Form() {
   const router = useRouter();
@@ -32,7 +36,7 @@ function Form() {
       return;
     }
 
-    const { error } = await createClient().auth.signInWithPassword({
+    const { error } = await (await browserClient()).auth.signInWithPassword({
       email: email.trim(),
       password,
     });

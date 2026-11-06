@@ -166,5 +166,6 @@ export const CASES: Case[] = [
   { name: "repos.unlinkRepo (a method card's repository)", owner: "u-rivera", stranger: "deny", run: async () => { const r = first("repo_links", (x) => x.method_id); return (await A("repos")).unlinkRepo("method", r.method_id, r.id); } },
 
   // ── reads that must not leak to a stranger
+  { name: "post-interactions.threadOf (post shared with named people only)", owner: "u-mateo", stranger: "deny", read: true, run: async () => (await A("post-interactions")).threadOf("fb-lena") },
   { name: "attachments.pendingFor (only the owner sees requests)", owner: "u-rivera", stranger: "deny", read: true, run: async () => (await A("attachments")).pendingFor("p-2") },
 ];

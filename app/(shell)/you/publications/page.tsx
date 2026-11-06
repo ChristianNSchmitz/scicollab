@@ -15,6 +15,9 @@ import YearBars from "@/components/record/YearBars";
 
 export const dynamic = "force-dynamic";
 
+/** Publications shown before "Show all". */
+const FIRST = 25;
+
 /**
  * Your publications — every work OpenAlex attributes to your ORCID, with the
  * current numbers for each: total citations, this year and last year, the
@@ -22,7 +25,7 @@ export const dynamic = "force-dynamic";
  */
 export default async function Publications({
   searchParams,
-}: { searchParams: Promise<{ sort?: string; q?: string; type?: string; sync?: string }> }) {
+}: { searchParams: Promise<{ sort?: string; q?: string; type?: string; sync?: string; all?: string }> }) {
   ensureRecordSeed();
   const sp = await searchParams;
   const sort = pubSort(sp.sort);
@@ -159,7 +162,11 @@ export default async function Publications({
         </div>
         {shown.length === 0 ? (
           <Empty>{pubs.length === 0 ? "No publications in OpenAlex for this ORCID yet." : "Nothing matches that filter."}</Empty>
-        ) : shown.map((p) => <PublicationRow key={p.openalex_id} p={p} c={c} isNew={fresh.has(p.openalex_id)} detailed />)}
+        ) : shown.slice(0, sp.all === "1" ? shown.length : FIRST).map((p) => <PublicationRow key={p.openalex_id} p={p} c={c} isNew={fresh.has(p.openalex_id)} detailed />)}
+        {/* A long list renders in parts: the first ones at once, the rest on request. */}
+        {sp.all !== "1" && shown.length > FIRST && (
+          <Link href={href({ all: "1" })} scroll={false} style={{ display: "block", padding: "10px 14px", borderBottom: "1px solid var(--rule)", font: "600 12.5px/1.5 var(--sans)", color: "var(--link)", textDecoration: "none" }}>Show all {shown.length}</Link>
+        )}
         <div style={{ padding: "9px 14px", font: "400 12px/1.7 var(--sans)", color: "var(--mute)" }}>
           From <a href="https://openalex.org" target="_blank" rel="noreferrer" style={{ color: "var(--link)" }}>OpenAlex</a> by your ORCID.
           Missing papers are fixed in ORCID or OpenAlex. </div>

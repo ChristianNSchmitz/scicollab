@@ -89,7 +89,7 @@ export default function AboutPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
         {TEAM.map((m) => (
           <div key={m.name} className="sc-soft" style={{ border: "1px solid var(--rule)", background: "var(--bg)", padding: 14, display: "grid", gridTemplateColumns: "40px 1fr", gap: 12 }}>
-            <span aria-hidden="true" className="sc-avatar" style={{ width: 40, height: 40, display: "inline-flex", alignItems: "center", justifyContent: "center", background: "var(--ink)", color: "var(--bg)", font: "700 16px/1 var(--mono)" }}>
+            <span aria-hidden="true" className="sc-avatar" style={{ width: 40, height: 40, border: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: "var(--ink)", color: "var(--bg)", font: "700 16px/1 var(--mono)" }}>
               {m.name[0]}
             </span>
             <div>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import YouShell from "@/components/you/YouShell";
 import { createClient } from "@/lib/supabase/server";
 import { Panel, PanelHead, Empty, btn, btnPrimary, field, fieldLabel } from "@/components/ui";
@@ -78,16 +79,19 @@ export default async function CvPage({ searchParams }: { searchParams: Promise<R
                       {e.detail && <span style={{ display: "block", ...small }}>{e.detail}</span>}
                     </span>
                   </div>
-                  <details style={{ marginTop: 4 }}>
-                    <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", ...small, fontWeight: 600 }}>Edit</summary>
+                  {/* The form only for the entry being edited: one per entry made the page heavy. */}
+                  {sp.edit === e.id ? (
                     <form action={updateCvEntry.bind(null, e.id)} style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
                       <EntryFields e={e} />
                       <div style={{ display: "flex", gap: 8 }}>
                         <button type="submit" style={btnPrimary}>Save</button>
                         <button type="submit" formAction={deleteCvEntry.bind(null, e.id)} style={{ ...btn, borderColor: "var(--err)", color: "var(--err)" }}>Delete</button>
+                        <Link href={`/you/cv#e-${e.id}`} scroll={false} style={{ ...btn, border: 0 }}>Cancel</Link>
                       </div>
                     </form>
-                  </details>
+                  ) : (
+                    <Link href={`/you/cv?edit=${e.id}#e-${e.id}`} scroll={false} style={{ display: "inline-block", marginTop: 4, ...small, fontWeight: 600, textDecoration: "none" }}>Edit</Link>
+                  )}
                 </div>
               ))}
             </Panel>

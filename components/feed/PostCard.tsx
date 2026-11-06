@@ -9,6 +9,8 @@ import PostActions, { InlineReply } from "@/components/feed/PostActions";
 import PostMenu from "@/components/feed/PostMenu";
 import CallActions, { type CallInfo } from "@/components/feed/CallActions";
 import ExpandText from "@/components/feed/ExpandText";
+import ReplyBubble from "@/components/feed/ReplyBubble";
+import MoreReplies from "@/components/feed/MoreReplies";
 import FollowButton from "@/components/social/FollowButton";
 import { Panel, Outcome, mono } from "@/components/ui";
 import { timeAgo } from "@/lib/format";
@@ -47,15 +49,13 @@ const STATUS: Record<HelpStatus, { text: string; colour: string; hint: string }>
   helped: { text: "Helped", colour: "var(--ok)", hint: "A reply helped the author" },
 };
 
-export default function PostCard({ p, author, card, images, reaction, replies, me, path, topicHref, group, extra, follows, contextPerson, topReply, moreReplies, status, isNew, call, pinned }: {
+export default function PostCard({ p, author, card, images, reaction, replies, me, path, topicHref, group, extra, follows, contextPerson, topReply, status, isNew, call, pinned }: {
   p: any; author?: Person; card?: { id: string; code: string; title: string; outcome: any } | null;
   images?: string[]; reaction?: ReactionSummary; replies: number; me: string; path: string;
   topicHref: (room: string) => string; group?: { id: string; name: string } | null;
   extra?: PostExtra; follows?: boolean; contextPerson?: Person;
   /** One reply shown under the post: the one marked helpful, else the latest. */
-  topReply?: { body: string; created_at: string; helped?: boolean; author?: Person } | null;
-  /** The other replies, oldest first: opened in place with "View all". */
-  moreReplies?: { body: string; created_at: string; helped?: boolean; author?: Person }[];
+  topReply?: { id?: string; body: string; created_at: string; helped?: boolean; author?: Person } | null;
   /** For questions and feedback requests: open, answered or helped. */
   status?: HelpStatus;
   /** Posted since your last visit. */
@@ -166,17 +166,8 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
         {topReply && (
           <div style={{ margin: "0 14px 12px", display: "flex", flexDirection: "column", gap: 6 }}>
             <ReplyBubble r={topReply} clamp />
-            {(moreReplies ?? []).length > 0 && (
-              // All replies, opened right here in the feed; the post page still has the full thread.
-              <details className="sc-more-replies">
-                <summary style={{ listStyle: "none", cursor: "pointer", width: "fit-content", padding: "4px 2px", font: "600 12.5px/1.5 var(--sans)", color: "var(--mute)" }}>
-                  <span className="sc-when-closed">View all {replies} replies</span><span className="sc-when-open">Hide replies</span>
-                </summary>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 4 }}>
-                  {moreReplies!.map((r, i) => <ReplyBubble key={i} r={r} />)}
-                </div>
-              </details>
-            )}
+            {/* The rest of the thread loads when opened; the post page has it all too. */}
+            {replies > 1 && <MoreReplies postId={p.id} total={replies} shownId={topReply.id} />}
           </div>
         )}
         {(reacted > 0 || (replies > 0 && !topReply) || reposts > 0) && (
@@ -194,20 +185,5 @@ export default function PostCard({ p, author, card, images, reaction, replies, m
         <InlineReply postId={p.id} />
       </Panel>
     </article>
-  );
-}
-
-/** One reply in the feed: a soft bubble with who, when, and the text. */
-function ReplyBubble({ r, clamp = false }: { r: { body: string; created_at: string; helped?: boolean; author?: Person }; clamp?: boolean }) {
-  return (
-    <div className="sc-inset" style={{ display: "flex", gap: 9, padding: "9px 11px", borderRadius: 14, background: "color-mix(in srgb, var(--ink) 4%, transparent)" }}>
-      <Avatar name={r.author?.display_name ?? ""} url={r.author?.avatar_url} size={22} />
-      <span style={{ flex: 1, minWidth: 0 }}>
-        <span style={{ font: "600 12.5px/1.5 var(--sans)" }}>{r.author?.display_name ?? "Someone"}</span>
-        <span style={{ font: "400 12px/1.5 var(--sans)", color: "var(--mute)" }}> · {timeAgo(r.created_at)}{r.helped ? " · helped the author" : ""}</span>
-        <span style={clamp ? { display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", font: "400 13px/1.6 var(--sans)", marginTop: 2 }
-          : { display: "block", font: "400 13px/1.6 var(--sans)", marginTop: 2, whiteSpace: "pre-wrap" }}>{r.body}</span>
-      </span>
-    </div>
   );
 }

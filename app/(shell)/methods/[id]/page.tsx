@@ -29,20 +29,22 @@ export default async function MethodCard({ params, searchParams }: { params: Pro
   const { data: card } = await supabase.from("method_cards").select("*").eq("id", id).maybeSingle();
   if (!card) notFound();
 
-  const [{ data: author }, { data: parent }, { data: forks }] = await Promise.all([
+  // All at once once the card is known, the read count included.
+  const referer = (await headers()).get("referer");
+  const [{ data: author }, { data: parent }, { data: forks }, { data: recs }, clouds, repos] = await Promise.all([
     supabase.from("profiles").select("id, display_name, institution, orcid").eq("id", card.author_id).maybeSingle(),
     card.forked_from
       ? supabase.from("method_cards").select("id, code, title").eq("id", card.forked_from).maybeSingle()
       : Promise.resolve({ data: null }),
     supabase.from("method_cards").select("id, code, title, outcome, author_id").eq("forked_from", card.id),
+    supabase.from("recommendations").select("user_id").eq("card_id", card.id),
+    ncLinks(supabase, { methodId: card.id }),
+    repoLinks(supabase, { methodId: card.id }),
+    // Counted as a read only for someone else on a shared card; who it was is not kept.
+    recordCardRead(supabase, card.id, user!.id, viaFrom(referer)),
   ]);
-  const { data: recs } = await supabase.from("recommendations").select("user_id").eq("card_id", card.id);
   const recommended = (recs ?? []).some((r) => r.user_id === user!.id);
-
   const isOwner = card.author_id === user!.id;
-  const [clouds, repos] = await Promise.all([ncLinks(supabase, { methodId: card.id }), repoLinks(supabase, { methodId: card.id })]);
-  // Counted as a read only for someone else on a shared card; who it was is not kept.
-  await recordCardRead(supabase, card.id, user!.id, viaFrom((await headers()).get("referer")));
 
   return (
     <Page

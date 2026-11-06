@@ -55,11 +55,14 @@ export default async function Project({
   const active: Tab = TABS.some((t) => t.id === tab) ? (tab as Tab) : "overview";
 
   const supabase = await createClient();
-  const { data: p } = await supabase.from("projects").select("*").eq("id", id).maybeSingle();
-  if (!p) notFound();
-
-  const [{ data: entries }, { data: members }, { data: datasets }, { data: files }, { data: commits }, { data: linked }, { data: milestones }, { data: linkRows }] =
+  // Everything that only needs the project's id goes out at once: three round
+  // trips to the database for this page instead of nine one after another.
+  const [{ data: p }, { data: { user } }, repos, { data: shares }, { data: entries }, { data: members }, { data: datasets }, { data: files }, { data: commits }, { data: linked }, { data: milestones }, { data: linkRows }] =
     await Promise.all([
+      supabase.from("projects").select("*").eq("id", id).maybeSingle(),
+      supabase.auth.getUser(),
+      repoLinks(supabase, { projectId: id }),
+      supabase.from("group_projects").select("group_id").eq("project_id", id),
       supabase.from("eln_entries").select("*").eq("project_id", id).order("created_at", { ascending: false }),
       supabase.from("project_members").select("user_id, role").eq("project_id", id),
       supabase.from("datasets").select("*").eq("project_id", id).order("created_at", { ascending: false }),
@@ -69,19 +72,28 @@ export default async function Project({
       supabase.from("project_milestones").select("*").eq("project_id", id),
       supabase.from("dataset_links").select("dataset_id, code_file_id, entry_id").eq("project_id", id),
     ]);
-  const repos = await repoLinks(supabase, { projectId: id });
+  if (!p) notFound();
 
   const ids = (members ?? []).map((m: { user_id: string }) => m.user_id);
-  const { data: { user } } = await supabase.auth.getUser();
   const isMember = !!user && ids.includes(user.id);
+  const isOwner = p.owner_id === user?.id;
   const cardIds = (linked ?? []).map((l: any) => l.card_id);
-  const [people, { data: cards }, { data: myCards }] = await Promise.all([
+  const shareIds = (shares ?? []).map((s: { group_id: string }) => s.group_id);
+  const none = Promise.resolve({ data: [] as any[] });
+  const [people, [{ data: cards }, cardPeople], { data: myCards }, { data: myShareGroups }, { data: shareGroups }, { data: everyone }] = await Promise.all([
     peopleById(supabase, [...ids, ...(commits ?? []).map((c: any) => c.author_id), ...(entries ?? []).map((e: any) => e.author_id)]),
-    cardIds.length ? supabase.from("method_cards").select("id, code, title, outcome, visibility, author_id, system").in("id", cardIds) : Promise.resolve({ data: [] as any[] }),
-    isMember ? supabase.from("method_cards").select("id, code, title").eq("author_id", user!.id).order("updated_at", { ascending: false }).limit(200) : Promise.resolve({ data: [] as any[] }),
+    // Linked cards, then their authors who are not on the project.
+    (async () => {
+      const r = cardIds.length ? await supabase.from("method_cards").select("id, code, title, outcome, visibility, author_id, system").in("id", cardIds) : { data: [] as any[] };
+      return [r, await peopleById(supabase, (r.data ?? []).map((c: any) => c.author_id).filter((a: string) => !ids.includes(a)))] as const;
+    })(),
+    isMember ? supabase.from("method_cards").select("id, code, title").eq("author_id", user!.id).order("updated_at", { ascending: false }).limit(200) : none,
+    // Shared with a group you are in: you may join it from here.
+    shareIds.length && user ? supabase.from("group_members").select("group_id").eq("user_id", user.id).neq("role", "alumni").in("group_id", shareIds) : none,
+    shareIds.length ? supabase.from("groups").select("id, name").in("id", shareIds) : none,
+    isOwner ? supabase.from("profiles").select("id, display_name, institution").order("display_name").limit(1000) : none,
   ]);
-  // Authors of linked cards who are not on the project.
-  for (const [k, v] of await peopleById(supabase, (cards ?? []).map((c: any) => c.author_id).filter((a: string) => !people.has(a)))) people.set(k, v);
+  for (const [k, v] of cardPeople) if (!people.has(k)) people.set(k, v);
   const methods = (linked ?? []).map((l: any) => ({ ...l, card: (cards ?? []).find((c: any) => c.id === l.card_id) })).filter((l: any) => l.card);
   const linkable = (myCards ?? []).filter((c: any) => !cardIds.includes(c.id));
   const ms = [...(milestones ?? [])].sort((a: any, b: any) => Number(!!a.done_at) - Number(!!b.done_at) || (a.due_on ?? "9999").localeCompare(b.due_on ?? "9999"));
@@ -96,17 +108,7 @@ export default async function Project({
   ].sort((a, b) => String(b.at ?? "").localeCompare(String(a.at ?? ""))).slice(0, 10);
   const nameOf = (uid: string) => people.get(uid)?.display_name ?? "Someone";
 
-  // Shared with a group you are in: you may join it from here.
-  const { data: shares } = await supabase.from("group_projects").select("group_id").eq("project_id", id);
-  const shareIds = (shares ?? []).map((s: { group_id: string }) => s.group_id);
-  const [{ data: myShareGroups }, { data: shareGroups }] = shareIds.length
-    ? await Promise.all([
-        supabase.from("group_members").select("group_id").eq("user_id", user!.id).neq("role", "alumni").in("group_id", shareIds),
-        supabase.from("groups").select("id, name").in("id", shareIds),
-      ])
-    : [{ data: [] as any[] }, { data: [] as any[] }];
   const canJoin = !isMember && (myShareGroups?.length ?? 0) > 0;
-  const isOwner = p.owner_id === user?.id;
 
   // Links between data, code and notebook: only the people on the project see them. The
   // database policy says so too (supabase/22); the demo store has none, so it is stated here.
@@ -123,9 +125,6 @@ export default async function Project({
     .map((e: any) => ({ href: tabHref("notebook", `entry-${e.id}`), text: entryLabel(e.body, e.created_at) }));
   const dataChips = (ids: string[]) => ids.map((i) => dataById.get(i)).filter(Boolean)
     .map((d: any) => ({ href: tabHref("data", `data-${d.id}`), text: d.title }));
-  const { data: everyone } = isOwner
-    ? await supabase.from("profiles").select("id, display_name, institution").order("display_name").limit(1000)
-    : { data: [] as any[] };
 
   const counts: Record<Tab, number> = {
     overview: ms.length - msDone,

@@ -18,7 +18,7 @@ export type PostExtra = {
 
 export async function postExtras(
   supabase: SupabaseClient<any, any, any>, me: string, postIds: string[],
-  following: Set<string>, reactions: Map<string, ReactionSummary>,
+  following: Set<string>, _reactions?: Map<string, ReactionSummary>,
 ): Promise<Map<string, PostExtra>> {
   const out = new Map<string, PostExtra>();
   if (!postIds.length) return out;
