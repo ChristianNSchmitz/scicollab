@@ -29,8 +29,6 @@ import { imageUrls } from "@/lib/posts/images";
 import { postExtras, repostedBy } from "@/lib/posts/extras";
 import { notForChosenPeople } from "@/lib/social/groups";
 import SegTabs from "@/components/SegTabs";
-import StoryBar from "@/components/stories/Stories";
-import { storiesFor } from "@/lib/stories";
 import { forYou } from "@/lib/social/for-you";
 import ForYouPanel from "@/components/dashboard/ForYouPanel";
 import { cookies } from "next/headers";
@@ -298,7 +296,6 @@ export default async function Home({
     waiting,
     callsData,
     { count: openCallCount },
-    stories,
   ] = await Promise.all([
     feed,
     research,
@@ -311,7 +308,6 @@ export default async function Home({
     forYou(supabase, me_),
     callsView,
     openCalls,
-    storiesFor(supabase, me_),
   ]);
   const groupNames = new Map<string, { id: string; name: string }>(groupList.map((g: any) => [g.id, { id: g.id, name: g.name }]));
   // Replies to your posts and answers to your questions in the last two weeks,
@@ -430,8 +426,6 @@ export default async function Home({
       <section id="feed" aria-label="Feed" style={{ maxWidth: 820, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20, scrollMarginTop: 72 }}>
         {posted && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Posted.</p>}
         {sent === "1" && <p role="status" style={{ font: "400 13.5px/1.6 var(--sans)", margin: 0, padding: "10px 12px", border: "1px solid var(--ok)", background: "var(--surface)" }}>Sent. The caller sees your interest on the call and is notified.</p>}
-        {/* Stories from the people you follow and your group mates, 24 hours each. */}
-        <StoryBar authors={stories} me={{ id: me_, name: me?.display_name ?? "", avatar: me?.avatar_url ?? null }} />
         <QuickPost topics={topics} cards={(myCards ?? []) as { id: string; code: string; title: string }[]} defaultTopic={room} meName={me?.display_name ?? ""} meAvatar={me?.avatar_url ?? null} />
 
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>

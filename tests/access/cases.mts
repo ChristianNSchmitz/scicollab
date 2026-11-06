@@ -165,11 +165,6 @@ export const CASES: Case[] = [
   { name: "nextcloud.linkNextcloud (members only)", owner: "", stranger: "deny", run: async () => (await A("nextcloud")).linkNextcloud("group", "gr-ebro", form({ url: "https://cloud.example.org/s/AbC123xyz" })) },
   { name: "repos.unlinkRepo (a method card's repository)", owner: "u-rivera", stranger: "deny", run: async () => { const r = first("repo_links", (x) => x.method_id); return (await A("repos")).unlinkRepo("method", r.method_id, r.id); } },
 
-  // ── stories (supabase/23)
-  { name: "stories.postStory", owner: "u-lena", stranger: "allow", run: async () => (await A("stories")).postStory(form({ body: "A text story", colour: "#1B4FA0" })) },
-  { name: "stories.deleteStory (someone else's story)", owner: "c-lucas", stranger: "deny", run: async () => { const s = first("stories", (x) => x.author_id === "c-lucas"); return (await A("stories")).deleteStory(s.id); } },
-  { name: "stories.markStoriesSeen (stories you may not see)", owner: "u-rivera", stranger: "deny", run: async () => { const s = first("stories", (x) => x.author_id === "c-lucas" && !(tables.story_views as any[]).some((v) => v.story_id === x.id && v.viewer_id === "u-rivera")); return (await A("stories")).markStoriesSeen([s.id]); } },
-
   // ── reads that must not leak to a stranger
   { name: "post-interactions.threadOf (post shared with named people only)", owner: "u-mateo", stranger: "deny", read: true, run: async () => (await A("post-interactions")).threadOf("fb-lena") },
   { name: "attachments.pendingFor (only the owner sees requests)", owner: "u-rivera", stranger: "deny", read: true, run: async () => (await A("attachments")).pendingFor("p-2") },

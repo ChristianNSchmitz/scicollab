@@ -798,7 +798,7 @@ function build() {
     reactions: reactions.filter((r) => (r.target_kind === "post" ? postIds : has(answers)).has(r.target_id)),
     mentions: [{ id: "mn-1", author_id: "u-okafor", mentioned_id: "u-rivera", source_kind: "post", source_id: "mp-1", href: "/posts/mp-1", created_at: at("2026-11-03 16:20") }],
     cv_entries, opportunities, opportunity_saves: [{ opportunity_id: "op-5", user_id: "u-rivera", created_at: at("2026-10-31 09:00") }],
-    events, event_attendees, push_subscriptions: [], stories: [], story_views: [],
+    events, event_attendees, push_subscriptions: [],
     paper_files: [], paper_follows: [],
     paper_requests: [{ id: "prq-1", work_id: "W-example-0", requester_id: "u-bhatt", message: "I am comparing delivery protocols for my thesis chapter; the supplementary table would help a lot.", status: "open", decided_by: null, created_at: at("2026-10-30 17:00"), decided_at: null }],
     paper_comments: [{ id: "pcm-1", work_id: "W-example-0", author_id: "u-lindqvist", body: "We saw the same drop above passage 18 with a different reagent. Happy to share the gating template.", created_at: at("2026-10-29 11:00") }],
