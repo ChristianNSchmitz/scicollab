@@ -18,7 +18,7 @@ export function Page({ title, lede, actions, eyebrow, ad, children }: {
   title: string; lede?: string; actions?: ReactNode;
   /** A small line above the heading, e.g. the project a tab belongs to. */
   eyebrow?: ReactNode;
-  /** Reserve a banner for an advertisement under the heading. Browse pages only. */
+  /** Reserve room for an advertisement in a column on the right, as on the feed. Browse pages only. */
   ad?: boolean;
   children: ReactNode;
 }) {
@@ -33,8 +33,13 @@ export function Page({ title, lede, actions, eyebrow, ad, children }: {
           </div>
           {actions}
         </header>
-        {ad && <AdSlot shape="banner" />}
-        {children}
+        {ad ? (
+          // As on the feed: the page on the left, the ad on the right, staying in view while the page scrolls.
+          <div className="sc-ad-grid">
+            <div style={{ minWidth: 0 }}>{children}</div>
+            <div className="sc-ad-col"><AdSlot className="sc-ad-sticky" /></div>
+          </div>
+        ) : children}
       </div>
     </div>
   );
