@@ -11,6 +11,18 @@
 /** How long a page change may take before the loading screen appears. Quicker ones never show it. */
 export const LOADER_DELAY_MS = 1000;
 
+/**
+ * A change of tab or filter on the same page: after this long, the part that
+ * is changing (the tab's content) is covered by frosted glass that pulses
+ * slowly until the new content is there. The rest of the page stays as it is.
+ */
+export const PANE_DELAY_MS = 300;
+
+/** Same page, other tab or filter: only the content below the tabs is waiting. */
+export function isSamePageChange(a: { href: string; base: string }): boolean {
+  try { const to = new URL(a.href, a.base), from = new URL(a.base); return to.origin === from.origin && to.pathname === from.pathname; } catch { return false; }
+}
+
 /** After it appears, how long before the page is dimmed under the spinner. Until then only the thin bar on top moves, so a page that arrives just after the delay is not covered for a split second. */
 export const VEIL_DELAY_MS = 600;
 

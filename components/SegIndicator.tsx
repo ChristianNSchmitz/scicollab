@@ -83,13 +83,7 @@ export default function SegIndicator({ id, activeKey }: { id: string; activeKey:
       // A link inside "More" lands on the More tab itself.
       const tab = link.parentElement === nav ? link : link.closest("details")?.querySelector("summary");
       if (!tab) return;
-      const now = activeEl();
       const g = geom(tab);
-      // Which way the content slides: towards the tab you chose.
-      if (now && now !== tab) {
-        document.documentElement.dataset.slide = g.x > geom(now).x ? "right" : "left";
-        window.setTimeout(() => { delete document.documentElement.dataset.slide; }, 1200);
-      }
       put(g, true);
       pinned = { id, top: nav.getBoundingClientRect().top, until: Date.now() + 15000 };
     };

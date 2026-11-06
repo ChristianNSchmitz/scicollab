@@ -60,3 +60,12 @@ test("a change is finished when the address is no longer the one it started from
 test("the page is dimmed only after the loader has been up a while, so a page just behind it is not covered for a flash", () => {
   assert.ok(VEIL_DELAY_MS >= 400 && VEIL_DELAY_MS < LOADER_DELAY_MS * 2);
 });
+
+test("a tab or filter of the same page waits under glass after 0.3 s; another page uses the full loader", async () => {
+  const { isSamePageChange, PANE_DELAY_MS } = await import("../lib/nav-loader.ts");
+  assert.equal(PANE_DELAY_MS, 300);
+  assert.equal(isSamePageChange({ href: "/home?feed=groups", base: here }), true);
+  assert.equal(isSamePageChange({ href: "/home", base: here }), true);
+  assert.equal(isSamePageChange({ href: "/groups", base: here }), false);
+  assert.equal(isSamePageChange({ href: "https://elsewhere.org/home", base: here }), false);
+});

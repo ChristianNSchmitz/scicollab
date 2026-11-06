@@ -633,14 +633,22 @@ html[data-look="glass"] .sc-seg-anim[data-ind="on"] > a[aria-current="page"],
 html[data-look="glass"] .sc-seg-anim[data-ind="on"] > details > summary[aria-current="page"] { background: transparent !important; box-shadow: none !important; }
 .sc-seg-anim > a { transition: color .2s ease; }
 /* min-height: a short tab must not make the page shorter than the screen, or the browser pulls the view up. */
-.sc-tabpane { animation: sc-tab-in .26s ease both; min-height: 100vh; }
+/* New tab content fades in where it is: nothing slides. */
+.sc-tabpane { animation: sc-tab-in .24s ease both; min-height: 100vh; position: relative; }
+/* Waiting for a tab's content (components/NavLoader.tsx, after PANE_DELAY_MS): matt glass
+   over that content only, pulsing slowly. The tabs and the rest of the page stay as they are. */
+.sc-tabpane[data-pending]::after {
+  content: ""; position: absolute; inset: -8px; z-index: 6; pointer-events: none; border-radius: var(--r-card, 18px);
+  background: color-mix(in srgb, var(--surface) 62%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(120%); backdrop-filter: blur(10px) saturate(120%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--glass-edge, #fff) 60%, transparent);
+  animation: sc-pane-in .3s ease-out both, sc-pane-pulse 2.4s ease-in-out .3s infinite;
+}
+@keyframes sc-pane-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sc-pane-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
 /* After a tab click the new content slides in from the side of the tab chosen. */
-html[data-slide="right"] .sc-tabpane { animation: sc-slide-from-right .34s cubic-bezier(.3, .7, .2, 1) both; }
-html[data-slide="left"] .sc-tabpane { animation: sc-slide-from-left .34s cubic-bezier(.3, .7, .2, 1) both; }
-@keyframes sc-slide-from-right { from { opacity: 0; transform: translateX(48px); } to { opacity: 1; transform: none; } }
-@keyframes sc-slide-from-left { from { opacity: 0; transform: translateX(-48px); } to { opacity: 1; transform: none; } }
-@keyframes sc-tab-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .sc-seg-ind, .sc-seg-anim > a { transition: none; } .sc-tabpane, html[data-slide] .sc-tabpane { animation: none; } }
+@keyframes sc-tab-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .sc-seg-ind, .sc-seg-anim > a { transition: none; } .sc-tabpane, .sc-tabpane[data-pending]::after { animation: none; } }
 /* Dark mode: the bar itself a little lighter, for contrast. */
 html[data-look="glass"][data-theme="dark"] .sc-seg { background: rgba(160, 160, 175, .20); }
 

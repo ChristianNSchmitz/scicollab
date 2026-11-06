@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { isPageNavigation, navigationFinished, LOADER_DELAY_MS, VEIL_DELAY_MS } from "@/lib/nav-loader";
+import { isPageNavigation, isSamePageChange, navigationFinished, LOADER_DELAY_MS, VEIL_DELAY_MS, PANE_DELAY_MS } from "@/lib/nav-loader";
 
 /** If the address never changes (a click that turned out not to navigate), stop waiting. */
 const GIVE_UP_MS = 20_000;
@@ -19,6 +19,10 @@ type Box = { top: number; left: number; width: number };
  * spinner. So a page that arrives just after the second is never covered for a
  * split second, which is what a loading screen that appears and vanishes at
  * once looks like.
+ *
+ * A change of tab or filter on the same page is different: nothing moves, and
+ * after PANE_DELAY_MS only the tab's content (.sc-tabpane) is covered by
+ * frosted glass that pulses slowly, until the new content replaces it.
  *
  * It covers the page area only, so the top bar, the side navigation and the chat
  * stay usable, and it lets clicks through: choosing somewhere else while waiting
@@ -43,6 +47,7 @@ export default function NavLoader() {
     timers.current = {};
     startedAt.current = null;
     document.documentElement.removeAttribute("data-navigating");
+    document.querySelectorAll(".sc-tabpane[data-pending]").forEach((el) => el.removeAttribute("data-pending"));
     setBox(null);
   };
   const where = () => location.pathname + location.search;
@@ -55,7 +60,7 @@ export default function NavLoader() {
   useEffect(() => { current.current = here; checkFinished(); }, [here]);
 
   useEffect(() => {
-    const start = () => {
+    const start = (to?: string) => {
       window.clearTimeout(timers.current.show);
       window.clearTimeout(timers.current.giveUp);
       window.clearInterval(timers.current.watch);
@@ -63,6 +68,13 @@ export default function NavLoader() {
       document.documentElement.setAttribute("data-navigating", "");
       // The address is also checked on a timer, in case the change lands between renders.
       timers.current.watch = window.setInterval(checkFinished, 150);
+      // Another tab or filter of this page: only its content waits, under glass.
+      const panes = to && isSamePageChange({ href: to, base: location.href }) ? [...document.querySelectorAll<HTMLElement>(".sc-tabpane")] : [];
+      if (panes.length) {
+        timers.current.show = window.setTimeout(() => panes.forEach((el) => el.isConnected && el.setAttribute("data-pending", "")), PANE_DELAY_MS);
+        timers.current.giveUp = window.setTimeout(stop, GIVE_UP_MS);
+        return;
+      }
       timers.current.show = window.setTimeout(() => {
         const page = document.querySelector("main.sc-main")?.getBoundingClientRect();
         const bar = document.querySelector(".sc-top")?.getBoundingClientRect();
@@ -76,7 +88,7 @@ export default function NavLoader() {
       const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
       if (!a) return;
       const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
-      if (isPageNavigation({ href: a.href, base: location.href, target: a.target, download: a.hasAttribute("download"), modified })) start();
+      if (isPageNavigation({ href: a.href, base: location.href, target: a.target, download: a.hasAttribute("download"), modified })) start(a.href);
     };
 
     // A form that reads (search, filters) goes to a page; one that writes (a server action) stays where it is.
@@ -86,7 +98,7 @@ export default function NavLoader() {
       try {
         const to = new URL(form.action, location.href);
         for (const [k, v] of new FormData(form)) if (typeof v === "string") to.searchParams.append(k, v);
-        if (isPageNavigation({ href: to.toString(), base: location.href, target: form.target })) start();
+        if (isPageNavigation({ href: to.toString(), base: location.href, target: form.target })) start(to.toString());
       } catch { /* not a form that goes anywhere */ }
     };
 
